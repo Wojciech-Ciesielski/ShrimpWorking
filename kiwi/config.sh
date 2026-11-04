@@ -64,12 +64,14 @@ pf2_name() {
 }
 INTER=/usr/share/fonts/truetype/inter
 grub2-mkfont -s 38 -o "$GRUBTHEME/inter-regular-38.pf2" "$INTER/Inter-Regular.ttf"
-grub2-mkfont -s 38 -o "$GRUBTHEME/inter-semibold-38.pf2" "$INTER/Inter-SemiBold.ttf"
+# SemiBold needs its own family name, otherwise GRUB names it "Inter Regular 38" too
+grub2-mkfont -n "Inter SemiBold" -s 38 -o "$GRUBTHEME/inter-semibold-38.pf2" "$INTER/Inter-SemiBold.ttf"
 grub2-mkfont -s 27 -o "$GRUBTHEME/inter-regular-27.pf2" "$INTER/Inter-Regular.ttf"
 r38="$(pf2_name "$GRUBTHEME/inter-regular-38.pf2")"
 s38="$(pf2_name "$GRUBTHEME/inter-semibold-38.pf2")"
 r27="$(pf2_name "$GRUBTHEME/inter-regular-27.pf2")"
 echo "GRUB fonts: '$r38' '$s38' '$r27'"
+[ "$r38" != "$s38" ] || die "GRUB regular and semibold fonts have the same name"
 for t in "$GRUBTHEME/theme.txt" "$GRUBTHEME/theme-live.txt"; do
   sed -i -e "s|@FONT_REGULAR_38@|$r38|g" -e "s|@FONT_SEMIBOLD_38@|$s38|g" -e "s|@FONT_REGULAR_27@|$r27|g" "$t"
 done
@@ -125,16 +127,17 @@ rm -rf "$work"
 
 #--------------------------------------
 # GNOME Shell extensions from extensions.gnome.org
-# (Light Style, Apps Menu, Workspace Indicator come with gnome-shell-extensions-common)
+# (Leap 16 does not ship Light Style, Apps Menu or Workspace Indicator in a package,
+#  so they come from extensions.gnome.org as well)
 #--------------------------------------
 SHELL_MAJOR="$(rpm -q --qf '%{VERSION}' gnome-shell | cut -d. -f1)"
 EXT=/usr/share/gnome-shell/extensions
-for uuid in ding@rastersoft.com blur-my-shell@aunetx dash-to-dock@micxgx.gmail.com just-perfection-desktop@just-perfection; do
-  info="$(curl -fsSL "https://extensions.gnome.org/extension-info/?uuid=${uuid}&shell_version=${SHELL_MAJOR}")" \
-    || die "extension $uuid has no release for GNOME $SHELL_MAJOR"
+install_ext() {
+  local uuid="$1" info url
+  info="$(curl -fsSL "https://extensions.gnome.org/extension-info/?uuid=${uuid}&shell_version=${SHELL_MAJOR}")" || return 1
   url="$(echo "$info" | sed -n 's/.*"download_url": *"\([^"]*\)".*/\1/p')"
-  [ -n "$url" ] || die "no download_url for $uuid"
-  curl -fsSL -o "/tmp/${uuid}.zip" "https://extensions.gnome.org${url}"
+  [ -n "$url" ] || return 1
+  curl -fsSL -o "/tmp/${uuid}.zip" "https://extensions.gnome.org${url}" || return 1
   rm -rf "${EXT:?}/${uuid}"
   mkdir -p "$EXT/$uuid"
   unzip -q -o "/tmp/${uuid}.zip" -d "$EXT/$uuid"
@@ -144,11 +147,17 @@ for uuid in ding@rastersoft.com blur-my-shell@aunetx dash-to-dock@micxgx.gmail.c
     glib-compile-schemas "$EXT/$uuid/schemas"
   fi
   chmod -R a+rX "$EXT/$uuid"
+  echo "extension installed: $uuid"
+}
+for uuid in ding@rastersoft.com blur-my-shell@aunetx dash-to-dock@micxgx.gmail.com just-perfection-desktop@just-perfection \
+            apps-menu@gnome-shell-extensions.gcampax.github.com workspace-indicator@gnome-shell-extensions.gcampax.github.com; do
+  [ -d "$EXT/$uuid" ] || install_ext "$uuid" || die "extension $uuid has no release for GNOME $SHELL_MAJOR"
 done
-for uuid in light-style apps-menu workspace-indicator; do
-  [ -d "$EXT/${uuid}@gnome-shell-extensions.gcampax.github.com" ] \
-    || echo "WARNING: built-in extension ${uuid} is not shipped by this GNOME ($SHELL_MAJOR)"
-done
+# Light Style: optional, newer shells follow the light colour scheme on their own
+uuid=light-style@gnome-shell-extensions.gcampax.github.com
+if [ ! -d "$EXT/$uuid" ] && ! install_ext "$uuid"; then
+  echo "WARNING: $uuid has no release for GNOME $SHELL_MAJOR; the shell follows color-scheme instead"
+fi
 ls "$EXT"
 glib-compile-schemas /usr/share/glib-2.0/schemas
 
