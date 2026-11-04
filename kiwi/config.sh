@@ -41,6 +41,12 @@ css_color() { printf '* { fill: %s !important; color: %s !important; }\n' "$1" "
 next_svg="$(adw_icon go-next-symbolic)" || die "go-next-symbolic not found"
 lock_svg="$(adw_icon changes-prevent-symbolic system-lock-screen-symbolic channel-secure-symbolic)" || die "lock icon not found"
 
+# print the Adwaita sources into the build log, so previews can use the very same icons
+for n in go-next-symbolic changes-prevent-symbolic system-lock-screen-symbolic network-wireless-signal-excellent-symbolic \
+         audio-volume-high-symbolic battery-level-100-symbolic system-shutdown-symbolic; do
+  f="$(adw_icon "$n")" && echo "ICON-SVG $n $(base64 -w0 "$f")" || echo "ICON-SVG $n missing"
+done
+
 PLY=/usr/share/plymouth/themes/shrimp
 # lock: 1.6% of width (30.72 px at 1920), colour dim #8c8c8c; arrow: same size, black on the white circle
 rsvg-convert -w 31 -h 31 -s "$(css_color '#8c8c8c')" -o "$PLY/lock.png" "$lock_svg"
