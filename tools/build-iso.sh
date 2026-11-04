@@ -23,6 +23,13 @@ mkdir -p out
     kiwi-ng --logfile out/kiwi.log --color-output system build \
       --description kiwi --set-repo '$REPO' --target-dir out/build
     mv out/build/*.iso out/
+    # Adwaita icon sources used by the boot themes, printed for design previews
+    for n in go-next-symbolic changes-prevent-symbolic system-lock-screen-symbolic network-wireless-signal-excellent-symbolic \\
+             audio-volume-high-symbolic battery-level-100-symbolic system-shutdown-symbolic; do
+      f=\$(find out/build/build/image-root/usr/share/icons/Adwaita -name \"\$n.svg\" -print -quit)
+      [ -n \"\$f\" ] && echo \"ICON-SVG \$n \$(base64 -w0 \"\$f\")\" || true
+    done
+    grep -h 'GRUB fonts\|WARNING: built-in\|config.sh' out/kiwi.log | tail -20 || true
     rm -rf out/build
   "
 ls -lh out/*.iso
