@@ -18,6 +18,8 @@ const css = `
             margin: 0 !important; --s-bg: transparent !important; background: transparent !important; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .pw .go { opacity: 1 !important; }
+  /* Shrimp: the logo keeps one size in every Plymouth state (14% of width) */
+  .ply.pw .logo { width: 14cqw !important; }
 `;
 
 async function run(scale) {

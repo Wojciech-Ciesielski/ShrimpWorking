@@ -18,7 +18,7 @@ mkdir -p out
 "$ENGINE" run --rm --privileged -v /dev:/dev -v "$PWD:/work" -w /work \
   docker.io/opensuse/tumbleweed:latest bash -euxc "
     zypper -n --gpg-auto-import-keys ref
-    zypper -n in --no-recommends python3-kiwi kiwi-systemdeps-iso-media kiwi-systemdeps-bootloaders kiwi-systemdeps-filesystems
+    zypper -n in --no-recommends python3-kiwi kiwi-systemdeps-iso-media kiwi-systemdeps-bootloaders kiwi-systemdeps-filesystems binutils
     rm -rf out/build
     kiwi-ng --logfile out/kiwi.log --color-output system build \
       --description kiwi --set-repo '$REPO' --target-dir out/build

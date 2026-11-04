@@ -41,9 +41,6 @@ else global.logo_y = 358.02;
 logo.SetPosition(sx(814.84), sy(logo_y), 10);
 logo.SetOpacity(0);
 
-global.logo_small = Sprite(load_size("logo-small", 201.59, 194.92));
-logo_small.SetPosition(sx(851.14), sy(300.84), 10);
-logo_small.SetOpacity(0);
 
 # ---------- progress bar: round caps + stretched body ----------
 global.bar_x = 796.8;
@@ -101,22 +98,24 @@ fun set_status(text) {
 }
 
 # ---------- disk password ----------
+# The logo stays exactly where it is during boot (same size, same place); the field takes
+# the place of the bar: mockup spacing (field 5.5% of width under the logo, caption 3.2% under it).
 global.entry = Sprite(load_size("entry", 441.59, 74.88));
-entry.SetPosition(sx(739.2), sy(601.36), 20);
+entry.SetPosition(sx(739.2), sy(723.50), 20);
 global.lock = Sprite(load_size("lock", 30.72, 30.72));
-lock.SetPosition(sx(764.16), sy(623.44), 21);
+lock.SetPosition(sx(764.16), sy(745.58), 21);
 global.go = Sprite(load_size("go", 53.75, 53.75));
-go.SetPosition(sx(1113.61), sy(611.92), 21);
+go.SetPosition(sx(1113.61), sy(734.06), 21);
 global.arrow = Sprite(load_size("arrow", 30.72, 30.72));
-arrow.SetPosition(sx(1125.13), sy(623.44), 22);
+arrow.SetPosition(sx(1125.13), sy(745.58), 22);
 global.caret = Sprite(load_size("caret", 2, 38.39));
 global.hint = Sprite(load("hint-password"));
-hint.SetPosition(sx(746.03), sy(737.67), 20);
+hint.SetPosition(sx(746.03), sy(859.81), 20);
 global.bullet_img = load_size("bullet", 15.73, 15.73);
 global.max_dots = 9;
 for (i = 0; i < max_dots; i++) {
   global.dots[i] = Sprite(bullet_img);
-  dots[i].SetPosition(sx(814.06 + i * 29.17), sy(630.92), 22);
+  dots[i].SetPosition(sx(814.06 + i * 29.17), sy(753.06), 22);
   dots[i].SetOpacity(0);
 }
 
@@ -134,8 +133,7 @@ password_opacity(0);
 fun on_password(prompt, count) {
   global.asking = 1;
   global.typed = count;
-  logo.SetOpacity(0);
-  logo_small.SetOpacity(1);
+  logo.SetOpacity(1);
   bar_opacity(track, 0);
   bar_opacity(fill, 0);
   title.SetOpacity(0);
@@ -143,7 +141,7 @@ fun on_password(prompt, count) {
   password_opacity(1);
   n = Math.Min(count, max_dots);
   for (i = 0; i < max_dots; i++) { if (i < n) dots[i].SetOpacity(1); else dots[i].SetOpacity(0); }
-  caret.SetPosition(sx(814.06 + n * 29.17), sy(619.59), 22);
+  caret.SetPosition(sx(814.06 + n * 29.17), sy(741.73), 22);
   global.caret_t0 = global.t;
 }
 Plymouth.SetDisplayPasswordFunction(on_password);
@@ -152,8 +150,6 @@ fun on_normal() {
   if (asking) {
     global.asking = 0;
     password_opacity(0);
-    logo_small.SetOpacity(0);
-    logo.SetOpacity(1);
     if (show_bar) { bar_opacity(track, 1); bar_opacity(fill, 1); }
     if (is_updates) { title.SetOpacity(0.85); status.SetOpacity(1); }
   }
