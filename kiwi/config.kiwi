@@ -71,6 +71,8 @@
         <package name="gnome-session"/>
         <package name="gnome-control-center"/>
         <package name="gnome-shell-extensions-common"/>
+        <!-- DING (Desktop Icons) needs the GnomeDesktop 3.0 introspection data -->
+        <package name="typelib-1_0-GnomeDesktop-3_0"/>
         <package name="nautilus"/>
         <package name="gnome-console"/>
         <package name="gnome-keyring"/>

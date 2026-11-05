@@ -11,18 +11,21 @@ theme_dir="$(dirname "$theme_txt")"
 # two-entry live menu layout
 cp "$theme_dir/theme-live.txt" "$theme_txt"
 
-fonts=""
+# Under Secure Boot (lockdown) the signed GRUB refuses unsigned font files
+# ("prohibited by secure boot policy"), so only load them outside lockdown.
+fonts='if [ "${lockdown}" != "y" ]; then\n'
 for f in "$theme_dir"/*.pf2; do
-  fonts="${fonts}loadfont (\$root)/boot/grub2/themes/shrimp/$(basename "$f")\n"
+  fonts="${fonts}    loadfont (\$root)/boot/grub2/themes/shrimp/$(basename "$f")\n"
 done
+fonts="${fonts}fi\n"
 
 patched=0
 # BIOS (boot/grub2) and EFI (EFI/BOOT, EFI/Linux) copies of the menu
 while IFS= read -r cfg; do
   grep -q '^menuentry ' "$cfg" || continue
-  # drop "Boot from Hard Disk", add the firmware settings entry after the first menuentry
+  # drop "Boot from Hard Disk" and "Failsafe", add the firmware settings entry after the first menuentry
   awk '
-    /^menuentry "Boot from Hard Disk"/ { skip = 1 }
+    /^menuentry "(Boot from Hard Disk|Failsafe)/ { skip = 1 }
     skip { if ($0 ~ /^}/) { skip = 0 } ; next }
     { print }
     /^menuentry / && !added { inentry = 1 }
