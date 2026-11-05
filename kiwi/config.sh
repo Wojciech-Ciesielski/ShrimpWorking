@@ -142,9 +142,13 @@ install_ext() {
   mkdir -p "$EXT/$uuid"
   unzip -q -o "/tmp/${uuid}.zip" -d "$EXT/$uuid"
   rm -f "/tmp/${uuid}.zip"
+  # Extension.getSettings() prefers the extension's own schemas/ directory, and an
+  # override only applies to schemas compiled next to it (that is why Just Perfection
+  # kept the Activities button). Compile our override into the local directory too.
   if [ -d "$EXT/$uuid/schemas" ]; then
     cp "$EXT/$uuid"/schemas/*.gschema.xml /usr/share/glib-2.0/schemas/
-    glib-compile-schemas "$EXT/$uuid/schemas"
+    cp /usr/share/glib-2.0/schemas/99_shrimp.gschema.override "$EXT/$uuid/schemas/"
+    glib-compile-schemas "$EXT/$uuid/schemas" 2>&1 | grep -v 'No such schema' || true
   fi
   chmod -R a+rX "$EXT/$uuid"
   echo "extension installed: $uuid"

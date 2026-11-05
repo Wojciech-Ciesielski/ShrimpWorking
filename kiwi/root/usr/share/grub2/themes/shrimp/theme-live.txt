@@ -9,7 +9,6 @@
 title-text: ""
 desktop-color: "#000000"
 terminal-font: "@FONT_REGULAR_27@"
-terminal-box: ""
 
 + image {
   file = "logo.png"

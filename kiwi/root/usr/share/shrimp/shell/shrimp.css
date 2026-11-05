@@ -2,9 +2,12 @@
 /* ===== Shrimp additions (kiwi/root/usr/share/shrimp/shell/shrimp.css) ===== */
 
 /* GDM (specs/gdm.md): blurred Mont Blanc with a rgba(35,35,35,.55) veil instead of flat #232323.
+   GNOME 48 paints the greeter on .login-dialog (full screen); #lockDialogGroup alone stayed flat.
    The image is pre-rendered (blur ~4% of width, veil baked in) because St cannot blur CSS backgrounds. */
-#lockDialogGroup {
-  background: #232323 url("resource:///org/gnome/shell/theme/shrimp-gdm-background.jpg");
+#lockDialogGroup,
+.login-dialog {
+  background-color: #232323;
+  background-image: url("resource:///org/gnome/shell/theme/shrimp-gdm-background.jpg");
   background-size: cover;
   background-position: center;
 }
