@@ -81,7 +81,7 @@ static void skip(copy_ctx* c, const wchar_t* src, const char* reason)
 static BOOL dest_error(copy_ctx* c, DWORD e)
 {
 	if (e == ERROR_DISK_FULL || e == ERROR_HANDLE_DISK_FULL) {
-		ShrimpFail(3, "copy", "Na nośniku skończyło się miejsce.");
+		ShrimpFail(3, "copy", "mediaFull");
 	} else if (e == ERROR_NOT_READY || e == ERROR_DEVICE_NOT_CONNECTED || e == ERROR_DEV_NOT_EXIST
 		|| e == ERROR_PATH_NOT_FOUND || e == ERROR_WRITE_FAULT || e == ERROR_GEN_FAILURE) {
 		ShrimpFail(3, "device", NULL);
@@ -345,7 +345,7 @@ DWORD WINAPI ShrimpCopyThread(LPVOID param)
 	jb_end_arr(&c.skipped);
 	jb_end_arr(&files);
 	if (!write_json(root, &c, &files)) {
-		ShrimpFail(3, "copy", "Nie udało się zapisać opisu kopii.");
+		ShrimpFail(3, "copy", "descWrite");
 		goto out;
 	}
 	ShrimpProgress(3, c.total, c.total, 0);
