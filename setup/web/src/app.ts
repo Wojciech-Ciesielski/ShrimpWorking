@@ -321,7 +321,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     const r = $<HTMLInputElement>("#rng"); if (!r) return;
     const t = pool(), w = Math.max(winMin(), Math.min(t - shrimpMin(), +r.value)); r.value = String(w); S.win = w;
     r.style.setProperty("--v", String(w / t));
-    $("#wGB")!.textContent = w + " GB"; $("#sGB")!.textContent = t - w + " GB";
+    $("#wGB")!.textContent = L.unit(w, "gigabyte"); $("#sGB")!.textContent = L.unit(t - w, "gigabyte");
   }
   pane.addEventListener("input", (e) => {
     const t = e.target as HTMLInputElement, id = t.id;
