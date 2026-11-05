@@ -81,8 +81,11 @@ class QMP:
         msg = {"execute": name}
         if args:
             msg["arguments"] = args
-        self.f.write(json.dumps(msg) + "\n")
-        self.f.flush()
+        try:
+            self.f.write(json.dumps(msg) + "\n")
+            self.f.flush()
+        except OSError:  # BrokenPipeError etc.: QEMU already exited (the guest powered off)
+            raise VMGone()
         while True:
             line = self.f.readline()
             if not line:
