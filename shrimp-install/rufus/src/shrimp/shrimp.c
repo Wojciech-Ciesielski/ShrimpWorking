@@ -32,7 +32,7 @@ extern char ShrimpManifestOverride[1024];
 BOOL shrimp_mode = TRUE;
 BOOL ShrimpBitLockerOn = FALSE;
 static BOOL opt_demo = FALSE;
-static char opt_collect[MAX_PATH], opt_screen[32], opt_theme[16];
+static char opt_collect[MAX_PATH], opt_screen[32], opt_theme[16], opt_lang[64];
 
 static enum { ST_IDLE, ST_FETCH, ST_SCAN, ST_FORMAT, ST_COPY, ST_DONE, ST_FAILED } state = ST_IDLE;
 static DWORD plan_device;
@@ -61,6 +61,8 @@ void ShrimpInit(void)
 			WideCharToMultiByte(CP_UTF8, 0, argv[++i], -1, opt_collect, sizeof(opt_collect), NULL, NULL);
 		else if (v != NULL && wcscmp(a, L"--screen") == 0)
 			WideCharToMultiByte(CP_UTF8, 0, argv[++i], -1, opt_screen, sizeof(opt_screen), NULL, NULL);
+		else if (v != NULL && wcscmp(a, L"--lang") == 0)
+			WideCharToMultiByte(CP_UTF8, 0, argv[++i], -1, opt_lang, sizeof(opt_lang), NULL, NULL);
 		else if (v != NULL && wcscmp(a, L"--theme") == 0)
 			WideCharToMultiByte(CP_UTF8, 0, argv[++i], -1, opt_theme, sizeof(opt_theme), NULL, NULL);
 	}
@@ -150,7 +152,7 @@ void ShrimpFail(int phase, const char* kind, const char* message)
 }
 
 /* ---------- nośniki ---------- */
-static const char* kind_name[] = { "Pendrive", "Karta SD", "Dysk zewnętrzny" };
+static const char* kind_name[] = { "usb", "sd", "disk" };
 
 static void devices_json(jb* b)
 {
@@ -316,7 +318,7 @@ static void begin(int id, char** f, int nf)
 	wchar_t path[MAX_PATH];
 
 	if (state == ST_FETCH || state == ST_SCAN || state == ST_FORMAT || state == ST_COPY) {
-		reply_error(id, "Przygotowanie już trwa.");
+		reply_error(id, "busy");
 		return;
 	}
 	for (int i = 0; i < t->count; i++)
@@ -370,7 +372,7 @@ static void begin(int id, char** f, int nf)
 	reply(id, "null");
 	if (CreateThread(NULL, 0, ShrimpFetchThread, NULL, 0, NULL) == NULL) {
 		state = ST_FAILED;
-		ShrimpFail(1, "other", "Nie udało się uruchomić pobierania.");
+		ShrimpFail(1, "other", "startFail");
 	}
 }
 
@@ -477,7 +479,7 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 				if (ShrimpReboot())
 					reply(id, "null");
 				else
-					reply_error(id, "Nie udało się uruchomić ponownie. Zrób to z menu Start.");
+					reply_error(id, "rebootFail");
 			}
 		} else if (strcmp(call, "later") == 0 || strcmp(call, "close") == 0) {
 			PostMessage(hShrimpWnd, WM_CLOSE, 0, 0);
@@ -530,7 +532,7 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 		}
 		if (!wParam) {
 			state = ST_FAILED;
-			ShrimpFail(2, "write", "Pobrany obraz nie nadaje się do zapisu.");
+			ShrimpFail(2, "write", "imageBad");
 			break;
 		}
 		/* Nośnik jak dla Shrimp: GPT, UEFI, FAT32 (Setup dopisuje pliki z Windows). */
@@ -704,6 +706,25 @@ BOOL ShrimpStart(HINSTANCE hInstance, HWND hMainDlg)
 		jb_str(&o, "screen", opt_screen);
 	if (opt_theme[0])
 		jb_str(&o, "theme", opt_theme);
+	/* Język: --lang wygrywa, w innym wypadku języki interfejsu Windows (w kolejności preferencji użytkownika). */
+	if (opt_lang[0])
+		jb_str(&o, "lang", opt_lang);
+	{
+		ULONG n = 0, len = 0;
+		if (GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &n, NULL, &len) && len > 1) {
+			wchar_t* buf = calloc(len, sizeof(wchar_t));
+			if (buf != NULL && GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &n, buf, &len)) {
+				jb_arr(&o, "langs");
+				for (const wchar_t* p = buf; *p; p += wcslen(p) + 1) {
+					char u[64];
+					if (WideCharToMultiByte(CP_UTF8, 0, p, -1, u, sizeof(u), NULL, NULL) > 0)
+						jb_str(&o, NULL, u);
+				}
+				jb_end_arr(&o);
+			}
+			free(buf);
+		}
+	}
 	jb_end_obj(&o);
 	BOOL ok = ShrimpWindowCreate(hInstance, o.s);
 	jb_free(&o);

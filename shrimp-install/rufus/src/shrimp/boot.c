@@ -129,14 +129,14 @@ const char* ShrimpSetBootNext(DWORD DriveIndex)
 
 	GetFirmwareType(&fw);
 	if (fw != FirmwareTypeUefi)
-		return "Ten komputer nie uruchamia się w trybie UEFI. Uruchom go z nośnika ręcznie, z menu startowego (zwykle klawisz F12, F8 albo Esc).";
+		return "noUefi";
 	if (!privilege(SE_SYSTEM_ENVIRONMENT_NAME))
-		return "Brak uprawnień do zmiany ustawień uruchamiania.";
+		return "noPriv";
 	if (!medium_partition(DriveIndex, &hd))
-		return "Nie znaleziono nośnika. Podłącz go ponownie.";
+		return "noMedia";
 	num = boot_number();
 	if (num < 0)
-		return "Brak wolnego miejsca na wpis uruchamiania.";
+		return "noSlot";
 
 	/* EFI_LOAD_OPTION: atrybuty, długość listy ścieżek, opis, ścieżka: HD(…)/File(…)/End */
 	list_len = (uint16_t)(sizeof(hd) + file_len + 4);
@@ -155,12 +155,12 @@ const char* ShrimpSetBootNext(DWORD DriveIndex)
 	swprintf(name, ARRAYSIZE(name), L"Boot%04X", num);
 	if (!SetFirmwareEnvironmentVariableW(name, EFI_GLOBAL, opt, (DWORD)off)) {
 		uprintf("Shrimp: zapis %S nie powiódł się: %s", name, WindowsErrorString());
-		return "Firmware nie przyjął wpisu uruchamiania. Uruchom komputer z nośnika ręcznie, z menu startowego.";
+		return "fwEntry";
 	}
 	uint16_t next = (uint16_t)num;
 	if (!SetFirmwareEnvironmentVariableW(L"BootNext", EFI_GLOBAL, &next, sizeof(next))) {
 		uprintf("Shrimp: zapis BootNext nie powiódł się: %s", WindowsErrorString());
-		return "Firmware nie przyjął ustawienia następnego uruchomienia. Uruchom komputer z nośnika ręcznie, z menu startowego.";
+		return "fwNext";
 	}
 	uprintf("Shrimp: BootNext = %S (partycja %lu nośnika)", name, hd.number);
 	return NULL;

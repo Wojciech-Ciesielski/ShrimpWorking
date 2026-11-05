@@ -48,7 +48,7 @@ export class ShrimpFirstBoot implements FirstBootBackend {
       const j = await call<Job>("GET", "/apps");
       if (j.state === "offline") throw new OfflineError();
       if (j.state === "failed") throw new OfflineError(j.phase);
-      onProgress({ percent: j.percent, phase: j.state === "done" ? "Gotowe" : j.phase, etaMin: j.etaMin });
+      onProgress({ percent: j.percent, phase: j.state === "done" ? "done" : j.phase, etaMin: j.etaMin });
       if (j.state === "done") return;
     }
   }

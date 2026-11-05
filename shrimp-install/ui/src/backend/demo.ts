@@ -4,10 +4,10 @@ import type { Backend, Device, Folder, Info, Picked, Plan, RunEvents } from "./t
 
 const MB = 1024 ** 2;
 export const DEMO_DEVICES: Device[] = [
-  { id: 1, name: "SanDisk Ultra (E:)", kind: "Pendrive", size: 29.8 * GiB },
-  { id: 2, name: "Samsung EVO Select (G:)", kind: "Karta SD", size: 59.6 * GiB },
-  { id: 3, name: "WD Elements (H:)", kind: "Dysk zewnętrzny", size: 931.5 * GiB },
-  { id: 4, name: "Kingston DataTraveler (F:)", kind: "Pendrive", size: 14.4 * GiB },
+  { id: 1, name: "SanDisk Ultra (E:)", kind: "usb", size: 29.8 * GiB },
+  { id: 2, name: "Samsung EVO Select (G:)", kind: "sd", size: 59.6 * GiB },
+  { id: 3, name: "WD Elements (H:)", kind: "disk", size: 931.5 * GiB },
+  { id: 4, name: "Kingston DataTraveler (F:)", kind: "usb", size: 14.4 * GiB },
 ];
 const FOLDERS: Folder[] = [
   { key: "documents", path: "C:\\Users\\Jan\\Documents", size: 3.2 * GiB },

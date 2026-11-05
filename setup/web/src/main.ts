@@ -3,6 +3,7 @@ import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";
 import "./style.css";
 import { start } from "./app";
+import { load, requestedLanguages } from "./i18n";
 import { AgamaBackend } from "./backend/agama";
 import { ShrimpFirstBoot } from "./backend/firstboot";
 import { demoInstall, demoFirstBoot } from "./backend/demo";
@@ -16,4 +17,4 @@ const be: Backends =
   : mode === "firstboot" ? { mode, install: demoInstall, firstboot: new ShrimpFirstBoot() }
   : { mode: "demo", install: demoInstall, firstboot: demoFirstBoot };
 
-start(document.getElementById("app")!, be);
+load(requestedLanguages(new URLSearchParams(location.search))).then((L) => start(document.getElementById("app")!, be, L));

@@ -18,11 +18,11 @@ const NETS: Network[] = [{ ssid: "Dom 5G", secure: true, strength: 80 }, { ssid:
 async function simulate(onProgress: (p: Progress) => void, phases: [number, string][], minutes: number, failAt?: number) {
   for (let p = 0; p <= 100; p += 1.5) {
     if (failAt && p >= failAt) throw new Error("demo");
-    const phase = phases.find(([lim]) => p < lim)?.[1] || "Gotowe";
+    const phase = phases.find(([lim]) => p < lim)?.[1] || "done";
     onProgress({ percent: p, phase, etaMin: Math.ceil(((100 - p) / 100) * minutes) });
     await sleep(fast ? 5 : 200);
   }
-  onProgress({ percent: 100, phase: "Gotowe" });
+  onProgress({ percent: 100, phase: "done" });
 }
 
 /** Nazwy z listy programów Windows, tak jak zapisuje je Shrimp Install. */
@@ -41,7 +41,7 @@ export const demoInstall: InstallBackend = {
   },
   async install(_plan, onProgress) {
     try {
-      await simulate(onProgress, [[28, "Przygotowanie dysku"], [80, "Instalowanie systemu"], [100, "Przywracanie plików"]], 11, q.get("fail") === "install" ? 41 : undefined);
+      await simulate(onProgress, [[28, "inst.disk"], [80, "inst.system"], [100, "inst.files"]], 11, q.get("fail") === "install" ? 41 : undefined);
     } catch { throw new InstallError("install"); }
   },
   async reboot() {},
@@ -65,7 +65,7 @@ export const demoFirstBoot: FirstBootBackend = {
   async setDrivers() {},
   async installApps(_ids, onProgress) {
     try {
-      await simulate(onProgress, [[100, "Pobieranie i instalowanie"]], 2, q.get("fail") === "net" ? 12 : undefined);
+      await simulate(onProgress, [[100, "apps.phase"]], 2, q.get("fail") === "net" ? 12 : undefined);
     } catch { throw new OfflineError(); }
   },
   async finish() {},

@@ -2,9 +2,9 @@ name: Shrimp Install
 
 on:
   push:
-    paths: ["shrimp-install/**", ".github/workflows/shrimp-install.yml"]
+    paths: ["shrimp-install/**", "i18n/**", ".github/workflows/shrimp-install.yml"]
   pull_request:
-    paths: ["shrimp-install/**", ".github/workflows/shrimp-install.yml"]
+    paths: ["shrimp-install/**", "i18n/**", ".github/workflows/shrimp-install.yml"]
   workflow_dispatch:
 
 jobs:

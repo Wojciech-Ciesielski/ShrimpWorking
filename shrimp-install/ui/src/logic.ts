@@ -1,4 +1,5 @@
-// Czyste funkcje interfejsu (bez DOM), testowane w logic.test.ts.
+// Czyste funkcje interfejsu (bez DOM), testowane w logic.test.ts. Teksty i formaty zależą od języka (i18n).
+import type { I18n } from "../../../i18n/core";
 import type { Device, Phase, Progress } from "./backend/types";
 
 export const GiB = 1024 ** 3;
@@ -7,42 +8,44 @@ const MiB = 1024 ** 2;
 /** Szacunkowe prędkości, zanim program zmierzy prawdziwe (B/s). */
 export const EST = { download: 14 * MiB, write: 38 * MiB, copy: 52 * MiB };
 
-const dec = (n: number, d = 1) => n.toFixed(d).replace(".", ",");
+/** Rozmiar w GB z jedną cyfrą po przecinku. */
+export const gb1 = (L: I18n, bytes: number) => L.unit(bytes / GiB, "gigabyte", { max: 1, min: 1 });
 
 /** 29,8 GB · 465 GB · 1 TB (jednostki binarne, jak w Eksploratorze). */
-export function fmtGB(bytes: number): string {
+export function fmtGB(L: I18n, bytes: number): string {
   const g = bytes / GiB;
   if (g >= 1000) {
     const t = g / 1024;
-    return (t < 10 ? dec(t).replace(/,0$/, "") : Math.round(t).toString()) + " TB";
+    return L.unit(t, "terabyte", { max: t < 10 ? 1 : 0, min: 0 });
   }
-  return (g >= 100 ? Math.round(g).toString() : dec(g)) + " GB";
+  return L.unit(g, "gigabyte", g >= 100 ? { max: 0 } : { max: 1, min: 1 });
 }
 
 /** Rozmiar pliku lub folderu: małe w MB. */
-export function fmtSize(bytes: number): string {
-  return bytes < 0.1 * GiB ? Math.max(1, Math.round(bytes / MiB)) + " MB" : dec(bytes / GiB) + " GB";
+export function fmtSize(L: I18n, bytes: number): string {
+  return bytes < 0.1 * GiB ? L.unit(Math.max(1, Math.round(bytes / MiB)), "megabyte") : gb1(L, bytes);
 }
 
-export function dur(sec: number): string {
-  if (sec < 45) return "mniej niż minuta";
+/** „około 12 minut”, „mniej niż minuta”. */
+export function dur(L: I18n, sec: number): string {
+  if (sec < 45) return L.t("dur.less");
   const m = Math.max(1, Math.round(sec / 60));
-  return m === 1 ? "około minuty" : `około ${m} min`;
+  return L.t("dur.about", { time: L.unit(m, "minute", { long: true }) });
 }
 
-export const mbps = (bps: number) => Math.max(1, Math.round(bps / MiB)) + " MB/s";
+export const mbps = (L: I18n, bps: number) => L.unit(Math.max(1, Math.round(bps / MiB)), "megabyte-per-second");
 
-export const deviceLabel = (d: Device) => `${d.name} · ${fmtGB(d.size)}`;
+export const deviceLabel = (L: I18n, d: Device) => `${d.name} · ${fmtGB(L, d.size)}`;
 
 export interface Space { shrPct: number; filesPct: number; text: string; over: boolean }
 
 /** Pasek „Miejsce na nośniku”: Shrimp + kopia plików na nośniku o pojemności cap. */
-export function space(cap: number, shrimp: number, files: number): Space {
+export function space(L: I18n, cap: number, shrimp: number, files: number): Space {
   const free = cap - shrimp, left = free - files, over = left < 0;
   return {
     shrPct: Math.min(100, (shrimp / cap) * 100),
     filesPct: Math.max(0, (Math.min(files, Math.max(0, free)) / cap) * 100),
-    text: over ? `Brakuje ${dec((-left) / GiB)} GB` : `Wolne ${dec(Math.max(0, left) / GiB)} GB z ${dec(cap / GiB)} GB`,
+    text: over ? L.t("space.over", { size: gb1(L, -left) }) : L.t("space.free", { free: gb1(L, Math.max(0, left)), total: gb1(L, cap) }),
     over,
   };
 }
@@ -58,25 +61,26 @@ export function remaining(p: Progress, sizes: { shrimp: number; files: number })
 }
 
 /** Opis jednej fazy pod jej nazwą (jak w makiecie). */
-export function phaseText(n: Phase, cur: Progress | null, sizes: { shrimp: number; files: number }, finished: boolean): string {
+export function phaseText(L: I18n, n: Phase, cur: Progress | null, sizes: { shrimp: number; files: number }, finished: boolean): string {
   const at = finished ? 4 : cur ? cur.phase : 1;
-  const left = (p: Progress) => dur(Math.max(0, p.total - p.done) / (p.speed || [0, EST.download, EST.write, EST.copy][p.phase]));
-  const of = (p: Progress) => `${dec(p.done / GiB)} z ${dec(p.total / GiB)} GB`;
+  const left = (p: Progress) => dur(L, Math.max(0, p.total - p.done) / (p.speed || [0, EST.download, EST.write, EST.copy][p.phase]));
+  const progress = (p: Progress, speed: number) =>
+    L.t("phase.progress", { done: L.num(p.done / GiB), total: gb1(L, p.total), speed: mbps(L, p.speed || speed), left: left(p) });
   if (n === 1) {
-    if (at > 1) return `Pobrano ${dec(sizes.shrimp / GiB)} GB`;
-    if (!cur || !cur.total) return "Łączenie…";
-    return `${of(cur)} · ${mbps(cur.speed || EST.download)} · zostało ${left(cur)}`;
+    if (at > 1) return L.t("phase.downloaded", { size: gb1(L, sizes.shrimp) });
+    if (!cur || !cur.total) return L.t("phase.connecting");
+    return progress(cur, EST.download);
   }
   if (n === 2) {
-    if (at > 2) return "Zapisano";
-    if (at < 2 || !cur) return `Zajmie ${dur(sizes.shrimp / EST.write)}`;
-    const pct = cur.total ? Math.round((cur.done / cur.total) * 100) : 0;
-    return `${pct}% · ${mbps(cur.speed || EST.write)} · zostało ${left(cur)}`;
+    if (at > 2) return L.t("phase.written");
+    if (at < 2 || !cur) return L.t("phase.takes", { time: dur(L, sizes.shrimp / EST.write) });
+    const pct = cur.total ? cur.done / cur.total : 0;
+    return L.t("phase.percent", { pct: L.percent(pct), speed: mbps(L, cur.speed || EST.write), left: left(cur) });
   }
-  if (!sizes.files) return at > 3 ? "Nie wybrano plików" : "Nic do skopiowania";
-  if (at > 3) return `Skopiowano ${fmtSize(sizes.files)}`;
-  if (at < 3 || !cur) return `${fmtSize(sizes.files)} · zajmie ${dur(sizes.files / EST.copy)}`;
-  return `${of(cur)} · ${mbps(cur.speed || EST.copy)} · zostało ${left(cur)}`;
+  if (!sizes.files) return at > 3 ? L.t("phase.nofiles") : L.t("phase.nothing");
+  if (at > 3) return L.t("phase.copied", { size: fmtSize(L, sizes.files) });
+  if (at < 3 || !cur) return L.t("phase.copyplan", { size: fmtSize(L, sizes.files), time: dur(L, sizes.files / EST.copy) });
+  return progress(cur, EST.copy);
 }
 
 /** Ułamek ukończenia fazy n (0–1) dla paska. */
@@ -86,4 +90,10 @@ export function phaseFrac(n: Phase, cur: Progress | null, finished: boolean): nu
   if (n < at) return 1;
   if (n > at || !cur || !cur.total) return 0;
   return Math.min(1, cur.done / cur.total);
+}
+
+/** Komunikat z programu: kod („connect”, „http:404”) → tłumaczenie; nieznany tekst zostaje bez zmian. */
+export function hostMessage(L: I18n, m: string): string {
+  const [code, arg] = m.split(":");
+  return /^\w+$/.test(code) && L.has("host." + code) ? L.t("host." + code, { code: arg ?? "" }) : m;
 }

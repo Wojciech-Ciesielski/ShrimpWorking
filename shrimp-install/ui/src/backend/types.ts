@@ -8,7 +8,7 @@ export interface Device {
   id: number;
   /** Np. „SanDisk Ultra (E:)”. */
   name: string;
-  /** Pendrive, Karta SD, Dysk zewnętrzny. */
+  /** Rodzaj nośnika: usb, sd lub disk (nazwa w interfejsie: klucz kind.<rodzaj>). */
   kind: string;
   size: number;
 }
