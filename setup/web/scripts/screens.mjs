@@ -14,13 +14,14 @@ const STATES = [
   ["18-siec-zaawansowane", 10, 2], ["19-wyglad-kolor", 11, 1], ["20-sterowniki-nvidia", 12, 1], ["21-programy-z-windows", 13, 1],
   ["22-programy-proponowane", 13, 2], ["23-gotowe-pokaz", 14, 1], ["24-hasla-sie-roznia", 5, 0, "pass"], ["25-hasla-dysku", 4, 1, "dpass"],
   ["26-za-malo-miejsca", 4, 0, "space"], ["27-blad-instalacji", 7, 0, "install"], ["28-zle-haslo-sieci", 10, 0, "wifi"], ["29-brak-internetu", 13, 3, "net"],
+  ["30-dysk-bitlocker", 4, 0, "", 1200, "&bitlocker=1"],
 ];
 
 const server = await preview({ preview: { port: 4179 }, logLevel: "silent" });
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
-for (const [name, step, sub = 0, err = "", wait = 1200] of STATES) {
-  await page.goto(`http://localhost:4179/?step=${step}&sub=${sub}${err ? "&err=" + err : ""}`);
+for (const [name, step, sub = 0, err = "", wait = 1200, extra = ""] of STATES) {
+  await page.goto(`http://localhost:4179/?step=${step}&sub=${sub}${err ? "&err=" + err : ""}${extra}`);
   await page.evaluate(() => document.fonts.ready);
   await page.waitForTimeout(wait);
   await page.screenshot({ path: `${out}/setup-${name}.png` });

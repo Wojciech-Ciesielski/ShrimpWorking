@@ -5,8 +5,11 @@
 //! `shrimp-setup --first-boot`  po restarcie, w sesji nowego użytkownika: lokalny serwer
 //!                              (server.rs) serwuje ten sam interfejs i API kroków 10–15.
 //!                              Kończy od razu, jeśli pierwsza konfiguracja już się odbyła.
+//! `shrimp-setup --restore --user NAZWA [--root /mnt] [--from KATALOG]`
+//!                              po instalacji (post-install.sh): pliki z Shrimp Install do nowego konta.
 mod server;
 mod system;
+mod transfer;
 
 use gtk::prelude::*;
 use gtk::{gio, glib};
@@ -24,8 +27,32 @@ enum Mode {
     FirstBoot,
 }
 
+fn arg<'a>(args: &'a [String], name: &str) -> Option<&'a String> {
+    args.iter().position(|a| a == name).and_then(|i| args.get(i + 1))
+}
+
 fn main() -> glib::ExitCode {
     let args: Vec<String> = std::env::args().collect();
+    if args.iter().any(|a| a == "--restore") {
+        let Some(user) = arg(&args, "--user") else {
+            eprintln!("użycie: shrimp-setup --restore --user NAZWA [--root /mnt] [--from KATALOG]");
+            return glib::ExitCode::FAILURE;
+        };
+        let root = PathBuf::from(arg(&args, "--root").map(String::as_str).unwrap_or("/mnt"));
+        return match transfer::restore(arg(&args, "--from").map(PathBuf::from), &root, user) {
+            Ok(st) => {
+                println!("shrimp-setup: przywrócono {} plików ({} B)", st.files, st.bytes);
+                for f in &st.failed {
+                    eprintln!("shrimp-setup: nie przywrócono {f}");
+                }
+                glib::ExitCode::SUCCESS
+            }
+            Err(e) => {
+                eprintln!("shrimp-setup: {e}");
+                glib::ExitCode::FAILURE
+            }
+        };
+    }
     let mode = if args.iter().any(|a| a == "--install") {
         Mode::Install
     } else if args.iter().any(|a| a == "--first-boot" || a == "--serve") {
@@ -34,10 +61,7 @@ fn main() -> glib::ExitCode {
         eprintln!("użycie: shrimp-setup --install | --first-boot | --serve [--ui-dir KATALOG] [--window]");
         return glib::ExitCode::FAILURE;
     };
-    let ui_dir = args
-        .iter()
-        .position(|a| a == "--ui-dir")
-        .and_then(|i| args.get(i + 1))
+    let ui_dir = arg(&args, "--ui-dir")
         .map(PathBuf::from)
         .unwrap_or_else(|| PathBuf::from(UI_DIR));
     let windowed = args.iter().any(|a| a == "--window");
@@ -77,18 +101,29 @@ fn main() -> glib::ExitCode {
         }
     };
     let install = matches!(mode, Mode::Install);
+    // Podpowiedzi z Shrimp Install dla kroków 1–9 (imię, język, strefa, klawiatura, BitLocker).
+    let hint = if install { transfer::find_dir().and_then(|d| transfer::load(&d)).map(|v| transfer::hint_script(&v)) } else { None };
 
     let app = gtk::Application::builder()
         .application_id("org.shrimp.Setup")
         .flags(gio::ApplicationFlags::NON_UNIQUE)
         .build();
-    app.connect_activate(move |app| build(app, &url, install, windowed));
+    app.connect_activate(move |app| build(app, &url, install, windowed, hint.as_deref()));
     // GTK nie zna naszych argumentów.
     app.run_with_args::<&str>(&[])
 }
 
-fn build(app: &gtk::Application, url: &str, install: bool, windowed: bool) {
+fn build(app: &gtk::Application, url: &str, install: bool, windowed: bool, hint: Option<&str>) {
     let view = webkit6::WebView::new();
+    if let (Some(js), Some(ucm)) = (hint, view.user_content_manager()) {
+        ucm.add_script(&webkit6::UserScript::new(
+            js,
+            webkit6::UserContentInjectedFrames::TopFrame,
+            webkit6::UserScriptInjectionTime::Start,
+            &[],
+            &[],
+        ));
+    }
     if let Some(s) = WebViewExt::settings(&view) {
         s.set_enable_developer_extras(std::env::var_os("SHRIMP_SETUP_DEBUG").is_some());
         s.set_hardware_acceleration_policy(webkit6::HardwareAccelerationPolicy::Never);

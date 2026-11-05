@@ -26,11 +26,12 @@ async function call<T>(method: string, path: string, body?: unknown): Promise<T>
 interface Job { state: "running" | "done" | "failed" | "offline"; percent: number; phase: string; etaMin?: number }
 
 export class ShrimpFirstBoot implements FirstBootBackend {
-  /** Serwer zwraca nazwy programów z listy Shrimp Install; odpowiedniki dobieramy tutaj. */
+  /** Serwer zwraca programy z shrimp.json (nazwy i pakiety Store); odpowiedniki dobieramy tutaj. */
   async info(): Promise<FirstBootInfo> {
-    const i = await call<Omit<FirstBootInfo, "windowsApps"> & { windowsApps: string[] | null }>("GET", "/info");
-    const apps = i.windowsApps ? mapWindowsApps(i.windowsApps) : null;
-    return { ...i, windowsApps: apps && apps.length ? apps : null };
+    const i = await call<Omit<FirstBootInfo, "windowsApps"> & { windowsApps: string[] | null; storeApps?: string[] | null }>("GET", "/info");
+    const { storeApps, ...rest } = i;
+    const apps = i.windowsApps || storeApps ? mapWindowsApps(i.windowsApps || [], storeApps || []) : null;
+    return { ...rest, windowsApps: apps && apps.length ? apps : null };
   }
   networks() { return call<Network[]>("GET", "/networks"); }
   async connect(ssid: string, password?: string) { await call("POST", "/network/connect", { ssid, password }); }
