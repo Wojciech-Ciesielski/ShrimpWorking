@@ -28,7 +28,7 @@ W, H = 1920, 1080
 cmd = [
     "qemu-system-x86_64", "-enable-kvm", "-cpu", "host", "-smp", "4", "-m", "6144",
     "-device", f"virtio-vga,edid=on,xres={W},yres={H}",
-    "-device", "qemu-xhci", "-device", "usb-tablet",
+    "-device", "qemu-xhci", "-device", "usb-tablet", "-device", "usb-kbd",
     "-nic", "user,model=virtio-net-pci",
     "-cdrom", ISO, "-boot", "d",
     "-display", "none",
@@ -141,10 +141,26 @@ PLAIN = {' ': 'spc', '-': 'minus', '/': 'slash', '.': 'dot', ';': 'semicolon', "
          ']': 'bracket_right', '`': 'grave_accent', '\t': 'tab'}
 
 
+def _key_events(names, down):
+    return [{"type": "key", "data": {"down": down, "key": {"type": "qcode", "data": n}}} for n in names]
+
+
+def press(names):
+    """Press a chord: modifiers down in order, then released in reverse, one event at a time
+    (send-key overran the guest keyboard queue and left Shift stuck)."""
+    for n in names:
+        qmp.cmd("input-send-event", events=_key_events([n], True))
+        time.sleep(0.03)
+    for n in reversed(names):
+        qmp.cmd("input-send-event", events=_key_events([n], False))
+        time.sleep(0.03)
+    time.sleep(0.06)
+
+
 def keys(*names):
     print(f"[{t():6.1f}s] keys {'+'.join(names)}", flush=True)
-    qmp.cmd("send-key", keys=[{"type": "qcode", "data": n} for n in names], **{"hold-time": 60})
-    time.sleep(0.12)
+    press(list(names))
+    time.sleep(0.2)
 
 
 def type_text(s):
@@ -160,8 +176,7 @@ def type_text(s):
             k = ["shift", SHIFTED[c]]
         else:
             raise ValueError(f"no key for {c!r}")
-        qmp.cmd("send-key", keys=[{"type": "qcode", "data": n} for n in k], **{"hold-time": 30})
-        time.sleep(0.04)
+        press(k)
 
 
 def click(x, y):
@@ -197,7 +212,7 @@ try:
         raise SystemExit(0)
 
     # Live session: GDM autologin into GNOME (software rendering, so be patient).
-    wait_shooting(260, 10, "session")
+    wait_shooting(150, 10, "session")
     shot("desktop", keep_duplicates=True)
 
     # Apps Menu: first item on the left of the top bar.
@@ -223,17 +238,9 @@ try:
     type_text("shrimp\n")
     pause(3)
     diag = (
-        "{ echo ===SHELL; gnome-shell --version; echo ===ENABLED; gnome-extensions list --enabled; "
-        "echo ===ALL; gnome-extensions list --details; "
-        "echo ===GSETTINGS; gsettings get org.gnome.shell enabled-extensions; "
-        "gsettings get org.gnome.shell.extensions.just-perfection activities-button; "
-        "gsettings get org.gnome.desktop.background picture-uri; "
-        "echo ===SYS; cat /etc/os-release; cat /proc/cmdline; plymouth-set-default-theme; "
-        "systemctl is-active display-manager; systemctl get-default; "
-        "echo ===FAILED; systemctl --failed --no-pager; "
-        "echo ===SHELLLOG; sudo journalctl -b --no-pager -o short-monotonic _COMM=gnome-shell | tail -n 200; "
-        "echo ===WARN; sudo journalctl -b --no-pager -o short-monotonic -p warning | tail -n 200; "
-        "echo ===END; } 2>&1 | sudo tee /dev/ttyS0 >/dev/null\n"
+        "{ echo ===EXT; gnome-extensions list --details; echo ===SHELL; "
+        "sudo journalctl -b _UID=$(id -u) -o short-monotonic --no-pager | grep -iE 'gnome-shell|extension|JS ERROR|ding' | tail -n 300; "
+        "echo ===FAILED; systemctl --failed --no-pager; echo ===END; } 2>&1 | sudo tee /dev/ttyS0 >/dev/null\n"
     )
     type_text(diag)
     pause(15)

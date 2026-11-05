@@ -7,7 +7,7 @@ name: Test ISO
 on:
   push:
     branches: [main, "claude/**"]
-    paths: ["tools/qemu-test.py", ".github/workflows/test-iso.yml"]
+    paths: ["tools/qemu-test.py", "tools/inspect-iso.sh", ".github/workflows/test-iso.yml"]
   workflow_dispatch:
     inputs:
       build_run_id:
@@ -46,8 +46,15 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
           sudo apt-get update -q
-          sudo apt-get install -yq --no-install-recommends qemu-system-x86 ovmf imagemagick
+          sudo apt-get install -yq --no-install-recommends qemu-system-x86 ovmf imagemagick libglib2.0-bin squashfs-tools
           ls -l /dev/kvm /usr/share/OVMF/
+
+      - name: Inspect ISO contents
+        if: matrix.mode == 'uefi'
+        continue-on-error: true
+        run: |
+          mkdir -p out/uefi
+          sudo tools/inspect-iso.sh iso/*.iso 2>&1 | tee out/uefi/inspect.txt
 
       - name: Boot and capture (${{ matrix.mode }})
         run: python3 tools/qemu-test.py iso/*.iso out/${{ matrix.mode }} ${{ matrix.mode }}
@@ -89,7 +96,7 @@ jobs:
             m=${d#dl/iso-test-}
             mkdir -p test-results/iso/$m
             cp "$d"/jpg/*.jpg test-results/iso/$m/ 2>/dev/null || true
-            cp "$d"/serial.log "$d"/shots.json "$d"/build-run-id.txt test-results/iso/$m/ 2>/dev/null || true
+            cp "$d"/serial.log "$d"/inspect.txt "$d"/shots.json "$d"/build-run-id.txt test-results/iso/$m/ 2>/dev/null || true
           done
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
