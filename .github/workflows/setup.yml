@@ -18,6 +18,8 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
+      - name: Identyfikatory Flathub z katalogu programów
+        run: node scripts/check-flathub.mjs
       - run: npm run build
       - name: Zrzuty wszystkich stanów (1920×1080 i 1366×768)
         run: |

@@ -1,5 +1,5 @@
 // Czyste funkcje Setup (testy: logic.test.ts).
-import { APPS, WIN_MATCH, KLID_XKB, LANGID_XKB, TZ_ALIAS, DEFAULT_TZ, type WinApp, type Lang, type Region, type Keyboard } from "./data";
+import { APPS, WIN_CATALOG, KLID_XKB, LANGID_XKB, TZ_ALIAS, DEFAULT_TZ, type WinApp, type Lang, type Region, type Keyboard } from "./data";
 import type { Transfer } from "./backend/types";
 
 export const esc = (s: string) =>
@@ -30,13 +30,14 @@ export function windowsList(apps: WinApp[] | null): Pick[] {
 
 /**
  * Programy z shrimp.json (nazwy z listy programów Windows i pakiety Microsoft Store) → odpowiedniki z Flathub,
- * w kolejności WIN_MATCH, bez powtórzeń. Nieznane pomijamy.
+ * w kolejności katalogu (windows-apps.json), bez powtórzeń. Pomijamy nieznane, wpisy bez odpowiednika
+ * i odpowiedniki, które system ma od razu.
  */
 export function mapWindowsApps(names: string[], store: string[] = []): WinApp[] {
   const out: WinApp[] = [];
-  for (const m of WIN_MATCH) {
-    if (out.some((a) => a.id === m.id)) continue;
-    if (names.some((n) => m.re.test(n.trim())) || (m.store && store.some((s) => m.store!.test(s)))) out.push({ windows: m.windows, name: m.name, id: m.id });
+  for (const m of WIN_CATALOG) {
+    if (!m.linux || m.base || out.some((a) => a.id === m.linux!.id)) continue;
+    if (names.some((n) => m.re.test(n.trim())) || (m.store && store.some((s) => m.store!.test(s)))) out.push({ windows: m.windows, name: m.linux.name, id: m.linux.id });
   }
   return out;
 }

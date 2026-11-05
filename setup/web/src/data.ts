@@ -1,3 +1,4 @@
+import catalog from "./windows-apps.json";
 // Stałe treści Setup. Teksty dokładnie jak w makiecie (shrimp-handoff/mockups/setup.html).
 
 export interface Lang { name: string; locale: string }
@@ -95,37 +96,23 @@ export const APPS: App[][] = [
 export interface WinApp { windows: string; name: string; id: string }
 
 /**
- * Odpowiedniki programów Windows (specs/setup.md), w kolejności, w jakiej je pokazujemy.
+ * Katalog programów Windows (windows-apps.json): cała logika dopasowania jest w danych.
  * `re` sprawdza nazwę z listy programów Windows (DisplayName, np. „Microsoft 365 Apps for business - pl-pl”),
- * `store` nazwę pakietu Microsoft Store. `windows` to nazwa, którą widzi użytkownik.
+ * `store` nazwę pakietu Microsoft Store. Kolejność wpisów = kolejność podpowiedzi. Wpis bez `linux` czeka na odpowiednik.
  */
-export const WIN_MATCH: { windows: string; name: string; id: string; re: RegExp; store?: RegExp }[] = [
-  { windows: "Microsoft Office", name: "LibreOffice", id: "org.libreoffice.LibreOffice", re: /^Microsoft (Office|365)\b(?!.*(add-in|runtime|proofing|language|tools|click-to-run))/i },
-  { windows: "Adobe Photoshop", name: "GIMP", id: "org.gimp.GIMP", re: /^Adobe Photoshop(?! Lightroom)/i },
-  { windows: "Google Chrome", name: "Chromium", id: "org.chromium.Chromium", re: /^Google Chrome$/i },
-  { windows: "Spotify", name: "Spotify", id: "com.spotify.Client", re: /^Spotify\b/i, store: /^SpotifyAB\.SpotifyMusic$/i },
-  { windows: "Steam", name: "Steam", id: "com.valvesoftware.Steam", re: /^Steam$/i },
-  { windows: "Discord", name: "Discord", id: "com.discordapp.Discord", re: /^Discord$/i },
-  { windows: "Zoom", name: "Zoom", id: "us.zoom.Zoom", re: /^Zoom( Workplace)?\b/i },
-  { windows: "Adobe Illustrator", name: "Inkscape", id: "org.inkscape.Inkscape", re: /^Adobe Illustrator/i },
-  { windows: "Adobe Premiere Pro", name: "Kdenlive", id: "org.kde.kdenlive", re: /^Adobe Premiere/i },
-  { windows: "Adobe Lightroom", name: "darktable", id: "org.darktable.Darktable", re: /^Adobe (Photoshop )?Lightroom/i },
-  { windows: "Epic Games", name: "Heroic", id: "com.heroicgameslauncher.hgl", re: /^Epic Games Launcher/i },
-  { windows: "GOG Galaxy", name: "Heroic", id: "com.heroicgameslauncher.hgl", re: /^GOG Galaxy/i },
-  { windows: "Visual Studio Code", name: "Visual Studio Code", id: "com.visualstudio.code", re: /^Microsoft Visual Studio Code/i },
-  { windows: "VLC", name: "VLC", id: "org.videolan.VLC", re: /^VLC media player/i, store: /^VideoLAN\.VLC$/i },
-  { windows: "OBS Studio", name: "OBS Studio", id: "com.obsproject.Studio", re: /^OBS Studio/i },
-  { windows: "Thunderbird", name: "Thunderbird", id: "org.mozilla.Thunderbird", re: /^Mozilla Thunderbird/i },
-  { windows: "LibreOffice", name: "LibreOffice", id: "org.libreoffice.LibreOffice", re: /^LibreOffice\b/i },
-  { windows: "GIMP", name: "GIMP", id: "org.gimp.GIMP", re: /^GIMP\b/i },
-  { windows: "Krita", name: "Krita", id: "org.kde.krita", re: /^Krita\b/i },
-  { windows: "Inkscape", name: "Inkscape", id: "org.inkscape.Inkscape", re: /^Inkscape\b/i },
-  { windows: "Blender", name: "Blender", id: "org.blender.Blender", re: /^Blender\b/i },
-  { windows: "Audacity", name: "Audacity", id: "org.audacityteam.Audacity", re: /^Audacity\b/i },
-  { windows: "Telegram", name: "Telegram", id: "org.telegram.desktop", re: /^Telegram Desktop/i, store: /^TelegramMessengerLLP\.TelegramDesktop$/i },
-  { windows: "Signal", name: "Signal", id: "org.signal.Signal", re: /^Signal\b/i },
-  { windows: "Slack", name: "Slack", id: "com.slack.Slack", re: /^Slack\b/i },
-];
+export interface CatalogApp {
+  windows: string; re: RegExp; store?: RegExp;
+  linux: { name: string; id: string } | null;
+  /** Odpowiednik jest już w systemie, nie instalujemy go. */
+  base?: boolean;
+  /** driver, builtin, unneeded: nic do zaproponowania, bo system robi to sam. */
+  skip?: "driver" | "builtin" | "unneeded";
+}
+interface CatalogJson { apps: { windows: string; re: string; store?: string; linux: { name: string; id: string } | null; base?: boolean; skip?: CatalogApp["skip"] }[] }
+
+export const WIN_CATALOG: CatalogApp[] = (catalog as CatalogJson).apps.map((a) => ({
+  ...a, re: new RegExp(a.re, "i"), store: a.store ? new RegExp(a.store, "i") : undefined,
+}));
 
 /** Układ klawiatury Windows (KLID) → układ xkb. Poza tą listą liczy się język układu (4 ostatnie cyfry). */
 export const KLID_XKB: Record<string, string> = {
