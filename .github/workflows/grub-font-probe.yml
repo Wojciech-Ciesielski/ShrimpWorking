@@ -1,0 +1,100 @@
+name: GRUB font probe
+
+# Experiment: why does the Secure Boot GRUB reject our PF2 fonts?
+# Replaces grub.cfg on a copy of the ISO with a probe that tries several
+# loadfont paths, boots it with Secure Boot enabled and commits the serial log
+# to test-results/grub-font-probe/.
+
+on:
+  push:
+    branches: ["claude/**"]
+    paths: [".github/workflows/grub-font-probe.yml"]
+  workflow_dispatch:
+    inputs:
+      build_run_id:
+        description: "Build ISO run id (empty = newest successful)"
+        default: ""
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download ISO
+        run: |
+          id="${{ github.event.inputs.build_run_id }}"
+          [ -n "$id" ] || id=$(gh run list -R "$GITHUB_REPOSITORY" -w build-iso.yml -s success -L 1 --json databaseId -q '.[0].databaseId')
+          echo "$id" > build-run-id.txt
+          gh run download "$id" -R "$GITHUB_REPOSITORY" -n shrimp-live-iso -D iso
+
+      - name: Install tools and enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+          sudo apt-get update -q
+          sudo apt-get install -yq --no-install-recommends qemu-system-x86 ovmf xorriso
+
+      - name: Build probe ISO
+        run: |
+          iso=$(ls iso/*.iso)
+          xorriso -osirrox on -indev "$iso" -extract /boot/grub2/themes/shrimp/inter-regular-38.pf2 font.pf2
+          xorriso -osirrox on -indev "$iso" -extract /boot/grub2/grub.cfg orig-grub.cfg
+          cat > probe.cfg <<'EOF'
+          search --no-floppy --label SHRIMP_LIVE --set=root
+          terminal_input console
+          terminal_output console
+          echo "PROBE-START lockdown=${lockdown} secureboot=${grub_secure_boot:-?}"
+          echo "A stock font, stock dir"
+          loadfont ($root)/boot/x86_64/loader/grub2/fonts/unicode.pf2
+          echo "A rc=$?"
+          echo "B our font, theme dir"
+          loadfont ($root)/boot/grub2/themes/shrimp/inter-regular-38.pf2
+          echo "B rc=$?"
+          echo "C our font, stock dir"
+          loadfont ($root)/boot/x86_64/loader/grub2/fonts/inter-regular-38.pf2
+          echo "C rc=$?"
+          echo "D our font via absolute path without device"
+          loadfont /boot/grub2/themes/shrimp/inter-regular-38.pf2
+          echo "D rc=$?"
+          echo "E theme.txt"
+          loadfont ($root)/boot/grub2/themes/shrimp/inter-regular-27.pf2
+          set theme=($root)/boot/grub2/themes/shrimp/theme.txt
+          echo "E rc=$?"
+          echo "PROBE-END"
+          sleep 5
+          halt
+          EOF
+          sed -i 's/^          //' probe.cfg
+          xorriso -indev "$iso" -outdev probe.iso -boot_image any replay \
+            -map probe.cfg /boot/grub2/grub.cfg \
+            -map font.pf2 /boot/x86_64/loader/grub2/fonts/inter-regular-38.pf2 -commit
+
+      - name: Boot with Secure Boot
+        run: |
+          cp /usr/share/OVMF/OVMF_VARS_4M.ms.fd vars.fd
+          timeout 120 qemu-system-x86_64 -enable-kvm -cpu host -m 2048 \
+            -machine q35,smm=on -global driver=cfi.pflash01,property=secure,value=on \
+            -drive if=pflash,format=raw,unit=0,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.secboot.fd \
+            -drive if=pflash,format=raw,unit=1,file=vars.fd \
+            -cdrom probe.iso -boot d -display none -monitor none -serial file:serial.raw || true
+          sed 's/\x1b\[[0-9;?=]*[A-Za-z]//g' serial.raw | tr -d '\r' > serial.txt
+          cat serial.txt
+
+      - name: Commit result
+        if: always()
+        run: |
+          mkdir -p test-results/grub-font-probe
+          cp serial.txt build-run-id.txt orig-grub.cfg test-results/grub-font-probe/ 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add test-results/grub-font-probe
+          git commit -m "GRUB font probe result (run ${{ github.run_id }}) [skip ci]" || exit 0
+          for i in 1 2 3; do git pull --rebase -q origin "${{ github.ref_name }}" && git push origin HEAD:"${{ github.ref_name }}" && break; sleep 5; done
