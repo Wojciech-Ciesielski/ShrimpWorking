@@ -63,21 +63,13 @@ pf2_name() {
   dd if="$1" bs=1 skip=20 count="$len" 2>/dev/null | tr -d '\0'
 }
 INTER=/usr/share/fonts/truetype/inter
-# Secure Boot GRUB (lockdown) refuses to loadfont any file except one named unicode.pf2
-# (checked in QEMU: a byte-identical copy under another name is rejected, our font named
-# unicode.pf2 in another directory loads). GRUB takes the family name from the PF2 header,
-# so each font gets its own directory with a file called unicode.pf2.
-mkdir -p "$GRUBTHEME/fonts/regular-38" "$GRUBTHEME/fonts/semibold-38" "$GRUBTHEME/fonts/regular-27"
-F_R38="$GRUBTHEME/fonts/regular-38/unicode.pf2"
-F_S38="$GRUBTHEME/fonts/semibold-38/unicode.pf2"
-F_R27="$GRUBTHEME/fonts/regular-27/unicode.pf2"
-grub2-mkfont -s 38 -o "$F_R38" "$INTER/Inter-Regular.ttf"
+grub2-mkfont -s 38 -o "$GRUBTHEME/inter-regular-38.pf2" "$INTER/Inter-Regular.ttf"
 # SemiBold needs its own family name, otherwise GRUB names it "Inter Regular 38" too
-grub2-mkfont -n "Inter SemiBold" -s 38 -o "$F_S38" "$INTER/Inter-SemiBold.ttf"
-grub2-mkfont -s 27 -o "$F_R27" "$INTER/Inter-Regular.ttf"
-r38="$(pf2_name "$F_R38")"
-s38="$(pf2_name "$F_S38")"
-r27="$(pf2_name "$F_R27")"
+grub2-mkfont -n "Inter SemiBold" -s 38 -o "$GRUBTHEME/inter-semibold-38.pf2" "$INTER/Inter-SemiBold.ttf"
+grub2-mkfont -s 27 -o "$GRUBTHEME/inter-regular-27.pf2" "$INTER/Inter-Regular.ttf"
+r38="$(pf2_name "$GRUBTHEME/inter-regular-38.pf2")"
+s38="$(pf2_name "$GRUBTHEME/inter-semibold-38.pf2")"
+r27="$(pf2_name "$GRUBTHEME/inter-regular-27.pf2")"
 echo "GRUB fonts: '$r38' '$s38' '$r27'"
 [ "$r38" != "$s38" ] || die "GRUB regular and semibold fonts have the same name"
 for t in "$GRUBTHEME/theme.txt" "$GRUBTHEME/theme-live.txt"; do
