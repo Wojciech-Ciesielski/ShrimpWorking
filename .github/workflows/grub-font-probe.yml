@@ -46,36 +46,39 @@ jobs:
         run: |
           iso=$(ls iso/*.iso)
           xorriso -osirrox on -indev "$iso" -extract /boot/grub2/themes/shrimp/inter-regular-38.pf2 font.pf2
+          xorriso -osirrox on -indev "$iso" -extract /boot/x86_64/loader/grub2/fonts/unicode.pf2 unicode.pf2
           xorriso -osirrox on -indev "$iso" -extract /boot/grub2/grub.cfg orig-grub.cfg
+          ls -l font.pf2 unicode.pf2
           cat > probe.cfg <<'EOF'
           search --no-floppy --label SHRIMP_LIVE --set=root
           terminal_input console
           terminal_output console
-          echo "PROBE-START lockdown=${lockdown} secureboot=${grub_secure_boot:-?}"
-          echo "A stock font, stock dir"
+          echo "PROBE-START lockdown=${lockdown}"
+          ls ($root)/boot/x86_64/loader/grub2/fonts/
+          echo "A stock unicode.pf2 at its stock path"
           loadfont ($root)/boot/x86_64/loader/grub2/fonts/unicode.pf2
           echo "A rc=$?"
-          echo "B our font, theme dir"
+          echo "B our font in theme dir (control, expected to fail)"
           loadfont ($root)/boot/grub2/themes/shrimp/inter-regular-38.pf2
           echo "B rc=$?"
-          echo "C our font, stock dir"
-          loadfont ($root)/boot/x86_64/loader/grub2/fonts/inter-regular-38.pf2
-          echo "C rc=$?"
-          echo "D our font via absolute path without device"
-          loadfont /boot/grub2/themes/shrimp/inter-regular-38.pf2
-          echo "D rc=$?"
-          echo "E theme.txt"
-          loadfont ($root)/boot/grub2/themes/shrimp/inter-regular-27.pf2
-          set theme=($root)/boot/grub2/themes/shrimp/theme.txt
-          echo "E rc=$?"
+          echo "J byte-identical copy of unicode.pf2 under a new name"
+          loadfont ($root)/boot/grub2/themes/shrimp/copy-of-unicode.pf2
+          echo "J rc=$?"
+          echo "K our font named unicode.pf2 in another dir"
+          loadfont ($root)/boot/grub2/themes/shrimp/other/unicode.pf2
+          echo "K rc=$?"
+          echo "L stock font copied into the theme dir, original name"
+          loadfont ($root)/boot/grub2/themes/shrimp/unicode.pf2
+          echo "L rc=$?"
           echo "PROBE-END"
           sleep 5
           halt
           EOF
-          sed -i 's/^          //' probe.cfg
           xorriso -indev "$iso" -outdev probe.iso -boot_image any replay \
             -map probe.cfg /boot/grub2/grub.cfg \
-            -map font.pf2 /boot/x86_64/loader/grub2/fonts/inter-regular-38.pf2 -commit
+            -map unicode.pf2 /boot/grub2/themes/shrimp/copy-of-unicode.pf2 \
+            -map font.pf2 /boot/grub2/themes/shrimp/other/unicode.pf2 \
+            -map unicode.pf2 /boot/grub2/themes/shrimp/unicode.pf2 -commit
 
       - name: Boot with Secure Boot
         run: |
