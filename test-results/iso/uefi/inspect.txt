@@ -50,10 +50,10 @@ local ding@rastersoft.com: just-perfection activities-button = No such schema �
 local just-perfection-desktop@just-perfection: just-perfection activities-button = false
 local workspace-indicator@gnome-shell-extensions.gcampax.github.com: just-perfection activities-button = No such schema “org.gnome.shell.extensions.just-perfection”
 === libraries
-lrwxrwxrwx 1 root root 24 Dec 23  2025 /tmp/tmp.utliVKFHZb/root/lib64/libz.so -> zlib-ng-compat/libz.so.1
-lrwxrwxrwx 1 root root 24 Dec 23  2025 /tmp/tmp.utliVKFHZb/root/usr/lib64/libz.so -> zlib-ng-compat/libz.so.1
+lrwxrwxrwx 1 root root 24 Dec 23  2025 /tmp/tmp.AWIICKVRCe/root/lib64/libz.so -> zlib-ng-compat/libz.so.1
+lrwxrwxrwx 1 root root 24 Dec 23  2025 /tmp/tmp.AWIICKVRCe/root/usr/lib64/libz.so -> zlib-ng-compat/libz.so.1
 GMenu-3.0.typelib
-ls: cannot access '/tmp/tmp.utliVKFHZb/root/usr/libexec/gvfsd-trash': No such file or directory
+ls: cannot access '/tmp/tmp.AWIICKVRCe/root/usr/libexec/gvfsd-trash': No such file or directory
 === shell theme
 /org/gnome/shell/theme/gnome-shell-dark.css: 1 shrimp blocks
 /org/gnome/shell/theme/gnome-shell-high-contrast.css: 1 shrimp blocks
@@ -66,14 +66,14 @@ ls: cannot access '/tmp/tmp.utliVKFHZb/root/usr/libexec/gvfsd-trash': No such fi
 AutomaticLoginEnable=True
 AutomaticLogin=shrimp
 WaylandEnable=true
-lrwxrwxrwx 1 root root 35 Nov  5 13:19 /tmp/tmp.utliVKFHZb/root/etc/systemd/system/display-manager.service -> /usr/lib/systemd/system/gdm.service
+lrwxrwxrwx 1 root root 35 Nov  5 13:32 /tmp/tmp.AWIICKVRCe/root/etc/systemd/system/display-manager.service -> /usr/lib/systemd/system/gdm.service
 === grub.cfg (EFI)
-search --file --set=root /boot/0xa4760c57
+search --file --set=root /boot/0xcd21e497
 set prefix=($root)/boot/grub2
 configfile ($root)/boot/grub2/grub.cfg
 === grub.cfg (BIOS)
 # kiwi generated one time grub2 config file
-search --file --set=root /boot/0xa4760c57
+search --file --set=root /boot/0xcd21e497
 set default=0
 if [ -n "$extra_cmdline" ]; then
   submenu "Bootable snapshot $snapshot_num" {
@@ -114,8 +114,10 @@ if [ "${lockdown}" != "y" ]; then
     loadfont ($root)/boot/grub2/themes/shrimp/inter-regular-27.pf2
     loadfont ($root)/boot/grub2/themes/shrimp/inter-regular-38.pf2
     loadfont ($root)/boot/grub2/themes/shrimp/inter-semibold-38.pf2
+        set theme=($root)/boot/grub2/themes/shrimp/theme.txt
+else
+        set theme=($root)/boot/grub2/themes/shrimp/theme-sb.txt
 fi
-    set theme=($root)/boot/grub2/themes/shrimp/theme.txt
 fi
 terminal_input console
 terminal_output gfxterm
@@ -141,16 +143,19 @@ if [ "${grub_platform}" = "efi" ]; then
     }
 fi
 === theme
-total 759
-drwxr-xr-x 1 root root   2048 Nov  5 13:19 .
-drwxr-xr-x 1 root root   2048 Nov  5 13:19 ..
--rw-r--r-- 1 root root 167194 Nov  5 13:19 inter-regular-27.pf2
--rw-r--r-- 1 root root 275441 Nov  5 13:19 inter-regular-38.pf2
--rw-r--r-- 1 root root 286650 Nov  5 13:19 inter-semibold-38.pf2
--rw-r--r-- 1 root root  13446 Nov  5 13:15 logo.png
--rw-r--r-- 1 root root  28357 Nov  5 13:15 logo@2x.png
--rw-r--r-- 1 root root     70 Nov  5 13:15 select_c.png
--rw-r--r-- 1 root root     70 Nov  5 13:15 select_e.png
--rw-r--r-- 1 root root    259 Nov  5 13:19 select_w.png
--rw-r--r-- 1 root root   1320 Nov  5 13:19 theme-live.txt
--rw-r--r-- 1 root root   1320 Nov  5 13:19 theme.txt
+total 763
+drwxr-xr-x 1 root root   2048 Nov  5 13:32 .
+drwxr-xr-x 1 root root   2048 Nov  5 13:32 ..
+drwxr-xr-x 1 root root   2048 Nov  5 13:29 icons
+-rw-r--r-- 1 root root 167194 Nov  5 13:32 inter-regular-27.pf2
+-rw-r--r-- 1 root root 275441 Nov  5 13:32 inter-regular-38.pf2
+-rw-r--r-- 1 root root 286650 Nov  5 13:32 inter-semibold-38.pf2
+-rw-r--r-- 1 root root  13446 Nov  5 13:29 logo.png
+-rw-r--r-- 1 root root  28357 Nov  5 13:29 logo@2x.png
+-rw-r--r-- 1 root root     70 Nov  5 13:29 select_c.png
+-rw-r--r-- 1 root root     70 Nov  5 13:29 select_e.png
+-rw-r--r-- 1 root root    259 Nov  5 13:32 select_w.png
+-rw-r--r-- 1 root root   1236 Nov  5 13:29 theme-live-sb.txt
+-rw-r--r-- 1 root root   1320 Nov  5 13:32 theme-live.txt
+-rw-r--r-- 1 root root   1236 Nov  5 13:32 theme-sb.txt
+-rw-r--r-- 1 root root   1320 Nov  5 13:32 theme.txt
