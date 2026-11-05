@@ -75,14 +75,14 @@ static HINTERNET open_url(HINTERNET session, const char* url, uint64_t* length)
 		if (offline_error(e))
 			ShrimpFail(1, "offline", NULL);
 		else
-			ShrimpFail(1, "other", "Nie można połączyć się z serwerem pobierania.");
+			ShrimpFail(1, "other", "connect");
 		return NULL;
 	}
 	HttpQueryInfoA(r, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, &status, &size, NULL);
 	if (status != 200) {
 		char m[128];
 		uprintf("Shrimp: %s: HTTP %lu", url, status);
-		static_sprintf(m, "Serwer pobierania odpowiedział kodem %lu.", status);
+		static_sprintf(m, "http:%lu", status);
 		ShrimpFail(1, "other", m);
 		InternetCloseHandle(r);
 		return NULL;
@@ -107,7 +107,7 @@ static BYTE* fetch_small(HINTERNET session, const char* url, DWORD* out_len)
 	while (buf != NULL && InternetReadFile(r, buf + total, cap - total, &n) && n > 0) {
 		total += n;
 		if (total >= cap) {
-			ShrimpFail(1, "other", "Manifest jest za duży.");
+			ShrimpFail(1, "other", "manifestBig");
 			free(buf);
 			buf = NULL;
 		}
@@ -209,7 +209,7 @@ DWORD WINAPI ShrimpFetchThread(LPVOID param)
 		if (sig == NULL)
 			goto out;
 		if (!ValidateOpensslSignatureWithKey(manifest, mlen, sig, slen, shrimp_pubkey_modulus, sizeof(shrimp_pubkey_modulus))) {
-			ShrimpFail(1, "verify", "Podpis manifestu jest nieprawidłowy.");
+			ShrimpFail(1, "verify", "sigBad");
 			goto out;
 		}
 	} else {
@@ -228,7 +228,7 @@ DWORD WINAPI ShrimpFetchThread(LPVOID param)
 	uprintf("Shrimp: %s, %s (%llu B)", ShrimpManifest.version, ShrimpManifest.url, ShrimpManifest.size);
 
 	if (!cache_dir(dir, sizeof(dir))) {
-		ShrimpFail(1, "other", "Brak dostępu do folderu tymczasowego.");
+		ShrimpFail(1, "other", "tempAccess");
 		goto out;
 	}
 	/* Nazwa pliku z wersji, tylko bezpieczne znaki. */
@@ -271,7 +271,7 @@ DWORD WINAPI ShrimpFetchThread(LPVOID param)
 		goto out;
 	f = CreateFileU(part, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 	if (f == INVALID_HANDLE_VALUE) {
-		ShrimpFail(1, "other", "Nie można zapisać pobieranego pliku.");
+		ShrimpFail(1, "other", "writeDl");
 		goto out;
 	}
 	hash_init[HASH_SHA256](&ctx);
@@ -286,7 +286,7 @@ DWORD WINAPI ShrimpFetchThread(LPVOID param)
 		if (n == 0)
 			break;
 		if (!WriteFile(f, buf, n, &w, NULL) || w != n) {
-			ShrimpFail(1, GetLastError() == ERROR_DISK_FULL ? "space" : "other", "Nie można zapisać pobieranego pliku.");
+			ShrimpFail(1, GetLastError() == ERROR_DISK_FULL ? "space" : "other", "writeDl");
 			goto out;
 		}
 		hash_write[HASH_SHA256](&ctx, buf, n);
@@ -307,7 +307,7 @@ DWORD WINAPI ShrimpFetchThread(LPVOID param)
 		goto out;
 	}
 	if (!MoveFileExU(part, ShrimpIsoPath, MOVEFILE_REPLACE_EXISTING)) {
-		ShrimpFail(1, "other", "Nie można zapisać pobranego pliku.");
+		ShrimpFail(1, "other", "writeDl");
 		goto out;
 	}
 	ok = TRUE;

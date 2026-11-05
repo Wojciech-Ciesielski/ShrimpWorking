@@ -1,28 +1,14 @@
 // Shrimp Install: ekrany z makiety (mockups/shrimp-install.html) sterowane przez Backend.
+import type { I18n } from "../../../i18n/core";
 import type { Backend, Device, Failure, Folder, FolderKey, Info, Picked, Progress } from "./backend/types";
-import { deviceLabel, dur, fmtSize, phaseFrac, phaseText, remaining, space } from "./logic";
+import { deviceLabel, dur, fmtGB, fmtSize, hostMessage, phaseFrac, phaseText, remaining, space } from "./logic";
 
 const $ = <T extends HTMLElement = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector(s) as T;
 const $$ = <T extends HTMLElement = HTMLElement>(s: string, r: ParentNode = document) => Array.from(r.querySelectorAll(s)) as T[];
 const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
 
-const FOLDER_UI: Record<FolderKey, [string, string]> = {
-  documents: ["Dokumenty", "#f-document"],
-  pictures: ["Zdjęcia", "#f-image"],
-  desktop: ["Pulpit", "#f-desktop"],
-  music: ["Muzyka", "#f-music_note_1"],
-  videos: ["Filmy", "#f-video"],
-  downloads: ["Pobrane", "#f-arrow_download"],
-};
-
-const FAIL: Record<Failure["kind"], [string, string]> = {
-  offline: ["Brak połączenia z internetem", "<b>Nie udało się pobrać Shrimp.</b> Sprawdź połączenie z internetem i spróbuj ponownie."],
-  verify: ["Pobrany obraz jest uszkodzony", "<b>Pobrany obraz nie przeszedł weryfikacji.</b> Spróbuj ponownie."],
-  space: ["Za mało miejsca na dysku", "<b>Za mało miejsca na dysku.</b> Zwolnij miejsce i spróbuj ponownie."],
-  write: ["Nie udało się zapisać nośnika", "<b>Nie udało się zapisać nośnika.</b> Podłącz go ponownie albo wybierz inny."],
-  device: ["Nośnik został odłączony", "<b>Nośnik został odłączony.</b> Podłącz go ponownie i spróbuj jeszcze raz."],
-  copy: ["Nie udało się skopiować plików", "<b>Nie udało się skopiować plików.</b>"],
-  other: ["Coś poszło nie tak", "<b>Coś poszło nie tak.</b>"],
+const FOLDER_ICON: Record<FolderKey, string> = {
+  documents: "#f-document", pictures: "#f-image", desktop: "#f-desktop", music: "#f-music_note_1", videos: "#f-video", downloads: "#f-arrow_download",
 };
 
 export type Route =
@@ -44,10 +30,23 @@ export class App {
   private closeAfterCancel = false;
   private screen = "start";
 
-  constructor(private be: Backend, private preview = false) {}
+  constructor(private be: Backend, private L: I18n, private preview = false) {}
+
+  private t = (k: string, a?: Record<string, string | number>) => this.L.t(k, a);
+
+  /** Język interfejsu: atrybuty dokumentu i wszystkie stałe teksty z markup (data-i, data-i-aria, data-step). */
+  private applyStatic() {
+    const L = this.L;
+    document.documentElement.lang = L.lang;
+    document.documentElement.dir = L.rtl ? "rtl" : "ltr";
+    $$("[data-i]").forEach((el) => { el.textContent = L.t(el.dataset.i!); });
+    $$("[data-i-aria]").forEach((el) => el.setAttribute("aria-label", L.t(el.dataset.iAria!)));
+    $$("[data-step]").forEach((el) => { el.textContent = L.t("step", { n: L.num(+el.dataset.step!, 0), total: L.num(4, 0) }); });
+  }
 
   async init(first: Route = "start") {
     this.info = await this.be.info();
+    this.applyStatic();
     this.folders = this.info.folders.map((f) => ({ ...f, on: false }));
     this.defaults();
     $("#bitlocker").hidden = !this.info.bitlocker;
@@ -77,21 +76,23 @@ export class App {
     cb.disabled = !any;
     val.className = "cbv";
     note.textContent = "";
-    if (d) val.textContent = deviceLabel(d);
+    const min = fmtGB(this.L, this.info.minSize);
+    $("#mediaSub").textContent = this.t("media.sub", { size: min });
+    if (d) val.textContent = deviceLabel(this.L, d);
     else if (any) {
-      val.textContent = "Wybierz nośnik"; val.className = "cbv ph";
-      note.textContent = "Ten nośnik jest za mały. Potrzeba co najmniej 16 GB.";
+      val.textContent = this.t("media.pick"); val.className = "cbv ph";
+      note.textContent = this.t("media.small", { size: min });
     } else {
-      val.textContent = "Nie znaleziono nośnika"; val.className = "cbv ph";
-      note.textContent = "Podłącz nośnik, a pojawi się tutaj.";
+      val.textContent = this.t("media.none"); val.className = "cbv ph";
+      note.textContent = this.t("media.plug");
     }
     $("#cbScan").hidden = any;
     $<HTMLButtonElement>("#toFiles").disabled = !d;
     pop.innerHTML = this.devices.map((x) => {
       const dis = !this.fits(x);
       return `<button class="opt" type="button" role="option" data-id="${x.id}" aria-selected="${x.id === this.sel}"${dis ? ' aria-disabled="true"' : ""}>` +
-        `<span class="n">${esc(x.name)} <span class="sz">· ${esc(deviceLabel(x).split(" · ").pop()!)}</span></span>` +
-        (dis ? '<span class="d">Za mały</span>' : "") + "</button>";
+        `<span class="n">${esc(x.name)} <span class="sz">· ${esc(fmtGB(this.L, x.size))}</span></span>` +
+        (dis ? `<span class="d">${esc(this.t("media.toosmall"))}</span>` : "") + "</button>";
     }).join("");
     if (!pop.hidden && !any) this.closePop(false);
     if (this.screen === "pliki") this.drawSpace();
@@ -132,7 +133,7 @@ export class App {
   }
   private drawSpace() {
     const cap = this.device?.size ?? 0;
-    const s = space(cap || 1, this.info.shrimpSize, this.used());
+    const s = space(this.L, cap || 1, this.info.shrimpSize, this.used());
     $("#spShr").style.width = s.shrPct + "%";
     $("#spFiles").style.width = s.filesPct + "%";
     $("#spTxt").textContent = s.text;
@@ -142,12 +143,12 @@ export class App {
   private drawFolders() {
     const u = this.used(), free = this.freeForFiles();
     $("#folders").innerHTML = this.folders.map((f, i) => {
-      const [name, ic] = FOLDER_UI[f.key];
+      const name = esc(this.t("folder." + f.key)), ic = FOLDER_ICON[f.key];
       const blocked = !f.on && f.size !== null && u + f.size > free;
-      const sz = f.size === null ? "Liczenie…" : blocked ? "Brak miejsca" : fmtSize(f.size);
-      return `<button class="fol" type="button" role="switch" aria-checked="${f.on}" aria-label="Zachowaj: ${name}" data-i="${i}"${blocked || f.size === null ? " disabled" : ""}>` +
+      const sz = f.size === null ? this.t("folder.counting") : blocked ? this.t("folder.nospace") : fmtSize(this.L, f.size);
+      return `<button class="fol" type="button" role="switch" aria-checked="${f.on}" aria-label="${esc(this.t("folder.keep.aria", { name }))}" data-i="${i}"${blocked || f.size === null ? " disabled" : ""}>` +
         `<svg class="i ck"><use href="${f.on ? "#f-checkmark_circle-filled" : "#f-circle"}"/></svg><span class="fi"><svg class="i"><use href="${ic}"/></svg></span>` +
-        `<span class="fn">${name}</span><span class="fs">${sz}</span></button>`;
+        `<span class="fn">${name}</span><span class="fs">${esc(sz)}</span></button>`;
     }).join("");
     this.drawSpace();
   }
@@ -155,8 +156,8 @@ export class App {
     $("#picked").innerHTML = this.picked.length
       ? this.picked.map((x, i) =>
         `<div class="row"><svg class="i lg"><use href="${x.kind === "folder" ? "#f-folder" : "#f-document"}"/></svg><div class="tx"><div class="tt">${esc(x.name)}</div></div>` +
-        `<span class="sz2">${fmtSize(x.size)}</span><button class="link" type="button" data-rm="${i}" aria-label="Usuń: ${esc(x.name)}">Usuń</button></div>`).join("")
-      : '<p class="empty">Nic jeszcze nie wybrano.</p>';
+        `<span class="sz2">${esc(fmtSize(this.L, x.size))}</span><button class="link" type="button" data-rm="${i}" aria-label="${esc(this.t("files.remove.aria", { name: x.name }))}">${esc(this.t("files.remove"))}</button></div>`).join("")
+      : `<p class="empty">${esc(this.t("files.empty"))}</p>`;
     this.drawSpace();
   }
   private setMode(m: "auto" | "manual", animate: boolean) {
@@ -188,7 +189,7 @@ export class App {
       $(".st", el).innerHTML = `<svg class="i lg"><use href="${STI[st]}"/></svg>`;
       $("#b" + n).style.width = phaseFrac(n, this.cur, this.finished) * 100 + "%";
       $<HTMLElement>(".pb-wrap", el).style.display = st === "fail" ? "none" : "";
-      $("#n" + n).textContent = st === "fail" ? FAIL[this.failed!.kind][0] : phaseText(n, this.cur, this.sizes(), this.finished);
+      $("#n" + n).textContent = st === "fail" ? this.t(`fail.${this.failed!.kind}.t`) : phaseText(this.L, n, this.cur, this.sizes(), this.finished);
     }
     const err = !!this.failed;
     $("#pgErr").hidden = !err; $("#pgInfo").hidden = err || this.finished;
@@ -196,17 +197,17 @@ export class App {
     $<HTMLButtonElement>("#nextBtn").disabled = !this.finished;
     $("#cancelBtn").hidden = this.finished;
     if (err) {
-      const [, txt] = FAIL[this.failed!.kind];
-      $("#pgErrTxt").innerHTML = txt + (this.failed!.message ? " " + esc(this.failed!.message) : "");
-      $("#pgTitle").textContent = "Przygotowanie Shrimp";
-      $("#pgSub").textContent = "Przygotowanie zostało wstrzymane.";
+      const f = this.failed!, k = `fail.${f.kind}.`;
+      $("#pgErrTxt").innerHTML = `<b>${esc(this.t(k + "b"))}</b>` + (this.L.has(k + "r") ? " " + esc(this.t(k + "r")) : "") + (f.message ? " " + esc(hostMessage(this.L, f.message)) : "");
+      $("#pgTitle").textContent = this.t("run.title");
+      $("#pgSub").textContent = this.t("run.sub.paused");
     } else if (this.finished) {
-      $("#pgTitle").textContent = "Przygotowanie zakończone";
-      $("#pgSub").textContent = "Wszystko zostało przygotowane.";
+      $("#pgTitle").textContent = this.t("run.done.title");
+      $("#pgSub").textContent = this.t("run.done.sub");
     } else {
-      $("#pgTitle").textContent = "Przygotowanie Shrimp";
+      $("#pgTitle").textContent = this.t("run.title");
       const left = this.cur ? remaining(this.cur, this.sizes()) : remaining({ phase: 1, done: 0, total: this.info.shrimpSize, speed: 0 }, this.sizes());
-      $("#pgSub").textContent = `Potrwa to jeszcze ${dur(left)}.`;
+      $("#pgSub").textContent = this.t("run.sub.left", { time: dur(this.L, left) });
     }
   }
   private startRun() {
@@ -331,7 +332,7 @@ export class App {
       } catch (e) {
         $("#doneInfo").hidden = true;
         $("#rebootErr").hidden = false;
-        $("#rebootErrTxt").innerHTML = `<b>Nie udało się ustawić startu z nośnika.</b> ${esc((e as Error).message)}`;
+        $("#rebootErrTxt").innerHTML = `<b>${esc(this.t("reboot.fail"))}</b> ${esc(hostMessage(this.L, (e as Error).message))}`;
         b.disabled = false;
       }
     });

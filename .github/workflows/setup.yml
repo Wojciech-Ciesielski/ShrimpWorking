@@ -2,9 +2,9 @@ name: Setup
 
 on:
   push:
-    paths: ["setup/**", "standardize/**", ".github/workflows/setup.yml"]
+    paths: ["setup/**", "i18n/**", "standardize/**", ".github/workflows/setup.yml"]
   pull_request:
-    paths: ["setup/**", "standardize/**", ".github/workflows/setup.yml"]
+    paths: ["setup/**", "i18n/**", "standardize/**", ".github/workflows/setup.yml"]
   workflow_dispatch:
 
 jobs:
