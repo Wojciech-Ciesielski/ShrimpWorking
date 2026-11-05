@@ -50,10 +50,10 @@ local ding@rastersoft.com: just-perfection activities-button = No such schema �
 local just-perfection-desktop@just-perfection: just-perfection activities-button = false
 local workspace-indicator@gnome-shell-extensions.gcampax.github.com: just-perfection activities-button = No such schema “org.gnome.shell.extensions.just-perfection”
 === libraries
-lrwxrwxrwx 1 root root 24 Dec 23  2025 /tmp/tmp.4xXXzixkrX/root/lib64/libz.so -> zlib-ng-compat/libz.so.1
-lrwxrwxrwx 1 root root 24 Dec 23  2025 /tmp/tmp.4xXXzixkrX/root/usr/lib64/libz.so -> zlib-ng-compat/libz.so.1
+lrwxrwxrwx 1 root root 24 Dec 23  2025 /tmp/tmp.0WkqDaeycD/root/lib64/libz.so -> zlib-ng-compat/libz.so.1
+lrwxrwxrwx 1 root root 24 Dec 23  2025 /tmp/tmp.0WkqDaeycD/root/usr/lib64/libz.so -> zlib-ng-compat/libz.so.1
 GMenu-3.0.typelib
-ls: cannot access '/tmp/tmp.4xXXzixkrX/root/usr/libexec/gvfsd-trash': No such file or directory
+ls: cannot access '/tmp/tmp.0WkqDaeycD/root/usr/libexec/gvfsd-trash': No such file or directory
 === shell theme
 /org/gnome/shell/theme/gnome-shell-dark.css: 1 shrimp blocks
 /org/gnome/shell/theme/gnome-shell-high-contrast.css: 1 shrimp blocks
@@ -66,7 +66,7 @@ ls: cannot access '/tmp/tmp.4xXXzixkrX/root/usr/libexec/gvfsd-trash': No such fi
 AutomaticLoginEnable=True
 AutomaticLogin=shrimp
 WaylandEnable=true
-lrwxrwxrwx 1 root root 35 Nov  5 12:11 /tmp/tmp.4xXXzixkrX/root/etc/systemd/system/display-manager.service -> /usr/lib/systemd/system/gdm.service
+lrwxrwxrwx 1 root root 35 Nov  5 12:11 /tmp/tmp.0WkqDaeycD/root/etc/systemd/system/display-manager.service -> /usr/lib/systemd/system/gdm.service
 === grub.cfg (EFI)
 search --file --set=root /boot/0xaeb6147d
 set prefix=($root)/boot/grub2
