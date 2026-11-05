@@ -90,7 +90,7 @@ jobs:
               $g.CopyFromScreen($b.Location, [System.Drawing.Point]::Empty, $b.Size)
               $bmp.Save("$PWD\out\screens\$t-$s.png")
               $g.Dispose(); $bmp.Dispose()
-              "$t/$s: okno '$($p.MainWindowTitle)'"
+              "${t}/${s}: okno '$($p.MainWindowTitle)'"
               Stop-Process -Id $p.Id -Force
               Start-Sleep -Seconds 2
             }
