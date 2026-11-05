@@ -24,6 +24,17 @@ for k in "org.gnome.shell enabled-extensions" "org.gnome.shell.extensions.just-p
          "org.gnome.shell.extensions.dash-to-dock dock-position"; do
   echo "$k = $(GSETTINGS_SCHEMA_DIR=$S gsettings get $k 2>&1)"
 done
+for d in "$r"/usr/share/gnome-shell/extensions/*/schemas; do
+  [ -f "$d/gschemas.compiled" ] || continue
+  echo "local $(basename "$(dirname "$d")"): just-perfection activities-button = $(GSETTINGS_SCHEMA_DIR=$d gsettings get org.gnome.shell.extensions.just-perfection activities-button 2>&1 | head -1)"
+done
+echo "=== libraries"; ls -l "$r"/usr/lib64/libz.so* "$r"/lib64/libz.so* 2>&1
+ls "$r"/usr/lib64/girepository-1.0/ | grep -i -E 'gmenu|dbusmenu' || echo "no GMenu/Dbusmenu typelib"
+ls "$r"/usr/libexec/gvfsd-trash 2>&1
+echo "=== shell theme"
+for c in $(gresource list "$r/usr/share/gnome-shell/gnome-shell-theme.gresource" | grep -E '\.css$|shrimp'); do
+  echo "$c: $(gresource extract "$r/usr/share/gnome-shell/gnome-shell-theme.gresource" "$c" | grep -c 'Shrimp additions') shrimp blocks"
+done
 echo "=== override warnings"; glib-compile-schemas --dry-run --strict "$S" 2>&1 | head -20
 echo "=== gdm"; cat "$r/etc/gdm/custom.conf"; ls -l "$r"/etc/systemd/system/display-manager.service 2>&1
 echo "=== grub.cfg (EFI)"; f=$(find "$m/iso" -path '*EFI*' -name grub.cfg -print -quit); [ -n "$f" ] && cat "$f"
