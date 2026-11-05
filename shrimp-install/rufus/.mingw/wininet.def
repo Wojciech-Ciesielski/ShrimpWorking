@@ -12,3 +12,4 @@ EXPORTS
   InternetQueryOptionA@16
   InternetReadFile@16
   InternetSetOptionA@16
+  InternetOpenUrlA@24

@@ -39,6 +39,7 @@
 #include "msapi_utf8.h"
 #include "localization.h"
 #include "ui.h"
+#include "shrimp/shrimp.h"
 
 #include "registry.h"
 #include "settings.h"
@@ -788,6 +789,14 @@ int NotificationEx(int type, const char* dont_display_setting, const notificatio
 	INT_PTR ret;
 	va_list args;
 
+	if (shrimp_mode) {	/* SHRIMP: bez okien Rufusa, odpowiedź automatyczna */
+		char text[LOC_MESSAGE_SIZE];
+		va_start(args, format);
+		safe_vsnprintf(text, sizeof(text) - 1, format, args);
+		va_end(args);
+		text[sizeof(text) - 1] = 0;
+		return ShrimpNotification(type, title, text);
+	}
 	dialog_showing++;
 	notification_data.szMessageText = (char*)malloc(LOC_MESSAGE_SIZE);
 	if (notification_data.szMessageText == NULL)
@@ -1143,6 +1152,8 @@ int SelectionDialog(char* title, char* message, selection_dialog_options_t* opti
 	int ret;
 
 	assert(options != NULL);
+	if (shrimp_mode)	/* SHRIMP */
+		return ShrimpSelection(title, message, options->choices.Index);
 	dialog_showing++;
 	s++;
 	selection_data[s].szMessageTitle = title;
@@ -1276,6 +1287,12 @@ INT_PTR CALLBACK ListCallback(HWND hDlg, UINT message, WPARAM wParam, LPARAM lPa
  */
 void ListDialog(char* title, char* message, char** items, int size)
 {
+	if (shrimp_mode) {	/* SHRIMP */
+		for (int i = 0; i < size; i++)
+			uprintf("Shrimp: %s: %s", title, items[i]);
+		ShrimpNotification(MB_ICONERROR, title, message);
+		return;
+	}
 	dialog_showing++;
 	list_data.szMessageTitle = title;
 	list_data.szMessageText = message;

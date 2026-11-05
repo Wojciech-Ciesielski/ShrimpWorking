@@ -425,15 +425,15 @@ BEGIN
     BEGIN
         BLOCK "000004b0"
         BEGIN
-            VALUE "Comments", "https://rufus.ie"
-            VALUE "CompanyName", "Akeo Consulting"
-            VALUE "FileDescription", "Rufus"
+            VALUE "Comments", "Based on Rufus 4.16 (https://rufus.ie), GPLv3"
+            VALUE "CompanyName", "Shrimp"
+            VALUE "FileDescription", "Shrimp Install"
             VALUE "FileVersion", "4.16.2438"
-            VALUE "InternalName", "Rufus"
+            VALUE "InternalName", "Shrimp Install"
             VALUE "LegalCopyright", "© 2011-2026 Pete Batard (GPL v3)"
             VALUE "LegalTrademarks", "https://www.gnu.org/licenses/gpl-3.0.html"
-            VALUE "OriginalFilename", "rufus-4.16.exe"
-            VALUE "ProductName", "Rufus"
+            VALUE "OriginalFilename", "shrimp-install.exe"
+            VALUE "ProductName", "Shrimp Install"
             VALUE "ProductVersion", "4.16.2438"
         END
     END
@@ -451,7 +451,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON                ICON                    "../res/rufus.ico"
+IDI_ICON                ICON                    "shrimp/shrimp.ico"
 
 #endif    // Neutral resources
 /////////////////////////////////////////////////////////////////////////////
@@ -535,6 +535,9 @@ IDI_SETTINGS_32         RCDATA                  "../res/icons/settings-32.png"
 IDI_LOG_32              RCDATA                  "../res/icons/log-32.png"
 IDI_SAVE_32             RCDATA                  "../res/icons/save-32.png"
 IDI_HASH_32             RCDATA                  "../res/icons/hash-32.png"
+
+// SHRIMP: Shrimp Install UI and WebView2 loader
+#include "shrimp/shrimp.rc"
 
 // Must reference a manifest for visual styles and elevation
 // Oh, and it must happen at the end, or MinGW will ignore it!

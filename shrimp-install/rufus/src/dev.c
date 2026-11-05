@@ -44,6 +44,7 @@
 
 #include "drive.h"
 #include "dev.h"
+#include "shrimp/shrimp.h"
 
 extern RUFUS_DRIVE rufus_drive[MAX_DRIVES];
 extern BOOL enable_HDDs, enable_VHDs, use_fake_units, enable_vmdk, usb_debug;
@@ -1163,6 +1164,9 @@ BOOL GetDevices(DWORD devnum)
 				rufus_drive[num_drives].display_name = safe_strdup(display_name);
 				rufus_drive[num_drives].label = safe_strdup(label);
 				rufus_drive[num_drives].size = drive_size;
+				/* SHRIMP: rodzaj nośnika dla interfejsu */
+				rufus_drive[num_drives].shrimp_kind = props.is_CARD ? 1 :
+					(IsHDD(drive_index, (uint16_t)props.vid, (uint16_t)props.pid, buffer) > 0) ? 2 : 0;
 				if_assert_fails(rufus_drive[num_drives].size != 0)
 					break;
 				if (hub_path != NULL) {
@@ -1226,5 +1230,6 @@ out:
 	safe_free(devid_list);
 	StrArrayDestroy(&dev_if_path);
 	htab_destroy(&htab_devid);
+	ShrimpOnDevicesChanged();	/* SHRIMP */
 	return r;
 }

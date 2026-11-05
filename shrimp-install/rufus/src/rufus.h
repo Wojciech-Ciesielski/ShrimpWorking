@@ -489,6 +489,7 @@ typedef struct {
 	DWORD index;
 	uint32_t port;
 	uint64_t size;
+	uint8_t shrimp_kind;	/* SHRIMP: 0 pendrive, 1 karta, 2 dysk */
 } RUFUS_DRIVE;
 
 typedef struct {
@@ -892,6 +893,8 @@ extern int GetIssuerCertificateInfo(uint8_t* cert, cert_info_t* info);
 extern uint64_t GetSignatureTimeStamp(const char* path);
 extern LONG ValidateSignature(HWND hDlg, const char* path);
 extern BOOL ValidateOpensslSignature(BYTE* pbBuffer, DWORD dwBufferLen, BYTE* pbSignature, DWORD dwSigLen);
+extern BOOL ValidateOpensslSignatureWithKey(BYTE* pbBuffer, DWORD dwBufferLen, BYTE* pbSignature, DWORD dwSigLen,
+	const uint8_t* modulus, size_t modulus_len);	/* SHRIMP */
 extern BOOL IsFontAvailable(const char* font_name);
 extern BOOL WriteFileWithRetry(HANDLE hFile, LPCVOID lpBuffer, DWORD nNumberOfBytesToWrite,
 	LPDWORD lpNumberOfBytesWritten, DWORD nNumRetries);
