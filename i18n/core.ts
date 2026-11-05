@@ -115,17 +115,21 @@ export class I18n {
 
 export interface Pack { keys: Entry[]; files: Record<string, string> }
 
+/** Buduje tłumacza dla wybranego języka z już wczytanego tekstu pliku (undefined: angielski). */
+export function build(keysTsv: string, tag: string, txt?: string): I18n {
+  const keys = parseKeys(keysTsv);
+  const english = new I18n("en", keys, undefined);
+  const fb = new Map(english.keys().map((k) => [k, english.t(k)]));
+  return new I18n(tag, keys, txt ? parseValues(txt) : undefined, fb);
+}
+
 /** Wczytuje przestrzeń nazw (install/setup) dla żądanych języków. */
 export function createI18n(keysTsv: string, files: Record<string, string>, requested: string[]): I18n {
-  const keys = parseKeys(keysTsv);
   const byTag = new Map<string, string>();
   for (const [path, txt] of Object.entries(files)) {
     const m = /([^/\\]+)\.txt$/.exec(path);
     if (m && !m[1].startsWith("_")) byTag.set(m[1], txt);
   }
-  const english = new I18n("en", keys, undefined);
-  const fb = new Map(english.keys().map((k) => [k, english.t(k)]));
   const tag = negotiate(requested);
-  const txt = byTag.get(tag);
-  return new I18n(tag, keys, txt ? parseValues(txt) : undefined, fb);
+  return build(keysTsv, tag, byTag.get(tag));
 }

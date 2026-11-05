@@ -3,6 +3,12 @@ import { slug, firstName, proposals, windowsList, mapWindowsApps, klidToXkb, pre
 import { LANGS, REGIONS, KEYBOARDS, WIN_CATALOG } from "./data";
 import { configFromPlan, disksFromSystem, phaseOf } from "./backend/agama";
 import type { InstallPlan } from "./backend/types";
+import { createI18n } from "../../../i18n/core";
+import keys from "../../../i18n/setup/_keys.tsv?raw";
+import plTxt from "../../../i18n/setup/pl.txt?raw";
+
+const pl = createI18n(keys, { "pl.txt": plTxt }, ["pl"]);
+const en = createI18n(keys, {}, ["en"]);
 
 describe("konto", () => {
   it("tworzy nazwę użytkownika bez polskich znaków", () => {
@@ -25,9 +31,9 @@ describe("programy", () => {
     expect(mapWindowsApps(["Microsoft Office File Validation Add-In"])).toEqual([]);
   });
   it("proponuje maks. 5 programów na zmianę z kategorii, bez tych z Windows", () => {
-    const p = proposals([true, false, false, false, true], win).map((x) => x.id);
+    const p = proposals(pl, [true, false, false, false, true], win).map((x) => x.id);
     expect(p).toEqual(["org.videolan.VLC", "org.mozilla.Thunderbird"]);
-    expect(proposals([true, true, true, true, true], null)).toHaveLength(5);
+    expect(proposals(pl, [true, true, true, true, true], null)).toHaveLength(5);
   });
 });
 
@@ -131,6 +137,6 @@ describe("agama", () => {
   });
   it("tłumaczy postęp Agamy na fazy", () => {
     expect(phaseOf({ stage: "installing", progresses: [{ scope: "manager", index: 2, size: 4, step: "" }, { scope: "software", index: 5, size: 10, step: "" }] }))
-      .toEqual({ percent: 37.5, phase: "Instalowanie systemu" });
+      .toEqual({ percent: 37.5, phase: "inst.system" });
   });
 });

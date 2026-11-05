@@ -143,7 +143,7 @@ async fn apps_start(State(s): State<App>, Json(a): Json<Apps>) -> Response {
         if i.apps.state == "running" {
             return Json(json!({})).into_response();
         }
-        i.apps = Job { state: "running", percent: 0.0, phase: "Pobieranie i instalowanie".into(), eta_min: None };
+        i.apps = Job { state: "running", percent: 0.0, phase: "apps.phase".into(), eta_min: None };
     }
     let inner = s.inner.clone();
     tokio::spawn(async move {
