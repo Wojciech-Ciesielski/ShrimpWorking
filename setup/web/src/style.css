@@ -26,7 +26,8 @@ button, input { font: inherit; color: inherit; }
 .screen, .screen * { transition: background-color 0.7s ease, color 0.7s ease; }
 
 /* tapeta Shrimp 26 „Mont Blanc”, mocno rozmyta */
-.wall { position: absolute; inset: -12%; background: url("./assets/wall.jpg") center 30% / cover; filter: blur(4.2cqw) saturate(1.15); transition: opacity 0.7s ease; }
+/* Rozmycie (≈4% szerokości), nasycenie 115% i powiększenie o 12% są wypieczone w obrazie: tak samo w WebKitGTK bez akceleracji. */
+.wall { position: absolute; inset: 0; background: url("./assets/wall-blur.jpg") center / cover; transition: opacity 0.7s ease; }
 .veil { position: absolute; inset: 0; background: var(--veil); }
 .screen[data-look="boot"] .wall { opacity: 0; }
 
