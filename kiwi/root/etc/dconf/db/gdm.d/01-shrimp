@@ -1,6 +1,6 @@
-# specs/gdm.md: Shrimp logo at the bottom of the login screen, everything else native.
+# Login screen without a logo (empty value = no logo, so no distro logo either).
 [org/gnome/login-screen]
-logo='/usr/share/shrimp/logo/shrimp-white-256.png'
+logo=''
 
 [org/gnome/desktop/interface]
 accent-color='blue'
