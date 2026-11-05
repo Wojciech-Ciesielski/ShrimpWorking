@@ -1,0 +1,143 @@
+=== os-release
+NAME="Shrimp"
+PRETTY_NAME="Shrimp Beta"
+VARIANT="Micro"
+VARIANT_ID="transactional"
+VERSION="16.1"
+VERSION_ID="16.1"
+ANSI_COLOR="0;32"
+ID="opensuse-leap"
+ID_LIKE="suse opensuse opensuse-microos"
+CPE_NAME="cpe:/o:opensuse:leap:16.1"
+BUG_REPORT_URL="https://bugs.opensuse.org"
+HOME_URL="https://www.opensuse.org/"
+DOCUMENTATION_URL="https://en.opensuse.org/Portal:Leap"
+LOGO="shrimp-logo"
+=== gnome-shell
+apps-menu@gnome-shell-extensions.gcampax.github.com
+blur-my-shell@aunetx
+dash-to-dock@micxgx.gmail.com
+ding@rastersoft.com
+just-perfection-desktop@just-perfection
+light-style@gnome-shell-extensions.gcampax.github.com
+workspace-indicator@gnome-shell-extensions.gcampax.github.com
+apps-menu@gnome-shell-extensions.gcampax.github.com version 65  shell ['48']
+blur-my-shell@aunetx version 77  shell ['46', '47', '48', '49', '50', '51']
+dash-to-dock@micxgx.gmail.com version 110  shell ['45', '46', '47', '48', '49', '50', '51']
+ding@rastersoft.com version 85  shell ['46', '47', '48', '49', '50']
+just-perfection-desktop@just-perfection version 37  shell ['45', '46', '47', '48', '49', '50', '51']
+light-style@gnome-shell-extensions.gcampax.github.com version 13  shell ['48']
+workspace-indicator@gnome-shell-extensions.gcampax.github.com version 66  shell ['48']
+gnome-shell-48.8-160100.2.1.x86_64
+gnome-shell-extensions-common-48.3-bp161.1.2.noarch
+gdm-48.0-160100.2.1.x86_64
+plymouth-22.02.122+94.4bd41a3-160100.2.1.x86_64
+grub2-2.14-160100.3.3.x86_64
+=== typelibs
+GnomeBG-4.0.typelib
+GnomeDesktop-4.0.typelib
+=== schema defaults
+org.gnome.shell enabled-extensions = ['ding@rastersoft.com', 'blur-my-shell@aunetx', 'dash-to-dock@micxgx.gmail.com', 'just-perfection-desktop@just-perfection', 'light-style@gnome-shell-extensions.gcampax.github.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com']
+org.gnome.shell.extensions.just-perfection activities-button = false
+org.gnome.desktop.background picture-uri = 'file:///usr/share/backgrounds/shrimp/mont-blanc.jpg'
+org.gnome.desktop.interface color-scheme = 'default'
+org.gnome.shell.extensions.dash-to-dock dock-position = 'BOTTOM'
+=== override warnings
+=== gdm
+[daemon]
+AutomaticLoginEnable=True
+AutomaticLogin=shrimp
+WaylandEnable=true
+lrwxrwxrwx 1 root root 35 Nov  4 23:16 /tmp/tmp.Gz2cemgWdt/root/etc/systemd/system/display-manager.service -> /usr/lib/systemd/system/gdm.service
+=== grub.cfg (EFI)
+search --file --set=root /boot/0x400ac554
+set prefix=($root)/boot/grub2
+configfile ($root)/boot/grub2/grub.cfg
+=== grub.cfg (BIOS)
+# kiwi generated one time grub2 config file
+search --file --set=root /boot/0x400ac554
+set default=0
+if [ -n "$extra_cmdline" ]; then
+  submenu "Bootable snapshot $snapshot_num" {
+    menuentry "If OK, run snapper rollback and reboot." { true; }
+  }
+fi
+if [ -n "${iso_path}" ]; then
+    isoboot="iso-scan/filename=${iso_path}"
+fi
+set timeout=5
+set timeout_style=menu
+if [ "${grub_platform}" = "efi" ]; then
+    echo "Please press 't' to show the boot menu on this console"
+fi
+set gfxmode=1920x1080,auto
+set font=($root)/boot/x86_64/loader/grub2/fonts/unicode.pf2
+set ascii_font=grub2/themes/shrimp/ascii.pf2
+set sans_bold_14_font=grub2/themes/shrimp/DejaVuSans-Bold14.pf2
+set sans_10_font=grub2/themes/shrimp/DejaVuSans10.pf2
+set sans_12_font=grub2/themes/shrimp/DejaVuSans12.pf2
+if [ -f ${font} ];then
+    loadfont ${font}
+fi
+if [ -f ($root)/boot/${ascii_font} ];then
+    loadfont ($root)/boot/${ascii_font}
+fi
+if [ -f ($root)/boot/${sans_bold_14_font} ];then
+    loadfont ($root)/boot/${sans_bold_14_font}
+fi
+if [ -f ($root)/boot/${sans_10_font} ];then
+    loadfont ($root)/boot/${sans_10_font}
+fi
+if [ -f ($root)/boot/${sans_12_font} ];then
+    loadfont ($root)/boot/${sans_12_font}
+fi
+if [ -f ($root)/boot/grub2/themes/shrimp/theme.txt ];then
+loadfont ($root)/boot/grub2/themes/shrimp/inter-regular-27.pf2
+loadfont ($root)/boot/grub2/themes/shrimp/inter-regular-38.pf2
+loadfont ($root)/boot/grub2/themes/shrimp/inter-semibold-38.pf2
+    set theme=($root)/boot/grub2/themes/shrimp/theme.txt
+fi
+terminal_input console
+terminal_output gfxterm
+menuentry "Shrimp" --class os --unrestricted {
+    set gfxpayload=keep
+    echo Loading kernel...
+    linux ($root)/boot/x86_64/loader/linux ${extra_cmdline} ${isoboot} splash quiet loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0  root=live:CDLABEL=SHRIMP_LIVE rd.live.image rd.live.overlay.persistent rd.live.overlay.cowfs=ext4
+    echo Loading initrd...
+    initrd ($root)/boot/x86_64/loader/initrd
+}
+if [ "${grub_platform}" = "efi" ]; then
+    menuentry "Ustawienia komputera" --class efi --unrestricted {
+        fwsetup
+    }
+fi
+menuentry "Failsafe -- Shrimp" --class os --unrestricted {
+    set gfxpayload=keep
+    echo Loading kernel...
+    linux ($root)/boot/x86_64/loader/linux ${extra_cmdline} ${isoboot} splash quiet loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0  ide=nodma apm=off noresume edd=off nomodeset 3  root=live:CDLABEL=SHRIMP_LIVE rd.live.image rd.live.overlay.persistent rd.live.overlay.cowfs=ext4
+    echo Loading initrd...
+    initrd ($root)/boot/x86_64/loader/initrd
+}
+if [ -f "/.snapshots/grub-snapshot.cfg" ]; then
+    source "/.snapshots/grub-snapshot.cfg"
+fi
+if [ "${grub_platform}" = "efi" ]; then
+    hiddenentry "Text mode" --hotkey "t" {
+        set textmode=true
+        terminal_output console
+    }
+fi
+=== theme
+total 759
+drwxr-xr-x 1 root root   2048 Nov  4 23:16 .
+drwxr-xr-x 1 root root   2048 Nov  4 23:16 ..
+-rw-r--r-- 1 root root 167194 Nov  4 23:16 inter-regular-27.pf2
+-rw-r--r-- 1 root root 275441 Nov  4 23:16 inter-regular-38.pf2
+-rw-r--r-- 1 root root 286650 Nov  4 23:16 inter-semibold-38.pf2
+-rw-r--r-- 1 root root  13446 Nov  4 23:12 logo.png
+-rw-r--r-- 1 root root  28357 Nov  4 23:12 logo@2x.png
+-rw-r--r-- 1 root root     70 Nov  4 23:12 select_c.png
+-rw-r--r-- 1 root root     70 Nov  4 23:12 select_e.png
+-rw-r--r-- 1 root root    259 Nov  4 23:16 select_w.png
+-rw-r--r-- 1 root root   1337 Nov  4 23:16 theme-live.txt
+-rw-r--r-- 1 root root   1337 Nov  4 23:16 theme.txt
