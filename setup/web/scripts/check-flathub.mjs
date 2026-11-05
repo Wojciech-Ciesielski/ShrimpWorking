@@ -19,5 +19,9 @@ try {
 }
 const missing = [...ids].filter(([id]) => !known.has(id));
 console.log(`Sprawdzono ${ids.size} identyfikatorów, brakuje ${missing.length}.`);
-for (const [id, who] of missing) console.log(`::error::Brak we Flathub: ${id} (${who})`);
+for (const [id, who] of missing) {
+  const word = id.split(".").pop().toLowerCase().replace(/[^a-z0-9]/g, "");
+  const near = [...known].filter((k) => k.toLowerCase().replace(/[^a-z0-9.]/g, "").includes(word)).slice(0, 5);
+  console.log(`::error::Brak we Flathub: ${id} (${who})${near.length ? "; podobne: " + near.join(", ") : ""}`);
+}
 process.exit(missing.length ? 1 : 0);
