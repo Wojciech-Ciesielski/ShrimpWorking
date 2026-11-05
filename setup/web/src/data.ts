@@ -98,7 +98,7 @@ export interface App { id: string; name: string; what: string }
 export const USES = ["use.work", "use.games", "use.create", "use.dev", "use.media"];
 /** Kategorie → aplikacje z Flathub (specs/setup.md › Programy). */
 export const APPS: App[][] = [
-  [{ id: "org.libreoffice.LibreOffice", name: "LibreOffice", what: "app.office" }, { id: "org.mozilla.Thunderbird", name: "Thunderbird", what: "app.mail" }],
+  [{ id: "org.libreoffice.LibreOffice", name: "LibreOffice", what: "app.office" }, { id: "net.thunderbird.Thunderbird", name: "Thunderbird", what: "app.mail" }],
   [{ id: "com.valvesoftware.Steam", name: "Steam", what: "app.games" }, { id: "com.heroicgameslauncher.hgl", name: "Heroic", what: "app.epic" }],
   [{ id: "org.kde.krita", name: "Krita", what: "app.draw" }, { id: "org.kde.kdenlive", name: "Kdenlive", what: "app.video" }, { id: "org.gimp.GIMP", name: "GIMP", what: "app.graphics" }],
   [{ id: "com.visualstudio.code", name: "Visual Studio Code", what: "app.code" }, { id: "org.gnome.Builder", name: "GNOME Builder", what: "app.ide" }],

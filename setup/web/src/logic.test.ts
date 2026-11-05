@@ -32,7 +32,7 @@ describe("programy", () => {
   });
   it("proponuje maks. 5 programów na zmianę z kategorii, bez tych z Windows", () => {
     const p = proposals(pl, [true, false, false, false, true], win).map((x) => x.id);
-    expect(p).toEqual(["org.videolan.VLC", "org.mozilla.Thunderbird"]);
+    expect(p).toEqual(["org.videolan.VLC", "net.thunderbird.Thunderbird"]);
     expect(proposals(pl, [true, true, true, true, true], null)).toHaveLength(5);
   });
 });
