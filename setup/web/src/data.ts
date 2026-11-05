@@ -93,16 +93,51 @@ export const APPS: App[][] = [
 
 /** Program z Windows (lista zapisana przez Shrimp Install) i jego odpowiednik. */
 export interface WinApp { windows: string; name: string; id: string }
-/** Znane odpowiedniki programów Windows (specs/setup.md). */
-export const WIN_EQUIV: Record<string, { name: string; id: string }> = {
-  "Microsoft Office": { name: "LibreOffice", id: "org.libreoffice.LibreOffice" },
-  "Adobe Photoshop": { name: "GIMP", id: "org.gimp.GIMP" },
-  "Google Chrome": { name: "Chromium", id: "org.chromium.Chromium" },
-  Spotify: { name: "Spotify", id: "com.spotify.Client" },
-  Steam: { name: "Steam", id: "com.valvesoftware.Steam" },
-  Discord: { name: "Discord", id: "com.discordapp.Discord" },
-  Zoom: { name: "Zoom", id: "us.zoom.Zoom" },
+
+/**
+ * Odpowiedniki programów Windows (specs/setup.md), w kolejności, w jakiej je pokazujemy.
+ * `re` sprawdza nazwę z listy programów Windows (DisplayName, np. „Microsoft 365 Apps for business - pl-pl”),
+ * `store` nazwę pakietu Microsoft Store. `windows` to nazwa, którą widzi użytkownik.
+ */
+export const WIN_MATCH: { windows: string; name: string; id: string; re: RegExp; store?: RegExp }[] = [
+  { windows: "Microsoft Office", name: "LibreOffice", id: "org.libreoffice.LibreOffice", re: /^Microsoft (Office|365)\b(?!.*(add-in|runtime|proofing|language|tools|click-to-run))/i },
+  { windows: "Adobe Photoshop", name: "GIMP", id: "org.gimp.GIMP", re: /^Adobe Photoshop(?! Lightroom)/i },
+  { windows: "Google Chrome", name: "Chromium", id: "org.chromium.Chromium", re: /^Google Chrome$/i },
+  { windows: "Spotify", name: "Spotify", id: "com.spotify.Client", re: /^Spotify\b/i, store: /^SpotifyAB\.SpotifyMusic$/i },
+  { windows: "Steam", name: "Steam", id: "com.valvesoftware.Steam", re: /^Steam$/i },
+  { windows: "Discord", name: "Discord", id: "com.discordapp.Discord", re: /^Discord$/i },
+  { windows: "Zoom", name: "Zoom", id: "us.zoom.Zoom", re: /^Zoom( Workplace)?\b/i },
+  { windows: "Adobe Illustrator", name: "Inkscape", id: "org.inkscape.Inkscape", re: /^Adobe Illustrator/i },
+  { windows: "Adobe Premiere Pro", name: "Kdenlive", id: "org.kde.kdenlive", re: /^Adobe Premiere/i },
+  { windows: "Adobe Lightroom", name: "darktable", id: "org.darktable.Darktable", re: /^Adobe (Photoshop )?Lightroom/i },
+  { windows: "Epic Games", name: "Heroic", id: "com.heroicgameslauncher.hgl", re: /^Epic Games Launcher/i },
+  { windows: "GOG Galaxy", name: "Heroic", id: "com.heroicgameslauncher.hgl", re: /^GOG Galaxy/i },
+  { windows: "Visual Studio Code", name: "Visual Studio Code", id: "com.visualstudio.code", re: /^Microsoft Visual Studio Code/i },
+  { windows: "VLC", name: "VLC", id: "org.videolan.VLC", re: /^VLC media player/i, store: /^VideoLAN\.VLC$/i },
+  { windows: "OBS Studio", name: "OBS Studio", id: "com.obsproject.Studio", re: /^OBS Studio/i },
+  { windows: "Thunderbird", name: "Thunderbird", id: "org.mozilla.Thunderbird", re: /^Mozilla Thunderbird/i },
+  { windows: "LibreOffice", name: "LibreOffice", id: "org.libreoffice.LibreOffice", re: /^LibreOffice\b/i },
+  { windows: "GIMP", name: "GIMP", id: "org.gimp.GIMP", re: /^GIMP\b/i },
+  { windows: "Krita", name: "Krita", id: "org.kde.krita", re: /^Krita\b/i },
+  { windows: "Inkscape", name: "Inkscape", id: "org.inkscape.Inkscape", re: /^Inkscape\b/i },
+  { windows: "Blender", name: "Blender", id: "org.blender.Blender", re: /^Blender\b/i },
+  { windows: "Audacity", name: "Audacity", id: "org.audacityteam.Audacity", re: /^Audacity\b/i },
+  { windows: "Telegram", name: "Telegram", id: "org.telegram.desktop", re: /^Telegram Desktop/i, store: /^TelegramMessengerLLP\.TelegramDesktop$/i },
+  { windows: "Signal", name: "Signal", id: "org.signal.Signal", re: /^Signal\b/i },
+  { windows: "Slack", name: "Slack", id: "com.slack.Slack", re: /^Slack\b/i },
+];
+
+/** Układ klawiatury Windows (KLID) → układ xkb. Poza tą listą liczy się język układu (4 ostatnie cyfry). */
+export const KLID_XKB: Record<string, string> = {
+  "00000415": "pl", "00010415": "pl(qwertz)", "00000409": "us", "00020409": "us", "00000809": "gb",
+  "00000407": "de", "0000040c": "fr", "0000040a": "es", "00000c0a": "es", "00000405": "cz",
+  "00000422": "ua", "00020422": "ua", "00000419": "ru",
 };
+export const LANGID_XKB: Record<string, string> = {
+  "0415": "pl", "0409": "us", "0809": "gb", "0407": "de", "040c": "fr", "040a": "es", "0c0a": "es", "0405": "cz", "0422": "ua", "0419": "ru",
+};
+/** Stare nazwy stref, które Windows (ICU) może jeszcze zwracać. */
+export const TZ_ALIAS: Record<string, string> = { "Europe/Kiev": "Europe/Kyiv", "Asia/Calcutta": "Asia/Kolkata", "America/Buenos_Aires": "America/Argentina/Buenos_Aires" };
 
 export type ErrKey = "pass" | "dpass" | "space" | "install" | "wifi" | "net";
 export const ERR: Record<ErrKey, { t: string; d: string; p: string; s: string }> = {

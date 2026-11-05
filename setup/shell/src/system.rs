@@ -50,6 +50,7 @@ pub struct Info {
     pub wired: bool,
     pub nvidia: Option<String>,
     pub windows_apps: Option<Vec<String>>,
+    pub store_apps: Option<Vec<String>>,
 }
 
 pub async fn info() -> Info {
@@ -57,16 +58,21 @@ pub async fn info() -> Info {
         .ok()
         .and_then(|s| serde_json::from_str(&s).ok())
         .unwrap_or_default();
-    // Lista z Shrimp Install: tablica nazw albo obiekt { "apps": [...] }.
-    let windows_apps = std::fs::read_to_string(format!("{STATE_DIR}/windows-apps.json"))
+    // Lista programów z Shrimp Install (post-install.sh kopiuje shrimp.json z nośnika).
+    let (windows_apps, store_apps) = std::fs::read_to_string(format!("{STATE_DIR}/shrimp.json"))
         .ok()
         .and_then(|s| serde_json::from_str::<serde_json::Value>(&s).ok())
-        .and_then(|v| {
-            let arr = v.get("apps").cloned().unwrap_or(v);
-            serde_json::from_value::<Vec<String>>(arr).ok()
-        });
+        .map(|v| windows_apps_of(&v))
+        .unwrap_or((None, None));
     let full_name = if h.full_name.is_empty() { real_name() } else { h.full_name };
-    Info { full_name, beside: h.beside, wired: wired_online().await, nvidia: nvidia_gpu(), windows_apps }
+    Info { full_name, beside: h.beside, wired: wired_online().await, nvidia: nvidia_gpu(), windows_apps, store_apps }
+}
+
+/// `apps[].name` i `storeApps` z shrimp.json. Odpowiedniki dobiera interfejs (data.ts › WIN_MATCH).
+pub fn windows_apps_of(v: &serde_json::Value) -> (Option<Vec<String>>, Option<Vec<String>>) {
+    let apps = v["apps"].as_array().map(|a| a.iter().filter_map(|x| x["name"].as_str().map(str::to_string)).collect());
+    let store = v["storeApps"].as_array().map(|a| a.iter().filter_map(|x| x.as_str().map(str::to_string)).collect());
+    (apps, store)
 }
 
 fn real_name() -> String {
@@ -297,6 +303,15 @@ mod tests {
         assert_eq!(n.iter().map(|x| x.ssid.as_str()).collect::<Vec<_>>(), ["Dom 5G", "A:B", "Kawiarnia"]);
         assert!(n[0].secure && !n[2].secure);
         assert_eq!(n[0].strength, 80);
+    }
+
+    #[test]
+    fn windows_apps_from_shrimp_json() {
+        let v = serde_json::json!({ "apps": [{ "name": "Steam", "version": "2.10" }, { "publisher": "x" }], "storeApps": ["SpotifyAB.SpotifyMusic"] });
+        let (a, s) = windows_apps_of(&v);
+        assert_eq!(a.unwrap(), ["Steam"]);
+        assert_eq!(s.unwrap(), ["SpotifyAB.SpotifyMusic"]);
+        assert_eq!(windows_apps_of(&serde_json::json!({})), (None, None));
     }
 
     #[test]
