@@ -1,7 +1,7 @@
 #!/bin/bash
 # Skrypt Agamy po instalacji (scripts.post, chroot: false). System docelowy jest w /mnt.
 # Ustawia pierwsze uruchomienie Shrimp: jednorazowe logowanie automatyczne nowego konta,
-# znacznik dla shrimp-setup --first-boot i pliki przeniesione przez Shrimp Install.
+# znacznik dla shrimp-setup --first-boot, pliki przeniesione przez Shrimp Install i jego wpis UEFI.
 set -euo pipefail
 T=/mnt
 STATE=$T/var/lib/shrimp-setup
@@ -25,7 +25,8 @@ if ! chroot "$T" rpm -q shrimp-setup >/dev/null 2>&1; then
   install -Dm644 /usr/lib/systemd/system/shrimp-app-style.service "$T/usr/lib/systemd/system/shrimp-app-style.service"
   install -Dm644 /usr/lib/systemd/system/shrimp-app-style.path "$T/usr/lib/systemd/system/shrimp-app-style.path"
   install -Dm644 /usr/lib/systemd/user/shrimp-app-style-user.service "$T/usr/lib/systemd/user/shrimp-app-style-user.service"
-  chroot "$T" systemctl enable shrimp-app-style.path || true
+  install -Dm644 /usr/lib/systemd/system/shrimp-nvidia-flatpak.service "$T/usr/lib/systemd/system/shrimp-nvidia-flatpak.service"
+  chroot "$T" systemctl enable shrimp-app-style.path shrimp-nvidia-flatpak.service || true
   chroot "$T" systemctl --global enable shrimp-app-style-user.service || true
 fi
 
@@ -53,15 +54,16 @@ chown "$OWNER" "$T$HOME_DIR/.config/gnome-initial-setup-done"
 chroot "$T" flatpak remote-add --system --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo || \
   log "Flathub zostanie dodany przy pierwszej konfiguracji"
 
-# Pliki i lista programów z Shrimp Install (na nośniku, jeśli były przeniesione).
-for TR in /run/initramfs/live/shrimp-transfer /run/media/*/SHRIMP*/shrimp-transfer; do
-  [ -d "$TR" ] || continue
-  log "przywracam pliki z $TR"
-  [ -f "$TR/windows-apps.json" ] && install -m644 "$TR/windows-apps.json" "$STATE/windows-apps.json"
-  if [ -d "$TR/files" ]; then
-    cp -a "$TR/files/." "$T$HOME_DIR/"
-    chown -R "$OWNER" "$T$HOME_DIR"
-  fi
-  break
-done
+# Pliki i lista programów z Shrimp Install (shrimp-transfer/ na nośniku): foldery Windows trafiają do
+# folderów XDG nowego konta w jego języku, pliki podzielone (> 4 GB) są sklejane, shrimp.json idzie do $STATE.
+if /usr/bin/shrimp-setup --restore --root "$T" --user "$USER_NAME"; then :; else
+  log "bez plików z Shrimp Install"
+fi
+
+# Jednorazowy wpis UEFI „Shrimp Install” (BootNext z Windows) nie jest już potrzebny.
+if command -v efibootmgr >/dev/null && [ -d /sys/firmware/efi ]; then
+  for B in $(efibootmgr | sed -n 's/^Boot\([0-9A-Fa-f]\{4\}\)[* ]*Shrimp Install\b.*/\1/p'); do
+    efibootmgr -q -b "$B" -B && log "usunięto wpis UEFI Boot$B (Shrimp Install)"
+  done
+fi
 log "gotowe"

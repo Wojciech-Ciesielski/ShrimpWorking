@@ -12,20 +12,57 @@ while [ $# -gt 0 ]; do
     *) echo "nieznany argument: $1" >&2; exit 2 ;;
   esac
 done
-STATE=/var/lib/shrimp-setup
+STATE=${SHRIMP_STATE:-/var/lib/shrimp-setup}
 [ -f "$STATE/first-boot" ] || { echo "pierwsza konfiguracja już zakończona" >&2; exit 1; }
 # shellcheck source=/dev/null
-. /usr/share/shrimp-setup/drivers.conf
+. "${SHRIMP_DRIVERS_CONF:-/usr/share/shrimp-setup/drivers.conf}"
+
+# Pierwsza karta NVIDIA: identyfikator urządzenia PCI (np. 0x2504) albo pusto.
+nvidia_device() {
+  local d
+  for d in "${SHRIMP_SYSFS:-/sys}"/bus/pci/devices/*; do
+    [ "$(cat "$d/vendor" 2>/dev/null)" = 0x10de ] || continue
+    case "$(cat "$d/class" 2>/dev/null)" in 0x03*) cat "$d/device"; return ;; esac
+  done
+}
+secure_boot() { mokutil --sb-state 2>/dev/null | grep -qi "SecureBoot enabled"; }
 
 PKGS=()
 [ "$CODECS" = yes ] && read -ra PKGS <<<"$CODEC_PACKAGES"
-if [ "$NVIDIA" = nvidia ]; then
-  if [ -n "$NVIDIA_REPO" ]; then
-    zypper --non-interactive addrepo --refresh --gpgcheck-allow-unsigned-repo "$NVIDIA_REPO" "$NVIDIA_REPO_ALIAS" 2>/dev/null || true
-    zypper --non-interactive --gpg-auto-import-keys refresh "$NVIDIA_REPO_ALIAS" || true
-    read -ra NV <<<"$NVIDIA_PACKAGES"; PKGS+=("${NV[@]}")
+
+# Polecenia wykonywane w nowej migawce (transactional-update run), wszystko naraz.
+NV_SCRIPT=""
+DEV=$(nvidia_device)
+if [ "$NVIDIA" = nvidia ] && [ -n "$DEV" ]; then
+  if [ $((DEV)) -ge $((NVIDIA_TURING_MIN_ID)) ]; then
+    NV_KIND=open
+  elif secure_boot; then
+    NV_KIND=none
+    echo "shrimp-setup-apply: starsza karta NVIDIA ($DEV) i Secure Boot: zostaje sterownik otwarty" >&2
   else
-    echo "shrimp-setup-apply: repozytorium NVIDIA nie jest ustawione, pomijam sterownik" >&2
+    NV_KIND=legacy
+  fi
+  if [ "$NV_KIND" != none ]; then
+    NV_SCRIPT=$(cat <<SCRIPT
+set -e
+zypper --non-interactive install --no-recommends $NVIDIA_REPO_PACKAGE \\
+  || zypper --non-interactive addrepo --refresh "$NVIDIA_REPO_URL" $NVIDIA_REPO_ALIAS || true
+zypper --non-interactive --gpg-auto-import-keys refresh
+pick() { for p in "\$@"; do zypper --non-interactive --quiet search --match-exact "\$p" >/dev/null 2>&1 && echo "\$p"; done; }
+if [ $NV_KIND = open ]; then
+  for S in $NVIDIA_OPEN_SERIES; do
+    P=\$(echo "$NVIDIA_OPEN_PACKAGES" | sed "s/@S@/\$S/g")
+    set -- \$P
+    if zypper --non-interactive --quiet search --match-exact "\$1" >/dev/null 2>&1; then
+      zypper --non-interactive install --auto-agree-with-licenses \$(pick \$P); exit 0
+    fi
+  done
+  echo "brak pakietów otwartego sterownika NVIDIA" >&2; exit 1
+else
+  zypper --non-interactive install --auto-agree-with-licenses \$(pick $NVIDIA_LEGACY_PACKAGES)
+fi
+SCRIPT
+)
   fi
 fi
 
@@ -36,8 +73,19 @@ if [ ${#PKGS[@]} -gt 0 ]; then
   for p in "${PKGS[@]}"; do
     if zypper --non-interactive --quiet search --match-exact "$p" >/dev/null 2>&1; then AVAIL+=("$p"); else echo "brak pakietu: $p" >&2; fi
   done
-  if [ ${#AVAIL[@]} -gt 0 ] && transactional-update --non-interactive pkg install --no-recommends "${AVAIL[@]}" >&2; then
+  if [ ${#AVAIL[@]} -gt 0 ]; then
+    NV_SCRIPT="zypper --non-interactive install --no-recommends ${AVAIL[*]}
+$NV_SCRIPT"
+  fi
+fi
+if [ -n "$NV_SCRIPT" ]; then
+  # Jedna migawka: kodeki i sterownik razem, aktywne po restarcie.
+  if transactional-update --non-interactive run bash -c "$NV_SCRIPT" >&2; then
     REBOOT=yes
+    # Po restarcie: pasujące biblioteki GL NVIDIA dla aplikacji z Flathub (np. Steam).
+    [ -n "$DEV" ] && [ "$NVIDIA" = nvidia ] && touch "$STATE/nvidia-flatpak"
+  else
+    echo "shrimp-setup-apply: transactional-update nie powiodło się" >&2
   fi
 fi
 

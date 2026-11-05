@@ -1,6 +1,8 @@
 // Dane z makiety: podgląd w przeglądarce (npm run dev) i zrzuty ekranów bez Agamy.
-// ?fail=install|net|wifi wymusza błąd, ?nvidia=0 ukrywa kartę NVIDIA, ?wired=1 pomija Sieć.
-import { LANGS, REGIONS, KEYBOARDS, WIN_EQUIV } from "../data";
+// ?fail=install|net|wifi wymusza błąd, ?nvidia=0 ukrywa kartę NVIDIA, ?wired=1 pomija Sieć,
+// ?bitlocker=1 udaje dysk z BitLockerem (dane z Shrimp Install).
+import { LANGS, REGIONS, KEYBOARDS } from "../data";
+import { mapWindowsApps } from "../logic";
 import { InstallError, OfflineError, WifiError, type Disk, type FirstBootBackend, type InstallBackend, type InstallPlan, type Network, type Progress } from "./types";
 
 const q = new URLSearchParams(location.search);
@@ -23,7 +25,11 @@ async function simulate(onProgress: (p: Progress) => void, phases: [number, stri
   onProgress({ percent: 100, phase: "Gotowe" });
 }
 
+/** Nazwy z listy programów Windows, tak jak zapisuje je Shrimp Install. */
+const WIN_NAMES = ["Microsoft 365 Apps for business - pl-pl", "Adobe Photoshop 2024", "Google Chrome", "Spotify", "Steam", "Discord", "Zoom Workplace", "7-Zip 24.08 (x64)"];
+
 export const demoInstall: InstallBackend = {
+  async transfer() { return q.get("bitlocker") === "1" ? { bitlocker: true } : null; },
   async languages() { return LANGS; },
   async regions() { return REGIONS; },
   async keyboards() { return KEYBOARDS; },
@@ -48,7 +54,7 @@ export const demoFirstBoot: FirstBootBackend = {
       beside: true,
       wired: q.get("wired") === "1",
       nvidia: q.get("nvidia") === "0" ? null : "NVIDIA GeForce RTX 3060",
-      windowsApps: Object.entries(WIN_EQUIV).map(([windows, e]) => ({ windows, ...e })),
+      windowsApps: mapWindowsApps(WIN_NAMES),
     };
   },
   async networks() { return NETS; },

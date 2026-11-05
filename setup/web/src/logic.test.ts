@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { slug, firstName, proposals, windowsList, mapWindowsApps } from "./logic";
+import { slug, firstName, proposals, windowsList, mapWindowsApps, klidToXkb, prefill } from "./logic";
+import { LANGS, REGIONS, KEYBOARDS } from "./data";
 import { configFromPlan, disksFromSystem, phaseOf } from "./backend/agama";
 import type { InstallPlan } from "./backend/types";
 
@@ -12,16 +13,46 @@ describe("konto", () => {
 });
 
 describe("programy", () => {
-  const win = mapWindowsApps(["Microsoft Office", "Spotify", "Nieznany program"]);
+  const win = mapWindowsApps(["Spotify", "Microsoft 365 Apps for business - pl-pl", "Microsoft Office Proofing Tools 2016 - Polski", "Nieznany program"]);
   it("mapuje programy Windows na odpowiedniki i pomija nieznane", () => {
     expect(win.map((w) => w.id)).toEqual(["org.libreoffice.LibreOffice", "com.spotify.Client"]);
-    expect(windowsList(win)[0].label).toContain("→");
+    expect(windowsList(win)[0].label).toBe('Microsoft Office<span class="arr">→</span>LibreOffice');
     expect(windowsList(win)[1].label).toBe("Spotify");
+  });
+  it("rozpoznaje nazwy z wersją, pakiety Store i nie powtarza odpowiedników", () => {
+    const w = mapWindowsApps(["Adobe Photoshop 2024", "Adobe Photoshop Lightroom Classic", "Zoom Workplace", "Epic Games Launcher", "GOG GALAXY", "Google Chrome"], ["SpotifyAB.SpotifyMusic", "Microsoft.WindowsCalculator"]);
+    expect(w.map((x) => x.windows)).toEqual(["Adobe Photoshop", "Google Chrome", "Spotify", "Zoom", "Adobe Lightroom", "Epic Games"]);
+    expect(mapWindowsApps(["Microsoft Office File Validation Add-In"])).toEqual([]);
   });
   it("proponuje maks. 5 programów na zmianę z kategorii, bez tych z Windows", () => {
     const p = proposals([true, false, false, false, true], win).map((x) => x.id);
     expect(p).toEqual(["org.videolan.VLC", "org.mozilla.Thunderbird"]);
     expect(proposals([true, true, true, true, true], null)).toHaveLength(5);
+  });
+});
+
+describe("shrimp install", () => {
+  const known = KEYBOARDS.map((k) => k.keymap);
+  it("tłumaczy układ klawiatury Windows na xkb", () => {
+    expect(klidToXkb("00000415", known)).toBe("pl");
+    expect(klidToXkb("00010415", known)).toBe("pl(qwertz)");
+    expect(klidToXkb("0000040C", known)).toBe("fr");
+    expect(klidToXkb("00000816", known)).toBeNull();
+    expect(klidToXkb("E0010411", known)).toBeNull();
+  });
+  it("podpowiada język, strefę, klawiaturę i konto", () => {
+    const p = prefill({ user: { name: "Jan", fullName: "Jan Kowalski" }, locale: { language: "de-DE", timezone: "Europe/Kiev", keyboards: ["E0010411", "00000407"] } }, LANGS, REGIONS, KEYBOARDS);
+    expect(LANGS[p.lang].locale).toBe("de_DE.UTF-8");
+    expect(REGIONS[p.region].tz).toBe("Europe/Kyiv");
+    expect(KEYBOARDS[p.kb].keymap).toBe("de");
+    expect([p.full, p.user]).toEqual(["Jan Kowalski", "jan"]);
+  });
+  it("bez strefy bierze domyślną dla języka; nieznany język zostawia domyślne", () => {
+    const p = prefill({ locale: { language: "pl-PL", timezone: null }, user: { fullName: "Łucja Nowak" } }, LANGS, REGIONS, KEYBOARDS);
+    expect(REGIONS[p.region].tz).toBe("Europe/Warsaw");
+    expect(p.user).toBe("lucja");
+    const q = prefill({ locale: { language: "xx-XX" } }, LANGS, REGIONS, KEYBOARDS);
+    expect([q.lang, q.region, q.kb]).toEqual([-1, -1, -1]);
   });
 });
 
@@ -57,6 +88,17 @@ describe("agama", () => {
       },
     });
     expect(d).toEqual([{ device: "/dev/sda", name: "WD Blue", sizeGB: 500, windows: { partition: "/dev/sda3", minGB: 141, poolGB: 490 } }]);
+  });
+  it("rozpoznaje Windows zaszyfrowany BitLockerem", () => {
+    const d = disksFromSystem({
+      storage: {
+        devices: [{
+          sid: 1, name: "/dev/nvme0n1", block: { size: 256e9 },
+          partitions: [{ sid: 3, name: "/dev/nvme0n1p3", block: { size: 250e9 }, filesystem: { type: "bitlocker" } }],
+        }],
+      },
+    });
+    expect(d[0].windows).toEqual({ partition: "/dev/nvme0n1p3", minGB: 270, poolGB: 250, bitlocker: true });
   });
   it("tłumaczy postęp Agamy na fazy", () => {
     expect(phaseOf({ stage: "installing", progresses: [{ scope: "manager", index: 2, size: 4, step: "" }, { scope: "software", index: 5, size: 10, step: "" }] }))

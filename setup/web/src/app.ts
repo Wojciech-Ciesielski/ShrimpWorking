@@ -6,8 +6,8 @@ import {
   HELLO, ENCS, HSEC, IPS, DNSS, PROXY, THEMES, DRV, NV, ACCENTS, PLACES, USES, ERR, SHRIMP_MIN_GB,
   DEFAULT_KB, DEFAULT_TZ, slides, type ErrKey, type Lang, type Region, type Keyboard,
 } from "./data";
-import { firstName, slug, proposals, windowsList, tnow, esc } from "./logic";
-import { InstallError, OfflineError, type Backends, type Disk, type FirstBootInfo, type InstallPlan, type Network, type Place } from "./backend/types";
+import { firstName, slug, proposals, windowsList, tnow, esc, prefill, type Prefill } from "./logic";
+import { InstallError, OfflineError, type Backends, type Disk, type FirstBootInfo, type InstallPlan, type Network, type Place, type Transfer } from "./backend/types";
 
 const $ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector(s) as T | null;
 const $$ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => Array.from(r.querySelectorAll(s)) as T[];
@@ -48,6 +48,8 @@ export function start(root: HTMLElement, be: Backends) {
   // --- dane z backendów ---
   let LANGS: Lang[] = [], REGS: Region[] = [], KBS: Keyboard[] = [], DISKS: Disk[] = [], NETS: Network[] = [];
   let INFO: FirstBootInfo = { fullName: "", beside: false, wired: false, nvidia: null, windowsApps: null };
+  /** Dane z Shrimp Install i wartości, które z nich wynikają (język, strefa, klawiatura, konto). */
+  let TR: Transfer | null = null, PRE: Prefill | null = null;
 
   const S = {
     lang: 0, region: 0, kb: 0, place: 0, win: 0, disk: 0, enc: 0, dp: "", dp2: "", online: true,
@@ -61,6 +63,10 @@ export function start(root: HTMLElement, be: Backends) {
   const cur = () => STEPS[step];
   const disk = () => DISKS[S.disk];
   const hasWin = () => !!disk()?.windows;
+  /** Windows zaszyfrowany BitLockerem: tylko „Zamiast Windows”. */
+  const locked = () => hasWin() && (!!disk()!.windows!.bitlocker || !!TR?.bitlocker);
+  /** Minimum dla Shrimp: system + pliki przenoszone z Windows. */
+  const shrimpMin = () => SHRIMP_MIN_GB + Math.ceil((TR?.bytes || 0) / 1e9);
   const beside = () => (be.mode === "install" ? hasWin() && S.place === 0 : INFO.beside);
   const pool = () => disk()?.windows?.poolGB ?? disk()?.sizeGB ?? 0;
   const winMin = () => disk()?.windows?.minGB ?? 0;
@@ -83,11 +89,11 @@ export function start(root: HTMLElement, be: Backends) {
     return `<div class="acts"${o.hid ? " hidden" : ""}>` + (p ? `<button class="btn" data-act="${o.act || "next"}" type="button">${p}</button>` : "") +
       (skip ? `<button class="skip" data-act="${o.skipAct || "skip"}" type="button">${skip}</button>` : "") + "</div>";
   }
-  type Item = string | { t: string; m?: string };
+  type Item = string | { t: string; m?: string; off?: boolean };
   function lst(l: string, items: Item[], curI: number, o: { row?: boolean; scroll?: boolean } = {}) {
     return `<div class="list${o.row ? " row" : ""}${o.scroll ? " scroll" : ""}" data-l="${l}" role="radiogroup">` + items.map((t, j) => {
       const it = typeof t === "string" ? { t } : t;
-      return `<button class="opt${j === curI ? " sel" : ""}" role="radio" aria-checked="${j === curI}" data-i="${j}" type="button"><span class="t">${icon("go-next-symbolic", "mk")}${it.t}</span>` +
+      return `<button class="opt${j === curI ? " sel" : ""}" role="radio" aria-checked="${j === curI}" data-i="${j}" type="button"${it.off ? " disabled" : ""}><span class="t">${icon("go-next-symbolic", "mk")}${it.t}</span>` +
         (it.m ? ` <span class="meta">${it.m}</span>` : "") + "</button>";
     }).join("") + "</div>";
   }
@@ -106,6 +112,7 @@ export function start(root: HTMLElement, be: Backends) {
     if (id === "region") { const r = REGS[S.region]; return r ? r.tzLabel + " · " + tnow(r.tz) : ""; }
     if (id === "dysk") {
       if (sub === 1) return S.enc === 1 ? "Komputer zapyta o to hasło przy każdym uruchomieniu. Bez niego nie odzyskasz danych." : "";
+      if (locked()) return PLACES[1].d + " Obok Windows nie da się zainstalować, bo dysk z Windows jest zaszyfrowany funkcją BitLocker.";
       return hasWin() ? PLACES[S.place].d : "Shrimp zajmie cały dysk " + esc(disk()?.name || "") + "." + (DISKS.some((d) => d.windows) ? " Windows zostaje na drugim dysku." : "");
     }
     if (id === "wyglad") return "Zawsze możesz to zmienić w ustawieniach.";
@@ -128,7 +135,7 @@ export function start(root: HTMLElement, be: Backends) {
           (S.enc === 1 ? `<div class="fields wide" style="margin-top:2.4cqw"><div class="frow">${field("inDp", "Hasło dysku", S.dp, "password")}${field("inDp2", "Powtórz hasło dysku", S.dp2, "password")}</div></div>` : "") +
           `<p class="desc" id="desc">${descFor()}</p>`) + acts("Gotowe", "", { act: "done" });
         if (!hasWin()) return logo("6cqw") + head("Gdzie zainstalować Shrimp?") + body(`<p class="desc" id="desc" style="margin-top:0">${descFor()}</p>`) + acts("Dalej", "Zaawansowane", { skipAct: "adv" });
-        return logo("6cqw") + head("Gdzie zainstalować Shrimp?") + body(lst("place", PLACES.map((p) => p.n), S.place) +
+        return logo("6cqw") + head("Gdzie zainstalować Shrimp?") + body(lst("place", PLACES.map((p, j) => ({ t: p.n, off: j === 0 && locked() })), S.place) +
           (S.place === 0
             ? `<div class="split"><div class="sp">Windows<b id="wGB"></b></div><div class="sp r">Shrimp<b id="sGB"></b></div><input class="rng" id="rng" type="range" min="0" max="${pool()}" step="1" value="${S.win}" aria-label="Podział dysku"></div>`
             : `<p class="desc" id="desc">${descFor()}</p>`)) + acts("Dalej", "Zaawansowane", { skipAct: "adv" });
@@ -286,7 +293,7 @@ export function start(root: HTMLElement, be: Backends) {
   }
   function updSplit() {
     const r = $<HTMLInputElement>("#rng"); if (!r) return;
-    const t = pool(), w = Math.max(winMin(), Math.min(t - 20, +r.value)); r.value = String(w); S.win = w;
+    const t = pool(), w = Math.max(winMin(), Math.min(t - shrimpMin(), +r.value)); r.value = String(w); S.win = w;
     r.style.setProperty("--v", String(w / t));
     $("#wGB")!.textContent = w + " GB"; $("#sGB")!.textContent = t - w + " GB";
   }
@@ -330,6 +337,7 @@ export function start(root: HTMLElement, be: Backends) {
   pane.addEventListener("click", (e) => {
     const t = e.target as HTMLElement;
     const o = t.closest(".opt");
+    if (o && (o as HTMLButtonElement).disabled) return;
     if (o) { const l = o.closest(".list")!.getAttribute("data-l")!; if (o.hasAttribute("data-t")) toggle(l, +o.getAttribute("data-t")!); else pick(l, +o.getAttribute("data-i")!); return; }
     const sw = t.closest(".sw");
     if (sw) {
@@ -342,9 +350,10 @@ export function start(root: HTMLElement, be: Backends) {
 
   function defaultSplit() {
     const d = disk(); if (!d?.windows) return;
-    // Domyślnie połowa wolnego ponad minimum Windows, ale Shrimp co najmniej SHRIMP_MIN_GB.
-    const w = Math.round(Math.max(d.windows.minGB, Math.min(d.windows.poolGB - SHRIMP_MIN_GB, d.windows.minGB + (d.windows.poolGB - d.windows.minGB) / 2)));
+    // Domyślnie połowa wolnego ponad minimum Windows, ale Shrimp co najmniej shrimpMin().
+    const w = Math.round(Math.max(d.windows.minGB, Math.min(d.windows.poolGB - shrimpMin(), d.windows.minGB + (d.windows.poolGB - d.windows.minGB) / 2)));
     S.win = w;
+    if (locked()) S.place = 1;
   }
 
   // --- przejścia ---
@@ -383,15 +392,17 @@ export function start(root: HTMLElement, be: Backends) {
       const l = LANGS[S.lang];
       be.install.setLanguage(l.locale).catch(() => {});
       const lc = l.locale.split(".")[0];
-      const tz = REGS.findIndex((r) => r.tz === DEFAULT_TZ[lc]); if (tz >= 0) S.region = tz;
-      const kb = KBS.findIndex((k) => k.keymap === (DEFAULT_KB[lc] || "us")); if (kb >= 0) S.kb = kb;
+      // Język z Windows: strefa i klawiatura też z Windows. Inny język: domyślne dla niego.
+      const same = PRE && PRE.lang === S.lang;
+      const tz = same && PRE!.region >= 0 ? PRE!.region : REGS.findIndex((r) => r.tz === DEFAULT_TZ[lc]); if (tz >= 0) S.region = tz;
+      const kb = same && PRE!.kb >= 0 ? PRE!.kb : KBS.findIndex((k) => k.keymap === (DEFAULT_KB[lc] || "us")); if (kb >= 0) S.kb = kb;
     }
     if (id === "konto") {
       if (!S.confirm) { S.confirm = true; const f2 = $("#f2")!; f2.hidden = false; f2.classList.add("rise"); $<HTMLInputElement>("#inPass2")!.focus(); syncAccount(); return; }
       if (S.pass !== S.pass2) return openErr("pass");
       return go(step + 1);
     }
-    if (id === "dysk" && sub === 0 && beside() && pool() - S.win < SHRIMP_MIN_GB) return openErr("space");
+    if (id === "dysk" && sub === 0 && (beside() ? pool() - S.win : disk()?.sizeGB ?? 0) < shrimpMin()) return openErr("space");
     if (id === "podsumowanie") {
       return guarded(async () => {
         try { await be.install.check(plan()); go(step + 1); }
@@ -479,8 +490,11 @@ export function start(root: HTMLElement, be: Backends) {
     const target = e.target as HTMLElement;
     if (l && SINGLE[l] && (e.key === "ArrowDown" || e.key === "ArrowUp") && !target.closest("input")) {
       e.preventDefault();
-      const opts = $$(".opt", box!), c = opts.findIndex((o) => o.classList.contains("sel"));
-      pick(l, (c + (e.key === "ArrowDown" ? 1 : opts.length - 1)) % opts.length);
+      const opts = $$<HTMLButtonElement>(".opt", box!), c = opts.findIndex((o) => o.classList.contains("sel"));
+      const step1 = e.key === "ArrowDown" ? 1 : opts.length - 1;
+      let n = (c + step1) % opts.length;
+      while (opts[n].disabled && n !== c) n = (n + step1) % opts.length;
+      pick(l, n);
     } else if (e.key === "Enter" && !target.closest("button")) {
       const p = $<HTMLButtonElement>(".btn:not([disabled])", pane); if (p && !p.closest("[hidden]")) { e.preventDefault(); p.click(); }
     }
@@ -490,11 +504,19 @@ export function start(root: HTMLElement, be: Backends) {
   (async () => {
     const q = new URLSearchParams(location.search);
     if (be.mode !== "firstboot") {
-      [LANGS, REGS, KBS, DISKS] = await Promise.all([be.install.languages(), be.install.regions(), be.install.keyboards(), be.install.disks()]);
+      [LANGS, REGS, KBS, DISKS, TR] = await Promise.all([be.install.languages(), be.install.regions(), be.install.keyboards(), be.install.disks(), be.install.transfer().catch(() => null)]);
       S.disk = Math.max(0, DISKS.findIndex((d) => d.windows));
       defaultSplit();
       const pl = LANGS.findIndex((l) => l.locale.startsWith("pl_")); if (pl >= 0) S.lang = pl;
       const plk = KBS.findIndex((k) => k.keymap === "pl"); if (plk >= 0) S.kb = plk;
+      if (TR) {
+        PRE = prefill(TR, LANGS, REGS, KBS);
+        if (PRE.lang >= 0) S.lang = PRE.lang;
+        if (PRE.region >= 0) S.region = PRE.region;
+        if (PRE.kb >= 0) { S.kb = PRE.kb; be.install.setKeymap(KBS[S.kb].keymap).catch(() => {}); }
+        if (PRE.full) S.full = PRE.full;
+        if (PRE.user) { S.user = PRE.user; S.userEdited = true; }
+      }
     }
     if (be.mode !== "install") {
       [INFO, NETS] = await Promise.all([be.firstboot.info(), be.firstboot.networks().catch(() => [])]);

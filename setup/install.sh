@@ -21,6 +21,7 @@ install -Dm755 "$HERE/system/libexec/shrimp-setup-apply" "$D/usr/libexec/shrimp-
 install -Dm644 "$HERE/system/polkit/org.shrimp.setup.policy" "$D/usr/share/polkit-1/actions/org.shrimp.setup.policy"
 install -Dm644 "$HERE/system/polkit/50-shrimp-setup.rules" "$D/usr/share/polkit-1/rules.d/50-shrimp-setup.rules"
 install -Dm644 "$HERE/system/autostart/shrimp-setup-first-boot.desktop" "$D/etc/xdg/autostart/shrimp-setup-first-boot.desktop"
+install -Dm644 "$HERE/system/systemd/shrimp-nvidia-flatpak.service" "$D/usr/lib/systemd/system/shrimp-nvidia-flatpak.service"
 install -Dm644 "$HERE/system/agama/shrimp.yaml" "$D/usr/share/agama/products.d/shrimp.yaml"
 
 install -Dm755 "$ROOT/standardize/shrimp-app-style" "$D/usr/bin/shrimp-app-style"

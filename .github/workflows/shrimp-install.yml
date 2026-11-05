@@ -1,0 +1,100 @@
+name: Shrimp Install
+
+on:
+  push:
+    paths: ["shrimp-install/**", ".github/workflows/shrimp-install.yml"]
+  pull_request:
+    paths: ["shrimp-install/**", ".github/workflows/shrimp-install.yml"]
+  workflow_dispatch:
+
+jobs:
+  ui:
+    runs-on: ubuntu-24.04
+    defaults: { run: { working-directory: shrimp-install/ui } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm, cache-dependency-path: shrimp-install/ui/package-lock.json }
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - name: Zrzuty ekranów (jak shrimp-handoff/screenshots/install-*)
+        run: |
+          npm i --no-save playwright
+          npx playwright install --with-deps chromium
+          mkdir -p screens
+          node scripts/screens.mjs screens
+      - uses: actions/upload-artifact@v4
+        with: { name: install-ui-screens, path: shrimp-install/ui/screens }
+      - uses: actions/upload-artifact@v4
+        with: { name: install-ui, path: shrimp-install/ui/dist/index.html }
+
+  windows:
+    needs: ui
+    runs-on: windows-latest
+    defaults: { run: { shell: "msys2 {0}" } }
+    steps:
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: mingw64
+          update: true
+          path-type: inherit
+          install: >-
+            mingw-w64-x86_64-toolchain
+            base-devel
+            autotools
+            unzip
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with: { name: install-ui, path: ui-dist }
+      - name: WebView2 SDK i interfejs
+        run: |
+          SKIP_UI=1 shrimp-install/tools/prepare.sh
+          cp ui-dist/index.html shrimp-install/rufus/src/shrimp/ui.html
+      - name: Kompilacja (fork Rufusa)
+        working-directory: shrimp-install/rufus
+        run: |
+          ./bootstrap.sh
+          ./configure --disable-debug
+          make -j4
+          mkdir -p ../../out
+          cp src/rufus.exe ../../out/shrimp-install.exe
+          strip ../../out/shrimp-install.exe
+          sha256sum ../../out/shrimp-install.exe
+      - name: Dane z Windows (--collect)
+        shell: pwsh
+        run: |
+          $p = Start-Process out\shrimp-install.exe -ArgumentList '--collect', "$PWD\out\collect.json" -PassThru -Wait
+          if ($p.ExitCode -ne 0) { throw "kod wyjścia $($p.ExitCode)" }
+          $j = Get-Content out\collect.json -Raw -Encoding utf8 | ConvertFrom-Json
+          if (-not $j.user.name) { throw 'brak user.name' }
+          if (-not $j.locale.timezone) { throw 'brak locale.timezone' }
+          if ($j.apps.Count -lt 1) { throw 'pusta lista programów' }
+          if ($j.folders.Count -ne 6) { throw 'brak folderów' }
+          "użytkownik: $($j.user.name), strefa: $($j.locale.timezone), programów: $($j.apps.Count), klawiatury: $($j.locale.keyboards -join ',')"
+      - name: Okno z WebView2 (tryb --demo) i zrzuty
+        shell: pwsh
+        run: |
+          Add-Type -AssemblyName System.Windows.Forms, System.Drawing
+          New-Item -ItemType Directory -Force out\screens | Out-Null
+          foreach ($t in 'light', 'dark') {
+            foreach ($s in 'start', 'nosnik', 'pliki', 'postep') {
+              $p = Start-Process out\shrimp-install.exe -ArgumentList '--demo', '--screen', $s, '--theme', $t -PassThru
+              Start-Sleep -Seconds 8
+              $p.Refresh()
+              if ($p.HasExited) { throw "program zakończył się (kod $($p.ExitCode)) na ekranie $s" }
+              $b = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
+              $bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height
+              $g = [System.Drawing.Graphics]::FromImage($bmp)
+              $g.CopyFromScreen($b.Location, [System.Drawing.Point]::Empty, $b.Size)
+              $bmp.Save("$PWD\out\screens\$t-$s.png")
+              $g.Dispose(); $bmp.Dispose()
+              "${t}/${s}: okno '$($p.MainWindowTitle)'"
+              Stop-Process -Id $p.Id -Force
+              Start-Sleep -Seconds 2
+            }
+          }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: shrimp-install, path: out }

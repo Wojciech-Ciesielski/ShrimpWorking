@@ -15,10 +15,22 @@ export interface Disk {
     minGB: number;
     /** Miejsce, które dzielimy suwakiem: partycja Windows + wolne miejsce na dysku. */
     poolGB: number;
+    /** Partycja zaszyfrowana BitLockerem: nie da się jej zmniejszyć, więc nie ma „Obok Windows”. */
+    bitlocker?: boolean;
   };
 }
 
 export type Place = "beside" | "replace" | "whole";
+
+/** Podpowiedzi z Shrimp Install (shrimp-transfer/shrimp.json na nośniku, przez shrimp-setup --install). */
+export interface Transfer {
+  user?: { name?: string; fullName?: string };
+  locale?: { language?: string; format?: string; region?: string; timezone?: string | null; keyboards?: string[] };
+  /** Dysk z Windows zaszyfrowany BitLockerem. */
+  bitlocker?: boolean;
+  /** Pliki do przeniesienia (bajty): tyle miejsca więcej potrzebuje Shrimp. */
+  bytes?: number;
+}
 
 /** Wszystko, co zebrały kroki 1–7. */
 export interface InstallPlan {
@@ -50,6 +62,8 @@ export class InstallError extends Error {
 
 /** Część 1: instalacja z nośnika, nad Agamą. */
 export interface InstallBackend {
+  /** Dane z Shrimp Install albo null, gdy nośnik przygotowano inaczej. */
+  transfer(): Promise<Transfer | null>;
   languages(): Promise<Lang[]>;
   regions(): Promise<Region[]>;
   keyboards(): Promise<Keyboard[]>;
