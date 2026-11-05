@@ -33,7 +33,7 @@ jobs:
   windows:
     needs: ui
     runs-on: windows-latest
-    defaults: { run: { shell: msys2 {0} } }
+    defaults: { run: { shell: "msys2 {0}" } }
     steps:
       - uses: msys2/setup-msys2@v2
         with:
