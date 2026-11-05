@@ -58,6 +58,10 @@ def t():
     return time.time() - T0
 
 
+class VMGone(Exception):
+    """QEMU exited (e.g. the guest powered off)."""
+
+
 class QMP:
     def __init__(self, path):
         for _ in range(100):
@@ -82,7 +86,7 @@ class QMP:
         while True:
             line = self.f.readline()
             if not line:
-                raise SystemExit("QMP closed (QEMU exited)")
+                raise VMGone()
             r = json.loads(line)
             if "return" in r:
                 return r["return"]
@@ -250,9 +254,12 @@ try:
 
     # Lock screen: clock, then the password prompt, then unlock.
     keys("meta_l", "l")
-    pause(6)
-    shot("lock", keep_duplicates=True)
     pause(4)
+    shot("lock-blank", keep_duplicates=True)
+    keys("shift")  # wake the screen: the clock, no password prompt yet
+    pause(3)
+    shot("lock", keep_duplicates=True)
+    pause(3)
     shot("lock", keep_duplicates=True)
     keys("spc")
     pause(3)
@@ -274,9 +281,14 @@ try:
     wait_shooting(t() + 6, 1, "powerdown")
     keys("ret")  # confirm a power-off dialog if one appears
     wait_shooting(t() + 60, 1, "shutdown")
+except VMGone:
+    print(f"[{t():6.1f}s] QEMU exited", flush=True)
 finally:
     if qemu.poll() is None:
-        qmp.cmd("quit")
+        try:
+            qmp.cmd("quit")
+        except VMGone:
+            pass
         qemu.wait(10)
     with open(os.path.join(OUT, "shots.json"), "w") as f:
         json.dump(shots, f, indent=1)

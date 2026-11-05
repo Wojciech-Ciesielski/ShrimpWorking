@@ -73,6 +73,10 @@
         <package name="gnome-shell-extensions-common"/>
         <!-- DING (Desktop Icons) needs the GnomeDesktop 3.0 introspection data -->
         <package name="typelib-1_0-GnomeDesktop-3_0"/>
+        <!-- Apps Menu needs GMenu (gnome-menus); Desktop Icons and Dash to Dock need gvfs for trash:// -->
+        <package name="typelib-1_0-GMenu-3_0"/>
+        <package name="gvfs"/>
+        <package name="gvfs-backends"/>
         <package name="nautilus"/>
         <package name="gnome-console"/>
         <package name="gnome-keyring"/>
