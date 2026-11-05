@@ -1,5 +1,5 @@
 AC_INIT([rufus],[4.16],[https://github.com/pbatard/rufus/issues],[rufus],[https://rufus.ie])
-AM_INIT_AUTOMAKE([-Wno-portability foreign no-dist no-dependencies])
+AM_INIT_AUTOMAKE([-Wno-portability foreign no-dist no-dependencies subdir-objects])
 AC_CONFIG_SRCDIR([src/rufus.c])
 AC_CONFIG_MACRO_DIR([m4])
 AM_SILENT_RULES([yes])

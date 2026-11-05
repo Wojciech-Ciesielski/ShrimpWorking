@@ -47,6 +47,7 @@
 #include "localization.h"
 
 #include "ui.h"
+#include "shrimp/shrimp.h"
 #include "vhd.h"
 #include "wue.h"
 #include "drive.h"
@@ -1494,6 +1495,7 @@ out:
 	dont_display_image_name = FALSE;
 	dont_process_dbt_devnodes = FALSE;
 	PrintInfo(0, MSG_210);
+	ShrimpOnImageScanned(image_path != NULL);	/* SHRIMP */
 	ExitThread(0);
 }
 
@@ -2847,7 +2849,9 @@ static INT_PTR CALLBACK MainCallback(HWND hDlg, UINT message, WPARAM wParam, LPA
 		safe_release_dc(hDlg, hDC);
 		apply_localization(IDD_DIALOG, hDlg);
 		// The AppStore version always enables Fido
-		if (appstore_version)
+		if (shrimp_mode)	/* SHRIMP: bez pytania o aktualizacje Rufusa */
+			;
+		else if (appstore_version)
 			SetFidoCheck();
 		else
 			SetUpdateCheck();
@@ -2859,7 +2863,7 @@ static INT_PTR CALLBACK MainCallback(HWND hDlg, UINT message, WPARAM wParam, LPA
 		EnableControls(TRUE, FALSE);
 		UpdateImage(FALSE);
 		// The AppStore version does not need the internal check for updates
-		if (!appstore_version)
+		if (!appstore_version && !shrimp_mode)	/* SHRIMP */
 			CheckForUpdates(FALSE);
 		// Register MEDIA_INSERTED/MEDIA_REMOVED notifications for card readers
 		if (SUCCEEDED(SHGetSpecialFolderLocation(0, CSIDL_DESKTOP, &pidlDesktop))) {
@@ -3164,6 +3168,7 @@ static INT_PTR CALLBACK MainCallback(HWND hDlg, UINT message, WPARAM wParam, LPA
 				unattend_xml_path = NULL;
 			}
 			EnableControls(TRUE, FALSE);
+			ShrimpOnFormatDone(RUFUS_ERROR(ERROR_CANCELLED));	/* SHRIMP */
 			break;
 		}
 		ErrorStatus = RUFUS_ERROR((wParam == BOOTCHECK_DOWNLOAD_ERROR) ? APPERR(ERROR_CANT_DOWNLOAD) : ERROR_GEN_FAILURE);
@@ -3250,6 +3255,7 @@ static INT_PTR CALLBACK MainCallback(HWND hDlg, UINT message, WPARAM wParam, LPA
 				Notification(MB_ICONERROR | MB_CLOSE, lmprintf(MSG_042), lmprintf(MSG_043, StrError(ErrorStatus, FALSE)));
 			}
 		}
+		ShrimpOnFormatDone(ErrorStatus);	/* SHRIMP */
 		ErrorStatus = 0;
 		LastWriteError = 0;
 		return (INT_PTR)TRUE;
@@ -3406,6 +3412,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// though this *STILL* does not prevent the Windows default of looking for DLLs in the
 	// current directories.
 	SetDefaultDllDirectories(LOAD_LIBRARY_SEARCH_SYSTEM32);
+	ShrimpInit();	/* SHRIMP */
 
 	uprintf("*** " APPLICATION_NAME " init ***\n");
 	its_a_me_mario = GetUserNameA((char*)(uintptr_t)&u, &size) && (u == 7104878);
@@ -3547,7 +3554,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 			while ((((uintptr_t)tmp) > ((uintptr_t)argv[0])) && (*tmp != '\\'))
 				tmp--;
 			// Need to take 'ALPHA' into account
-			if ((strchr(tmp, 'p') != NULL) || ((strchr(tmp, 'P') != NULL) && (strchr(tmp, 'P')[1] != 'H')))
+			if (!shrimp_mode && ((strchr(tmp, 'p') != NULL) || ((strchr(tmp, 'P') != NULL) && (strchr(tmp, 'P')[1] != 'H'))))	/* SHRIMP */
 				ini_flags[0] = 'a';
 
 			// Now enable the hogger before processing the rest of the arguments.
@@ -3860,7 +3867,7 @@ relaunch:
 	if (get_loc_data_file(loc_file, selected_locale))
 		WriteSettingStr(SETTING_LOCALE, selected_locale->txt[0]);
 
-	if (!vc) {
+	if (!vc && !shrimp_mode) {	/* SHRIMP: to nasza kompilacja */
 		if (MessageBoxExU(NULL, lmprintf(MSG_296), lmprintf(MSG_295),
 			MB_YESNO | MB_ICONWARNING | MB_IS_RTL | MB_SYSTEMMODAL, selected_langid) != IDYES)
 			goto out;
@@ -3893,8 +3900,11 @@ relaunch:
 	if (!SetAlertPromptHook())
 		uprintf("WARNING: Could not set alert prompt hook");
 
-	ShowWindow(hDlg, SW_SHOWNORMAL);
-	UpdateWindow(hDlg);
+	// SHRIMP: główne okno Rufusa zostaje ukryte, interfejs to okno Shrimp Install
+	if (!ShrimpStart(hInstance, hDlg)) {
+		ShowWindow(hDlg, SW_SHOWNORMAL);
+		UpdateWindow(hDlg);
+	}
 
 	// Do our own event processing and process "magic" commands
 	while(GetMessage(&msg, NULL, 0, 0)) {

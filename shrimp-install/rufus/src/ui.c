@@ -41,6 +41,7 @@
 #include "localization.h"
 
 #include "ui.h"
+#include "shrimp/shrimp.h"
 #include "ui_data.h"
 
 UINT_PTR UM_LANGUAGE_MENU_MAX = UM_LANGUAGE_MENU;
@@ -1295,6 +1296,7 @@ void UpdateProgress(int op, float percent)
 	// Reduce the refresh rate, to avoid weird effects on the sliding part of progress bar
 	if (GetTickCount64() > LastRefresh + (2 * MAX_REFRESH)) {
 		LastRefresh = GetTickCount64();
+		ShrimpOnProgress(pos, MAX_PROGRESS);	/* SHRIMP */
 		SendMessage(hProgress, PBM_SETPOS, (WPARAM)pos, 0);
 		SetTaskbarProgressValue(pos, MAX_PROGRESS);
 	}

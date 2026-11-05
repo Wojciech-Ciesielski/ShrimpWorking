@@ -825,6 +825,13 @@ LONG ValidateSignature(HWND hDlg, const char* path)
 // For once, I'd like to find code samples from *OTHER PEOPLE* who went through this ordeal first...
 BOOL ValidateOpensslSignature(BYTE* pbBuffer, DWORD dwBufferLen, BYTE* pbSignature, DWORD dwSigLen)
 {
+	return ValidateOpensslSignatureWithKey(pbBuffer, dwBufferLen, pbSignature, dwSigLen, rsa_pubkey_modulus, sizeof(rsa_pubkey_modulus));
+}
+
+/* SHRIMP: ten sam kod z kluczem podanym przez wywołującego (manifest Shrimp ma własny klucz). */
+BOOL ValidateOpensslSignatureWithKey(BYTE* pbBuffer, DWORD dwBufferLen, BYTE* pbSignature, DWORD dwSigLen,
+	const uint8_t* modulus, size_t modulus_len)
+{
 	HCRYPTPROV hProv = 0;
 	HCRYPTHASH hHash = 0;
 	HCRYPTKEY hPubKey;
@@ -852,9 +859,10 @@ BOOL ValidateOpensslSignature(BYTE* pbBuffer, DWORD dwBufferLen, BYTE* pbSignatu
 	}
 
 	// Reverse the modulus bytes from openssl (and also remove the extra unwanted 0x00)
-	assert(sizeof(rsa_pubkey_modulus) >= sizeof(pbMyPubKey.Modulus));
+	if (modulus_len < sizeof(pbMyPubKey.Modulus) || dwSigLen != sizeof(pbMyPubKey.Modulus))
+		return FALSE;
 	for (i = 0; i < sizeof(pbMyPubKey.Modulus); i++)
-		pbMyPubKey.Modulus[i] = rsa_pubkey_modulus[sizeof(rsa_pubkey_modulus) -1 - i];
+		pbMyPubKey.Modulus[i] = modulus[modulus_len - 1 - i];
 
 	// Import our RSA public key so that the MS API can use it
 	r = CryptImportKey(hProv, (BYTE*)&pbMyPubKey.BlobHeader, dwMyPubKeyLen, 0, 0, &hPubKey);
