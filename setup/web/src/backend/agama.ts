@@ -2,7 +2,9 @@
 // Interfejs jest serwowany przez agama-web-server (--web-ui-dir), więc /api/* to ten sam origin,
 // a token z nośnika (/run/agama/token) trafia do ciasteczka przez /login?token=… (robi to shrimp-setup).
 import { LANGS, REGIONS, KEYBOARDS, WINDOWS_SPARE_GB, type Lang, type Region, type Keyboard } from "../data";
-import { InstallError, type Disk, type InstallBackend, type InstallPlan, type Progress } from "./types";
+import { InstallError, type Disk, type InstallBackend, type InstallPlan, type Progress, type Transfer } from "./types";
+
+declare global { interface Window { SHRIMP_TRANSFER?: Transfer } }
 
 const GB = 1e9;
 const PRODUCT = { id: "Shrimp", mode: "immutable" };
@@ -27,6 +29,7 @@ interface ADevice {
   block?: { size: number; systems?: string[]; shrinking?: { supported: boolean; minSize?: number } };
   drive?: { vendor?: string; model?: string };
   filesystem?: { type: string };
+  encryption?: { type?: string; method?: string };
   partition?: { efi: boolean; id?: string };
   partitionTable?: { unusedSlots: { start: number; size: number }[] };
   partitions?: ADevice[];
@@ -46,9 +49,12 @@ export function disksFromSystem(sys: ASystem): Disk[] {
     const sizeGB = Math.floor(d.block!.size / GB);
     const name = [d.drive?.vendor, d.drive?.model].filter(Boolean).join(" ").trim() || d.description || d.name;
     const parts = d.partitions || [];
+    const bySize = (a: ADevice, b: ADevice) => (b.block?.size || 0) - (a.block?.size || 0);
+    // BitLocker: Agama nie zajrzy do środka, więc rozpoznajemy go po typie (nazwa zależy od wersji libstorage-ng).
+    const locked = parts.filter((p) => /bitlocker/i.test(JSON.stringify([p.filesystem, p.encryption, p.block?.systems]))).sort(bySize)[0];
     const win = parts
       .filter((p) => p.filesystem?.type === "ntfs" && (p.block?.systems || []).some((s) => /windows/i.test(s)))
-      .sort((a, b) => (b.block?.size || 0) - (a.block?.size || 0))[0];
+      .sort(bySize)[0] || locked;
     const disk: Disk = { device: d.name, name, sizeGB };
     if (win && win.block) {
       const free = (d.partitionTable?.unusedSlots || []).reduce((s, u) => s + u.size, 0);
@@ -58,6 +64,7 @@ export function disksFromSystem(sys: ASystem): Disk[] {
         partition: win.name,
         minGB: Math.ceil(used / GB) + WINDOWS_SPARE_GB,
         poolGB: Math.floor((win.block.size + free) / GB),
+        ...(win === locked ? { bitlocker: true } : {}),
       };
     }
     return disk;
@@ -108,6 +115,7 @@ export class AgamaBackend implements InstallBackend {
   private sys: Promise<ASystem> | null = null;
   private system() { return (this.sys ||= get<ASystem>("/api/system")); }
 
+  async transfer() { return window.SHRIMP_TRANSFER || null; }
   async languages(): Promise<Lang[]> {
     const ids = new Set(((await this.system()).l10n?.locales || []).map((l) => l.id));
     return ids.size ? LANGS.filter((l) => ids.has(l.locale)) : LANGS;

@@ -1,5 +1,6 @@
 // Czyste funkcje Setup (testy: logic.test.ts).
-import { APPS, WIN_EQUIV, type WinApp } from "./data";
+import { APPS, WIN_MATCH, KLID_XKB, LANGID_XKB, TZ_ALIAS, DEFAULT_TZ, type WinApp, type Lang, type Region, type Keyboard } from "./data";
+import type { Transfer } from "./backend/types";
 
 export const esc = (s: string) =>
   String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -27,9 +28,41 @@ export function windowsList(apps: WinApp[] | null): Pick[] {
   }));
 }
 
-/** Programy z listy Shrimp Install (plik JSON) → odpowiedniki z Flathub. Nieznane pomijamy. */
-export function mapWindowsApps(names: string[]): WinApp[] {
-  return names.filter((n) => WIN_EQUIV[n]).map((n) => ({ windows: n, ...WIN_EQUIV[n] }));
+/**
+ * Programy z shrimp.json (nazwy z listy programów Windows i pakiety Microsoft Store) → odpowiedniki z Flathub,
+ * w kolejności WIN_MATCH, bez powtórzeń. Nieznane pomijamy.
+ */
+export function mapWindowsApps(names: string[], store: string[] = []): WinApp[] {
+  const out: WinApp[] = [];
+  for (const m of WIN_MATCH) {
+    if (out.some((a) => a.id === m.id)) continue;
+    if (names.some((n) => m.re.test(n.trim())) || (m.store && store.some((s) => m.store!.test(s)))) out.push({ windows: m.windows, name: m.name, id: m.id });
+  }
+  return out;
+}
+
+/** Układ Windows (KLID, np. „00000415”) → xkb, jeśli Setup go zna. */
+export function klidToXkb(klid: string, known: string[]): string | null {
+  const k = klid.toLowerCase();
+  const x = KLID_XKB[k] || (/^0000/.test(k) ? LANGID_XKB[k.slice(4)] : undefined);
+  return x && known.includes(x) ? x : null;
+}
+
+export interface Prefill { lang: number; region: number; kb: number; full: string; user: string }
+
+/** Wartości kroków 1–6 z Shrimp Install. -1: brak podpowiedzi (zostaje domyślna). */
+export function prefill(t: Transfer, langs: Lang[], regs: Region[], kbs: Keyboard[]): Prefill {
+  const lc = (t.locale?.language || t.locale?.format || "").replace("-", "_");
+  let lang = lc ? langs.findIndex((l) => l.locale.startsWith(lc + ".")) : -1;
+  if (lang < 0 && lc) lang = langs.findIndex((l) => l.locale.startsWith(lc.split("_")[0] + "_"));
+  const tz = t.locale?.timezone ? TZ_ALIAS[t.locale.timezone] || t.locale.timezone : lang >= 0 ? DEFAULT_TZ[langs[lang].locale.split(".")[0]] : undefined;
+  const region = tz ? regs.findIndex((r) => r.tz === tz) : -1;
+  const keys = kbs.map((k) => k.keymap);
+  const x = (t.locale?.keyboards || []).map((k) => klidToXkb(k, keys)).find((k) => k);
+  const kb = x ? keys.indexOf(x) : -1;
+  const full = (t.user?.fullName || "").trim();
+  const user = slug(t.user?.name || "") || slug(firstName(full, ""));
+  return { lang, region, kb, full, user };
 }
 
 /** „Proponowane programy”: maks. 5, po jednym z każdej wybranej kategorii na zmianę, bez duplikatów i bez tych z Windows. */
