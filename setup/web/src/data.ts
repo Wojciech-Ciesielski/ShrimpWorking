@@ -1,131 +1,131 @@
-// Stałe treści Setup. Teksty dokładnie jak w makiecie (shrimp-handoff/mockups/setup.html).
+import catalog from "./windows-apps.json";
+import { GNOME_LOCALES, LANGS as KNOWN } from "../../../i18n/langs";
+// Stałe dane Setup. Teksty są w i18n/setup (klucze); tu zostają identyfikatory, kolejność i dane techniczne.
 
-export interface Lang { name: string; locale: string }
-export interface Region { label: string; tz: string; tzLabel: string }
-export interface Keyboard { name: string; keymap: string }
+/** `tag` to język tłumaczeń (i18n), `locale` identyfikator locale dla Agamy. */
+export interface Lang { name: string; locale: string; tag: string }
+/** Kraj (kod ISO), strefa czasowa i klucz miasta, gdy kraj ma kilka stref. Nazwy liczy Intl, miasta tłumaczy i18n. */
+export interface Region { code: string; tz: string; city?: string }
+/** Układ xkb; nazwa to język (i kraj) z Intl, `note` to klucz tłumaczenia wariantu. */
+export interface Keyboard { keymap: string; lang: string; region?: string; note?: string }
 
-/** ~22 języki w kolejności z makiety, z identyfikatorem locale Agamy. */
-export const LANGS: Lang[] = [
-  ["Polski", "pl_PL"], ["English", "en_US"], ["Deutsch", "de_DE"], ["Español", "es_ES"], ["Français", "fr_FR"],
-  ["Italiano", "it_IT"], ["Čeština", "cs_CZ"], ["Slovenčina", "sk_SK"], ["Українська", "uk_UA"], ["Nederlands", "nl_NL"],
-  ["Português", "pt_PT"], ["Svenska", "sv_SE"], ["Norsk", "nb_NO"], ["Dansk", "da_DK"], ["Suomi", "fi_FI"],
-  ["Magyar", "hu_HU"], ["Lietuvių", "lt_LT"], ["Română", "ro_RO"], ["Türkçe", "tr_TR"], ["Ελληνικά", "el_GR"],
-  ["日本語", "ja_JP"], ["中文", "zh_CN"],
-].map(([name, l]) => ({ name, locale: l + ".UTF-8" }));
+/** Wszystkie języki GNOME. Agama pokaże te, które zna system. */
+export const LANGS: Lang[] = GNOME_LOCALES.map(([l, tag, name]) => ({ name: name || KNOWN.find((k) => k.tag === tag)?.name || tag, locale: l + ".UTF-8", tag }));
 
-/** Kraje (kraje z wieloma strefami rozbite na miasta), strefa, polska nazwa strefy. */
 export const REGIONS: Region[] = ([
-  ["Polska", "Europe/Warsaw", "Europa/Warszawa"], ["Niemcy", "Europe/Berlin", "Europa/Berlin"], ["Austria", "Europe/Vienna", "Europa/Wiedeń"],
-  ["Belgia", "Europe/Brussels", "Europa/Bruksela"], ["Chorwacja", "Europe/Zagreb", "Europa/Zagrzeb"], ["Czechy", "Europe/Prague", "Europa/Praga"],
-  ["Dania", "Europe/Copenhagen", "Europa/Kopenhaga"], ["Estonia", "Europe/Tallinn", "Europa/Tallinn"], ["Finlandia", "Europe/Helsinki", "Europa/Helsinki"],
-  ["Francja", "Europe/Paris", "Europa/Paryż"], ["Grecja", "Europe/Athens", "Europa/Ateny"], ["Hiszpania", "Europe/Madrid", "Europa/Madryt"],
-  ["Hiszpania · Wyspy Kanaryjskie", "Atlantic/Canary", "Atlantyk/Wyspy Kanaryjskie"], ["Holandia", "Europe/Amsterdam", "Europa/Amsterdam"],
-  ["Irlandia", "Europe/Dublin", "Europa/Dublin"], ["Islandia", "Atlantic/Reykjavik", "Atlantyk/Reykjavík"], ["Litwa", "Europe/Vilnius", "Europa/Wilno"],
-  ["Łotwa", "Europe/Riga", "Europa/Ryga"], ["Norwegia", "Europe/Oslo", "Europa/Oslo"], ["Portugalia", "Europe/Lisbon", "Europa/Lizbona"],
-  ["Rumunia", "Europe/Bucharest", "Europa/Bukareszt"], ["Słowacja", "Europe/Bratislava", "Europa/Bratysława"], ["Szwajcaria", "Europe/Zurich", "Europa/Zurych"],
-  ["Szwecja", "Europe/Stockholm", "Europa/Sztokholm"], ["Turcja", "Europe/Istanbul", "Europa/Stambuł"], ["Ukraina", "Europe/Kyiv", "Europa/Kijów"],
-  ["Węgry", "Europe/Budapest", "Europa/Budapeszt"], ["Wielka Brytania", "Europe/London", "Europa/Londyn"], ["Włochy", "Europe/Rome", "Europa/Rzym"],
-  ["Stany Zjednoczone · Nowy Jork", "America/New_York", "Ameryka/Nowy Jork"], ["Stany Zjednoczone · Chicago", "America/Chicago", "Ameryka/Chicago"],
-  ["Stany Zjednoczone · Denver", "America/Denver", "Ameryka/Denver"], ["Stany Zjednoczone · Los Angeles", "America/Los_Angeles", "Ameryka/Los Angeles"],
-  ["Kanada · Toronto", "America/Toronto", "Ameryka/Toronto"], ["Kanada · Vancouver", "America/Vancouver", "Ameryka/Vancouver"],
-  ["Meksyk", "America/Mexico_City", "Ameryka/Meksyk"], ["Brazylia", "America/Sao_Paulo", "Ameryka/São Paulo"], ["Argentyna", "America/Argentina/Buenos_Aires", "Ameryka/Buenos Aires"],
-  ["Zjednoczone Emiraty Arabskie", "Asia/Dubai", "Azja/Dubaj"], ["Izrael", "Asia/Jerusalem", "Azja/Jerozolima"], ["Indie", "Asia/Kolkata", "Azja/Kalkuta"],
-  ["Tajlandia", "Asia/Bangkok", "Azja/Bangkok"], ["Chiny", "Asia/Shanghai", "Azja/Szanghaj"], ["Korea Południowa", "Asia/Seoul", "Azja/Seul"],
-  ["Japonia", "Asia/Tokyo", "Azja/Tokio"], ["Australia · Sydney", "Australia/Sydney", "Australia/Sydney"], ["Australia · Perth", "Australia/Perth", "Australia/Perth"],
-  ["Nowa Zelandia", "Pacific/Auckland", "Pacyfik/Auckland"], ["Republika Południowej Afryki", "Africa/Johannesburg", "Afryka/Johannesburg"], ["Egipt", "Africa/Cairo", "Afryka/Kair"],
-] as const).map(([label, tz, tzLabel]) => ({ label, tz, tzLabel }));
+  ["PL", "Europe/Warsaw"], ["DE", "Europe/Berlin"], ["AT", "Europe/Vienna"], ["BE", "Europe/Brussels"], ["HR", "Europe/Zagreb"], ["CZ", "Europe/Prague"],
+  ["DK", "Europe/Copenhagen"], ["EE", "Europe/Tallinn"], ["FI", "Europe/Helsinki"], ["FR", "Europe/Paris"], ["GR", "Europe/Athens"], ["ES", "Europe/Madrid"],
+  ["ES", "Atlantic/Canary", "canary"], ["NL", "Europe/Amsterdam"], ["IE", "Europe/Dublin"], ["IS", "Atlantic/Reykjavik"], ["LT", "Europe/Vilnius"],
+  ["LV", "Europe/Riga"], ["NO", "Europe/Oslo"], ["PT", "Europe/Lisbon"], ["RO", "Europe/Bucharest"], ["SK", "Europe/Bratislava"], ["CH", "Europe/Zurich"],
+  ["SE", "Europe/Stockholm"], ["TR", "Europe/Istanbul"], ["UA", "Europe/Kyiv"], ["HU", "Europe/Budapest"], ["GB", "Europe/London"], ["IT", "Europe/Rome"],
+  ["BG", "Europe/Sofia"], ["SI", "Europe/Ljubljana"], ["RS", "Europe/Belgrade"], ["BA", "Europe/Sarajevo"], ["MK", "Europe/Skopje"], ["AL", "Europe/Tirane"],
+  ["ME", "Europe/Podgorica"], ["LU", "Europe/Luxembourg"], ["MT", "Europe/Malta"], ["CY", "Asia/Nicosia"], ["BY", "Europe/Minsk"], ["MD", "Europe/Chisinau"],
+  ["FO", "Atlantic/Faroe"], ["RU", "Europe/Moscow"],
+  ["US", "America/New_York", "newyork"], ["US", "America/Chicago", "chicago"], ["US", "America/Denver", "denver"], ["US", "America/Los_Angeles", "losangeles"],
+  ["CA", "America/Toronto", "toronto"], ["CA", "America/Vancouver", "vancouver"], ["MX", "America/Mexico_City"], ["BR", "America/Sao_Paulo"],
+  ["AR", "America/Argentina/Buenos_Aires"], ["CL", "America/Santiago"], ["CO", "America/Bogota"], ["PE", "America/Lima"], ["VE", "America/Caracas"],
+  ["UY", "America/Montevideo"],
+  ["AE", "Asia/Dubai"], ["SA", "Asia/Riyadh"], ["IQ", "Asia/Baghdad"], ["IR", "Asia/Tehran"], ["IL", "Asia/Jerusalem"], ["JO", "Asia/Amman"], ["LB", "Asia/Beirut"],
+  ["GE", "Asia/Tbilisi"], ["AM", "Asia/Yerevan"], ["AZ", "Asia/Baku"], ["KZ", "Asia/Almaty"], ["UZ", "Asia/Tashkent"], ["KG", "Asia/Bishkek"], ["TJ", "Asia/Dushanbe"],
+  ["MN", "Asia/Ulaanbaatar"], ["IN", "Asia/Kolkata"], ["PK", "Asia/Karachi"], ["BD", "Asia/Dhaka"], ["LK", "Asia/Colombo"], ["NP", "Asia/Kathmandu"],
+  ["BT", "Asia/Thimphu"], ["MM", "Asia/Yangon"], ["TH", "Asia/Bangkok"], ["LA", "Asia/Vientiane"], ["KH", "Asia/Phnom_Penh"], ["VN", "Asia/Ho_Chi_Minh"],
+  ["MY", "Asia/Kuala_Lumpur"], ["SG", "Asia/Singapore"], ["ID", "Asia/Jakarta"], ["PH", "Asia/Manila"], ["CN", "Asia/Shanghai"], ["TW", "Asia/Taipei"],
+  ["HK", "Asia/Hong_Kong"], ["KR", "Asia/Seoul"], ["JP", "Asia/Tokyo"],
+  ["AU", "Australia/Sydney", "sydney"], ["AU", "Australia/Perth", "perth"], ["NZ", "Pacific/Auckland"],
+  ["ZA", "Africa/Johannesburg"], ["EG", "Africa/Cairo"], ["ET", "Africa/Addis_Ababa"], ["KE", "Africa/Nairobi"], ["NG", "Africa/Lagos"], ["DZ", "Africa/Algiers"],
+  ["MA", "Africa/Casablanca"], ["RW", "Africa/Kigali"], ["MG", "Indian/Antananarivo"],
+] as [string, string, string?][]).map(([code, tz, city]) => ({ code, tz, city }));
 
 /** Układy klawiatury; identyfikatory w formacie Agamy (xkb „układ(wariant)”). */
-export const KEYBOARDS: Keyboard[] = [
-  ["Polski (programisty)", "pl"], ["Polski (maszynistki)", "pl(qwertz)"], ["Angielski (USA)", "us"],
-  ["Angielski (Wielka Brytania)", "gb"], ["Niemiecki", "de"], ["Francuski", "fr"], ["Hiszpański", "es"],
-  ["Czeski", "cz"], ["Ukraiński", "ua"], ["Rosyjski", "ru"],
-].map(([name, keymap]) => ({ name, keymap }));
+export const KEYBOARDS: Keyboard[] = ([
+  ["pl", "pl", "", "kb.programmer"], ["pl(qwertz)", "pl", "", "kb.typist"], ["us", "en", "US"], ["gb", "en", "GB"], ["de", "de"], ["fr", "fr"], ["es", "es"],
+  ["cz", "cs"], ["ua", "uk"], ["ru", "ru"], ["it", "it"], ["pt", "pt", "PT"], ["br", "pt", "BR"], ["latam", "es", "419"], ["nl", "nl"], ["be", "nl", "BE"],
+  ["ch", "de", "CH"], ["ca", "fr", "CA"], ["sk", "sk"], ["se", "sv"], ["no", "nb"], ["dk", "da"], ["fi", "fi"], ["hu", "hu"], ["lt", "lt"], ["lv", "lv"],
+  ["ee", "et"], ["ro", "ro"], ["bg", "bg"], ["hr", "hr"], ["si", "sl"], ["rs", "sr"], ["ba", "bs"], ["mk", "mk"], ["al", "sq"], ["gr", "el"], ["tr", "tr"],
+  ["is", "is"], ["ie", "ga"], ["mt", "mt"], ["by", "be"], ["ge", "ka"], ["am", "hy"], ["az", "az"], ["kz", "kk"], ["kg", "ky"], ["uz", "uz"], ["tj", "tg"],
+  ["mn", "mn"], ["il", "he"], ["ara", "ar"], ["ir", "fa"], ["in", "hi"], ["lk", "si"], ["np", "ne"], ["mm", "my"], ["th", "th"], ["la", "lo"], ["kh", "km"],
+  ["vn", "vi"], ["ph", "fil"], ["jp", "ja"], ["kr", "ko"], ["cn", "zh"], ["et", "am"],
+] as [string, string, string?, string?][]).map(([keymap, lang, region, note]) => ({ keymap, lang, region: region || undefined, note }));
 
-/** Domyślny układ dla języka (pierwszy krok wpływa na kolejne). */
-export const DEFAULT_KB: Record<string, string> = {
-  pl_PL: "pl", en_US: "us", de_DE: "de", es_ES: "es", fr_FR: "fr", cs_CZ: "cz", uk_UA: "ua",
+/** Domyślny układ dla języka (locale z krajem ma pierwszeństwo przed samym językiem). */
+const KB_FOR: Record<string, string> = {
+  pl: "pl", en: "us", en_GB: "gb", de: "de", fr: "fr", es: "es", it: "it", pt_PT: "pt", pt_BR: "br", nl: "nl", cs: "cz", sk: "sk", uk: "ua", ru: "ru",
+  sv: "se", nb: "no", nn: "no", da: "dk", fi: "fi", hu: "hu", lt: "lt", lv: "lv", et: "ee", ro: "ro", bg: "bg", hr: "hr", sl: "si", sr: "rs", bs: "ba",
+  mk: "mk", sq: "al", el: "gr", tr: "tr", is: "is", ga: "ie", gd: "gb", cy: "gb", ja: "jp", ko: "kr", zh: "cn", ar: "ara", he: "il", fa: "ir", hi: "in",
+  bn: "in", ta: "in", te: "in", mr: "in", gu: "in", kn: "in", ml: "in", pa: "in", as: "in", or: "in", si: "lk", ne: "np", my: "mm", th: "th", lo: "la",
+  km: "kh", vi: "vn", ka: "ge", hy: "am", az: "az", kk: "kz", ky: "kg", uz: "uz", tg: "tj", mn: "mn", be: "by", mt: "mt", am: "et", ca: "es", eu: "es", gl: "es",
 };
-export const DEFAULT_TZ: Record<string, string> = {
-  pl_PL: "Europe/Warsaw", de_DE: "Europe/Berlin", es_ES: "Europe/Madrid", fr_FR: "Europe/Paris", it_IT: "Europe/Rome",
-  cs_CZ: "Europe/Prague", sk_SK: "Europe/Bratislava", uk_UA: "Europe/Kyiv", nl_NL: "Europe/Amsterdam", pt_PT: "Europe/Lisbon",
-  sv_SE: "Europe/Stockholm", nb_NO: "Europe/Oslo", da_DK: "Europe/Copenhagen", fi_FI: "Europe/Helsinki", hu_HU: "Europe/Budapest",
-  lt_LT: "Europe/Vilnius", ro_RO: "Europe/Bucharest", tr_TR: "Europe/Istanbul", el_GR: "Europe/Athens", ja_JP: "Asia/Tokyo",
-  zh_CN: "Asia/Shanghai",
-};
+export function defaultKeymap(locale: string): string {
+  const [lang, cc] = locale.split(/[.@]/)[0].split("_");
+  return KB_FOR[`${lang}_${cc}`] || KB_FOR[lang] || "us";
+}
+/** Domyślna strefa dla języka: pierwszy region z kodem kraju z locale (pl_PL → PL). */
+export function defaultTz(locale: string): string | undefined {
+  const cc = locale.split(/[.@]/)[0].split("_")[1];
+  return REGIONS.find((r) => r.code === cc)?.tz;
+}
 
 export const HELLO = ["Witaj", "Hello", "Hallo", "Bonjour", "Hola", "Ciao"];
-export const ENCS = ["Wyłączone", "Włączone"];
-export const HSEC = ["Brak", "WPA2", "WPA3"];
-export const IPS = ["Automatyczny <em>(Zalecane)</em>", "Ręczny"];
-export const DNSS = ["Automatyczny <em>(Zalecane)</em>", "Cloudflare", "Google"];
-export const PROXY = ["Brak", "Automatyczny"];
-export const THEMES = ["Jasny", "Ciemny"];
-export const DRV = ["Zainstaluj <em>(Zalecane)</em>", "Zrobię to później"];
-export const NV = ["Sterownik NVIDIA <em>(Zalecane)</em>", "Sterownik otwarty"];
+/** Klucze tłumaczeń (lub zwykły tekst, jeśli nie ma takiego klucza). Pierwszy element tych list jest zalecany. */
+export const ENCS = ["enc.off", "enc.on"];
+export const HSEC = ["none", "WPA2", "WPA3"];
+export const IPS = ["auto", "net.manual"];
+export const DNSS = ["auto", "Cloudflare", "Google"];
+export const PROXY = ["none", "auto"];
+export const THEMES = ["look.light", "look.dark"];
+export const DRV = ["drv.install", "drv.later"];
+export const NV = ["nv.driver", "nv.open"];
 
-/** Kolory dodatkowe GNOME: nazwa, wartość `accent-color`, kolor. */
+/** Kolory dodatkowe GNOME: klucz nazwy, wartość `accent-color`, kolor. */
 export const ACCENTS: [string, string, string][] = [
-  ["Niebieski", "blue", "#3584e4"], ["Morski", "teal", "#2190a4"], ["Zielony", "green", "#3a944a"],
-  ["Żółty", "yellow", "#c88800"], ["Pomarańczowy", "orange", "#ed5b00"], ["Czerwony", "red", "#e62d42"],
-  ["Różowy", "pink", "#d56199"], ["Fioletowy", "purple", "#9141ac"], ["Szary", "slate", "#6f8396"],
+  ["acc.blue", "blue", "#3584e4"], ["acc.teal", "teal", "#2190a4"], ["acc.green", "green", "#3a944a"],
+  ["acc.yellow", "yellow", "#c88800"], ["acc.orange", "orange", "#ed5b00"], ["acc.red", "red", "#e62d42"],
+  ["acc.pink", "pink", "#d56199"], ["acc.purple", "purple", "#9141ac"], ["acc.slate", "slate", "#6f8396"],
 ];
 
+/** Gdzie zainstalować: klucz nazwy i klucz opisu. */
 export const PLACES = [
-  { n: "Obok Windows <em>(Zalecane)</em>", d: "" },
-  { n: "Zamiast Windows", d: "Windows zostanie usunięty. Zachowane pliki przeniesiemy do nowego systemu." },
+  { n: "place.beside", d: "" },
+  { n: "place.replace", d: "place.replace.d" },
 ];
 
 /** Minimum dla Shrimp i zapas ponad zajęte miejsce Windows (GB). */
 export const SHRIMP_MIN_GB = 40;
 export const WINDOWS_SPARE_GB = 20;
 
+/** `what` to klucz tłumaczenia opisu. */
 export interface App { id: string; name: string; what: string }
-export const USES = ["Praca i nauka", "Gry", "Twórczość", "Programowanie", "Multimedia"];
+export const USES = ["use.work", "use.games", "use.create", "use.dev", "use.media"];
 /** Kategorie → aplikacje z Flathub (specs/setup.md › Programy). */
 export const APPS: App[][] = [
-  [{ id: "org.libreoffice.LibreOffice", name: "LibreOffice", what: "Dokumenty i arkusze" }, { id: "org.mozilla.Thunderbird", name: "Thunderbird", what: "Poczta" }],
-  [{ id: "com.valvesoftware.Steam", name: "Steam", what: "Gry" }, { id: "com.heroicgameslauncher.hgl", name: "Heroic", what: "Gry z Epic i GOG" }],
-  [{ id: "org.kde.krita", name: "Krita", what: "Rysowanie" }, { id: "org.kde.kdenlive", name: "Kdenlive", what: "Montaż wideo" }, { id: "org.gimp.GIMP", name: "GIMP", what: "Grafika" }],
-  [{ id: "com.visualstudio.code", name: "Visual Studio Code", what: "Edytor kodu" }, { id: "org.gnome.Builder", name: "GNOME Builder", what: "Środowisko pracy" }],
-  [{ id: "org.videolan.VLC", name: "VLC", what: "Filmy i muzyka" }, { id: "com.spotify.Client", name: "Spotify", what: "Muzyka" }],
+  [{ id: "org.libreoffice.LibreOffice", name: "LibreOffice", what: "app.office" }, { id: "net.thunderbird.Thunderbird", name: "Thunderbird", what: "app.mail" }],
+  [{ id: "com.valvesoftware.Steam", name: "Steam", what: "app.games" }, { id: "com.heroicgameslauncher.hgl", name: "Heroic", what: "app.epic" }],
+  [{ id: "org.kde.krita", name: "Krita", what: "app.draw" }, { id: "org.kde.kdenlive", name: "Kdenlive", what: "app.video" }, { id: "org.gimp.GIMP", name: "GIMP", what: "app.graphics" }],
+  [{ id: "com.visualstudio.code", name: "Visual Studio Code", what: "app.code" }, { id: "org.gnome.Builder", name: "GNOME Builder", what: "app.ide" }],
+  [{ id: "org.videolan.VLC", name: "VLC", what: "app.player" }, { id: "com.spotify.Client", name: "Spotify", what: "app.music" }],
 ];
 
 /** Program z Windows (lista zapisana przez Shrimp Install) i jego odpowiednik. */
 export interface WinApp { windows: string; name: string; id: string }
 
 /**
- * Odpowiedniki programów Windows (specs/setup.md), w kolejności, w jakiej je pokazujemy.
+ * Katalog programów Windows (windows-apps.json): cała logika dopasowania jest w danych.
  * `re` sprawdza nazwę z listy programów Windows (DisplayName, np. „Microsoft 365 Apps for business - pl-pl”),
- * `store` nazwę pakietu Microsoft Store. `windows` to nazwa, którą widzi użytkownik.
+ * `store` nazwę pakietu Microsoft Store. Kolejność wpisów = kolejność podpowiedzi. Wpis bez `linux` czeka na odpowiednik.
  */
-export const WIN_MATCH: { windows: string; name: string; id: string; re: RegExp; store?: RegExp }[] = [
-  { windows: "Microsoft Office", name: "LibreOffice", id: "org.libreoffice.LibreOffice", re: /^Microsoft (Office|365)\b(?!.*(add-in|runtime|proofing|language|tools|click-to-run))/i },
-  { windows: "Adobe Photoshop", name: "GIMP", id: "org.gimp.GIMP", re: /^Adobe Photoshop(?! Lightroom)/i },
-  { windows: "Google Chrome", name: "Chromium", id: "org.chromium.Chromium", re: /^Google Chrome$/i },
-  { windows: "Spotify", name: "Spotify", id: "com.spotify.Client", re: /^Spotify\b/i, store: /^SpotifyAB\.SpotifyMusic$/i },
-  { windows: "Steam", name: "Steam", id: "com.valvesoftware.Steam", re: /^Steam$/i },
-  { windows: "Discord", name: "Discord", id: "com.discordapp.Discord", re: /^Discord$/i },
-  { windows: "Zoom", name: "Zoom", id: "us.zoom.Zoom", re: /^Zoom( Workplace)?\b/i },
-  { windows: "Adobe Illustrator", name: "Inkscape", id: "org.inkscape.Inkscape", re: /^Adobe Illustrator/i },
-  { windows: "Adobe Premiere Pro", name: "Kdenlive", id: "org.kde.kdenlive", re: /^Adobe Premiere/i },
-  { windows: "Adobe Lightroom", name: "darktable", id: "org.darktable.Darktable", re: /^Adobe (Photoshop )?Lightroom/i },
-  { windows: "Epic Games", name: "Heroic", id: "com.heroicgameslauncher.hgl", re: /^Epic Games Launcher/i },
-  { windows: "GOG Galaxy", name: "Heroic", id: "com.heroicgameslauncher.hgl", re: /^GOG Galaxy/i },
-  { windows: "Visual Studio Code", name: "Visual Studio Code", id: "com.visualstudio.code", re: /^Microsoft Visual Studio Code/i },
-  { windows: "VLC", name: "VLC", id: "org.videolan.VLC", re: /^VLC media player/i, store: /^VideoLAN\.VLC$/i },
-  { windows: "OBS Studio", name: "OBS Studio", id: "com.obsproject.Studio", re: /^OBS Studio/i },
-  { windows: "Thunderbird", name: "Thunderbird", id: "org.mozilla.Thunderbird", re: /^Mozilla Thunderbird/i },
-  { windows: "LibreOffice", name: "LibreOffice", id: "org.libreoffice.LibreOffice", re: /^LibreOffice\b/i },
-  { windows: "GIMP", name: "GIMP", id: "org.gimp.GIMP", re: /^GIMP\b/i },
-  { windows: "Krita", name: "Krita", id: "org.kde.krita", re: /^Krita\b/i },
-  { windows: "Inkscape", name: "Inkscape", id: "org.inkscape.Inkscape", re: /^Inkscape\b/i },
-  { windows: "Blender", name: "Blender", id: "org.blender.Blender", re: /^Blender\b/i },
-  { windows: "Audacity", name: "Audacity", id: "org.audacityteam.Audacity", re: /^Audacity\b/i },
-  { windows: "Telegram", name: "Telegram", id: "org.telegram.desktop", re: /^Telegram Desktop/i, store: /^TelegramMessengerLLP\.TelegramDesktop$/i },
-  { windows: "Signal", name: "Signal", id: "org.signal.Signal", re: /^Signal\b/i },
-  { windows: "Slack", name: "Slack", id: "com.slack.Slack", re: /^Slack\b/i },
-];
+export interface CatalogApp {
+  windows: string; re: RegExp; store?: RegExp;
+  linux: { name: string; id: string } | null;
+  /** Odpowiednik jest już w systemie, nie instalujemy go. */
+  base?: boolean;
+  /** driver, builtin, unneeded: nic do zaproponowania, bo system robi to sam. */
+  skip?: "driver" | "builtin" | "unneeded";
+}
+interface CatalogJson { apps: { windows: string; re: string; store?: string; linux: { name: string; id: string } | null; base?: boolean; skip?: CatalogApp["skip"] }[] }
+
+export const WIN_CATALOG: CatalogApp[] = (catalog as CatalogJson).apps.map((a) => ({
+  ...a, re: new RegExp(a.re, "i"), store: a.store ? new RegExp(a.store, "i") : undefined,
+}));
 
 /** Układ klawiatury Windows (KLID) → układ xkb. Poza tą listą liczy się język układu (4 ostatnie cyfry). */
 export const KLID_XKB: Record<string, string> = {
@@ -140,25 +140,26 @@ export const LANGID_XKB: Record<string, string> = {
 export const TZ_ALIAS: Record<string, string> = { "Europe/Kiev": "Europe/Kyiv", "Asia/Calcutta": "Asia/Kolkata", "America/Buenos_Aires": "America/Argentina/Buenos_Aires" };
 
 export type ErrKey = "pass" | "dpass" | "space" | "install" | "wifi" | "net";
-export const ERR: Record<ErrKey, { t: string; d: string; p: string; s: string }> = {
-  dpass: { t: "Hasła dysku się różnią", d: "Wpisz to samo hasło w obu polach. Bez niego nie uruchomisz komputera, więc zapisz je w bezpiecznym miejscu.", p: "Spróbuj ponownie", s: "" },
-  pass: { t: "Hasła się różnią", d: "Wpisz to samo hasło w obu polach i spróbuj ponownie.", p: "Spróbuj ponownie", s: "" },
-  space: { t: "Za mało miejsca", d: "Na dysku nie ma wystarczająco miejsca dla Shrimp. Zmniejsz rozmiar Windows lub wybierz inny dysk.", p: "Zmień rozmiar", s: "Wróć" },
-  install: { t: "Instalacja nie powiodła się", d: "Coś poszło nie tak. Twoje pliki są bezpieczne. Możesz spróbować ponownie.", p: "Spróbuj ponownie", s: "Zakończ" },
-  wifi: { t: "Nie udało się połączyć", d: "Sprawdź hasło sieci i spróbuj ponownie.", p: "Spróbuj ponownie", s: "Pomiń" },
-  net: { t: "Brak połączenia z internetem", d: "Nie udało się pobrać programów. Sprawdź połączenie i spróbuj ponownie.", p: "Spróbuj ponownie", s: "Pomiń" },
+/** Klucze tłumaczeń okna błędu: tytuł, opis, przycisk główny, przycisk dodatkowy (opcjonalny). */
+export const ERR: Record<ErrKey, { t: string; d: string; p: string; s?: string }> = {
+  dpass: { t: "err.dpass.t", d: "err.dpass.d", p: "err.retry" },
+  pass: { t: "err.pass.t", d: "err.pass.d", p: "err.retry" },
+  space: { t: "err.space.t", d: "err.space.d", p: "err.space.p", s: "err.space.s" },
+  install: { t: "err.install.t", d: "err.install.d", p: "err.retry", s: "err.install.s" },
+  wifi: { t: "err.wifi.t", d: "err.wifi.d", p: "err.retry", s: "skip" },
+  net: { t: "err.net.t", d: "err.net.d", p: "err.retry", s: "skip" },
 };
 
-export function slides(beside: boolean) {
-  const a: { t: string; d: string }[] = [];
-  a.push({ t: "Shrimp to Linux", d: "Linux to darmowy system tworzony przez ludzi z całego świata. Działa na nim większość serwerów i telefonów z Androidem." });
-  if (beside) a.push({ t: "Windows obok", d: "Przy każdym uruchomieniu wybierzesz Shrimp lub Windows." });
-  a.push({ t: "Programy", d: "Pliki .exe z Windows tu nie działają. Programy instalujesz z Shrimp Apps, a dla większości znanych aplikacji znajdziesz tam odpowiednik." });
-  a.push({ t: "Hasło przy zmianach", d: "Przy instalowaniu programów lub zmianie ważnych ustawień system poprosi o Twoje hasło. To normalne i chroni komputer." });
-  a.push({ t: "Twoje pliki", d: "Dokumenty, zdjęcia i pobrane pliki są w aplikacji Pliki, w folderze domowym." + (beside ? " Tam też znajdziesz dysk z Windows." : "") });
-  a.push({ t: "Panko", d: "Coś przestało działać po zmianie? W Panko wrócisz do stanu sprzed niej." });
-  a.push({ t: "Cocktail", d: "Aktualizacje, sterowniki i kodeki w jednym miejscu. Aktualizacje instalują się przy ponownym uruchomieniu." });
-  a.push({ t: "Szybkie wyszukiwanie", d: "Naciśnij klawisz Super, czyli klawisz z logo Windows, aby znaleźć programy, pliki i ustawienia." });
-  a.push({ t: "Pomoc", d: "Odpowiedzi na pytania znajdziesz na stronach pomocy Shrimp, w dokumentacji GNOME i openSUSE oraz na forach społeczności." });
-  return a;
-}
+/** Slajdy końcowe: klucze tytułu i opisu; `win` tylko gdy Shrimp stoi obok Windows, `extra` dopisek, gdy obok Windows. */
+export const SLIDES: { t: string; d: string; win?: boolean; extra?: string }[] = [
+  { t: "slide.linux.t", d: "slide.linux.d" },
+  { t: "slide.win.t", d: "slide.win.d", win: true },
+  { t: "slide.apps.t", d: "slide.apps.d" },
+  { t: "slide.pass.t", d: "slide.pass.d" },
+  { t: "slide.files.t", d: "slide.files.d", extra: "slide.files.win" },
+  { t: "slide.panko.t", d: "slide.panko.d" },
+  { t: "slide.cocktail.t", d: "slide.cocktail.d" },
+  { t: "slide.search.t", d: "slide.search.d" },
+  { t: "slide.help.t", d: "slide.help.d" },
+];
+export const slides = (beside: boolean) => SLIDES.filter((s) => !s.win || beside);

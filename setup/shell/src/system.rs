@@ -68,7 +68,7 @@ pub async fn info() -> Info {
     Info { full_name, beside: h.beside, wired: wired_online().await, nvidia: nvidia_gpu(), windows_apps, store_apps }
 }
 
-/// `apps[].name` i `storeApps` z shrimp.json. Odpowiedniki dobiera interfejs (data.ts › WIN_MATCH).
+/// `apps[].name` i `storeApps` z shrimp.json. Odpowiedniki dobiera interfejs (windows-apps.json).
 pub fn windows_apps_of(v: &serde_json::Value) -> (Option<Vec<String>>, Option<Vec<String>>) {
     let apps = v["apps"].as_array().map(|a| a.iter().filter_map(|x| x["name"].as_str().map(str::to_string)).collect());
     let store = v["storeApps"].as_array().map(|a| a.iter().filter_map(|x| x.as_str().map(str::to_string)).collect());

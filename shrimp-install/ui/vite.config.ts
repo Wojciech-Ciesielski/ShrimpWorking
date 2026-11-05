@@ -35,5 +35,6 @@ const singleFile = (): Plugin => ({
 export default defineConfig({
   base: "./",
   plugins: [markup(), singleFile()],
+  server: { fs: { allow: ["../.."] } },
   build: { outDir: "dist", assetsInlineLimit: () => true, cssCodeSplit: false, target: "es2022", modulePreload: false },
 });

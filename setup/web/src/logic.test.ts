@@ -1,8 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { slug, firstName, proposals, windowsList, mapWindowsApps, klidToXkb, prefill } from "./logic";
-import { LANGS, REGIONS, KEYBOARDS } from "./data";
+import { LANGS, REGIONS, KEYBOARDS, WIN_CATALOG } from "./data";
 import { configFromPlan, disksFromSystem, phaseOf } from "./backend/agama";
 import type { InstallPlan } from "./backend/types";
+import { createI18n } from "../../../i18n/core";
+import keys from "../../../i18n/setup/_keys.tsv?raw";
+import plTxt from "../../../i18n/setup/pl.txt?raw";
+
+const pl = createI18n(keys, { "pl.txt": plTxt }, ["pl"]);
+const en = createI18n(keys, {}, ["en"]);
 
 describe("konto", () => {
   it("tworzy nazwę użytkownika bez polskich znaków", () => {
@@ -21,13 +27,42 @@ describe("programy", () => {
   });
   it("rozpoznaje nazwy z wersją, pakiety Store i nie powtarza odpowiedników", () => {
     const w = mapWindowsApps(["Adobe Photoshop 2024", "Adobe Photoshop Lightroom Classic", "Zoom Workplace", "Epic Games Launcher", "GOG GALAXY", "Google Chrome"], ["SpotifyAB.SpotifyMusic", "Microsoft.WindowsCalculator"]);
-    expect(w.map((x) => x.windows)).toEqual(["Adobe Photoshop", "Google Chrome", "Spotify", "Zoom", "Adobe Lightroom", "Epic Games"]);
+    expect(w.map((x) => x.windows)).toEqual(["Google Chrome", "Zoom", "Spotify", "Adobe Photoshop", "Adobe Lightroom", "Epic Games Launcher"]);
     expect(mapWindowsApps(["Microsoft Office File Validation Add-In"])).toEqual([]);
   });
   it("proponuje maks. 5 programów na zmianę z kategorii, bez tych z Windows", () => {
-    const p = proposals([true, false, false, false, true], win).map((x) => x.id);
-    expect(p).toEqual(["org.videolan.VLC", "org.mozilla.Thunderbird"]);
-    expect(proposals([true, true, true, true, true], null)).toHaveLength(5);
+    const p = proposals(pl, [true, false, false, false, true], win).map((x) => x.id);
+    expect(p).toEqual(["org.videolan.VLC", "net.thunderbird.Thunderbird"]);
+    expect(proposals(pl, [true, true, true, true, true], null)).toHaveLength(5);
+  });
+});
+
+describe("katalog programów Windows", () => {
+  it("ma co najmniej 500 programów, bez powtórzonych nazw", () => {
+    const real = WIN_CATALOG.filter((a) => !a.skip);
+    expect(real.length).toBeGreaterThanOrEqual(500);
+    const names = WIN_CATALOG.map((a) => a.windows.toLowerCase());
+    expect(new Set(names).size).toBe(names.length);
+  });
+  it("identyfikatory Flathub mają poprawną postać, a wpisy są spójne", () => {
+    for (const a of WIN_CATALOG) {
+      if (a.linux) {
+        expect(a.linux.id, a.windows).toMatch(/^[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+){2,}$/);
+        expect(a.skip, a.windows).toBeUndefined();
+      }
+      if (a.base) expect(a.linux, a.windows).not.toBeNull();
+    }
+  });
+  it("wzorce nie łapią przypadkowych nazw, a większość pasuje do własnej nazwy", () => {
+    for (const a of WIN_CATALOG) {
+      expect(a.re.test(""), a.windows).toBe(false);
+      expect(a.re.test("Nieznany program 1.0"), a.windows).toBe(false);
+    }
+    const own = WIN_CATALOG.filter((a) => a.re.test(a.windows)).length;
+    expect(own / WIN_CATALOG.length).toBeGreaterThan(0.9);
+  });
+  it("pomija sterowniki, składniki systemu i odpowiedniki już zainstalowane", () => {
+    expect(mapWindowsApps(["NVIDIA Graphics Driver 560.94", "Microsoft Visual C++ 2015-2022 Redistributable (x64)", "Avast Free Antivirus", "7-Zip 23.01"])).toEqual([]);
   });
 });
 
@@ -102,6 +137,6 @@ describe("agama", () => {
   });
   it("tłumaczy postęp Agamy na fazy", () => {
     expect(phaseOf({ stage: "installing", progresses: [{ scope: "manager", index: 2, size: 4, step: "" }, { scope: "software", index: 5, size: 10, step: "" }] }))
-      .toEqual({ percent: 37.5, phase: "Instalowanie systemu" });
+      .toEqual({ percent: 37.5, phase: "inst.system" });
   });
 });

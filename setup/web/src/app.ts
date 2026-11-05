@@ -2,11 +2,13 @@
 // Układ, teksty i zachowanie przeniesione z shrimp-handoff/mockups/setup.html; dane i akcje idą przez backendy.
 import logoSrc from "./assets/logo.svg?raw";
 import iconSprite from "./assets/icons.svg?raw";
+import type { I18n } from "../../../i18n/core";
 import {
   HELLO, ENCS, HSEC, IPS, DNSS, PROXY, THEMES, DRV, NV, ACCENTS, PLACES, USES, ERR, SHRIMP_MIN_GB,
-  DEFAULT_KB, DEFAULT_TZ, slides, type ErrKey, type Lang, type Region, type Keyboard,
+  defaultKeymap, defaultTz, slides, type ErrKey, type Lang, type Region, type Keyboard,
 } from "./data";
-import { firstName, slug, proposals, windowsList, tnow, esc, prefill, type Prefill } from "./logic";
+import { firstName, slug, proposals, windowsList, tnow, esc, prefill, regionLabel, zoneName, keyboardName, type Prefill } from "./logic";
+import { load } from "./i18n";
 import { InstallError, OfflineError, type Backends, type Disk, type FirstBootInfo, type InstallPlan, type Network, type Place, type Transfer } from "./backend/types";
 
 const $ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector(s) as T | null;
@@ -20,20 +22,24 @@ const THEME_STEP = idx("wyglad");
 const FIRST_BOOT = idx("czesc");
 
 /** Logo przycięte do ramki kształtu (DESIGN.md › Logo) i barwione kolorem tekstu. */
-const LOGO = logoSrc.replace(/viewBox="[^"]*"/, 'viewBox="-1.1 3.6 184.6 178.5"').replace(/fill="#000"/g, 'fill="currentColor"')
-  .replace("<svg", '<svg class="sh" role="img" aria-label="Logo Shrimp"');
-const logo = (w: string) => `<div class="logo" style="width:${w}">${LOGO}</div>`;
+const LOGO = logoSrc.replace(/viewBox="[^"]*"/, 'viewBox="-1.1 3.6 184.6 178.5"').replace(/fill="#000"/g, 'fill="currentColor"');
 const icon = (name: string, cls = "", label = "") =>
   `<svg class="i ${cls}" ${label ? `role="img" aria-label="${label}"` : 'aria-hidden="true"'}><use href="#${name}"/></svg>`;
 
-export function start(root: HTMLElement, be: Backends) {
+export function start(root: HTMLElement, be: Backends, L0: I18n) {
+  /** Język interfejsu; zmienia się od razu po wyborze języka w kroku „Wybierz język”. */
+  let L = L0;
+  const tr = (k: string, a?: Record<string, string | number>) => L.t(k, a);
+  /** Klucz tłumaczenia albo zwykły tekst (WPA2, Cloudflare…). */
+  const tx = (s: string) => (L.has(s) ? L.t(s) : s);
+  const logo = (w: string) => `<div class="logo" style="width:${w}">${LOGO.replace("<svg", `<svg class="sh" role="img" aria-label="${esc(tr("logo.aria"))}"`)}</div>`;
   document.body.insertAdjacentHTML("afterbegin", `<div hidden>${iconSprite}</div>`);
   root.innerHTML = `
     <div class="screen" id="screen" data-look="light">
       <div class="wall" aria-hidden="true"></div><div class="veil" aria-hidden="true"></div>
-      <button class="back" id="back" type="button" aria-label="Wstecz" hidden>${icon("go-previous-symbolic")}</button>
-      <button class="infobtn" id="infoBtn" type="button" aria-label="Informacje" hidden>${icon("help-about-symbolic")}</button>
-      <div class="pop" id="infoPop" role="tooltip">Sterownik NVIDIA zapewnia pełną wydajność w grach i programach graficznych. Sterownik otwarty jest prostszy, ale działa wolniej.</div>
+      <button class="back" id="back" type="button" hidden>${icon("go-previous-symbolic")}</button>
+      <button class="infobtn" id="infoBtn" type="button" hidden>${icon("help-about-symbolic")}</button>
+      <div class="pop" id="infoPop" role="tooltip"></div>
       <section class="pane" id="pane" aria-live="polite"></section>
       <div class="scrim" id="modal" hidden>
         <div class="dlg" role="alertdialog" aria-modal="true" aria-labelledby="dT" aria-describedby="dD">
@@ -44,6 +50,16 @@ export function start(root: HTMLElement, be: Backends) {
       </div>
     </div>`;
   const screen = $("#screen")!, pane = $("#pane")!, modal = $("#modal")!;
+  /** Teksty poza widokami kroków (zależą od języka). */
+  function chromeText() {
+    document.documentElement.lang = L.lang;
+    // Układ zostaje ten sam, a kierunek tekstu wynika z jego treści (style.css, data-rtl); lustrzane są tylko strzałki i narożniki.
+    document.documentElement.toggleAttribute("data-rtl", L.rtl);
+    $("#back")!.setAttribute("aria-label", tr("back.aria"));
+    $("#infoBtn")!.setAttribute("aria-label", tr("info.aria"));
+    $("#infoPop")!.textContent = tr("nvidia.pop");
+  }
+  chromeText();
 
   // --- dane z backendów ---
   let LANGS: Lang[] = [], REGS: Region[] = [], KBS: Keyboard[] = [], DISKS: Disk[] = [], NETS: Network[] = [];
@@ -72,7 +88,7 @@ export function start(root: HTMLElement, be: Backends) {
   const winMin = () => disk()?.windows?.minGB ?? 0;
   const place = (): Place => (!hasWin() ? "whole" : S.place === 0 ? "beside" : "replace");
   const winApps = () => windowsList(INFO.windowsApps);
-  const props = () => proposals(S.use, INFO.windowsApps);
+  const props = () => proposals(L, S.use, INFO.windowsApps);
   const hasNvidia = () => !!INFO.nvidia;
 
   // --- wygląd: jasny do kroku „Wygląd”, od niego wybrany ---
@@ -107,90 +123,100 @@ export function start(root: HTMLElement, be: Backends) {
   const field = (id: string, label: string, val: string, type = "text", extra = "") =>
     `<div class="f" ${extra}><label for="${id}">${label}</label><input id="${id}" type="${type}" value="${esc(val)}" autocomplete="off" spellcheck="false"></div>`;
 
+  /** Pozycja listy ze znacznikiem „(Zalecane)”. */
+  const rec = (s: string) => `${esc(tx(s))} <em>${esc(tr("recommended"))}</em>`;
+  const plain = (l: string[]) => l.map((s) => esc(tx(s)));
+  const regLabel = (r: Region) => regionLabel(L, r);
+  const kbLabel = (k: Keyboard) => keyboardName(L, k);
+
   function descFor() {
     const id = cur();
-    if (id === "region") { const r = REGS[S.region]; return r ? r.tzLabel + " · " + tnow(r.tz) : ""; }
+    if (id === "region") { const r = REGS[S.region]; return r ? zoneName(L, r.tz) + " · " + tnow(L, r.tz) : ""; }
     if (id === "dysk") {
-      if (sub === 1) return S.enc === 1 ? "Komputer zapyta o to hasło przy każdym uruchomieniu. Bez niego nie odzyskasz danych." : "";
-      if (locked()) return PLACES[1].d + " Obok Windows nie da się zainstalować, bo dysk z Windows jest zaszyfrowany funkcją BitLocker.";
-      return hasWin() ? PLACES[S.place].d : "Shrimp zajmie cały dysk " + esc(disk()?.name || "") + "." + (DISKS.some((d) => d.windows) ? " Windows zostaje na drugim dysku." : "");
+      if (sub === 1) return S.enc === 1 ? tr("disk.enc.warn") : "";
+      if (locked()) return tr(PLACES[1].d) + " " + tr("place.locked");
+      return hasWin() ? (PLACES[S.place].d ? tr(PLACES[S.place].d) : "") : tr("disk.whole", { name: disk()?.name || "" }) + (DISKS.some((d) => d.windows) ? " " + tr("disk.whole.keep") : "");
     }
-    if (id === "wyglad") return "Zawsze możesz to zmienić w ustawieniach.";
-    if (id === "sterowniki") return S.nv === 0 ? "Najlepsza wydajność w grach i programach graficznych." : "Prostszy w działaniu, ale mniej wydajny.";
+    if (id === "wyglad") return tr("look.note");
+    if (id === "sterowniki") return S.nv === 0 ? tr("nv.best") : tr("nv.simple");
     return "";
   }
 
   // --- widoki kroków ---
   function view(): string {
+    const NEXT = tr("next"), SKIP = tr("skip");
     switch (cur()) {
-      case "witaj": return logo("13cqw") + `<h1 class="h1" id="hello">Witaj</h1><p class="sub">Przygotujmy Shrimp na Twoim komputerze.</p>` + acts("Zaczynajmy");
-      case "jezyk": return logo("6cqw") + head("Wybierz język") + body(lst("lang", LANGS.map((l) => l.name), S.lang, { scroll: true })) + acts("Dalej");
-      case "region": return logo("6cqw") + head("Gdzie jesteś?", "Ustawimy strefę czasową i format dat.") +
-        body(lst("region", REGS.map((r) => r.label), S.region, { scroll: true }) + `<p class="desc" id="desc">${descFor()}</p>`) + acts("Dalej");
-      case "klawiatura": return logo("6cqw") + head("Wybierz układ klawiatury") +
-        body(lst("kb", KBS.map((k) => k.name), S.kb, { scroll: true }) + `<div class="fields" style="margin-top:2.2cqw">${field("kbT", "Sprawdź układ", "")}</div>`) + acts("Dalej");
+      case "witaj": return logo("13cqw") + `<h1 class="h1" id="hello">${esc(HELLO[0])}</h1><p class="sub">${esc(tr("welcome.sub"))}</p>` + acts(esc(tr("start")));
+      case "jezyk": return logo("6cqw") + head(esc(tr("lang.title"))) + body(lst("lang", LANGS.map((l) => esc(l.name)), S.lang, { scroll: true })) + acts(esc(NEXT));
+      case "region": return logo("6cqw") + head(esc(tr("region.title")), esc(tr("region.sub"))) +
+        body(lst("region", REGS.map((r) => esc(regLabel(r))), S.region, { scroll: true }) + `<p class="desc" id="desc">${esc(descFor())}</p>`) + acts(esc(NEXT));
+      case "klawiatura": return logo("6cqw") + head(esc(tr("kb.title"))) +
+        body(lst("kb", KBS.map((k) => esc(kbLabel(k))), S.kb, { scroll: true }) + `<div class="fields" style="margin-top:2.2cqw">${field("kbT", esc(tr("kb.test")), "")}</div>`) + acts(esc(NEXT));
       case "dysk": {
-        if (sub === 1) return logo("6cqw") + head("Zaawansowane") + body(`<div class="cols">` +
-          col("Dysk", "disk", DISKS.map((d) => ({ t: esc(d.name), m: `${d.sizeGB} GB · ${d.windows ? "Windows" : "pusty"}` })), S.disk) + col("Szyfrowanie dysku", "enc", ENCS, S.enc) + "</div>" +
-          (S.enc === 1 ? `<div class="fields wide" style="margin-top:2.4cqw"><div class="frow">${field("inDp", "Hasło dysku", S.dp, "password")}${field("inDp2", "Powtórz hasło dysku", S.dp2, "password")}</div></div>` : "") +
-          `<p class="desc" id="desc">${descFor()}</p>`) + acts("Gotowe", "", { act: "done" });
-        if (!hasWin()) return logo("6cqw") + head("Gdzie zainstalować Shrimp?") + body(`<p class="desc" id="desc" style="margin-top:0">${descFor()}</p>`) + acts("Dalej", "Zaawansowane", { skipAct: "adv" });
-        return logo("6cqw") + head("Gdzie zainstalować Shrimp?") + body(lst("place", PLACES.map((p, j) => ({ t: p.n, off: j === 0 && locked() })), S.place) +
+        if (sub === 1) return logo("6cqw") + head(esc(tr("advanced"))) + body(`<div class="cols">` +
+          col(esc(tr("disk.drive")), "disk", DISKS.map((d) => ({ t: esc(d.name), m: `${esc(L.unit(d.sizeGB, "gigabyte"))} · ${esc(d.windows ? "Windows" : tr("disk.empty"))}` })), S.disk) + col(esc(tr("disk.encrypt")), "enc", plain(ENCS), S.enc) + "</div>" +
+          (S.enc === 1 ? `<div class="fields wide" style="margin-top:2.4cqw"><div class="frow">${field("inDp", esc(tr("disk.pass")), S.dp, "password")}${field("inDp2", esc(tr("disk.pass2")), S.dp2, "password")}</div></div>` : "") +
+          `<p class="desc" id="desc">${esc(descFor())}</p>`) + acts(esc(tr("done")), "", { act: "done" });
+        if (!hasWin()) return logo("6cqw") + head(esc(tr("disk.where"))) + body(`<p class="desc" id="desc" style="margin-top:0">${esc(descFor())}</p>`) + acts(esc(NEXT), esc(tr("advanced")), { skipAct: "adv" });
+        return logo("6cqw") + head(esc(tr("disk.where"))) + body(lst("place", PLACES.map((p, j) => ({ t: j === 0 ? rec(p.n) : esc(tr(p.n)), off: j === 0 && locked() })), S.place) +
           (S.place === 0
-            ? `<div class="split"><div class="sp">Windows<b id="wGB"></b></div><div class="sp r">Shrimp<b id="sGB"></b></div><input class="rng" id="rng" type="range" min="0" max="${pool()}" step="1" value="${S.win}" aria-label="Podział dysku"></div>`
-            : `<p class="desc" id="desc">${descFor()}</p>`)) + acts("Dalej", "Zaawansowane", { skipAct: "adv" });
+            ? `<div class="split"><div class="sp">Windows<b id="wGB"></b></div><div class="sp r">Shrimp<b id="sGB"></b></div><input class="rng" id="rng" type="range" min="0" max="${pool()}" step="1" value="${S.win}" aria-label="${esc(tr("disk.split.aria"))}"></div>`
+            : `<p class="desc" id="desc">${esc(descFor())}</p>`)) + acts(esc(NEXT), esc(tr("advanced")), { skipAct: "adv" });
       }
-      case "konto": return logo("6cqw") + head("Utwórz konto", "Będzie potrzebne do logowania.") + body(`<div class="fields wide"><div class="frow">` +
-        field("inFull", "Imię i nazwisko", S.full) + field("inUser", "Nazwa użytkownika", S.user) + "</div>" + field("inPass", "Hasło", S.pass, "password") +
-        field("inPass2", "Potwierdź hasło", S.pass2, "password", 'id="f2"' + (S.confirm ? "" : " hidden")) + "</div>") + acts("Dalej");
+      case "konto": return logo("6cqw") + head(esc(tr("account.title")), esc(tr("account.sub"))) + body(`<div class="fields wide"><div class="frow">` +
+        field("inFull", esc(tr("account.full")), S.full) + field("inUser", esc(tr("account.user")), S.user) + "</div>" + field("inPass", esc(tr("account.pass")), S.pass, "password") +
+        field("inPass2", esc(tr("account.pass2")), S.pass2, "password", 'id="f2"' + (S.confirm ? "" : " hidden")) + "</div>") + acts(esc(NEXT));
       case "podsumowanie": {
-        const rows: [string, string][] = [["Język", LANGS[S.lang]?.name], ["Region", REGS[S.region]?.label], ["Klawiatura", KBS[S.kb]?.name], ["Dysk", esc(disk()?.name || "")],
-          ["Instalacja", place() === "whole" ? "Cały dysk" : place() === "beside" ? "Obok Windows" : "Zamiast Windows"]];
-        if (beside()) rows.push(["Podział dysku", `Windows ${S.win} GB · Shrimp ${pool() - S.win} GB`]);
-        rows.push(["Konto", `${esc(S.full)} (${esc(S.user)})`]);
-        if (S.enc === 1) rows.push(["Szyfrowanie", "Włączone"]);
-        return logo("6cqw") + head("Gotowi do instalacji", "Nic nie zmieni się, dopóki nie klikniesz „Zainstaluj”.") +
-          body(`<div class="sum">${rows.map((r) => `<span>${r[0]}</span><b>${r[1]}</b>`).join("")}</div>`) + acts("Zainstaluj");
+        const rows: [string, string][] = [[tr("sum.lang"), esc(LANGS[S.lang]?.name)], [tr("sum.region"), esc(REGS[S.region] ? regLabel(REGS[S.region]) : "")], [tr("sum.kb"), esc(KBS[S.kb] ? kbLabel(KBS[S.kb]) : "")], [tr("sum.disk"), esc(disk()?.name || "")],
+          [tr("sum.how"), esc(place() === "whole" ? tr("sum.whole") : tr(place() === "beside" ? "place.beside" : "place.replace"))]];
+        if (beside()) rows.push([tr("sum.split"), esc(tr("sum.split.v", { win: L.unit(S.win, "gigabyte"), shrimp: L.unit(pool() - S.win, "gigabyte") }))]);
+        rows.push([tr("sum.account"), `${esc(S.full)} (${esc(S.user)})`]);
+        if (S.enc === 1) rows.push([tr("sum.enc"), esc(tr("enc.on"))]);
+        return logo("6cqw") + head(esc(tr("sum.title")), esc(tr("sum.sub"))) +
+          body(`<div class="sum">${rows.map((r) => `<span>${esc(r[0])}</span><b>${r[1]}</b>`).join("")}</div>`) + acts(esc(tr("sum.go")));
       }
-      case "instalacja": return logo("9cqw") + head("Instalowanie Shrimp") + `<div class="pbar" role="progressbar" aria-label="Instalowanie"><i id="ib"></i></div><div class="cap"><b id="ph">Przygotowanie dysku</b><span id="eta">Pozostało około 11 min</span></div>` + acts("Dalej", "", { hid: true });
-      case "restart": return logo("13cqw") + head("Instalacja zakończona", "Uruchom ponownie komputer, aby dokończyć.") + acts("Uruchom ponownie");
-      case "czesc": return logo("13cqw") + head("Cześć, " + esc(firstName(be.mode === "install" ? S.full : INFO.fullName || S.full)), "Dokończmy konfigurację. To zajmie chwilę.") + acts("Dalej");
+      case "instalacja": return logo("9cqw") + head(esc(tr("inst.title"))) + `<div class="pbar" role="progressbar" aria-label="${esc(tr("inst.aria"))}"><i id="ib"></i></div><div class="cap"><b id="ph">${esc(tr("inst.disk"))}</b><span id="eta">${esc(tr("eta.left", { min: L.num(11, 0) }))}</span></div>` + acts(esc(NEXT), "", { hid: true });
+      case "restart": return logo("13cqw") + head(esc(tr("restart.title")), esc(tr("restart.sub"))) + acts(esc(tr("restart.go")));
+      case "czesc": return logo("13cqw") + head(esc(tr("hi.title", { name: firstName(be.mode === "install" ? S.full : INFO.fullName || S.full, tr("hi.fallback")) })), esc(tr("hi.sub"))) + acts(esc(NEXT));
       case "siec": {
-        if (sub === 1) return logo("6cqw") + head("Ukryta sieć", "Wpisz dane sieci, której nie widać na liście.") + body(`<div class="fields">` + field("inSsid", "Nazwa sieci", S.ssid) +
-          `<div class="f"><label>Zabezpieczenie</label>${lst("hsec", HSEC, S.hsec, { row: true })}</div>` + (S.hsec ? field("inHPass", "Hasło", S.hpass, "password") : "") + "</div>") +
-          acts("Połącz", "Anuluj", { act: "hconnect", skipAct: "cancel" });
-        if (sub === 2) return logo("6cqw") + head("Zaawansowane") + body(`<div class="cols">${col("Adres IP", "ip", IPS, S.ip)}${col("Serwer DNS", "dns", DNSS, S.dns)}${col("Proxy", "proxy", PROXY, S.proxy)}</div>`) + acts("Gotowe", "", { act: "done" });
+        if (sub === 1) return logo("6cqw") + head(esc(tr("net.hiddenlink")), esc(tr("net.hidden.sub"))) + body(`<div class="fields">` + field("inSsid", esc(tr("net.ssid")), S.ssid) +
+          `<div class="f"><label>${esc(tr("net.security"))}</label>${lst("hsec", plain(HSEC), S.hsec, { row: true })}</div>` + (S.hsec ? field("inHPass", esc(tr("account.pass")), S.hpass, "password") : "") + "</div>") +
+          acts(esc(tr("net.connect")), esc(tr("cancel")), { act: "hconnect", skipAct: "cancel" });
+        if (sub === 2) return logo("6cqw") + head(esc(tr("advanced"))) + body(`<div class="cols">${col(esc(tr("net.ip")), "ip", IPS.map((s, j) => (j === 0 ? rec(s) : esc(tx(s)))), S.ip)}${col(esc(tr("net.dns")), "dns", DNSS.map((s, j) => (j === 0 ? rec(s) : esc(tx(s)))), S.dns)}${col(esc(tr("net.proxy")), "proxy", plain(PROXY), S.proxy)}</div>`) + acts(esc(tr("done")), "", { act: "done" });
         const n = NETS[S.net];
-        return logo("6cqw") + head("Połącz z siecią") + body(lst("net", NETS.map((x) => ({ t: esc(x.ssid) + (x.secure ? " " + icon("network-wireless-encrypted-symbolic", "lk", "Zabezpieczona") : ""), m: x.secure ? "" : "Otwarta" })), S.net) +
-          (!n ? "" : n.secure ? `<div class="fields" style="margin-top:1.8cqw">${field("inNet", "Hasło sieci " + esc(n.ssid), S.netPass, "password")}</div>`
-            : `<p class="desc" id="desc" style="margin-top:1.8cqw">Sieć otwarta. Inni mogą widzieć, co w niej robisz.</p>`)) +
-          acts("Dalej", "Pomiń") + `<div class="mini"><button class="mlink" data-act="hid" type="button">Ukryta sieć</button><button class="mlink" data-act="nadv" type="button">Zaawansowane</button></div>`;
+        return logo("6cqw") + head(esc(tr("net.title"))) + body(lst("net", NETS.map((x) => ({ t: esc(x.ssid) + (x.secure ? " " + icon("network-wireless-encrypted-symbolic", "lk", esc(tr("net.secured"))) : ""), m: x.secure ? "" : esc(tr("net.open")) })), S.net) +
+          (!n ? "" : n.secure ? `<div class="fields" style="margin-top:1.8cqw">${field("inNet", esc(tr("net.pass", { ssid: n.ssid })), S.netPass, "password")}</div>`
+            : `<p class="desc" id="desc" style="margin-top:1.8cqw">${esc(tr("net.open.note"))}</p>`)) +
+          acts(esc(NEXT), esc(SKIP)) + `<div class="mini"><button class="mlink" data-act="hid" type="button">${esc(tr("net.hiddenlink"))}</button><button class="mlink" data-act="nadv" type="button">${esc(tr("advanced"))}</button></div>`;
       }
       case "wyglad":
-        if (sub === 1) return logo("6cqw") + head("Wybierz kolor") + body(`<div class="sws" role="radiogroup">` + ACCENTS.map((a, j) =>
-          `<button class="sw" role="radio" aria-checked="${S.accent === j}" aria-label="${a[0]}" data-c="${j}" style="--c:${a[2]}" type="button"></button>`).join("") +
-          `</div><p class="accname" id="accn">${S.accent === null ? "" : ACCENTS[S.accent][0]}</p>`) + acts("Dalej");
-        return logo("6cqw") + head("Wybierz wygląd") + body(lst("theme", THEMES, S.theme === "dark" ? 1 : 0) + `<p class="desc" id="desc">${descFor()}</p>`) + acts("Dalej");
+        if (sub === 1) return logo("6cqw") + head(esc(tr("look.color"))) + body(`<div class="sws" role="radiogroup">` + ACCENTS.map((a, j) =>
+          `<button class="sw" role="radio" aria-checked="${S.accent === j}" aria-label="${esc(tr(a[0]))}" data-c="${j}" style="--c:${a[2]}" type="button"></button>`).join("") +
+          `</div><p class="accname" id="accn">${S.accent === null ? "" : esc(tr(ACCENTS[S.accent][0]))}</p>`) + acts(esc(NEXT));
+        return logo("6cqw") + head(esc(tr("look.title"))) + body(lst("theme", plain(THEMES), S.theme === "dark" ? 1 : 0) + `<p class="desc" id="desc">${esc(descFor())}</p>`) + acts(esc(NEXT));
       case "sterowniki":
-        if (sub === 1) return logo("6cqw") + head("Karta graficzna NVIDIA", `Wykryliśmy kartę ${esc(INFO.nvidia || "NVIDIA")}.`) + body(lst("nv", NV, S.nv) + `<p class="desc" id="desc">${descFor()}</p>`) + acts("Dalej");
-        return logo("6cqw") + head("Obraz i dźwięk bez problemów", "Zainstalujemy potrzebne sterowniki i kodeki, aby filmy oraz gry działały od razu.") + body(lst("drv", DRV, S.drv)) + acts("Dalej");
+        if (sub === 1) return logo("6cqw") + head(esc(tr("nv.title")), esc(tr("nv.sub", { name: INFO.nvidia || "NVIDIA" }))) + body(lst("nv", NV.map((s, j) => (j === 0 ? rec(s) : esc(tx(s)))), S.nv) + `<p class="desc" id="desc">${esc(descFor())}</p>`) + acts(esc(NEXT));
+        return logo("6cqw") + head(esc(tr("drv.title")), esc(tr("drv.sub"))) + body(lst("drv", DRV.map((s, j) => (j === 0 ? rec(s) : esc(tx(s)))), S.drv)) + acts(esc(NEXT));
       case "programy": {
         if (sub === 1) {
           const W = winApps();
-          return logo("5cqw") + head("Twoje programy z Windows", "Znaleźliśmy je na Twoim komputerze. Wybierz, które zainstalować.") + body(tgl("win", W.map((p) => p.label), (j) => S.sel[W[j].key] !== false)) + acts("Dalej", "Pomiń");
+          return logo("5cqw") + head(esc(tr("win.title")), esc(tr("win.sub"))) + body(tgl("win", W.map((p) => p.label), (j) => S.sel[W[j].key] !== false)) + acts(esc(NEXT), esc(SKIP));
         }
         if (sub === 2) {
           const P = props();
-          return logo("5cqw") + head("Proponowane programy", "Wybierz, które zainstalować.") +
-            body(P.length ? tgl("sel", P.map((p) => p.label), (j) => S.sel[P[j].key] !== false) : `<p class="desc">Nic nie wybrano.</p>`) + acts(P.length ? "Zainstaluj" : "", "Pomiń");
+          return logo("5cqw") + head(esc(tr("prop.title")), esc(tr("prop.sub"))) +
+            body(P.length ? tgl("sel", P.map((p) => p.label), (j) => S.sel[P[j].key] !== false) : `<p class="desc">${esc(tr("prop.none"))}</p>`) + acts(P.length ? esc(tr("drv.install")) : "", esc(SKIP));
         }
-        if (sub === 3) return logo("9cqw") + head("Instalowanie programów") + `<div class="pbar" role="progressbar"><i id="ab"></i></div><div class="cap"><b id="aph">Pobieranie</b><span id="aeta">Pozostało około 2 min</span></div>` + acts("Dalej", "", { hid: true });
-        return logo("5cqw") + head("Jak używasz swojego komputera?", "Zainstalujemy najpotrzebniejsze programy.") + body(tgl("use", USES, (j) => S.use[j])) + acts("Dalej", "Pomiń");
+        if (sub === 3) return logo("9cqw") + head(esc(tr("apps.run"))) + `<div class="pbar" role="progressbar"><i id="ab"></i></div><div class="cap"><b id="aph">${esc(tr("apps.phase"))}</b><span id="aeta">${esc(tr("eta.left", { min: L.num(2, 0) }))}</span></div>` + acts(esc(NEXT), "", { hid: true });
+        return logo("5cqw") + head(esc(tr("apps.title")), esc(tr("apps.sub"))) + body(tgl("use", USES.map((s) => esc(tr(s))), (j) => S.use[j])) + acts(esc(NEXT), esc(SKIP));
       }
       case "gotowe": {
         const SL = slides(beside());
-        if (sub >= 1) { const s = SL[sub - 1]; return logo("6cqw") + head(s.t, s.d) + `<p class="count">${sub} z ${SL.length}</p>` + acts(sub === SL.length ? "Zaczynajmy" : "Dalej"); }
-        return logo("13cqw") + head("Wszystko gotowe", "Miłego korzystania z Shrimp.") + acts("Zaczynajmy", "Chcę wiedzieć więcej", { skipAct: "more" });
+        if (sub >= 1) {
+          const s = SL[sub - 1];
+          return logo("6cqw") + head(esc(tr(s.t)), esc(tr(s.d) + (beside() && s.extra ? " " + tr(s.extra) : ""))) + `<p class="count">${esc(tr("slide.count", { n: L.num(sub, 0), total: L.num(SL.length, 0) }))}</p>` + acts(esc(sub === SL.length ? tr("start") : NEXT));
+        }
+        return logo("13cqw") + head(esc(tr("ready.title")), esc(tr("ready.sub"))) + acts(esc(tr("start")), esc(tr("ready.more")), { skipAct: "more" });
       }
     }
   }
@@ -250,8 +276,8 @@ export function start(root: HTMLElement, be: Backends) {
   }
   function setBar(bar: string, ph: string, eta: string, p: { percent: number; phase: string; etaMin?: number }) {
     const b = $(bar); if (b) b.style.width = p.percent + "%";
-    const f = $(ph); if (f) f.textContent = p.phase;
-    const e = $(eta); if (e) e.textContent = p.percent >= 100 ? "" : !p.etaMin ? "" : p.etaMin <= 1 ? "Za chwilę" : `Pozostało około ${p.etaMin} min`;
+    const f = $(ph); if (f) f.textContent = tx(p.phase);
+    const e = $(eta); if (e) e.textContent = p.percent >= 100 ? "" : !p.etaMin ? "" : p.etaMin <= 1 ? tr("eta.soon") : tr("eta.left", { min: L.num(p.etaMin, 0) });
   }
   async function runInstall() {
     const my = step;
@@ -295,7 +321,7 @@ export function start(root: HTMLElement, be: Backends) {
     const r = $<HTMLInputElement>("#rng"); if (!r) return;
     const t = pool(), w = Math.max(winMin(), Math.min(t - shrimpMin(), +r.value)); r.value = String(w); S.win = w;
     r.style.setProperty("--v", String(w / t));
-    $("#wGB")!.textContent = w + " GB"; $("#sGB")!.textContent = t - w + " GB";
+    $("#wGB")!.textContent = L.unit(w, "gigabyte"); $("#sGB")!.textContent = L.unit(t - w, "gigabyte");
   }
   pane.addEventListener("input", (e) => {
     const t = e.target as HTMLInputElement, id = t.id;
@@ -314,9 +340,15 @@ export function start(root: HTMLElement, be: Backends) {
   // --- wybór ---
   const SINGLE: Record<string, 1> = { lang: 1, region: 1, kb: 1, place: 1, disk: 1, enc: 1, net: 1, hsec: 1, ip: 1, dns: 1, proxy: 1, drv: 1, nv: 1, theme: 1 };
   const RELAYOUT: Record<string, 1> = { place: 1, net: 1, hsec: 1, disk: 1, enc: 1 };
+  /** Interfejs od razu przechodzi na wybrany język. */
+  async function langSwitch(i: number) {
+    L = await load([LANGS[i].locale]); chromeText();
+    if (S.lang === i && cur() === "jezyk") render(false);
+  }
   function pick(l: string, i: number) {
     if (l === "theme") { S.theme = i === 1 ? "dark" : "light"; applyLook(); } else (S as unknown as Record<string, number>)[l] = i;
     if (l === "disk") defaultSplit();
+    if (l === "lang") langSwitch(i);
     if (l === "kb") be.install.setKeymap(KBS[i].keymap).catch(() => {});
     if (RELAYOUT[l]) { render(false); return; }
     const box = $<HTMLElement>(`.list[data-l="${l}"]`, pane)!;
@@ -394,8 +426,8 @@ export function start(root: HTMLElement, be: Backends) {
       const lc = l.locale.split(".")[0];
       // Język z Windows: strefa i klawiatura też z Windows. Inny język: domyślne dla niego.
       const same = PRE && PRE.lang === S.lang;
-      const tz = same && PRE!.region >= 0 ? PRE!.region : REGS.findIndex((r) => r.tz === DEFAULT_TZ[lc]); if (tz >= 0) S.region = tz;
-      const kb = same && PRE!.kb >= 0 ? PRE!.kb : KBS.findIndex((k) => k.keymap === (DEFAULT_KB[lc] || "us")); if (kb >= 0) S.kb = kb;
+      const tz = same && PRE!.region >= 0 ? PRE!.region : REGS.findIndex((r) => r.tz === defaultTz(lc)); if (tz >= 0) S.region = tz;
+      const kb = same && PRE!.kb >= 0 ? PRE!.kb : KBS.findIndex((k) => k.keymap === defaultKeymap(lc)); if (kb >= 0) S.kb = kb;
     }
     if (id === "konto") {
       if (!S.confirm) { S.confirm = true; const f2 = $("#f2")!; f2.hidden = false; f2.classList.add("rise"); $<HTMLInputElement>("#inPass2")!.focus(); syncAccount(); return; }
@@ -458,9 +490,9 @@ export function start(root: HTMLElement, be: Backends) {
   // --- okna błędów ---
   function openErr(k: ErrKey) {
     const e = ERR[k]; S.err = k;
-    $("#dT")!.textContent = e.t;
-    $("#dD")!.textContent = k === "wifi" && sub === 0 && NETS[S.net] ? `Sprawdź hasło sieci ${NETS[S.net].ssid} i spróbuj ponownie.` : e.d;
-    $("#dP")!.textContent = e.p; $("#dS")!.textContent = e.s; $("#dS")!.hidden = !e.s;
+    $("#dT")!.textContent = tr(e.t);
+    $("#dD")!.textContent = k === "wifi" && sub === 0 && NETS[S.net] ? tr("err.wifi.ssid", { ssid: NETS[S.net].ssid }) : tr(e.d);
+    $("#dP")!.textContent = tr(e.p); $("#dS")!.textContent = e.s ? tr(e.s) : ""; $("#dS")!.hidden = !e.s;
     modal.hidden = false; $("#dP")!.focus();
   }
   function closeErr() { modal.hidden = true; S.err = null; }
@@ -507,11 +539,13 @@ export function start(root: HTMLElement, be: Backends) {
       [LANGS, REGS, KBS, DISKS, TR] = await Promise.all([be.install.languages(), be.install.regions(), be.install.keyboards(), be.install.disks(), be.install.transfer().catch(() => null)]);
       S.disk = Math.max(0, DISKS.findIndex((d) => d.windows));
       defaultSplit();
-      const pl = LANGS.findIndex((l) => l.locale.startsWith("pl_")); if (pl >= 0) S.lang = pl;
-      const plk = KBS.findIndex((k) => k.keymap === "pl"); if (plk >= 0) S.kb = plk;
+      // Domyślnie język, w którym już mówimy (przeglądarka/system nośnika), a dla niego strefa i klawiatura.
+      const own = Math.max(0, LANGS.findIndex((l) => l.tag === L.tag)); S.lang = own;
+      const ktz = REGS.findIndex((r) => r.tz === defaultTz(LANGS[own].locale)); if (ktz >= 0) S.region = ktz;
+      const plk = KBS.findIndex((k) => k.keymap === defaultKeymap(LANGS[own].locale)); if (plk >= 0) S.kb = plk;
       if (TR) {
         PRE = prefill(TR, LANGS, REGS, KBS);
-        if (PRE.lang >= 0) S.lang = PRE.lang;
+        if (PRE.lang >= 0) { S.lang = PRE.lang; L = await load([LANGS[S.lang].locale]); chromeText(); }
         if (PRE.region >= 0) S.region = PRE.region;
         if (PRE.kb >= 0) { S.kb = PRE.kb; be.install.setKeymap(KBS[S.kb].keymap).catch(() => {}); }
         if (PRE.full) S.full = PRE.full;

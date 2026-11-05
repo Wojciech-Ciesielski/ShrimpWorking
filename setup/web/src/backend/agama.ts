@@ -88,12 +88,12 @@ export function configFromPlan(plan: InstallPlan, extra: { files?: unknown[]; sc
   };
 }
 
-/** Faza instalacji po polsku na podstawie zakresu (scope) postępu Agamy. */
+/** Faza instalacji (klucz tłumaczenia) na podstawie zakresu (scope) postępu Agamy. */
 export function phaseOf(st: AStatus): { percent: number; phase: string } {
   const p = st.progresses.find((x) => x.scope === "manager") || st.progresses[0];
   const sub = st.progresses.find((x) => x.scope !== "manager");
   const scope = sub?.scope || p?.scope || "storage";
-  const phase = scope === "storage" ? "Przygotowanie dysku" : scope === "software" ? "Instalowanie systemu" : "Przywracanie plików";
+  const phase = scope === "storage" ? "inst.disk" : scope === "software" ? "inst.system" : "inst.files";
   let percent = 0;
   if (p && p.size > 0) {
     const inner = sub && sub !== p && sub.size > 0 ? sub.index / sub.size : 0;
@@ -167,7 +167,7 @@ export class AgamaBackend implements InstallBackend {
       await sleep(1000);
       const st = await get<AStatus>("/api/status");
       if (st.stage === "failed") throw new InstallError("install");
-      if (st.stage === "finished") { onProgress({ percent: 100, phase: "Gotowe" }); return; }
+      if (st.stage === "finished") { onProgress({ percent: 100, phase: "done" }); return; }
       const { percent, phase } = phaseOf(st);
       const el = (Date.now() - t0) / 60000;
       const etaMin = percent > 3 ? Math.max(1, Math.ceil((el / percent) * (100 - percent))) : 11;

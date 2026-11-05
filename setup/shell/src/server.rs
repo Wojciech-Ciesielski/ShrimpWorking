@@ -143,7 +143,7 @@ async fn apps_start(State(s): State<App>, Json(a): Json<Apps>) -> Response {
         if i.apps.state == "running" {
             return Json(json!({})).into_response();
         }
-        i.apps = Job { state: "running", percent: 0.0, phase: "Pobieranie i instalowanie".into(), eta_min: None };
+        i.apps = Job { state: "running", percent: 0.0, phase: "apps.phase".into(), eta_min: None };
     }
     let inner = s.inner.clone();
     tokio::spawn(async move {
@@ -153,12 +153,16 @@ async fn apps_start(State(s): State<App>, Json(a): Json<Apps>) -> Response {
         }
         let total = a.ids.len().max(1);
         let t0 = Instant::now();
+        let mut failed = 0;
         for (n, id) in a.ids.iter().enumerate() {
             if let Err(e) = system::install_app(id).await {
                 eprintln!("shrimp-setup: {id}: {}", e.0);
-                let mut i = inner.lock().await;
-                i.apps.state = if system::online().await { "failed" } else { "offline" };
-                return;
+                if !system::online().await {
+                    inner.lock().await.apps.state = "offline";
+                    return;
+                }
+                // Jeden program, którego nie ma we Flathub (albo nie da się go zainstalować), nie zatrzymuje reszty.
+                failed += 1;
             }
             let done = n + 1;
             let per = t0.elapsed().as_secs_f64() / done as f64;
@@ -167,7 +171,7 @@ async fn apps_start(State(s): State<App>, Json(a): Json<Apps>) -> Response {
             i.apps.eta_min = Some(((per * (total - done) as f64) / 60.0).ceil() as u64);
         }
         let mut i = inner.lock().await;
-        i.apps.state = "done";
+        i.apps.state = if failed > 0 && failed == a.ids.len() { "failed" } else { "done" };
         i.apps.percent = 100.0;
     });
     Json(json!({})).into_response()

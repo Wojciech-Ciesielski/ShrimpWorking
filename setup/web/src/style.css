@@ -146,3 +146,14 @@ button, input { font: inherit; color: inherit; }
   .logo { max-width: 40cqw; } .frow { grid-template-columns: 1fr; } .cols { flex-direction: column; align-items: center; gap: 3cqw; } .sws { max-width: 80cqw; }
 }
 @media (prefers-reduced-motion: reduce) { .rise, .pbar.run > i, .dlg, .scrim { animation: none !important; } .pbar.run > i { width: 70%; } .screen, .screen * { transition: none; } }
+
+/* Pismo od prawej do lewej: kierunek każdego tekstu wynika z jego treści, a układ ekranu zostaje taki sam. */
+.h1, .sub, .desc, .cap b, .cap span, .opt .t, .opt .meta, .sum span, .sum b, .f label, .f input, .dlg h2, .dlg p, .btn, .skip, .mlink, .count, .accname, .pop { unicode-bidi: plaintext; }
+html[data-rtl] .back { left: auto; right: 2.2cqw; transform: scaleX(-1); }
+html[data-rtl] .infobtn { right: auto; left: 2.2cqw; }
+html[data-rtl] .pop { right: auto; left: 2.2cqw; text-align: right; }
+html[data-rtl] .opt .mk { right: auto; left: 100%; margin: -0.5em 0 0 0.9cqw; transform: scaleX(-1); }
+html[data-rtl] .f { text-align: right; }
+html[data-rtl] .f label { margin: 0 0.3cqw 0.5cqw 0; }
+html[data-rtl] .sum { direction: rtl; text-align: right; }
+html[data-rtl] .sum span { text-align: left; }
