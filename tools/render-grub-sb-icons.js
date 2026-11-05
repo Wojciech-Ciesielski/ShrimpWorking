@@ -1,0 +1,35 @@
+// Renders the GRUB menu entries as images for Secure Boot (lockdown).
+// The signed GRUB cannot load our PF2 fonts there, so the entry text becomes
+// icons/<class>.png (class os = "Shrimp", class efi = "Ustawienia komputera").
+// Usage: node tools/render-grub-sb-icons.js <out-dir>   (needs playwright + the Inter TTFs in the repo)
+const { chromium } = require('playwright');
+const fs = require('fs');
+const path = require('path');
+
+const out = process.argv[2];
+const fonts = path.resolve(__dirname, '../kiwi/root/usr/share/fonts/truetype/inter');
+const W = 424, H = 77, SIZE = 38;
+const items = [
+  { name: 'os', text: 'Shrimp', weight: 600, color: '#ffffff', file: 'Inter-SemiBold.ttf' },
+  { name: 'efi', text: 'Ustawienia komputera', weight: 400, color: '#8c8c8c', file: 'Inter-Regular.ttf' },
+];
+
+(async () => {
+  fs.mkdirSync(path.join(out, 'icons'), { recursive: true });
+  const b = await chromium.launch();
+  const p = await b.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
+  for (const it of items) {
+    const html = `<style>
+      @font-face { font-family: I; font-weight: ${it.weight}; src: url(file://${fonts}/${it.file}); }
+      html, body { margin: 0; background: transparent; }
+      div { width: ${W}px; height: ${H}px; display: flex; align-items: center;
+            font: ${it.weight} ${SIZE}px/1 I; color: ${it.color}; white-space: nowrap; }
+    </style><div id="t">${it.text}</div>`;
+    await p.setContent(html);
+    await p.evaluate(() => document.fonts.ready);
+    const w = await p.evaluate(() => { const r = document.createRange(); r.selectNodeContents(document.getElementById('t')); return r.getBoundingClientRect().width; });
+    console.log(it.name, 'text width', w.toFixed(1), 'of', W);
+    await p.screenshot({ path: path.join(out, 'icons', it.name + '.png'), omitBackground: true, clip: { x: 0, y: 0, width: W, height: H } });
+  }
+  await b.close();
+})();
