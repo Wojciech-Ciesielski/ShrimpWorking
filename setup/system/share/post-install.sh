@@ -25,7 +25,8 @@ if ! chroot "$T" rpm -q shrimp-setup >/dev/null 2>&1; then
   install -Dm644 /usr/lib/systemd/system/shrimp-app-style.service "$T/usr/lib/systemd/system/shrimp-app-style.service"
   install -Dm644 /usr/lib/systemd/system/shrimp-app-style.path "$T/usr/lib/systemd/system/shrimp-app-style.path"
   install -Dm644 /usr/lib/systemd/user/shrimp-app-style-user.service "$T/usr/lib/systemd/user/shrimp-app-style-user.service"
-  chroot "$T" systemctl enable shrimp-app-style.path || true
+  install -Dm644 /usr/lib/systemd/system/shrimp-nvidia-flatpak.service "$T/usr/lib/systemd/system/shrimp-nvidia-flatpak.service"
+  chroot "$T" systemctl enable shrimp-app-style.path shrimp-nvidia-flatpak.service || true
   chroot "$T" systemctl --global enable shrimp-app-style-user.service || true
 fi
 

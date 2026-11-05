@@ -43,4 +43,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: shellcheck -S warning setup/install.sh setup/system/share/post-install.sh setup/system/libexec/shrimp-setup-apply standardize/shrimp-app-style
+      - run: setup/tests/test-apply.sh
       - run: python3 -c "import yaml; yaml.safe_load(open('setup/system/agama/shrimp.yaml'))"
