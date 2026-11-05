@@ -45,7 +45,8 @@ jobs:
       - name: Build probe ISO
         run: |
           iso=$(ls iso/*.iso)
-          xorriso -osirrox on -indev "$iso" -extract /boot/grub2/themes/shrimp/inter-regular-38.pf2 font.pf2
+          xorriso -osirrox on -indev "$iso" -extract /boot/grub2/themes/shrimp/fonts/regular-38/unicode.pf2 font.pf2 || \
+            xorriso -osirrox on -indev "$iso" -extract /boot/grub2/themes/shrimp/inter-regular-38.pf2 font.pf2
           xorriso -osirrox on -indev "$iso" -extract /boot/x86_64/loader/grub2/fonts/unicode.pf2 unicode.pf2
           xorriso -osirrox on -indev "$iso" -extract /boot/grub2/grub.cfg orig-grub.cfg
           ls -l font.pf2 unicode.pf2
@@ -54,48 +55,49 @@ jobs:
           terminal_input console
           terminal_output console
           echo "PROBE-START lockdown=${lockdown}"
-          ls ($root)/boot/x86_64/loader/grub2/fonts/
-          echo "A stock unicode.pf2 at its stock path"
+          echo "== before"
+          lsfonts
+          echo "== A stock unicode.pf2"
           loadfont ($root)/boot/x86_64/loader/grub2/fonts/unicode.pf2
           echo "A rc=$?"
-          echo "B our font in theme dir (control, expected to fail)"
+          lsfonts
+          echo "== B our font in theme dir, own name"
           loadfont ($root)/boot/grub2/themes/shrimp/inter-regular-38.pf2
           echo "B rc=$?"
-          echo "J byte-identical copy of unicode.pf2 under a new name"
-          loadfont ($root)/boot/grub2/themes/shrimp/copy-of-unicode.pf2
-          echo "J rc=$?"
-          echo "K our font named unicode.pf2 in another dir"
+          lsfonts
+          echo "== K our font named unicode.pf2 in another dir"
           loadfont ($root)/boot/grub2/themes/shrimp/other/unicode.pf2
           echo "K rc=$?"
-          echo "L stock font copied into the theme dir, original name"
-          loadfont ($root)/boot/grub2/themes/shrimp/unicode.pf2
-          echo "L rc=$?"
+          lsfonts
           echo "PROBE-END"
           sleep 5
           halt
           EOF
           xorriso -indev "$iso" -outdev probe.iso -boot_image any replay \
             -map probe.cfg /boot/grub2/grub.cfg \
-            -map unicode.pf2 /boot/grub2/themes/shrimp/copy-of-unicode.pf2 \
-            -map font.pf2 /boot/grub2/themes/shrimp/other/unicode.pf2 \
-            -map unicode.pf2 /boot/grub2/themes/shrimp/unicode.pf2 -commit
+            -map font.pf2 /boot/grub2/themes/shrimp/inter-regular-38.pf2 \
+            -map font.pf2 /boot/grub2/themes/shrimp/other/unicode.pf2 -commit
 
-      - name: Boot with Secure Boot
+      - name: Boot with Secure Boot, then without
         run: |
           cp /usr/share/OVMF/OVMF_VARS_4M.ms.fd vars.fd
-          timeout 120 qemu-system-x86_64 -enable-kvm -cpu host -m 2048 \
+          timeout 100 qemu-system-x86_64 -enable-kvm -cpu host -m 2048 \
             -machine q35,smm=on -global driver=cfi.pflash01,property=secure,value=on \
             -drive if=pflash,format=raw,unit=0,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.secboot.fd \
             -drive if=pflash,format=raw,unit=1,file=vars.fd \
-            -cdrom probe.iso -boot d -display none -monitor none -serial file:serial.raw || true
-          sed 's/\x1b\[[0-9;?=]*[A-Za-z]//g' serial.raw | tr -d '\r' > serial.txt
-          cat serial.txt
+            -cdrom probe.iso -boot d -display none -monitor none -serial file:serial-sb.raw || true
+          cp /usr/share/OVMF/OVMF_VARS_4M.fd vars2.fd
+          timeout 100 qemu-system-x86_64 -enable-kvm -cpu host -m 2048 -machine q35 \
+            -drive if=pflash,format=raw,unit=0,readonly=on,file=/usr/share/OVMF/OVMF_CODE_4M.fd \
+            -drive if=pflash,format=raw,unit=1,file=vars2.fd \
+            -cdrom probe.iso -boot d -display none -monitor none -serial file:serial-nosb.raw || true
+          for m in sb nosb; do sed 's/\x1b\[[0-9;?=]*[A-Za-z]//g' serial-$m.raw | tr -d '\r' > serial-$m.txt; echo "##### $m"; cat serial-$m.txt; done
 
       - name: Commit result
         if: always()
         run: |
           mkdir -p test-results/grub-font-probe
-          cp serial.txt build-run-id.txt orig-grub.cfg test-results/grub-font-probe/ 2>/dev/null || true
+          cp serial-sb.txt serial-nosb.txt build-run-id.txt orig-grub.cfg test-results/grub-font-probe/ 2>/dev/null || true
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add test-results/grub-font-probe

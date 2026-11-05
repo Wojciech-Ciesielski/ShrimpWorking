@@ -11,13 +11,13 @@ theme_dir="$(dirname "$theme_txt")"
 # two-entry live menu layout
 cp "$theme_dir/theme-live.txt" "$theme_txt"
 
-# One loadfont per font. Under Secure Boot (lockdown) the signed GRUB only accepts a font file
-# named unicode.pf2, so every font lives in its own directory under that name (kiwi/config.sh).
-fonts=""
-for f in $(cd "$theme_dir" && find fonts -name unicode.pf2 | sort); do
-  fonts="${fonts}loadfont (\$root)/boot/grub2/themes/shrimp/${f}\n"
+# Under Secure Boot (lockdown) the signed GRUB refuses unsigned font files
+# ("prohibited by secure boot policy"), so only load them outside lockdown.
+fonts='if [ "${lockdown}" != "y" ]; then\n'
+for f in "$theme_dir"/*.pf2; do
+  fonts="${fonts}    loadfont (\$root)/boot/grub2/themes/shrimp/$(basename "$f")\n"
 done
-[ -n "$fonts" ] || { echo "edit_boot_config: no theme fonts found in $theme_dir" >&2; exit 1; }
+fonts="${fonts}fi\n"
 
 patched=0
 # BIOS (boot/grub2) and EFI (EFI/BOOT, EFI/Linux) copies of the menu
