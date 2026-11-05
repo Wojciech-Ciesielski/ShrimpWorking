@@ -20,12 +20,13 @@ const items = [
   const p = await b.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
   for (const it of items) {
     const html = `<style>
-      @font-face { font-family: I; font-weight: ${it.weight}; src: url(file://${fonts}/${it.file}); }
+      @font-face { font-family: I; font-weight: ${it.weight}; src: url(data:font/ttf;base64,${fs.readFileSync(path.join(fonts, it.file)).toString('base64')}); }
       html, body { margin: 0; background: transparent; }
       div { width: ${W}px; height: ${H}px; display: flex; align-items: center;
             font: ${it.weight} ${SIZE}px/1 I; color: ${it.color}; white-space: nowrap; }
     </style><div id="t">${it.text}</div>`;
     await p.setContent(html);
+    await p.evaluate(() => document.fonts.load('38px I'));
     await p.evaluate(() => document.fonts.ready);
     const w = await p.evaluate(() => { const r = document.createRange(); r.selectNodeContents(document.getElementById('t')); return r.getBoundingClientRect().width; });
     console.log(it.name, 'text width', w.toFixed(1), 'of', W);
