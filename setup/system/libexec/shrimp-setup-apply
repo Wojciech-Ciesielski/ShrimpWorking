@@ -1,0 +1,51 @@
+#!/bin/bash
+# Pomocnik Setup Shrimp uruchamiany przez pkexec na końcu pierwszej konfiguracji.
+#   shrimp-setup-apply --codecs yes|no --nvidia nvidia|open|none
+# Instaluje kodeki i sterownik w jednej migawce (transactional-update), zdejmuje logowanie
+# automatyczne i znacznik pierwszego uruchomienia. Wypisuje „reboot”, gdy potrzebny restart.
+set -euo pipefail
+CODECS=no; NVIDIA=none
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --codecs) CODECS=$2; shift 2 ;;
+    --nvidia) NVIDIA=$2; shift 2 ;;
+    *) echo "nieznany argument: $1" >&2; exit 2 ;;
+  esac
+done
+STATE=/var/lib/shrimp-setup
+[ -f "$STATE/first-boot" ] || { echo "pierwsza konfiguracja już zakończona" >&2; exit 1; }
+# shellcheck source=/dev/null
+. /usr/share/shrimp-setup/drivers.conf
+
+PKGS=()
+[ "$CODECS" = yes ] && read -ra PKGS <<<"$CODEC_PACKAGES"
+if [ "$NVIDIA" = nvidia ]; then
+  if [ -n "$NVIDIA_REPO" ]; then
+    zypper --non-interactive addrepo --refresh --gpgcheck-allow-unsigned-repo "$NVIDIA_REPO" "$NVIDIA_REPO_ALIAS" 2>/dev/null || true
+    zypper --non-interactive --gpg-auto-import-keys refresh "$NVIDIA_REPO_ALIAS" || true
+    read -ra NV <<<"$NVIDIA_PACKAGES"; PKGS+=("${NV[@]}")
+  else
+    echo "shrimp-setup-apply: repozytorium NVIDIA nie jest ustawione, pomijam sterownik" >&2
+  fi
+fi
+
+REBOOT=no
+if [ ${#PKGS[@]} -gt 0 ]; then
+  # Pakiety, których nie ma w repozytoriach, nie blokują reszty.
+  AVAIL=()
+  for p in "${PKGS[@]}"; do
+    if zypper --non-interactive --quiet search --match-exact "$p" >/dev/null 2>&1; then AVAIL+=("$p"); else echo "brak pakietu: $p" >&2; fi
+  done
+  if [ ${#AVAIL[@]} -gt 0 ] && transactional-update --non-interactive pkg install --no-recommends "${AVAIL[@]}" >&2; then
+    REBOOT=yes
+  fi
+fi
+
+# Koniec pierwszej konfiguracji.
+sed -i 's/^DISPLAYMANAGER_AUTOLOGIN=.*/DISPLAYMANAGER_AUTOLOGIN=""/' /etc/sysconfig/displaymanager 2>/dev/null || true
+if [ -f /etc/gdm/custom.conf ]; then
+  sed -i 's/^AutomaticLoginEnable=.*/AutomaticLoginEnable=False/; /^AutomaticLogin=/d' /etc/gdm/custom.conf
+fi
+rm -f "$STATE/first-boot"
+[ "$REBOOT" = yes ] && echo reboot
+exit 0
