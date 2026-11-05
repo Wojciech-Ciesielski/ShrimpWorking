@@ -1,0 +1,20 @@
+BdsDxe: loading Boot0002 "UEFI QEMU DVD-ROM QM00005 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)
+BdsDxe: starting Boot0002 "UEFI QEMU DVD-ROM QM00005 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)
+error: ../../grub-core/script/lexer.c:grub_script_yyerror:352:syntax error.
+error: ../../grub-core/script/lexer.c:grub_script_yyerror:352:Incorrect command.
+error: ../../grub-core/script/lexer.c:grub_script_yyerror:352:syntax error.
+A stock font, stock dir
+A rc=0
+B our font, theme dir
+error: ../../grub-core/kern/efi/sb.c:shim_lock_verifier_init:177:prohibited by secure boot policy.
+B rc=30
+C our font, stock dir
+error: ../../grub-core/kern/efi/sb.c:shim_lock_verifier_init:177:prohibited by secure boot policy.
+C rc=30
+D our font via absolute path without device
+error: ../../grub-core/kern/efi/sb.c:shim_lock_verifier_init:177:prohibited by secure boot policy.
+D rc=30
+E theme.txt
+error: ../../grub-core/kern/efi/sb.c:shim_lock_verifier_init:177:prohibited by secure boot policy.
+E rc=0
+PROBE-END
