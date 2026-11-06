@@ -86,9 +86,9 @@ if [ -f /etc/default/grub ]; then
   grep -q '^GRUB_GFXMODE=' /etc/default/grub || echo 'GRUB_GFXMODE=1920x1080,auto' >> /etc/default/grub
 fi
 # menu names from specs/grub.md
-[ -f /etc/grub.d/30_uefi-firmware ] && sed -i 's/UEFI Firmware Settings/Ustawienia komputera/' /etc/grub.d/30_uefi-firmware || true
+[ -f /etc/grub.d/30_uefi-firmware ] && sed -i 's/UEFI Firmware Settings/Computer settings/' /etc/grub.d/30_uefi-firmware || true
 for f in /etc/grub.d/80_suse_btrfs_snapshot /usr/lib/snapper/plugins/grub /etc/grub.d/*snapshot*; do
-  [ -f "$f" ] && sed -i 's/Start bootloader from a read-only snapshot/Poprzednie wersje systemu/' "$f" || true
+  [ -f "$f" ] && sed -i 's/Start bootloader from a read-only snapshot/Previous system versions/' "$f" || true
 done
 
 #--------------------------------------

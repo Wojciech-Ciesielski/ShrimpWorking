@@ -21,6 +21,22 @@ if [ ! -f "$dst/webview2/include/WebView2.h" ] || [ ! -f "$dst/WebView2Loader.dl
   rm -rf "$tmp"
 fi
 
+# Adres manifestu pobierania (shrimp_config.h): SHRIMP_MANIFEST_URL wprost albo z SHRIMP_REPO=właściciel/repo
+# (SHRIMP_PRIVATE=true: API GitHub z tokenem, inaczej publiczny adres wydania). Bez żadnego: adres przykładowy.
+url="${SHRIMP_MANIFEST_URL:-}"
+if [ -z "$url" ] && [ -n "${SHRIMP_REPO:-}" ]; then
+  if [ "${SHRIMP_PRIVATE:-false}" = true ]; then
+    url="https://api.github.com/repos/$SHRIMP_REPO/releases/latest"
+  else
+    url="https://github.com/$SHRIMP_REPO/releases/latest/download/manifest.json"
+  fi
+fi
+if [ -n "$url" ]; then
+  case "$url" in *[!A-Za-z0-9._/:@%?=\&-]*) echo "niedozwolone znaki w adresie manifestu" >&2; exit 1;; esac
+  printf '#define SHRIMP_MANIFEST_URL "%s"\n' "$url" > "$dst/shrimp_config.h"
+  echo "adres manifestu: $url"
+fi
+
 if [ -z "${SKIP_UI:-}" ]; then
   cd "$here/ui"
   [ -d node_modules ] || npm ci --no-audit --no-fund
