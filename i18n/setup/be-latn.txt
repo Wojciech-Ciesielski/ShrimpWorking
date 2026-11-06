@@ -1,0 +1,85 @@
+1	Nazad
+6	Dalej
+7	Prapuscić
+8	Skasavać
+9	Hatova
+10	Dadatkova
+11	Aŭtamatyčna
+12	Niama
+13	Davajcie padrychtujem Shrimp na vašym kampjutary.
+14	Pačniom
+15	Vybierycie movu
+16	Dzie vy?
+18	Vybierycie raskladku klavijatury
+22	Dysk
+24	Šyfravannie dyska
+25	Vyklučana
+26	Uklučana
+27	Paroĺ dyska
+29	Kudy ŭstalavać Shrimp?
+30	Pobač z Windows
+31	Zamiest Windows
+38	Stvarycie ŭlikovy zapis
+40	Poŭnaje imia
+41	Jimia karystaĺnika
+42	Paroĺ
+43	Pacvierdzicie paroĺ
+44	Hatova da ŭstalavannia
+45	Ničoha nie zmienicca, pakuĺ vy nie nacisniecie «Ustalavać».
+46	Mova
+47	Rehijon
+48	Klavijatura
+49	Dysk
+50	Ustalavannie
+56	Ustalavać
+57	Ustalavannie Shrimp
+58	Ustalavannie
+62	Zastalosia kala {min} chv
+63	Adzin momant
+64	Ustalavannie zavieršana
+65	Pierazapuscicie kampjutar, kab zaviaršyć.
+66	Pierazapuscić
+67	Pryvitannie, {name}
+70	Padklučyciesia da sietki
+71	Paroĺ da sietki {ssid}
+79	Padklučycca
+84	Vybierycie vyhlad
+85	Svietly
+86	Ciomny
+88	Vybierycie koler
+89	Sini
+90	Biruzovy
+91	Zialony
+92	Žoŭty
+93	Aranžavy
+94	Čyrvony
+95	Ružovy
+96	Fijaletavy
+97	Šery
+100	Ustalavać
+101	Zrablu pazniej
+108	Jak vy karystajeciesia kampjutaram?
+109	My ŭstalujem prahramy, jakija vam patrebnyja najboĺš.
+110	Praca i vučoba
+111	Huĺni
+112	Tvorčasć
+113	Prahramavannie
+114	Muĺtymiedyja
+122	Usio hatova
+123	Pryjemnaha karystannia Shrimp.
+143	Daviedka
+145	Paroli dyska nie supadajuć
+147	Paroli nie supadajuć
+149	Pasprabavać znoŭ
+150	Niedastatkova miesca
+153	Nazad
+154	Nie ŭdalosia ŭstalavać
+156	Vyjsci
+160	Niama zlučennia z internetam
+163	Elektronnaja pošta
+164	Huĺni
+166	Malavannie
+167	Mantaž videa
+168	Hrafika
+171	Fiĺmy i muzyka
+172	Muzyka
