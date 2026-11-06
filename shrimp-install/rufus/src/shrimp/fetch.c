@@ -17,9 +17,18 @@
 #include <ctype.h>
 #include "shrimp.h"
 #include "shrimp_key.h"
+#include "relurl.h"
 #include "../rufus.h"
 #include "../msapi_utf8.h"
 
+/* Adres manifestu daje tools/prepare.sh (shrimp_config.h) według repozytorium, z którego budujemy:
+ *  - repozytorium prywatne: https://api.github.com/repos/<repo>/releases/latest (potrzebny token, patrz niżej),
+ *  - repozytorium publiczne: https://github.com/<repo>/releases/latest/download/manifest.json. */
+#if defined(__has_include)
+#if __has_include("shrimp_config.h")
+#include "shrimp_config.h"
+#endif
+#endif
 #ifndef SHRIMP_MANIFEST_URL
 #define SHRIMP_MANIFEST_URL "https://download.shrimp.example/install/manifest.json"
 #endif
@@ -62,27 +71,105 @@ static BOOL offline_error(DWORD e)
 		|| e == ERROR_INTERNET_SERVER_UNREACHABLE || e == ERROR_INTERNET_PROXY_SERVER_UNREACHABLE;
 }
 
-/* Otwiera adres; przy błędzie zgłasza go interfejsowi i zwraca NULL. */
-static HINTERNET open_url(HINTERNET session, const char* url, uint64_t* length)
+static BOOL cache_dir(char* dir, size_t size);
+
+#define API_HOST "https://api.github.com/"
+#define ACCEPT_JSON 1
+#define ACCEPT_BINARY 0
+
+/* Token do prywatnego repozytorium: zmienna SHRIMP_TOKEN albo pierwszy wiersz pliku
+ * %LOCALAPPDATA%\Shrimp Install\token.txt. Nigdy nie trafia do dziennika. Wysyłamy go tylko do api.github.com. */
+static const char* shrimp_token(void)
 {
-	char buf[32];
+	static char token[256];
+	static BOOL done;
+	if (!done) {
+		char dir[MAX_PATH], path[MAX_PATH], *p;
+		FILE* f;
+		done = TRUE;
+		if (GetEnvironmentVariableA("SHRIMP_TOKEN", token, sizeof(token)) == 0 || strlen(token) >= sizeof(token) - 1)
+			token[0] = 0;
+		if (!token[0] && cache_dir(dir, sizeof(dir))) {
+			static_sprintf(path, "%s\\token.txt", dir);
+			f = fopen(path, "r");
+			if (f != NULL) {
+				if (fgets(token, sizeof(token), f) == NULL)
+					token[0] = 0;
+				fclose(f);
+			}
+		}
+		for (p = token; *p; p++)
+			if (*p == '\r' || *p == '\n' || *p == ' ') {
+				*p = 0;
+				break;
+			}
+	}
+	return token;
+}
+
+/* Otwiera adres (ręcznie idąc za przekierowaniami, żeby token nie wyciekł poza api.github.com);
+ * przy błędzie zgłasza go interfejsowi i zwraca NULL. */
+static HINTERNET open_url(HINTERNET session, const char* url, uint64_t* length, int accept_json)
+{
+	char buf[32], cur[1100], hdr[640], loc[1100];
 	DWORD status = 0, size = sizeof(status);
-	HINTERNET r = InternetOpenUrlA(session, url, "Accept-Encoding: identity\r\n", (DWORD)-1,
-		INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_NO_UI | INTERNET_FLAG_NO_COOKIES | INTERNET_FLAG_RELOAD, 0);
+	HINTERNET r = NULL;
+	int hop;
+
+	static_strcpy(cur, url);
+	for (hop = 0; hop < 6; hop++) {
+		BOOL api = strncmp(cur, API_HOST, sizeof(API_HOST) - 1) == 0;
+		const char* tok = api ? shrimp_token() : "";
+		static_strcpy(hdr, "Accept-Encoding: identity\r\n");
+		if (api) {
+			strncat(hdr, accept_json ? "Accept: application/vnd.github+json\r\n" : "Accept: application/octet-stream\r\n",
+				sizeof(hdr) - strlen(hdr) - 1);
+			if (tok[0]) {
+				strncat(hdr, "Authorization: Bearer ", sizeof(hdr) - strlen(hdr) - 1);
+				strncat(hdr, tok, sizeof(hdr) - strlen(hdr) - 1);
+				strncat(hdr, "\r\n", sizeof(hdr) - strlen(hdr) - 1);
+			}
+		}
+		r = InternetOpenUrlA(session, cur, hdr, (DWORD)-1,
+			INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_NO_UI | INTERNET_FLAG_NO_COOKIES | INTERNET_FLAG_RELOAD
+				| INTERNET_FLAG_NO_AUTO_REDIRECT, 0);
+		if (r == NULL) {
+			DWORD e = GetLastError();
+			uprintf("Shrimp: %s: błąd %lu", cur, e);
+			if (offline_error(e))
+				ShrimpFail(1, "offline", NULL);
+			else
+				ShrimpFail(1, "other", "connect");
+			return NULL;
+		}
+		status = 0;
+		size = sizeof(status);
+		HttpQueryInfoA(r, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, &status, &size, NULL);
+		if (status == 301 || status == 302 || status == 303 || status == 307 || status == 308) {
+			size = sizeof(loc);
+			if (!HttpQueryInfoA(r, HTTP_QUERY_LOCATION, loc, &size, NULL) || strncmp(loc, "https://", 8) != 0) {
+				InternetCloseHandle(r);
+				ShrimpFail(1, "other", "redirect");
+				return NULL;
+			}
+			InternetCloseHandle(r);
+			r = NULL;
+			static_strcpy(cur, loc);
+			continue;
+		}
+		break;
+	}
 	if (r == NULL) {
-		DWORD e = GetLastError();
-		uprintf("Shrimp: %s: błąd %lu", url, e);
-		if (offline_error(e))
-			ShrimpFail(1, "offline", NULL);
-		else
-			ShrimpFail(1, "other", "connect");
+		ShrimpFail(1, "other", "redirect");
 		return NULL;
 	}
-	HttpQueryInfoA(r, HTTP_QUERY_STATUS_CODE | HTTP_QUERY_FLAG_NUMBER, &status, &size, NULL);
 	if (status != 200) {
-		char m[128];
-		uprintf("Shrimp: %s: HTTP %lu", url, status);
-		static_sprintf(m, "http:%lu", status);
+		char m[160];
+		uprintf("Shrimp: %s: HTTP %lu", cur, status);
+		if ((status == 404 || status == 401) && strncmp(cur, API_HOST, sizeof(API_HOST) - 1) == 0 && !shrimp_token()[0])
+			static_strcpy(m, "Prywatne repozytorium: ustaw zmienną SHRIMP_TOKEN (token GitHub z dostępem do odczytu).");
+		else
+			static_sprintf(m, "http:%lu", status);
 		ShrimpFail(1, "other", m);
 		InternetCloseHandle(r);
 		return NULL;
@@ -95,12 +182,12 @@ static HINTERNET open_url(HINTERNET session, const char* url, uint64_t* length)
 }
 
 /* Mały plik do pamięci (manifest, podpis). */
-static BYTE* fetch_small(HINTERNET session, const char* url, DWORD* out_len)
+static BYTE* fetch_small(HINTERNET session, const char* url, DWORD* out_len, int accept_json)
 {
 	uint64_t len;
-	DWORD n, total = 0, cap = 64 * 1024;
+	DWORD n, total = 0, cap = 256 * 1024;
 	BYTE* buf;
-	HINTERNET r = open_url(session, url, &len);
+	HINTERNET r = open_url(session, url, &len, accept_json);
 	if (r == NULL)
 		return NULL;
 	buf = calloc(1, cap + 1);
@@ -169,8 +256,8 @@ DWORD WINAPI ShrimpFetchThread(LPVOID param)
 {
 	HINTERNET session = NULL, r = NULL;
 	BYTE *manifest = NULL, *sig = NULL;
-	DWORD mlen = 0, slen = 0, n, w;
-	char sig_url[1100], tmp[64], dir[MAX_PATH], part[MAX_PATH], name[96];
+	DWORD mlen = 0, slen = 0, rlen = 0, n, w;
+	char murl[1100], sig_url[1100], tmp[64], dir[MAX_PATH], part[MAX_PATH], name[96];
 	uint8_t digest[32];
 	uint64_t len = 0, done = 0;
 	ULARGE_INTEGER free_bytes;
@@ -200,12 +287,31 @@ DWORD WINAPI ShrimpFetchThread(LPVOID param)
 		goto out;
 	}
 	ShrimpProgress(1, 0, 0, 0);
-	manifest = fetch_small(session, ShrimpManifestUrl(), &mlen);
+	static_strcpy(murl, ShrimpManifestUrl());
+	static_sprintf(sig_url, "%s.sig", murl);
+	/* Adres wydania GitHub (API): manifest i podpis są zasobami tego wydania. */
+	if (strncmp(murl, API_HOST, sizeof(API_HOST) - 1) == 0 && strstr(murl, "/releases/") != NULL && strstr(murl, "/releases/assets/") == NULL) {
+		BYTE* rel = fetch_small(session, murl, &rlen, ACCEPT_JSON);
+		if (rel == NULL)
+			goto out;
+		if (!shrimp_release_asset_url((char*)rel, "manifest.json", murl, sizeof(murl))) {
+			free(rel);
+			ShrimpFail(1, "other", "To wydanie nie ma pliku manifest.json.");
+			goto out;
+		}
+		if (!shrimp_release_asset_url((char*)rel, "manifest.json.sig", sig_url, sizeof(sig_url)))
+			sig_url[0] = 0;
+		free(rel);
+	}
+	manifest = fetch_small(session, murl, &mlen, ACCEPT_BINARY);
 	if (manifest == NULL)
 		goto out;
 	if (SHRIMP_PUBKEY_SET) {
-		static_sprintf(sig_url, "%s.sig", ShrimpManifestUrl());
-		sig = fetch_small(session, sig_url, &slen);
+		if (!sig_url[0]) {
+			ShrimpFail(1, "verify", "sigBad");
+			goto out;
+		}
+		sig = fetch_small(session, sig_url, &slen, ACCEPT_BINARY);
 		if (sig == NULL)
 			goto out;
 		if (!ValidateOpensslSignatureWithKey(manifest, mlen, sig, slen, shrimp_pubkey_modulus, sizeof(shrimp_pubkey_modulus))) {
@@ -266,7 +372,7 @@ DWORD WINAPI ShrimpFetchThread(LPVOID param)
 		goto out;
 	}
 
-	r = open_url(session, ShrimpManifest.url, &len);
+	r = open_url(session, ShrimpManifest.url, &len, ACCEPT_BINARY);
 	if (r == NULL)
 		goto out;
 	f = CreateFileU(part, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);

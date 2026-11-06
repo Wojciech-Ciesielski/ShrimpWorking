@@ -43,5 +43,5 @@ terminal-font: "@FONT_REGULAR_27@"
   align = "center"
   font = "@FONT_REGULAR_27@"
   color = "#8c8c8c"
-  text = "Shrimp uruchomi się za %d s"
+  text = "Shrimp will start in %d s"
 }
