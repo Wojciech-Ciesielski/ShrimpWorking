@@ -1,0 +1,44 @@
+1	Gabanya
+2	Funga
+3	Shyiramo Shrimp
+4	Sisitemu ituje kandi itunganye ikora kuva mu itangira rya mbere.
+5	Gukuramo mu buryo bwikora
+6	Ushyiramo akuramo ibikenewe byose.
+7	Amadosiye yawe afite umutekano
+8	Amadosiye yawe azabikwa.
+9	Porogaramu zimenyerewe
+12	Dutangire
+14	Hitamo disiki
+16	Disiki
+19	Subira inyuma
+20	Ibikurikira
+23	Nta disiki yabonetse
+24	Shyiramo disiki izagaragara hano.
+25	Nto cyane
+27	USB
+28	Ikarita SD
+29	Disiki yo hanze
+30	Ni iki gikwiye kubikwa?
+34	(Birasabwa)
+36	Nzihitiramo
+39	Inyandiko
+40	Amashusho
+41	Desikitopu
+42	Umuziki
+43	Amashusho yo kureba
+44	Ibikuweho
+59	Gutegura Shrimp
+62	Gutegura byarangiye
+63	Byose biteguye.
+64	Gukuramo Shrimp
+65	Kwandika kuri disiki
+66	Kwigana amadosiye
+67	Ntukure disiki kugeza irangiye.
+68	Bireke
+69	Ongera ugerageze
+82	Nta murongo wa interineti
+99	Hari ikitagenze neza
+101	Byose biteguye
+102	Ongera utangire mudasobwa kugira ngo urangize.
+110	Nyuma
+111	Ongera utangire

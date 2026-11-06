@@ -1,0 +1,44 @@
+1	Lùghdaich
+2	Dùin
+3	Stàlaich Shrimp
+4	Siostam sàmhach, sgiobalta a dh’obraicheas on chiad tòiseachadh.
+5	Luchdachadh a-nuas fèin-obrachail
+6	Luchdaichidh an stàlaichear a-nuas a h-uile nì a tha a dhìth.
+7	Tha na faidhlichean agad sàbhailte
+8	Thèid na faidhlichean agad a chumail.
+9	Prògraman eòlach
+12	Tòisichidh sinn
+14	Tagh draibh
+16	Draibh
+19	Air ais
+20	Air adhart
+23	Cha deach draibh a lorg
+24	Cuir a-steach draibh agus nochdaidh e an seo.
+25	Ro bheag
+27	Bataraidh USB
+28	Cairt SD
+29	Draibh taobhach
+30	Dè bu chòir a chumail sàbhailte?
+34	(Molaidh sinn seo)
+36	Taghaidh mi fhìn
+39	Sgrìobhainnean
+40	Dealbhan
+41	Deasg
+42	Ceòl
+43	Bhidiothan
+44	Luchdan-a-nuas
+59	A’ ullachadh Shrimp
+62	Ullachadh coileanta
+63	Tha a h-uile nì deiseil.
+64	A’ luchdachadh a-nuas Shrimp
+65	A’ sgrìobhadh dhan draibh
+66	A’ dèanamh lethbhreac de dh’fhaidhlichean
+67	Na tarraing a-mach an draibh gus am bi e deiseil.
+68	Sguir dheth
+69	Feuch a-rithist
+82	Chan eil ceangal eadar-lìn ann
+99	Chaidh rudeigin ceàrr
+101	Gach nì deiseil
+102	Ath-thòisich an coimpiutair gus crìoch a chur air.
+110	Nas fhaide air adhart
+111	Ath-thòisich
