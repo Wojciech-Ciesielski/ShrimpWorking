@@ -116,16 +116,21 @@ export interface WinApp { windows: string; name: string; id: string }
 export interface CatalogApp {
   windows: string; re: RegExp; store?: RegExp;
   linux: { name: string; id: string } | null;
+  /** Miejsce (1–100) na liście najpopularniejszych programów Windows: takie wpisy idą w podpowiedziach pierwsze. */
+  top?: number;
   /** Odpowiednik jest już w systemie, nie instalujemy go. */
   base?: boolean;
   /** driver, builtin, unneeded: nic do zaproponowania, bo system robi to sam. */
   skip?: "driver" | "builtin" | "unneeded";
 }
-interface CatalogJson { apps: { windows: string; re: string; store?: string; linux: { name: string; id: string } | null; base?: boolean; skip?: CatalogApp["skip"] }[] }
+interface CatalogJson { apps: { windows: string; top?: number; re: string; store?: string; linux: { name: string; id: string } | null; base?: boolean; skip?: CatalogApp["skip"] }[] }
 
 export const WIN_CATALOG: CatalogApp[] = (catalog as CatalogJson).apps.map((a) => ({
   ...a, re: new RegExp(a.re, "i"), store: a.store ? new RegExp(a.store, "i") : undefined,
 }));
+
+/** Katalog w kolejności podpowiedzi: najpierw 100 najpopularniejszych (wg `top`), potem reszta w kolejności wpisów. */
+export const WIN_CATALOG_ORDERED: CatalogApp[] = [...WIN_CATALOG.filter((a) => a.top).sort((a, b) => a.top! - b.top!), ...WIN_CATALOG.filter((a) => !a.top)];
 
 /** Układ klawiatury Windows (KLID) → układ xkb. Poza tą listą liczy się język układu (4 ostatnie cyfry). */
 export const KLID_XKB: Record<string, string> = {

@@ -1,6 +1,6 @@
 // Czyste funkcje Setup (testy: logic.test.ts).
 import { resolveTag, type I18n } from "../../../i18n/core";
-import { APPS, WIN_CATALOG, KLID_XKB, LANGID_XKB, TZ_ALIAS, defaultTz, type WinApp, type Lang, type Region, type Keyboard } from "./data";
+import { APPS, WIN_CATALOG_ORDERED, KLID_XKB, LANGID_XKB, TZ_ALIAS, defaultTz, type WinApp, type Lang, type Region, type Keyboard } from "./data";
 import type { Transfer } from "./backend/types";
 
 export const esc = (s: string) =>
@@ -56,12 +56,12 @@ export function windowsList(apps: WinApp[] | null): Pick[] {
 
 /**
  * Programy z shrimp.json (nazwy z listy programów Windows i pakiety Microsoft Store) → odpowiedniki z Flathub,
- * w kolejności katalogu (windows-apps.json), bez powtórzeń. Pomijamy nieznane, wpisy bez odpowiednika
+ * najpierw 100 najpopularniejszych (pole `top`), potem w kolejności katalogu (windows-apps.json), bez powtórzeń. Pomijamy nieznane, wpisy bez odpowiednika
  * i odpowiedniki, które system ma od razu.
  */
 export function mapWindowsApps(names: string[], store: string[] = []): WinApp[] {
   const out: WinApp[] = [];
-  for (const m of WIN_CATALOG) {
+  for (const m of WIN_CATALOG_ORDERED) {
     if (!m.linux || m.base || out.some((a) => a.id === m.linux!.id)) continue;
     if (names.some((n) => m.re.test(n.trim())) || (m.store && store.some((s) => m.store!.test(s)))) out.push({ windows: m.windows, name: m.linux.name, id: m.linux.id });
   }
