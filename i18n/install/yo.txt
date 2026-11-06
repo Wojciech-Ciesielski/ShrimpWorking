@@ -1,0 +1,44 @@
+1	Dín kù
+2	Ti
+3	Fi Shrimp sórí ẹ̀rọ
+4	Ètò ìdákẹ́jẹ́ẹ́ tó ṣètò dáadáa tó ń ṣiṣẹ́ láti ìbẹ̀rẹ̀ àkọ́kọ́.
+5	Ìgbàsílẹ̀ aládàáṣe
+6	Olùfisórí ń gba gbogbo ohun tó nílò sílẹ̀.
+7	Àwọn fáìlì rẹ wà ní ààbò
+8	A ó pa àwọn fáìlì rẹ mọ́.
+9	Àwọn ètò tí o mọ̀
+12	Ẹ jẹ́ ká bẹ̀rẹ̀
+14	Yan díìsìkì
+16	Díìsìkì
+19	Padà
+20	Tókàn
+23	A kò rí díìsìkì
+24	Fi díìsìkì sí i, yóò hàn níbí.
+25	Kéré jù
+27	USB
+28	Káàdì SD
+29	Díìsìkì ìta
+30	Kí ni ó yẹ kí a dáàbò bò?
+34	(A ṣe ìmọ̀ràn)
+36	Èmi yóò yàn fúnra mi
+39	Àwọn ìwé
+40	Àwọn àwòrán
+41	Tábìlì iṣẹ́
+42	Orin
+43	Àwọn fídíò
+44	Àwọn ìgbàsílẹ̀
+59	Ń múra Shrimp sílẹ̀
+62	Ìmúrasílẹ̀ parí
+63	Gbogbo nǹkan ti ṣetán.
+64	Ń gba Shrimp sílẹ̀
+65	Ń kọ sórí díìsìkì
+66	Ń dà àwọn fáìlì kọ
+67	Má yọ díìsìkì kúrò títí yóò fi parí.
+68	Fagilé
+69	Gbìyànjú lẹ́ẹ̀kan sí i
+82	Kò sí ìsopọ̀ íńtánẹ́ẹ̀tì
+99	Nǹkan kan ṣẹlẹ̀ tí kò tọ́
+101	Gbogbo nǹkan ti ṣetán
+102	Tún kọ̀ǹpútà bẹ̀rẹ̀ láti parí.
+110	Lẹ́yìn náà
+111	Tún bẹ̀rẹ̀

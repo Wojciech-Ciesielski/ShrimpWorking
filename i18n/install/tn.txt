@@ -1,0 +1,23 @@
+1	Nyenyefatsa
+2	Tswala
+3	Tsenya Shrimp
+5	Go laiwa ka bo-ntšhwa
+9	Dithulaganyo tse o di itseng
+12	A re simologe
+14	Tlhopha drayive
+16	Drayive
+19	Morago
+20	E e latelang
+23	Ga go na drayive e e bonweng
+25	E nnye thata
+27	USB
+28	Karata ya SD
+29	Drayive ya kwa ntle
+34	(E akantswe)
+63	Tsotlhe di siametse.
+68	Khansela
+69	Leka gape
+82	Ga go na kgolagano ya inthanete
+101	Tsotlhe di siametse
+110	Moragonyana
+111	Simolola gape

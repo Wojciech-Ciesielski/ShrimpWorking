@@ -1,0 +1,44 @@
+1	Belata
+2	Mechie
+3	Wụnye Shrimp
+4	Sistem dị jụụ, haziri ahazi nke na-arụ ọrụ site na mmalite mbụ.
+5	Nbudata akpaaka
+6	Onye na-ewụnye na-ebudata ihe niile ọ chọrọ.
+7	Faịlụ gị dị n'udo
+8	A ga-edebe faịlụ gị.
+9	Mmemme ndị a maara
+12	Ka anyị malite
+14	Họrọ draịva
+16	Draịva
+19	Azụ
+20	Osote
+23	Achọtaghị draịva
+24	Jikọọ draịva ọ ga-apụta ebe a.
+25	Pere mpe
+27	USB
+28	Kaadị SD
+29	Draịva mpụga
+30	Gịnị ka e kwesịrị ichebe?
+34	(Atụtụrụ)
+36	M ga-ahọrọ onwe m
+39	Akwụkwọ
+40	Foto
+41	Desktọọpụ
+42	Egwu
+43	Vidiyo
+44	Nbudata
+59	Na-ahazi Shrimp
+62	Nkwadebe agwụla
+63	Ihe niile dị njikere.
+64	Na-ebudata Shrimp
+65	Na-ede na draịva
+66	Na-eṅomi faịlụ
+67	Ewepụla draịva ruo mgbe ọ ga-agwụ.
+68	Kagbuo
+69	Nwaa ọzọ
+82	Enweghị njikọ ịntanetị
+99	Ihe adịghị mma mere
+101	Ihe niile dị njikere
+102	Malitegharịa kọmputa ka ị mechaa.
+110	Mgbe e mesịrị
+111	Malitegharịa

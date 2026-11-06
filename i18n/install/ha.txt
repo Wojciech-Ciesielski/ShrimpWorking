@@ -1,0 +1,44 @@
+1	Rage
+2	Rufe
+3	Shigar da Shrimp
+4	Tsari mai natsuwa da tsabta wanda ke aiki tun daga farko.
+5	Zazzagewa ta atomatik
+6	Mai shigarwa yana zazzage duk abin da yake bukata.
+7	Fayilolinka suna lafiya
+8	Za a ajiye fayilolinka.
+9	Shirye-shiryen da aka sani
+12	Mu fara
+14	Zaɓi faifai
+16	Faifai
+19	Baya
+20	Na gaba
+23	Ba a sami faifai ba
+24	Ka haɗa faifai zai bayyana a nan.
+25	Ƙarami da yawa
+27	USB
+28	Katin SD
+29	Faifan waje
+30	Me ya kamata a kiyaye?
+34	(An ba da shawara)
+36	Zan zaɓa da kaina
+39	Takardu
+40	Hotuna
+41	Tebur
+42	Kiɗa
+43	Bidiyo
+44	Abubuwan da aka zazzage
+59	Ana shirya Shrimp
+62	An gama shiri
+63	Komai ya shirya.
+64	Ana zazzage Shrimp
+65	Ana rubutawa a faifai
+66	Ana kwafar fayiloli
+67	Kar ka cire faifan har sai ya gama.
+68	Soke
+69	Sake gwadawa
+82	Babu haɗin intanet
+99	Wani abu ya faru ba daidai ba
+101	Komai ya shirya
+102	Sake kunna kwamfutar don kammalawa.
+110	Daga baya
+111	Sake kunnawa
