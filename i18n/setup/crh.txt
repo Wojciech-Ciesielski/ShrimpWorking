@@ -1,0 +1,41 @@
+1	Keri
+6	Soñraki
+7	Keçmek
+8	Ret etmek
+9	Azır
+10	İlerletilgen
+11	Avtomatik
+12	Yoq
+14	Başlayıq
+15	Til saylañız
+22	Disk
+25	Söndürilgen
+26	Açıq
+29	Shrimp ner'ge qurulsın?
+30	Windows yanına
+31	Windows yerine
+42	Parol
+46	Til
+47	Region
+48	Klaviatura
+49	Disk
+50	Qurmaq
+56	Qur
+57	Shrimp quruluv
+58	Quruluv
+63	Bir daqqa
+64	Quruluv tamamlandı
+66	Yañıdan başla
+67	Selâm, {name}
+79	Bağlan
+85	Açıq
+86	Qaranlıq
+89	Mavı
+91	Yeşil
+92	Sarı
+94	Qırmızı
+111	Oyunlar
+143	Yardım
+149	Tekrar deneñiz
+153	Keri
+156	Çıqmaq

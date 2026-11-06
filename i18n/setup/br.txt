@@ -1,0 +1,41 @@
+1	Distro
+6	Da heul
+7	Lemel
+8	Nullañ
+9	Graet
+10	Araokaet
+11	Emgefreek
+12	Hini ebet
+14	Kroget hon eus
+15	Dibabit ur yezh
+22	Ardremez
+25	Diweredekaet
+26	Gweredekaet
+29	E-pelec'h staliañ Shrimp?
+30	E kichen Windows
+31	E plas Windows
+42	Ger-tremen
+46	Yezh
+47	Rannvro
+48	Klavier
+49	Ardremez
+50	Staliadur
+56	Staliañ
+57	Staliañ Shrimp
+58	Oc'h staliañ
+63	Ur momed
+64	Echu eo ar staliadur
+66	Adloc'hañ
+67	Demat, {name}
+79	Kevreañ
+85	Sklaer
+86	Teñval
+89	Glas
+91	Gwer
+92	Melen
+94	Ruz
+111	C'hoarioù
+143	Skoazell
+149	Esaeañ en-dro
+153	Distreiñ
+156	Kuitaat
