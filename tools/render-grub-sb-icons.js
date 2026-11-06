@@ -1,6 +1,6 @@
 // Renders the GRUB menu entries as images for Secure Boot (lockdown).
 // The signed GRUB cannot load our PF2 fonts there, so the entry text becomes
-// icons/<class>.png (class os = "Shrimp", class efi = "Ustawienia komputera").
+// icons/os.png (class os = "Shrimp"). Entry "Computer settings" in every language: tools/render-grub-i18n.js.
 // Usage: node tools/render-grub-sb-icons.js <out-dir>   (needs playwright + the Inter TTFs in the repo)
 const { chromium } = require('playwright');
 const fs = require('fs');
@@ -11,7 +11,6 @@ const fonts = path.resolve(__dirname, '../kiwi/root/usr/share/fonts/truetype/int
 const W = 424, H = 77, SIZE = 38;
 const items = [
   { name: 'os', text: 'Shrimp', weight: 600, color: '#ffffff', file: 'Inter-SemiBold.ttf' },
-  { name: 'efi', text: 'Ustawienia komputera', weight: 400, color: '#8c8c8c', file: 'Inter-Regular.ttf' },
 ];
 
 (async () => {

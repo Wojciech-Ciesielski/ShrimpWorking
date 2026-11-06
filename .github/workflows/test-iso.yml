@@ -13,6 +13,9 @@ on:
       build_run_id:
         description: "Build ISO run id (empty = newest successful)"
         default: ""
+      grub_lang:
+        description: "GRUB menu language tag to test, e.g. ja, ar, de (empty = English, as without Shrimp Install)"
+        default: ""
 
 permissions:
   contents: write
@@ -38,6 +41,19 @@ jobs:
           echo "Build ISO run: $id"
           echo "$id" > build-run-id.txt
           gh run download "$id" -R "$GITHUB_REPOSITORY" -n shrimp-live-iso -D iso
+          ls -l iso
+
+      - name: Set GRUB language (${{ github.event.inputs.grub_lang }})
+        if: github.event.inputs.grub_lang != ''
+        env:
+          GRUB_LANG: ${{ github.event.inputs.grub_lang }}
+        run: |
+          # what Shrimp Install writes next to the ISO files on the stick (boot/grub2/shrimp-lang.cfg)
+          sudo apt-get install -yq --no-install-recommends xorriso
+          printf 'set shrimp_lang=%s\n' "$GRUB_LANG" > shrimp-lang.cfg
+          src=$(ls iso/*.iso | head -n1)
+          xorriso -indev "$src" -outdev iso/with-lang.iso -boot_image any replay -map shrimp-lang.cfg /boot/grub2/shrimp-lang.cfg
+          mv iso/with-lang.iso "$src"
           ls -l iso
 
       - name: Enable KVM and install QEMU

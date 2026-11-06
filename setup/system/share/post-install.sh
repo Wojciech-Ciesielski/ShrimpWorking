@@ -30,6 +30,32 @@ if ! chroot "$T" rpm -q shrimp-setup >/dev/null 2>&1; then
   chroot "$T" systemctl --global enable shrimp-app-style-user.service || true
 fi
 
+# GRUB w języku konta: nazwa wpisu „Computer settings” (i18n/grub, motyw Shrimp: lang/<znacznik>.cfg).
+# Wpis firmware GRUB-a w docelowym systemie pochodzi z pakietu (angielski), więc podmieniamy go tutaj.
+grub_tag() {
+  local l="${1%%.*}" mod="" p r
+  case "$l" in *@*) mod="${l#*@}"; l="${l%%@*}";; esac
+  p="${l%%_*}"; r=""; case "$l" in *_*) r="${l#*_}";; esac
+  case "$p" in
+    zh) case "$r" in TW|HK|MO) echo zh-hant;; *) echo zh-hans;; esac;;
+    pt) [ "$r" = PT ] && echo pt-pt || echo pt-br;;
+    sr) [ "$mod" = latin ] && echo sr-latn || echo sr-cyrl;;
+    uz) [ "$mod" = cyrillic ] && echo uz-cyrl || echo uz;;
+    be) [ "$mod" = latin ] && echo be-latn || echo be;;
+    ca) [ "$mod" = valencia ] && echo ca-valencia || echo ca;;
+    no) echo nb;;
+    *) echo "$p";;
+  esac
+}
+SYS_LANG=$(sed -n 's/^LANG=//p' "$T/etc/locale.conf" 2>/dev/null | tr -d '"' | head -n1)
+TAG=$(grub_tag "${SYS_LANG:-en}")
+FW=$(sed -n 's/^set shrimp_fw="\(.*\)"$/\1/p' "/usr/share/grub2/themes/shrimp/lang/$TAG.cfg" 2>/dev/null | head -n1)
+if [ -n "$FW" ] && [ -f "$T/etc/grub.d/30_uefi-firmware" ]; then
+  sed -i "s|UEFI Firmware Settings|$FW|" "$T/etc/grub.d/30_uefi-firmware"
+  log "GRUB: wpis firmware w języku $TAG"
+  chroot "$T" grub2-mkconfig -o /boot/grub2/grub.cfg >/dev/null 2>&1 || log "grub2-mkconfig nie powiodło się (wpis zmieni się przy następnej aktualizacji GRUB)"
+fi
+
 # Pierwsza konfiguracja: znacznik + jednorazowe logowanie automatyczne (zdejmuje je shrimp-setup-apply).
 touch "$STATE/first-boot"
 if [ -f "$T/etc/sysconfig/displaymanager" ]; then

@@ -212,6 +212,62 @@ static void copy_tree(copy_ctx* c, const wchar_t* src, const wchar_t* dst)
 	FindClose(h);
 }
 
+
+/* Znacznik języka GRUB (i18n/grub, kiwi/.../themes/shrimp/lang/<znacznik>.cfg) z nazwy języka Windows (BCP-47). */
+static void grub_lang_tag(const char* bcp, char* out, size_t n)
+{
+	char b[64], *p, lang[16] = "";
+	size_t i;
+
+	for (i = 0; bcp[i] && i < sizeof(b) - 1; i++)
+		b[i] = (bcp[i] >= 'A' && bcp[i] <= 'Z') ? (char)(bcp[i] + 32) : bcp[i];
+	b[i] = 0;
+	for (i = 0; b[i] && b[i] != '-' && i < sizeof(lang) - 1; i++)
+		lang[i] = b[i];
+	lang[i] = 0;
+	p = b + i; /* reszta: -hant-tw, -rs, -es-valencia… */
+	if (strcmp(lang, "zh") == 0)
+		strcpy(lang, (strstr(p, "-hant") || strstr(p, "-tw") || strstr(p, "-hk") || strstr(p, "-mo")) ? "zh-hant" : "zh-hans");
+	else if (strcmp(lang, "pt") == 0)
+		strcpy(lang, strstr(p, "-pt") ? "pt-pt" : "pt-br");
+	else if (strcmp(lang, "sr") == 0)
+		strcpy(lang, strstr(p, "-latn") ? "sr-latn" : "sr-cyrl");
+	else if (strcmp(lang, "uz") == 0 && strstr(p, "-cyrl"))
+		strcpy(lang, "uz-cyrl");
+	else if (strcmp(lang, "be") == 0 && strstr(p, "-latn"))
+		strcpy(lang, "be-latn");
+	else if (strcmp(lang, "ca") == 0 && strstr(p, "valencia"))
+		strcpy(lang, "ca-valencia");
+	else if (strcmp(lang, "no") == 0)
+		strcpy(lang, "nb");
+	snprintf(out, n, "%s", lang[0] ? lang : "en");
+}
+
+/* boot/grub2/shrimp-lang.cfg na nośniku: GRUB (kiwi/edit_boot_config.sh) czyta z niego język menu.
+ * Brak pliku albo język bez tłumaczenia to angielski. Błąd zapisu nie przerywa przygotowania nośnika. */
+static void write_grub_lang(const char* root)
+{
+	char path[MAX_PATH], tag[32] = "en", cfg[64], u[64];
+	ULONG n = 0, len = 0;
+	DWORD w;
+	HANDLE h;
+
+	if (GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &n, NULL, &len) && len > 1) {
+		wchar_t* buf = calloc(len, sizeof(wchar_t));
+		if (buf != NULL && GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &n, buf, &len) &&
+			WideCharToMultiByte(CP_UTF8, 0, buf, -1, u, sizeof(u), NULL, NULL) > 0)
+			grub_lang_tag(u, tag, sizeof(tag));
+		free(buf);
+	}
+	static_sprintf(path, "%sboot\\grub2\\shrimp-lang.cfg", root);
+	h = CreateFileU(path, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	if (h == INVALID_HANDLE_VALUE)
+		return;
+	snprintf(cfg, sizeof(cfg), "set shrimp_lang=%s\n", tag);
+	WriteFile(h, cfg, (DWORD)strlen(cfg), &w, NULL);
+	CloseHandle(h);
+}
+
 static BOOL write_json(const char* root, copy_ctx* c, jb* files)
 {
 	char path[MAX_PATH], now[32];
@@ -244,6 +300,7 @@ static BOOL write_json(const char* root, copy_ctx* c, jb* files)
 	if (h != INVALID_HANDLE_VALUE)
 		CloseHandle(h);
 	jb_free(&b);
+	write_grub_lang(root);
 	return ok;
 }
 

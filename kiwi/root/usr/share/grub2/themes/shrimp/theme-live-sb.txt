@@ -1,6 +1,6 @@
 # Shrimp GRUB theme for Secure Boot (lockdown), live ISO menu.
 # The signed GRUB refuses our PF2 fonts, so the menu entries are images (icons/os.png,
-# icons/efi.png, rendered from Inter by tools/render-grub-sb-icons.js) and the entry text
+# icons/efi-<tag>.png, rendered by tools/render-grub-i18n.js; "Shrimp" by tools/render-grub-sb-icons.js) and the entry text
 # itself is drawn black on black. Layout is identical to theme-live.txt.
 # Limits: the selected state is shown only by the chevron (icons are the same selected or not),
 # and the countdown label can only use the built-in Unifont 16.
@@ -42,5 +42,5 @@ terminal-font: "Gnu Unifont Mono Regular 16"
   align = "center"
   font = "Gnu Unifont Mono Regular 16"
   color = "#8c8c8c"
-  text = "Shrimp uruchomi się za %d s"
+  text = "Shrimp will start in %d s"
 }
