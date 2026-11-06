@@ -1,0 +1,41 @@
+1	Enta zaga
+6	Siguient
+7	Blincar
+8	Cancelar
+9	Feito
+10	Abanzau
+11	Automatico
+12	Garra
+14	Empecemos
+15	Tría una luenga
+22	Unidat
+25	Desactivau
+26	Activau
+29	Án se deve instalar Shrimp?
+30	Cheunto a Windows
+31	En cambio de Windows
+42	Clau
+46	Luenga
+47	Rechión
+48	Teclau
+49	Unidat
+50	Instalación
+56	Instalar
+57	Instalando Shrimp
+58	Instalando
+63	Un momento
+64	Instalación completada
+66	Reiniciar
+67	Hola, {name}
+79	Connectar
+85	Claro
+86	Escuro
+89	Azul
+91	Verde
+92	Amariello
+94	Royo
+111	Chuegos
+143	Aduya
+149	Tornar a prebar
+153	Tornar
+156	Salir

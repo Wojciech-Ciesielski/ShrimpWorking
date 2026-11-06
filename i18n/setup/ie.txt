@@ -1,0 +1,41 @@
+1	Retro
+6	Sequent
+7	Passar
+8	Anullar
+9	Finit
+10	Avansat
+11	Automatic
+12	Null
+14	Comensar
+15	Selecter un lingue
+22	Disc
+25	Desactivat
+26	Activat
+29	U installar Shrimp?
+30	Apu Windows
+31	In loc de Windows
+42	Contrasigne
+46	Lingue
+47	Region
+48	Tastiere
+49	Disc
+50	Installation
+56	Installar
+57	Installation de Shrimp
+58	Installante
+63	Un momente
+64	Installation complet
+66	Rebootar
+67	Hay, {name}
+79	Connecter
+85	Clar
+86	Obscur
+89	Blu
+91	Verd
+92	Jale
+94	Rubi
+111	Ludes
+143	Auxilie
+149	Provar denov
+153	Retornar
+156	Surtir
