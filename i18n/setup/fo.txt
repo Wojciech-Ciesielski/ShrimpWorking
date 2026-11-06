@@ -1,0 +1,67 @@
+1	Aftur
+6	Næsta
+7	Hoppa um
+8	Ógilda
+9	Liðugt
+10	Víðkað
+11	Sjálvvirkandi
+12	Eingin
+13	Latum okkum gera Shrimp klárt á tínari telduni.
+14	Byrjað verður
+15	Vel mál
+16	Hvar ert tú?
+18	Vel knappaborðsuppsetan
+22	Drivi
+24	Diskakrypting
+25	Av
+26	Á
+27	Diskaloyniorð
+29	Hvar skal Shrimp installerast?
+30	Við síðuna av Windows
+31	Í staðin fyri Windows
+38	Stovna eina kontu
+40	Fult navn
+41	Brúkaranavn
+42	Loyniorð
+43	Vátta loyniorð
+44	Klárt at installera
+46	Mál
+47	Øki
+48	Knappaborð
+49	Drivi
+50	Installatión
+56	Installera
+57	Installerar Shrimp
+58	Installerar
+63	Ein løta
+64	Installatiónin er liðug
+65	Byrja telduna av nýggjum fyri at gera liðugt.
+66	Byrja av nýggjum
+67	Halló, {name}
+70	Tengi til eitt net
+79	Tengi
+85	Ljóst
+86	Myrkt
+89	Blátt
+90	Grønblátt
+91	Grønt
+92	Gult
+93	Appilsingult
+94	Reytt
+95	Ljósareytt
+96	Fjólublátt
+97	Grátt
+100	Installera
+101	Eg geri tað seinni
+111	Dentlar
+122	Alt er klárt
+123	Góða fyrimuning við Shrimp.
+143	Hjálp
+145	Diskaloyniorðini samsvara ikki
+147	Loyniorðini samsvara ikki
+149	Royn aftur
+150	Ikki nóg nógv pláss
+153	Far aftur
+154	Installatiónin miseydnaðist
+156	Gevst
+160	Eingin alnetsamband

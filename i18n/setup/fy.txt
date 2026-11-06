@@ -1,0 +1,67 @@
+1	Werom
+6	Folgjende
+7	Oerslaan
+8	Annulearje
+9	Klear
+10	Avansearre
+11	Automatysk
+12	Gjin
+13	Litte wy Shrimp ree meitsje op dyn kompjûter.
+14	Litte wy begjinne
+15	Kies in taal
+16	Wêr bist?
+18	Kies in toetseboerdyndieling
+22	Skiif
+24	Skiifensjifering
+25	Út
+26	Oan
+27	Skiifwachtwurd
+29	Wêr moat Shrimp ynstallearre wurde?
+30	Njonken Windows
+31	Yn plak fan Windows
+38	Meitsje in account oan
+40	Folsleine namme
+41	Brûkersnamme
+42	Wachtwurd
+43	Befêstigje wachtwurd
+44	Klear om te ynstallearjen
+46	Taal
+47	Regio
+48	Toetseboerd
+49	Skiif
+50	Ynstallaasje
+56	Ynstallearje
+57	Shrimp wurdt ynstallearre
+58	Ynstallearje
+63	Efkes wachtsje
+64	Ynstallaasje foltôge
+65	Start de kompjûter opnij op om klear te meitsjen.
+66	Opnij starte
+67	Hallo, {name}
+70	Ferbine mei in netwurk
+79	Ferbine
+85	Ljocht
+86	Tsjuster
+89	Blau
+90	Blaugrien
+91	Grien
+92	Giel
+93	Oranje
+94	Read
+95	Roze
+96	Pears
+97	Grau
+100	Ynstallearje
+101	Ik doch it letter
+111	Spultsjes
+122	Alles is ree
+123	In protte wille mei Shrimp.
+143	Help
+145	De skiifwachtwurden komme net oerien
+147	De wachtwurden komme net oerien
+149	Besykje it opnij
+150	Net genôch romte
+153	Werom gean
+154	Ynstallaasje mislearre
+156	Ofslute
+160	Gjin ynternetferbining
