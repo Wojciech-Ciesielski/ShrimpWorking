@@ -1,0 +1,67 @@
+1	Ar ais
+6	Ar aghaidh
+7	Scipeáil
+8	Cealaigh
+9	Déanta
+10	Casta
+11	Uathoibríoch
+12	Dada
+13	Réitímis Shrimp ar do ríomhaire.
+14	Tosaímis
+15	Roghnaigh teanga
+16	Cá bhfuil tú?
+18	Roghnaigh leagan amach méarchláir
+22	Tiomántán
+24	Criptiú diosca
+25	As
+26	Air
+27	Pasfhocal an diosca
+29	Cá gcuirfear Shrimp ar fáil?
+30	In aice le Windows
+31	In ionad Windows
+38	Cruthaigh cuntas
+40	Ainm iomlán
+41	Ainm úsáideora
+42	Pasfhocal
+43	Deimhnigh an pasfhocal
+44	Réidh le suiteáil
+46	Teanga
+47	Réigiún
+48	Méarchlár
+49	Tiomántán
+50	Suiteáil
+56	Suiteáil
+57	Shrimp á shuiteáil
+58	Á shuiteáil
+63	Nóiméad amháin
+64	Suiteáil críochnaithe
+65	Atosaigh an ríomhaire chun é a chríochnú.
+66	Atosaigh
+67	Dia duit, {name}
+70	Ceangail le líonra
+79	Ceangail
+85	Éadrom
+86	Dorcha
+89	Gorm
+90	Tuaslagán
+91	Glas
+92	Buí
+93	Oráiste
+94	Dearg
+95	Bándearg
+96	Corcra
+97	Liath
+100	Suiteáil
+101	Déanfaidh mé níos déanaí é
+111	Cluichí
+122	Gach rud réidh
+123	Bain sult as Shrimp.
+143	Cabhair
+145	Ní hionann pasfhocail an diosca
+147	Ní hionann na pasfhocail
+149	Bain triail eile as
+150	Níl go leor spáis ann
+153	Téigh ar ais
+154	Theip ar an tsuiteáil
+156	Scoir
+160	Níl nasc idirlín ann
