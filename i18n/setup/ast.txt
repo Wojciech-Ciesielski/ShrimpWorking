@@ -1,0 +1,67 @@
+1	Atrás
+6	Siguiente
+7	Saltar
+8	Encaboxar
+9	Fecho
+10	Avanzao
+11	Automáticu
+12	Dengún
+13	Preparemos Shrimp nel to ordenador.
+14	Entamemos
+15	Escueye una llingua
+16	¿Ú tas?
+18	Escueye una distribución de tecláu
+22	Unidá
+24	Cifráu del discu
+25	Apagáu
+26	Prendíu
+27	Contraseña del discu
+29	¿Ú s'instala Shrimp?
+30	Al par de Windows
+31	N'arróu de Windows
+38	Crea una cuenta
+40	Nome completu
+41	Nome d'usuariu
+42	Contraseña
+43	Confirma la contraseña
+44	Preste pa instalar
+46	Llingua
+47	Rexón
+48	Tecláu
+49	Unidá
+50	Instalación
+56	Instalar
+57	Instalando Shrimp
+58	Instalando
+63	Un momentu
+64	Instalación completada
+65	Reanicia l'ordenador pa acabar.
+66	Reaniciar
+67	Hola, {name}
+70	Conéctate a una rede
+79	Conectar
+85	Claru
+86	Escuru
+89	Azul
+90	Verde azulao
+91	Verde
+92	Mariellu
+93	Naranxa
+94	Colloráu
+95	Rosa
+96	Moráu
+97	Gris
+100	Instalar
+101	Fadréilo dempués
+111	Xuegos
+122	Too preste
+123	Esfruta de Shrimp.
+143	Ayuda
+145	Les contraseñes del discu nun concuerden
+147	Les contraseñes nun concuerden
+149	Intentar otra vegada
+150	Nun hai espaciu abondu
+153	Volver
+154	Falló la instalación
+156	Colar
+160	Ensin conexón a internet
