@@ -81,6 +81,7 @@ export class DemoBackend implements Backend {
   }
   async cancel() { clearInterval(this.timer); }
   async reboot() {}
+  openUrl(url: string) { if (/^https:\/\//.test(url)) window.open(url, "_blank", "noopener"); }
   later() {}
   minimize() {}
   close() {}

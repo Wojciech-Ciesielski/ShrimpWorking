@@ -44,15 +44,20 @@ Interfejs wysyła tekst `id⇥wywołanie⇥argumenty…` (ścieżki Windows nie 
 
 | Wywołanie | Argumenty | Wynik |
 |---|---|---|
-| `info` | | `{ bitlocker, shrimpSize, minSize, folders: [{ key, path, size }] }` |
+| `info` | | `{ bitlocker, shrimpSize, minSize, folders: [{ key, path, size }], helpUrl? }` |
 | `devices` | | `[{ id, name, kind, size }]` |
 | `pick` | `folder` \| `file` | `[{ path, name, kind, size }]` (okno wyboru Windows) |
 | `start` | nośnik, klucze folderów po przecinku, ścieżki… | od razu `null`, dalej zdarzenia |
 | `cancel` | | `null` po zatrzymaniu |
 | `reboot` | | `null` albo błąd z opisem dla użytkownika |
+| `open` | adres `https://…` | bez odpowiedzi; program otwiera stronę w przeglądarce (odrzuca wszystko poza https i zwykłymi znakami adresu) |
 | `later`, `close`, `minimize`, `drag` | | bez odpowiedzi |
 
 Zdarzenia: `devices`, `folders` (rozmiary liczone w tle), `bitlocker`, `progress { phase 1–3, done, total, speed }`, `fail { phase, kind, message? }` (`offline`, `verify`, `space`, `write`, `device`, `copy`, `other`), `done`, `closeRequested`.
+
+### Strony pomocy
+
+Ikony ⓘ (np. przy wyborze nośnika i plików) otwierają stronę pomocy w przeglądarce, gdy znamy jej adres. Adresy i tematy są w [`site/help.json`](../site/help.json) (wspólne z Setup): wpisz stronę w `base` (np. `https://…/help`), a ikona otworzy `base/<ścieżka tematu>?lang=<język interfejsu>&from=install`. Przy pustym `base` ikony zostają samą podpowiedzią. Adres z manifestu wydania (`helpUrl` w odpowiedzi `info`) ma pierwszeństwo. Podstrony do przygotowania: `download-iso`, `copy-files`, `usb-drive`, `bitlocker`, `no-internet`, `boot-from-usb`, `nvidia-driver`.
 
 ## shrimp.json
 
