@@ -94,6 +94,13 @@ Uwaga: dysk z BitLockerem (`windows.bitlocker`, zdarzenie i alert na ekranie Sta
 { "version": "Beta 1", "url": "https://…/shrimp-beta1.iso", "size": 3650722816, "sha256": "…" }
 ```
 
+Adres manifestu zależy od repozytorium, z którego budujemy (`tools/prepare.sh` zapisuje `shrimp_config.h` z `SHRIMP_REPO` i `SHRIMP_PRIVATE`; workflow ustawia je sam):
+
+- **Repozytorium prywatne** (obecnie): `https://api.github.com/repos/<repo>/releases/latest`. Program znajduje w ostatnim wydaniu zasoby `manifest.json` i `manifest.json.sig`, a ISO pobiera przez API (`Accept: application/octet-stream`). GitHub wymaga tokenu: zmienna `SHRIMP_TOKEN` albo pierwszy wiersz `%LOCALAPPDATA%\Shrimp Install\token.txt` (token z odczytem zawartości repozytorium). Token jest wysyłany tylko do `api.github.com`; przekierowania program obsługuje sam i nie przekazuje go dalej. Nie wkompilowujemy go w `.exe`.
+- **Repozytorium publiczne**: `https://github.com/<repo>/releases/latest/download/manifest.json`, bez tokenu. Przy przenosinach wystarczy zbudować program w nowym repozytorium (tools/export-open.sh, OPEN-SOURCE.md w korzeniu).
+
+Wydanie składa workflow **Release** (ręcznie: tag, wersja) z gotowych przebiegów Build ISO i Shrimp Install, liczy SHA-256 i dopisuje `manifest.json` (oraz `.sig`, jeśli jest sekret `SHRIMP_MANIFEST_KEY`). Zasób wydania GitHub może mieć najwyżej 2 GiB; obecne ISO ma ok. 1,4 GB.
+
 Obok `manifest.json.sig`: `openssl dgst -sha256 -sign klucz.pem -out manifest.json.sig manifest.json`. Klucz publiczny trafia do programu przez `tools/make-key.sh`. Bez klucza (obecny stan) podpis nie jest sprawdzany, a zaufanie do manifestu daje HTTPS. Suma SHA-256 obrazu jest sprawdzana zawsze. Obraz trafia do `%LOCALAPPDATA%\Shrimp Install\` i jest usuwany po zapisie.
 
 ## Wymagania wobec ISO (wątek budowy ISO)
