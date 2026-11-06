@@ -1,0 +1,44 @@
+1	Nciphisa
+2	Vala
+3	Faka i-Shrimp
+4	Inkqubo ethe cwaka, ecocekileyo esebenza ukususela ekuqaleni kokuqala.
+5	Ukukhuphela ngokuzenzekelayo
+6	Isifaki sikhuphela yonke into oyifunayo.
+7	Iifayile zakho zikhuselekile
+8	Iifayile zakho ziza kugcinwa.
+9	Iinkqubo ozaziyo
+12	Masiqale
+14	Khetha idrayivu
+16	Idrayivu
+19	Emva
+20	Okulandelayo
+23	Akukho drayivu ifunyenweyo
+24	Qhagamshela idrayivu iya kubonakala apha.
+25	Incinci kakhulu
+27	I-USB stick
+28	Ikhadi le-SD
+29	Idrayivu yangaphandle
+30	Yintoni ekufuneka ikhuselwe?
+34	(Iyacetyiswa)
+36	Ndiza kuzikhethela
+39	Amaxwebhu
+40	Imifanekiso
+41	Idesktop
+42	Umculo
+43	Iividiyo
+44	Okukhutshelweyo
+59	Ilungisa i-Shrimp
+62	Ukulungiselela kugqityiwe
+63	Yonke into ilungile.
+64	Ikhuphela i-Shrimp
+65	Ibhala kwidrayivu
+66	Ikopa iifayile
+67	Musa ukukhupha idrayivu de igqibe.
+68	Rhoxisa
+69	Zama kwakhona
+82	Akukho kuqhagamshelwa kwi-intanethi
+99	Kukho into engahambanga kakuhle
+101	Yonke into ilungile
+102	Qala kwakhona ikhompyuter ukugqiba.
+110	Kamva
+111	Qala kwakhona
