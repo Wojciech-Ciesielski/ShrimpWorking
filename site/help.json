@@ -1,0 +1,13 @@
+{
+  "//": "Strony pomocy na stronie Shrimp: ikony ⓘ / ? w Shrimp Install i Setup otwierają base + '/' + ścieżka tematu + '?lang=<język>&from=<program>'. Dopóki 'base' jest puste (albo nie zaczyna się od https://), ikony działają jak dotąd: tylko podpowiedź. Adres strony wpisz tu jednym wpisem, nic więcej nie trzeba zmieniać. Ścieżki tematów to adresy podstron do przygotowania.",
+  "base": "",
+  "topics": {
+    "iso": "download-iso",
+    "files": "copy-files",
+    "usb": "usb-drive",
+    "bitlocker": "bitlocker",
+    "offline": "no-internet",
+    "boot": "boot-from-usb",
+    "nvidia": "nvidia-driver"
+  }
+}
