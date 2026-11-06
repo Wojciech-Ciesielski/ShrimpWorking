@@ -1,0 +1,67 @@
+1	Air ais
+6	Air adhart
+7	Leum thairis
+8	Sguir dheth
+9	Deiseil
+10	Adhartach
+11	Fèin-obrachail
+12	Chan eil gin
+13	Ullaichidh sinn Shrimp air a’ choimpiutair agad.
+14	Tòisichidh sinn
+15	Tagh cànan
+16	Càit a bheil thu?
+18	Tagh co-dhealbhachadh a’ chlàr-iuchrach
+22	Draibh
+24	Crioptachadh na diosga
+25	Dheth
+26	Air
+27	Facal-faire na diosga
+29	Càit an stàlaichear Shrimp?
+30	Ri taobh Windows
+31	An àite Windows
+38	Cruthaich cunntas
+40	An t-ainm slàn
+41	Ainm-cleachdaiche
+42	Facal-faire
+43	Dearbh am facal-faire
+44	Deiseil airson stàladh
+46	Cànan
+47	Roinn
+48	Clàr-iuchrach
+49	Draibh
+50	Stàladh
+56	Stàlaich
+57	A’ stàladh Shrimp
+58	A’ stàladh
+63	Dìreach mionaid
+64	Stàladh coileanta
+65	Ath-thòisich an coimpiutair gus crìoch a chur air.
+66	Ath-thòisich
+67	Halò, {name}
+70	Ceangail ri lìonra
+79	Ceangail
+85	Soilleir
+86	Dorcha
+89	Gorm
+90	Uaine-ghorm
+91	Uaine
+92	Buidhe
+93	Orains
+94	Dearg
+95	Pinc
+96	Purpaidh
+97	Liath
+100	Stàlaich
+101	Nì mi e nas fhaide air adhart
+111	Geamannan
+122	Gach nì deiseil
+123	Tlachd leat Shrimp.
+143	Taic
+145	Chan eil faclan-faire na diosga co-ionnan
+147	Chan eil na faclan-faire co-ionnan
+149	Feuch a-rithist
+150	Chan eil àite gu leòr ann
+153	Air ais
+154	Dh’fhàillig an stàladh
+156	Fàg
+160	Chan eil ceangal eadar-lìn ann

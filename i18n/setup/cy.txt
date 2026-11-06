@@ -1,0 +1,67 @@
+1	Yn ôl
+6	Nesaf
+7	Hepgor
+8	Diddymu
+9	Wedi'i wneud
+10	Uwch
+11	Awtomatig
+12	Dim
+13	Gadewch i ni baratoi Shrimp ar eich cyfrifiadur.
+14	Dewch i ni ddechrau
+15	Dewiswch iaith
+16	Ble ydych chi?
+18	Dewiswch gynllun bysellfwrdd
+22	Gyriant
+24	Amgryptio disg
+25	I ffwrdd
+26	Ymlaen
+27	Cyfrinair y ddisg
+29	Ble dylid gosod Shrimp?
+30	Wrth ymyl Windows
+31	Yn lle Windows
+38	Creu cyfrif
+40	Enw llawn
+41	Enw defnyddiwr
+42	Cyfrinair
+43	Cadarnhau'r cyfrinair
+44	Yn barod i'w osod
+46	Iaith
+47	Rhanbarth
+48	Bysellfwrdd
+49	Gyriant
+50	Gosod
+56	Gosod
+57	Yn gosod Shrimp
+58	Yn gosod
+63	Eiliad
+64	Gosod wedi'i gwblhau
+65	Ailgychwynnwch y cyfrifiadur i orffen.
+66	Ailgychwyn
+67	Helo, {name}
+70	Cysylltu â rhwydwaith
+79	Cysylltu
+85	Golau
+86	Tywyll
+89	Glas
+90	Gwyrddlas
+91	Gwyrdd
+92	Melyn
+93	Oren
+94	Coch
+95	Pinc
+96	Porffor
+97	Llwyd
+100	Gosod
+101	Gwnaf hyn yn nes ymlaen
+111	Gemau
+122	Popeth yn barod
+123	Mwynhewch Shrimp.
+143	Cymorth
+145	Nid yw cyfrineiriau'r ddisg yn cyfateb
+147	Nid yw'r cyfrineiriau'n cyfateb
+149	Ceisio eto
+150	Dim digon o le
+153	Yn ôl
+154	Methodd y gosod
+156	Gadael
+160	Dim cysylltiad â'r rhyngrwyd
