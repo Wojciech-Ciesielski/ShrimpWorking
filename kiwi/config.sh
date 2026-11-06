@@ -127,7 +127,7 @@ rm -rf "$work"
 
 #--------------------------------------
 # GNOME Shell extensions from extensions.gnome.org
-# (Leap 16 does not ship Light Style, Apps Menu or Workspace Indicator in a package,
+# (Leap 16 does not ship Light Style or Apps Menu in a package,
 #  so they come from extensions.gnome.org as well)
 #--------------------------------------
 SHELL_MAJOR="$(rpm -q --qf '%{VERSION}' gnome-shell | cut -d. -f1)"
@@ -154,7 +154,7 @@ install_ext() {
   echo "extension installed: $uuid"
 }
 for uuid in ding@rastersoft.com blur-my-shell@aunetx dash-to-dock@micxgx.gmail.com just-perfection-desktop@just-perfection \
-            apps-menu@gnome-shell-extensions.gcampax.github.com workspace-indicator@gnome-shell-extensions.gcampax.github.com; do
+            apps-menu@gnome-shell-extensions.gcampax.github.com; do
   [ -d "$EXT/$uuid" ] || install_ext "$uuid" || die "extension $uuid has no release for GNOME $SHELL_MAJOR"
 done
 # Light Style: optional, newer shells follow the light colour scheme on their own
