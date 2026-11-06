@@ -1,0 +1,126 @@
+name: Release
+
+# Składa wydanie z gotowych przebiegów: ISO (Build ISO) i shrimp-install.exe (Shrimp Install)
+# z tej samej gałęzi, liczy SHA-256 i dodaje manifest.json, z którego Shrimp Install pobiera ISO.
+#  - Repozytorium prywatne: manifest wskazuje zasób przez API GitHub (pobieranie wymaga tokenu, patrz shrimp-install/README.md).
+#  - Repozytorium publiczne: manifest wskazuje zwykły adres pliku wydania, bez tokenu.
+# Przy przeniesieniu do repozytorium otwartego nic nie trzeba zmieniać: to wszystko wynika z github.repository.
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag wydania (musi być nowy)"
+        required: true
+        default: "beta-1"
+      version:
+        description: "Wersja pokazywana w programie i w nazwie pobranego ISO"
+        required: true
+        default: "Beta 1"
+      iso_run_id:
+        description: "Przebieg Build ISO (puste: ostatni udany na tej gałęzi)"
+        required: false
+      install_run_id:
+        description: "Przebieg Shrimp Install (puste: ostatni udany na tej gałęzi)"
+        required: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: ${{ github.repository }}
+      TAG: ${{ inputs.tag }}
+      VERSION: ${{ inputs.version }}
+      ISO_RUN: ${{ inputs.iso_run_id }}
+      EXE_RUN: ${{ inputs.install_run_id }}
+      MANIFEST_KEY: ${{ secrets.SHRIMP_MANIFEST_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sprawdź tag i wybierz przebiegi
+        run: |
+          if gh api "repos/$REPO/git/ref/tags/$TAG" >/dev/null 2>&1; then
+            echo "::error::Tag $TAG już istnieje"; exit 1
+          fi
+          [ -n "$ISO_RUN" ] || ISO_RUN=$(gh run list -R "$REPO" -w build-iso.yml -b "$GITHUB_REF_NAME" -s success -L 1 --json databaseId -q '.[0].databaseId')
+          [ -n "$EXE_RUN" ] || EXE_RUN=$(gh run list -R "$REPO" -w shrimp-install.yml -b "$GITHUB_REF_NAME" -s success -L 1 --json databaseId -q '.[0].databaseId')
+          if [ -z "$ISO_RUN" ] || [ -z "$EXE_RUN" ]; then
+            echo "::error::Brak udanego przebiegu Build ISO ($ISO_RUN) lub Shrimp Install ($EXE_RUN) na gałęzi $GITHUB_REF_NAME"; exit 1
+          fi
+          echo "ISO_RUN=$ISO_RUN" >> "$GITHUB_ENV"
+          echo "EXE_RUN=$EXE_RUN" >> "$GITHUB_ENV"
+          echo "Build ISO: $ISO_RUN, Shrimp Install: $EXE_RUN"
+
+      - name: Pobierz ISO i program
+        run: |
+          gh run download "$ISO_RUN" -R "$REPO" -n shrimp-live-iso -D iso
+          gh run download "$EXE_RUN" -R "$REPO" -n shrimp-install -D exe
+          ls -l iso exe
+          test -f exe/shrimp-install.exe
+
+      - name: Manifest i sumy kontrolne
+        run: |
+          iso=$(ls iso/*.iso | head -n1)
+          name=$(basename "$iso")
+          size=$(stat -c %s "$iso")
+          sha=$(sha256sum "$iso" | cut -d' ' -f1)
+          echo "ISO_NAME=$name" >> "$GITHUB_ENV"
+          echo "ISO_SIZE=$size" >> "$GITHUB_ENV"
+          echo "ISO_SHA=$sha" >> "$GITHUB_ENV"
+          mkdir -p assets
+          cp "$iso" "assets/$name"
+          cp exe/shrimp-install.exe assets/shrimp-install.exe
+          (cd assets && sha256sum "$name" shrimp-install.exe > SHA256SUMS)
+          # Plik ISO powyżej 2 GiB nie zmieści się w zasobie wydania GitHub.
+          if [ "$size" -ge $((2*1024*1024*1024)) ]; then
+            echo "::error::ISO ma $size B, a zasób wydania może mieć najwyżej 2 GiB: trzeba podzielić obraz"; exit 1
+          fi
+
+      - name: Utwórz wydanie
+        run: |
+          private=$(gh api "repos/$REPO" --jq .private)
+          cat > notes.md <<NOTES
+          Shrimp $VERSION: wydanie testowe.
+
+          - \`shrimp-install.exe\`: program dla Windows. Pobiera ISO z tego wydania, sprawdza sumę SHA-256, przygotowuje nośnik i zapisuje dane z Windows.
+          - \`$ISO_NAME\`: obraz Shrimp (SHA-256: \`$ISO_SHA\`).
+          - \`manifest.json\`: opis pobierania, który czyta program.
+
+          Program nie jest podpisany (Authenticode), więc SmartScreen ostrzeże przed uruchomieniem.
+          Nie testowano na prawdziwym sprzęcie: zapis nośnika i start z UEFI sprawdza dopiero komputer.
+          NOTES
+          if [ "$private" = true ]; then
+            cat >> notes.md <<'NOTES'
+
+          Repozytorium jest prywatne: przed uruchomieniem programu ustaw token GitHub z odczytem tego repozytorium
+          (`$env:SHRIMP_TOKEN = "…"` w PowerShell albo pierwszy wiersz pliku `%LOCALAPPDATA%\Shrimp Install\token.txt`).
+          NOTES
+          fi
+          gh release create "$TAG" assets/* --repo "$REPO" --target "$GITHUB_SHA" --title "Shrimp $VERSION" --notes-file notes.md
+          echo "PRIVATE=$private" >> "$GITHUB_ENV"
+
+      - name: Dodaj manifest
+        run: |
+          if [ "$PRIVATE" = true ]; then
+            id=$(gh api "repos/$REPO/releases/tags/$TAG" --jq ".assets[] | select(.name==\"$ISO_NAME\") | .id")
+            url="https://api.github.com/repos/$REPO/releases/assets/$id"
+          else
+            url="https://github.com/$REPO/releases/download/$TAG/$ISO_NAME"
+          fi
+          jq -n --arg v "$VERSION" --arg u "$url" --argjson s "$ISO_SIZE" --arg h "$ISO_SHA" \
+            '{version:$v, url:$u, size:$s, sha256:$h}' > manifest.json
+          cat manifest.json
+          files=(manifest.json)
+          if [ -n "$MANIFEST_KEY" ]; then
+            printf '%s' "$MANIFEST_KEY" > key.pem
+            openssl dgst -sha256 -sign key.pem -out manifest.json.sig manifest.json
+            rm -f key.pem
+            files+=(manifest.json.sig)
+          fi
+          gh release upload "$TAG" "${files[@]}" --repo "$REPO"
+          echo "### Wydanie $TAG" >> "$GITHUB_STEP_SUMMARY"
+          gh release view "$TAG" --repo "$REPO" --json url -q .url >> "$GITHUB_STEP_SUMMARY"
