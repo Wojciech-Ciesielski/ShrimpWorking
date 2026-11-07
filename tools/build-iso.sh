@@ -18,10 +18,14 @@ mkdir -p out
 "$ENGINE" run --rm --privileged -v /dev:/dev -v "$PWD:/work" -w /work \
   docker.io/opensuse/tumbleweed:latest bash -euxc "
     zypper -n --gpg-auto-import-keys ref
-    zypper -n in --no-recommends python3-kiwi kiwi-systemdeps-iso-media kiwi-systemdeps-bootloaders kiwi-systemdeps-filesystems binutils findutils gawk sed coreutils
-    rm -rf out/build
+    zypper -n in --no-recommends python3-kiwi kiwi-systemdeps-iso-media kiwi-systemdeps-bootloaders kiwi-systemdeps-filesystems binutils findutils gawk sed coreutils \
+      nodejs-default npm-default tar gzip
+    rm -rf out/build out/desc
+    # Shrimp Setup (installer + first boot) goes into the image as an overlay on kiwi/root
+    cp -a kiwi out/desc
+    tools/build-setup.sh '$REPO' out/desc/root
     kiwi-ng --logfile out/kiwi.log --color-output system build \
-      --description kiwi --set-repo '$REPO' --target-dir out/build
+      --description out/desc --set-repo '$REPO' --target-dir out/build
     mv out/build/*.iso out/
     # Adwaita icon sources used by the boot themes, printed for design previews
     for n in go-next-symbolic changes-prevent-symbolic system-lock-screen-symbolic network-wireless-signal-excellent-symbolic \\
@@ -30,6 +34,6 @@ mkdir -p out
       [ -n \"\$f\" ] && echo \"ICON-SVG \$n \$(base64 -w0 \"\$f\")\" || true
     done
     grep -h 'GRUB fonts\|WARNING\|extension installed\|config.sh' out/kiwi.log | tail -40 || true
-    rm -rf out/build
+    rm -rf out/build out/desc
   "
 ls -lh out/*.iso
