@@ -39,6 +39,10 @@ Fork Rufusa 4.16: pobiera Shrimp, zapisuje nośnik, kopiuje pliki i listę progr
 
 `standardize/shrimp-app-style` ustawia globalne nadpisania Flatpaka, żeby aplikacje GTK3, Qt i Electron wyglądały i zachowywały się jak GTK4/libadwaita: motyw adw-gtk3 (jasny/ciemny według trybu użytkownika), styl Adwaita i pasek tytułu Adwaita dla Qt (`QT_WAYLAND_DECORATION=adwaita`), okna plików i ustawienia przez portal, Wayland dla Electron. Toolkitu aplikacji nie da się podmienić, więc pasek tytułu Electron zostaje własny. Uruchamia się samo po każdej instalacji aplikacji (`shrimp-app-style.path`) i przy zmianie trybu (`shrimp-app-style-user.service`).
 
+## Shrimp Apps
+
+Sklep z aplikacjami z Flathub (GTK4 + libadwaita + Rust, libflatpak): `apps/shrimp-apps/`. Odkrywaj, kategorie, wyszukiwanie, strona aplikacji, instalacja, aktualizacja i usuwanie. Co działa i czego brakuje: `apps/shrimp-apps/README.md`. Workflow **Shrimp Apps** testuje go na lokalnym repozytorium i na prawdziwym Flathub, zrzuty w `test-results/shrimp-apps/`.
+
 ## Cocktail (aktualizacje i pakiety)
 
 `apps/cocktail`: GTK4 + libadwaita w Rust, nakładka na zyppera i `transactional-update` (Aktualizacje, Urządzenia, Pakiety, Historia). Zmiany w systemie przez pkexec (`cocktail-helper`, `cocktail-query`, polkit `org.shrimp.cocktail.*`). Opis, budowa, testy i lista braków: `apps/cocktail/README.md`. Workflow **Cocktail** (artefakt `cocktail-screens`).
