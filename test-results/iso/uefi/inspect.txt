@@ -31,29 +31,6 @@ gnome-shell-extensions-common-48.3-bp161.1.2.noarch
 gdm-48.0-160100.2.1.x86_64
 plymouth-22.02.122+94.4bd41a3-160100.2.1.x86_64
 grub2-2.14-160100.3.3.x86_64
-package pipewire is not installed
-package wireplumber is not installed
-package bluez is not installed
-package upower is not installed
-package gnome-bluetooth is not installed
-package tuned-ppd is not installed
-package power-profiles-daemon is not installed
-package iio-sensor-proxy is not installed
-package gnome-software is not installed
-package gnome-system-monitor is not installed
-package gnome-disk-utility is not installed
-package gnome-extensions is not installed
-package baobab is not installed
-package gnome-logs is not installed
-Gvc-1.0.typelib
-Shell-16.typelib
-St-16.typelib
-girepository-1.0
-libgnome-shell-menu.so
-libgvc.so
-libshell-16.so
-libshew-0.so
-libst-16.so
 === typelibs
 GnomeBG-4.0.typelib
 GnomeDesktop-3.0.typelib
@@ -73,10 +50,10 @@ local dash-to-dock@micxgx.gmail.com: just-perfection activities-button = No such
 local ding@rastersoft.com: just-perfection activities-button = No such schema “org.gnome.shell.extensions.just-perfection”
 local just-perfection-desktop@just-perfection: just-perfection activities-button = false
 === libraries
-lrwxrwxrwx 1 root root 24 Dec 23  2025 /tmp/tmp.fy66zdvSlH/root/lib64/libz.so -> zlib-ng-compat/libz.so.1
-lrwxrwxrwx 1 root root 24 Dec 23  2025 /tmp/tmp.fy66zdvSlH/root/usr/lib64/libz.so -> zlib-ng-compat/libz.so.1
+lrwxrwxrwx 1 root root 24 Dec 23  2025 /tmp/tmp.XCzTqGeA93/root/lib64/libz.so -> zlib-ng-compat/libz.so.1
+lrwxrwxrwx 1 root root 24 Dec 23  2025 /tmp/tmp.XCzTqGeA93/root/usr/lib64/libz.so -> zlib-ng-compat/libz.so.1
 GMenu-3.0.typelib
-ls: cannot access '/tmp/tmp.fy66zdvSlH/root/usr/libexec/gvfsd-trash': No such file or directory
+ls: cannot access '/tmp/tmp.XCzTqGeA93/root/usr/libexec/gvfsd-trash': No such file or directory
 === shell theme
 /org/gnome/shell/theme/gnome-shell-dark.css: 1 shrimp blocks
 /org/gnome/shell/theme/gnome-shell-high-contrast.css: 1 shrimp blocks
@@ -89,9 +66,9 @@ ls: cannot access '/tmp/tmp.fy66zdvSlH/root/usr/libexec/gvfsd-trash': No such fi
 AutomaticLoginEnable=True
 AutomaticLogin=shrimp
 WaylandEnable=true
-lrwxrwxrwx 1 root root 35 Nov  7 14:03 /tmp/tmp.fy66zdvSlH/root/etc/systemd/system/display-manager.service -> /usr/lib/systemd/system/gdm.service
+lrwxrwxrwx 1 root root 35 Nov  7 20:00 /tmp/tmp.XCzTqGeA93/root/etc/systemd/system/display-manager.service -> /usr/lib/systemd/system/gdm.service
 === grub.cfg (EFI)
-search --file --set=root /boot/0xe62de762
+search --file --set=root /boot/0xbc5018ab
 set prefix=($root)/boot/grub2
 configfile ($root)/boot/grub2/grub.cfg
 === grub.cfg (BIOS)
@@ -99,7 +76,7 @@ set shrimp_lang=en
 set shrimp_fw="Computer settings"
 set shrimp_img=0
 # kiwi generated one time grub2 config file
-search --file --set=root /boot/0xe62de762
+search --file --set=root /boot/0xbc5018ab
 set default=0
 if [ -n "$extra_cmdline" ]; then
   submenu "Bootable snapshot $snapshot_num" {
@@ -109,10 +86,17 @@ fi
 if [ -n "${iso_path}" ]; then
     isoboot="iso-scan/filename=${iso_path}"
 fi
-set timeout=5
-set timeout_style=menu
+set timeout=1
+set timeout_style=hidden
+if [ "${grub_platform}" = "pc" ]; then
+    insmod keystatus
+    if keystatus --shift; then
+        set timeout=-1
+        set timeout_style=menu
+    fi
+fi
 if [ "${grub_platform}" = "efi" ]; then
-    echo "Please press 't' to show the boot menu on this console"
+    true
 fi
 set gfxmode=1920x1080,auto
 set font=($root)/boot/x86_64/loader/grub2/fonts/unicode.pf2
@@ -157,9 +141,9 @@ terminal_input console
 terminal_output gfxterm
 menuentry "Shrimp" --class os --unrestricted {
     set gfxpayload=keep
-    echo Loading kernel...
-    linux ($root)/boot/x86_64/loader/linux ${extra_cmdline} ${isoboot} splash quiet loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0  root=live:CDLABEL=SHRIMP_LIVE rd.live.image rd.live.overlay.persistent rd.live.overlay.cowfs=ext4
-    echo Loading initrd...
+    true
+    linux ($root)/boot/x86_64/loader/linux ${extra_cmdline} ${isoboot} splash quiet loglevel=3 rd.udev.log_level=3 udev.log_level=3 systemd.show_status=false rd.systemd.show_status=false vt.global_cursor_default=0  root=live:CDLABEL=SHRIMP_LIVE rd.live.image rd.live.overlay.persistent rd.live.overlay.cowfs=ext4
+    true
     initrd ($root)/boot/x86_64/loader/initrd
 }
 if [ "${grub_platform}" = "efi" ]; then
@@ -178,243 +162,243 @@ if [ "${grub_platform}" = "efi" ]; then
 fi
 === theme
 total 1045
-drwxr-xr-x 1 root root  32768 Nov  7 14:03 .
-drwxr-xr-x 1 root root   2048 Nov  7 14:03 ..
-drwxr-xr-x 1 root root  16384 Nov  7 13:57 icons
--rw-r--r-- 1 root root 167194 Nov  7 14:03 inter-regular-27.pf2
--rw-r--r-- 1 root root 275441 Nov  7 14:03 inter-regular-38.pf2
--rw-r--r-- 1 root root 286650 Nov  7 14:03 inter-semibold-38.pf2
-drwxr-xr-x 1 root root  14336 Nov  7 13:57 lang
--rw-r--r-- 1 root root  13446 Nov  7 13:57 logo.png
--rw-r--r-- 1 root root  28357 Nov  7 13:57 logo@2x.png
--rw-r--r-- 1 root root     70 Nov  7 13:57 select_c.png
--rw-r--r-- 1 root root     70 Nov  7 13:57 select_e.png
--rw-r--r-- 1 root root    259 Nov  7 14:03 select_w.png
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-ab.txt
--rw-r--r-- 1 root root   1313 Nov  7 14:03 theme-af.txt
--rw-r--r-- 1 root root   1334 Nov  7 14:03 theme-am.txt
--rw-r--r-- 1 root root   1319 Nov  7 14:03 theme-an.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-ar.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-as.txt
--rw-r--r-- 1 root root   1317 Nov  7 14:03 theme-ast.txt
--rw-r--r-- 1 root root   1324 Nov  7 14:03 theme-az.txt
--rw-r--r-- 1 root root   1319 Nov  7 14:03 theme-be-latn.txt
--rw-r--r-- 1 root root   1334 Nov  7 14:03 theme-be.txt
--rw-r--r-- 1 root root   1335 Nov  7 14:03 theme-bg.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-bn.txt
--rw-r--r-- 1 root root   1319 Nov  7 14:03 theme-br.txt
--rw-r--r-- 1 root root   1323 Nov  7 14:03 theme-bs.txt
--rw-r--r-- 1 root root   1324 Nov  7 14:03 theme-ca-valencia.txt
--rw-r--r-- 1 root root   1325 Nov  7 14:03 theme-ca.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-ckb.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-crh.txt
--rw-r--r-- 1 root root   1317 Nov  7 14:03 theme-cs.txt
--rw-r--r-- 1 root root   1330 Nov  7 14:03 theme-cy.txt
--rw-r--r-- 1 root root   1314 Nov  7 14:03 theme-da.txt
--rw-r--r-- 1 root root   1314 Nov  7 14:03 theme-de.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-dz.txt
--rw-r--r-- 1 root root   1338 Nov  7 14:03 theme-el.txt
--rw-r--r-- 1 root root   1317 Nov  7 14:03 theme-en.txt
--rw-r--r-- 1 root root   1320 Nov  7 14:03 theme-eo.txt
--rw-r--r-- 1 root root   1319 Nov  7 14:03 theme-es.txt
--rw-r--r-- 1 root root   1321 Nov  7 14:03 theme-et.txt
--rw-r--r-- 1 root root   1319 Nov  7 14:03 theme-eu.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-fa.txt
--rw-r--r-- 1 root root   1324 Nov  7 14:03 theme-fi.txt
--rw-r--r-- 1 root root   1313 Nov  7 14:03 theme-fo.txt
--rw-r--r-- 1 root root   1319 Nov  7 14:03 theme-fr.txt
--rw-r--r-- 1 root root   1319 Nov  7 14:03 theme-fur.txt
--rw-r--r-- 1 root root   1313 Nov  7 14:03 theme-fy.txt
--rw-r--r-- 1 root root   1321 Nov  7 14:03 theme-ga.txt
--rw-r--r-- 1 root root   1335 Nov  7 14:03 theme-gd.txt
--rw-r--r-- 1 root root   1317 Nov  7 14:03 theme-gl.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-gu.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-he.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-hi.txt
--rw-r--r-- 1 root root   1323 Nov  7 14:03 theme-hr.txt
--rw-r--r-- 1 root root   1319 Nov  7 14:03 theme-hu.txt
--rw-r--r-- 1 root root   1329 Nov  7 14:03 theme-hy.txt
--rw-r--r-- 1 root root   1317 Nov  7 14:03 theme-ia.txt
--rw-r--r-- 1 root root   1324 Nov  7 14:03 theme-id.txt
--rw-r--r-- 1 root root   1318 Nov  7 14:03 theme-ie.txt
--rw-r--r-- 1 root root   1317 Nov  7 14:03 theme-is.txt
--rw-r--r-- 1 root root   1319 Nov  7 14:03 theme-it.txt
--rw-r--r-- 1 root root   1330 Nov  7 14:03 theme-ja.txt
--rw-r--r-- 1 root root   1340 Nov  7 14:03 theme-ka.txt
--rw-r--r-- 1 root root   1316 Nov  7 14:03 theme-kab.txt
--rw-r--r-- 1 root root   1341 Nov  7 14:03 theme-kk.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-km.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-kn.txt
--rw-r--r-- 1 root root   1330 Nov  7 14:03 theme-ko.txt
--rw-r--r-- 1 root root   1331 Nov  7 14:03 theme-ku.txt
--rw-r--r-- 1 root root   1319 Nov  7 14:03 theme-kw.txt
--rw-r--r-- 1 root root   1332 Nov  7 14:03 theme-ky.txt
--rw-r--r-- 1 root root   1267 Nov  7 13:57 theme-live-sb.txt
--rw-r--r-- 1 root root   1317 Nov  7 14:03 theme-live.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-lo.txt
--rw-r--r-- 1 root root   1321 Nov  7 14:03 theme-lt.txt
--rw-r--r-- 1 root root   1317 Nov  7 14:03 theme-lv.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-mai.txt
--rw-r--r-- 1 root root   1335 Nov  7 14:03 theme-mg.txt
--rw-r--r-- 1 root root   1334 Nov  7 14:03 theme-mi.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-mjw.txt
--rw-r--r-- 1 root root   1331 Nov  7 14:03 theme-mk.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-ml.txt
--rw-r--r-- 1 root root   1342 Nov  7 14:03 theme-mn.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-mr.txt
--rw-r--r-- 1 root root   1322 Nov  7 14:03 theme-ms.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-my.txt
--rw-r--r-- 1 root root   1314 Nov  7 14:03 theme-nb.txt
--rw-r--r-- 1 root root   1315 Nov  7 14:03 theme-nds.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-ne.txt
--rw-r--r-- 1 root root   1314 Nov  7 14:03 theme-nl.txt
--rw-r--r-- 1 root root   1314 Nov  7 14:03 theme-nn.txt
--rw-r--r-- 1 root root   1328 Nov  7 14:03 theme-nso.txt
--rw-r--r-- 1 root root   1316 Nov  7 14:03 theme-oc.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-or.txt
--rw-r--r-- 1 root root   1330 Nov  7 14:03 theme-os.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-pa.txt
--rw-r--r-- 1 root root   1320 Nov  7 14:03 theme-pl.txt
--rw-r--r-- 1 root root   1318 Nov  7 14:03 theme-pt-br.txt
--rw-r--r-- 1 root root   1323 Nov  7 14:03 theme-pt-pt.txt
--rw-r--r-- 1 root root   1317 Nov  7 14:03 theme-ro.txt
--rw-r--r-- 1 root root   1336 Nov  7 14:03 theme-ru.txt
--rw-r--r-- 1 root root   1323 Nov  7 14:03 theme-rw.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-sat.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-ab.txt
--rw-r--r-- 1 root root   1263 Nov  7 14:03 theme-sb-af.txt
--rw-r--r-- 1 root root   1284 Nov  7 14:03 theme-sb-am.txt
--rw-r--r-- 1 root root   1269 Nov  7 14:03 theme-sb-an.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-ar.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-as.txt
--rw-r--r-- 1 root root   1267 Nov  7 14:03 theme-sb-ast.txt
--rw-r--r-- 1 root root   1274 Nov  7 14:03 theme-sb-az.txt
--rw-r--r-- 1 root root   1269 Nov  7 14:03 theme-sb-be-latn.txt
--rw-r--r-- 1 root root   1284 Nov  7 14:03 theme-sb-be.txt
--rw-r--r-- 1 root root   1285 Nov  7 14:03 theme-sb-bg.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-bn.txt
--rw-r--r-- 1 root root   1269 Nov  7 14:03 theme-sb-br.txt
--rw-r--r-- 1 root root   1273 Nov  7 14:03 theme-sb-bs.txt
--rw-r--r-- 1 root root   1274 Nov  7 14:03 theme-sb-ca-valencia.txt
--rw-r--r-- 1 root root   1275 Nov  7 14:03 theme-sb-ca.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-ckb.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-crh.txt
--rw-r--r-- 1 root root   1267 Nov  7 14:03 theme-sb-cs.txt
--rw-r--r-- 1 root root   1280 Nov  7 14:03 theme-sb-cy.txt
--rw-r--r-- 1 root root   1264 Nov  7 14:03 theme-sb-da.txt
--rw-r--r-- 1 root root   1264 Nov  7 14:03 theme-sb-de.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-dz.txt
--rw-r--r-- 1 root root   1288 Nov  7 14:03 theme-sb-el.txt
--rw-r--r-- 1 root root   1267 Nov  7 14:03 theme-sb-en.txt
--rw-r--r-- 1 root root   1270 Nov  7 14:03 theme-sb-eo.txt
--rw-r--r-- 1 root root   1269 Nov  7 14:03 theme-sb-es.txt
--rw-r--r-- 1 root root   1271 Nov  7 14:03 theme-sb-et.txt
--rw-r--r-- 1 root root   1269 Nov  7 14:03 theme-sb-eu.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-fa.txt
--rw-r--r-- 1 root root   1274 Nov  7 14:03 theme-sb-fi.txt
--rw-r--r-- 1 root root   1263 Nov  7 14:03 theme-sb-fo.txt
--rw-r--r-- 1 root root   1269 Nov  7 14:03 theme-sb-fr.txt
--rw-r--r-- 1 root root   1269 Nov  7 14:03 theme-sb-fur.txt
--rw-r--r-- 1 root root   1263 Nov  7 14:03 theme-sb-fy.txt
--rw-r--r-- 1 root root   1271 Nov  7 14:03 theme-sb-ga.txt
--rw-r--r-- 1 root root   1285 Nov  7 14:03 theme-sb-gd.txt
--rw-r--r-- 1 root root   1267 Nov  7 14:03 theme-sb-gl.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-gu.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-he.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-hi.txt
--rw-r--r-- 1 root root   1273 Nov  7 14:03 theme-sb-hr.txt
--rw-r--r-- 1 root root   1269 Nov  7 14:03 theme-sb-hu.txt
--rw-r--r-- 1 root root   1279 Nov  7 14:03 theme-sb-hy.txt
--rw-r--r-- 1 root root   1267 Nov  7 14:03 theme-sb-ia.txt
--rw-r--r-- 1 root root   1274 Nov  7 14:03 theme-sb-id.txt
--rw-r--r-- 1 root root   1268 Nov  7 14:03 theme-sb-ie.txt
--rw-r--r-- 1 root root   1267 Nov  7 14:03 theme-sb-is.txt
--rw-r--r-- 1 root root   1269 Nov  7 14:03 theme-sb-it.txt
--rw-r--r-- 1 root root   1280 Nov  7 14:03 theme-sb-ja.txt
--rw-r--r-- 1 root root   1290 Nov  7 14:03 theme-sb-ka.txt
--rw-r--r-- 1 root root   1266 Nov  7 14:03 theme-sb-kab.txt
--rw-r--r-- 1 root root   1291 Nov  7 14:03 theme-sb-kk.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-km.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-kn.txt
--rw-r--r-- 1 root root   1280 Nov  7 14:03 theme-sb-ko.txt
--rw-r--r-- 1 root root   1281 Nov  7 14:03 theme-sb-ku.txt
--rw-r--r-- 1 root root   1269 Nov  7 14:03 theme-sb-kw.txt
--rw-r--r-- 1 root root   1282 Nov  7 14:03 theme-sb-ky.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-lo.txt
--rw-r--r-- 1 root root   1271 Nov  7 14:03 theme-sb-lt.txt
--rw-r--r-- 1 root root   1267 Nov  7 14:03 theme-sb-lv.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-mai.txt
--rw-r--r-- 1 root root   1285 Nov  7 14:03 theme-sb-mg.txt
--rw-r--r-- 1 root root   1284 Nov  7 14:03 theme-sb-mi.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-mjw.txt
--rw-r--r-- 1 root root   1281 Nov  7 14:03 theme-sb-mk.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-ml.txt
--rw-r--r-- 1 root root   1292 Nov  7 14:03 theme-sb-mn.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-mr.txt
--rw-r--r-- 1 root root   1272 Nov  7 14:03 theme-sb-ms.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-my.txt
--rw-r--r-- 1 root root   1264 Nov  7 14:03 theme-sb-nb.txt
--rw-r--r-- 1 root root   1265 Nov  7 14:03 theme-sb-nds.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-ne.txt
--rw-r--r-- 1 root root   1264 Nov  7 14:03 theme-sb-nl.txt
--rw-r--r-- 1 root root   1264 Nov  7 14:03 theme-sb-nn.txt
--rw-r--r-- 1 root root   1278 Nov  7 14:03 theme-sb-nso.txt
--rw-r--r-- 1 root root   1266 Nov  7 14:03 theme-sb-oc.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-or.txt
--rw-r--r-- 1 root root   1280 Nov  7 14:03 theme-sb-os.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-pa.txt
--rw-r--r-- 1 root root   1270 Nov  7 14:03 theme-sb-pl.txt
--rw-r--r-- 1 root root   1268 Nov  7 14:03 theme-sb-pt-br.txt
--rw-r--r-- 1 root root   1273 Nov  7 14:03 theme-sb-pt-pt.txt
--rw-r--r-- 1 root root   1267 Nov  7 14:03 theme-sb-ro.txt
--rw-r--r-- 1 root root   1286 Nov  7 14:03 theme-sb-ru.txt
--rw-r--r-- 1 root root   1273 Nov  7 14:03 theme-sb-rw.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-sat.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-si.txt
--rw-r--r-- 1 root root   1266 Nov  7 14:03 theme-sb-sk.txt
--rw-r--r-- 1 root root   1271 Nov  7 14:03 theme-sb-sl.txt
--rw-r--r-- 1 root root   1261 Nov  7 14:03 theme-sb-sq.txt
--rw-r--r-- 1 root root   1277 Nov  7 14:03 theme-sb-sr-cyrl.txt
--rw-r--r-- 1 root root   1268 Nov  7 14:03 theme-sb-sr-latn.txt
--rw-r--r-- 1 root root   1264 Nov  7 14:03 theme-sb-sv.txt
--rw-r--r-- 1 root root   1270 Nov  7 14:03 theme-sb-sw.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-ta.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-te.txt
--rw-r--r-- 1 root root   1298 Nov  7 14:03 theme-sb-tg.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-th.txt
--rw-r--r-- 1 root root   1274 Nov  7 14:03 theme-sb-tr.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-ug.txt
--rw-r--r-- 1 root root   1282 Nov  7 14:03 theme-sb-uk.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-sb-uz-cyrl.txt
--rw-r--r-- 1 root root   1281 Nov  7 14:03 theme-sb-uz.txt
--rw-r--r-- 1 root root   1281 Nov  7 14:03 theme-sb-vi.txt
--rw-r--r-- 1 root root   1251 Nov  7 14:03 theme-sb-wa.txt
--rw-r--r-- 1 root root   1270 Nov  7 14:03 theme-sb-xh.txt
--rw-r--r-- 1 root root   1271 Nov  7 14:03 theme-sb-zh-hans.txt
--rw-r--r-- 1 root root   1271 Nov  7 14:03 theme-sb-zh-hant.txt
--rw-r--r-- 1 root root   1266 Nov  7 14:03 theme-sb-zu.txt
--rw-r--r-- 1 root root   1267 Nov  7 14:03 theme-sb.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-si.txt
--rw-r--r-- 1 root root   1316 Nov  7 14:03 theme-sk.txt
--rw-r--r-- 1 root root   1321 Nov  7 14:03 theme-sl.txt
--rw-r--r-- 1 root root   1311 Nov  7 14:03 theme-sq.txt
--rw-r--r-- 1 root root   1327 Nov  7 14:03 theme-sr-cyrl.txt
--rw-r--r-- 1 root root   1318 Nov  7 14:03 theme-sr-latn.txt
--rw-r--r-- 1 root root   1314 Nov  7 14:03 theme-sv.txt
--rw-r--r-- 1 root root   1320 Nov  7 14:03 theme-sw.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-ta.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-te.txt
--rw-r--r-- 1 root root   1348 Nov  7 14:03 theme-tg.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-th.txt
--rw-r--r-- 1 root root   1324 Nov  7 14:03 theme-tr.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-ug.txt
--rw-r--r-- 1 root root   1332 Nov  7 14:03 theme-uk.txt
--rw-r--r-- 1 root root   1351 Nov  7 14:03 theme-uz-cyrl.txt
--rw-r--r-- 1 root root   1331 Nov  7 14:03 theme-uz.txt
--rw-r--r-- 1 root root   1331 Nov  7 14:03 theme-vi.txt
--rw-r--r-- 1 root root   1301 Nov  7 14:03 theme-wa.txt
--rw-r--r-- 1 root root   1320 Nov  7 14:03 theme-xh.txt
--rw-r--r-- 1 root root   1321 Nov  7 14:03 theme-zh-hans.txt
--rw-r--r-- 1 root root   1321 Nov  7 14:03 theme-zh-hant.txt
--rw-r--r-- 1 root root   1316 Nov  7 14:03 theme-zu.txt
--rw-r--r-- 1 root root   1317 Nov  7 14:03 theme.txt
+drwxr-xr-x 1 root root  32768 Nov  7 20:01 .
+drwxr-xr-x 1 root root   2048 Nov  7 20:01 ..
+drwxr-xr-x 1 root root  16384 Nov  7 19:57 icons
+-rw-r--r-- 1 root root 167194 Nov  7 20:00 inter-regular-27.pf2
+-rw-r--r-- 1 root root 275441 Nov  7 20:00 inter-regular-38.pf2
+-rw-r--r-- 1 root root 286650 Nov  7 20:00 inter-semibold-38.pf2
+drwxr-xr-x 1 root root  14336 Nov  7 19:57 lang
+-rw-r--r-- 1 root root  13446 Nov  7 19:57 logo.png
+-rw-r--r-- 1 root root  28357 Nov  7 19:57 logo@2x.png
+-rw-r--r-- 1 root root     70 Nov  7 19:57 select_c.png
+-rw-r--r-- 1 root root     70 Nov  7 19:57 select_e.png
+-rw-r--r-- 1 root root    259 Nov  7 20:00 select_w.png
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-ab.txt
+-rw-r--r-- 1 root root   1313 Nov  7 20:01 theme-af.txt
+-rw-r--r-- 1 root root   1334 Nov  7 20:01 theme-am.txt
+-rw-r--r-- 1 root root   1319 Nov  7 20:01 theme-an.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-ar.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-as.txt
+-rw-r--r-- 1 root root   1317 Nov  7 20:01 theme-ast.txt
+-rw-r--r-- 1 root root   1324 Nov  7 20:01 theme-az.txt
+-rw-r--r-- 1 root root   1319 Nov  7 20:01 theme-be-latn.txt
+-rw-r--r-- 1 root root   1334 Nov  7 20:01 theme-be.txt
+-rw-r--r-- 1 root root   1335 Nov  7 20:01 theme-bg.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-bn.txt
+-rw-r--r-- 1 root root   1319 Nov  7 20:01 theme-br.txt
+-rw-r--r-- 1 root root   1323 Nov  7 20:01 theme-bs.txt
+-rw-r--r-- 1 root root   1324 Nov  7 20:01 theme-ca-valencia.txt
+-rw-r--r-- 1 root root   1325 Nov  7 20:01 theme-ca.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-ckb.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-crh.txt
+-rw-r--r-- 1 root root   1317 Nov  7 20:01 theme-cs.txt
+-rw-r--r-- 1 root root   1330 Nov  7 20:01 theme-cy.txt
+-rw-r--r-- 1 root root   1314 Nov  7 20:01 theme-da.txt
+-rw-r--r-- 1 root root   1314 Nov  7 20:01 theme-de.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-dz.txt
+-rw-r--r-- 1 root root   1338 Nov  7 20:01 theme-el.txt
+-rw-r--r-- 1 root root   1317 Nov  7 20:01 theme-en.txt
+-rw-r--r-- 1 root root   1320 Nov  7 20:01 theme-eo.txt
+-rw-r--r-- 1 root root   1319 Nov  7 20:01 theme-es.txt
+-rw-r--r-- 1 root root   1321 Nov  7 20:01 theme-et.txt
+-rw-r--r-- 1 root root   1319 Nov  7 20:01 theme-eu.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-fa.txt
+-rw-r--r-- 1 root root   1324 Nov  7 20:01 theme-fi.txt
+-rw-r--r-- 1 root root   1313 Nov  7 20:01 theme-fo.txt
+-rw-r--r-- 1 root root   1319 Nov  7 20:01 theme-fr.txt
+-rw-r--r-- 1 root root   1319 Nov  7 20:01 theme-fur.txt
+-rw-r--r-- 1 root root   1313 Nov  7 20:01 theme-fy.txt
+-rw-r--r-- 1 root root   1321 Nov  7 20:01 theme-ga.txt
+-rw-r--r-- 1 root root   1335 Nov  7 20:01 theme-gd.txt
+-rw-r--r-- 1 root root   1317 Nov  7 20:01 theme-gl.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-gu.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-he.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-hi.txt
+-rw-r--r-- 1 root root   1323 Nov  7 20:01 theme-hr.txt
+-rw-r--r-- 1 root root   1319 Nov  7 20:01 theme-hu.txt
+-rw-r--r-- 1 root root   1329 Nov  7 20:01 theme-hy.txt
+-rw-r--r-- 1 root root   1317 Nov  7 20:01 theme-ia.txt
+-rw-r--r-- 1 root root   1324 Nov  7 20:01 theme-id.txt
+-rw-r--r-- 1 root root   1318 Nov  7 20:01 theme-ie.txt
+-rw-r--r-- 1 root root   1317 Nov  7 20:01 theme-is.txt
+-rw-r--r-- 1 root root   1319 Nov  7 20:01 theme-it.txt
+-rw-r--r-- 1 root root   1330 Nov  7 20:01 theme-ja.txt
+-rw-r--r-- 1 root root   1340 Nov  7 20:01 theme-ka.txt
+-rw-r--r-- 1 root root   1316 Nov  7 20:01 theme-kab.txt
+-rw-r--r-- 1 root root   1341 Nov  7 20:01 theme-kk.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-km.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-kn.txt
+-rw-r--r-- 1 root root   1330 Nov  7 20:01 theme-ko.txt
+-rw-r--r-- 1 root root   1331 Nov  7 20:01 theme-ku.txt
+-rw-r--r-- 1 root root   1319 Nov  7 20:01 theme-kw.txt
+-rw-r--r-- 1 root root   1332 Nov  7 20:01 theme-ky.txt
+-rw-r--r-- 1 root root   1267 Nov  7 19:57 theme-live-sb.txt
+-rw-r--r-- 1 root root   1317 Nov  7 20:00 theme-live.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-lo.txt
+-rw-r--r-- 1 root root   1321 Nov  7 20:01 theme-lt.txt
+-rw-r--r-- 1 root root   1317 Nov  7 20:01 theme-lv.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-mai.txt
+-rw-r--r-- 1 root root   1335 Nov  7 20:01 theme-mg.txt
+-rw-r--r-- 1 root root   1334 Nov  7 20:01 theme-mi.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-mjw.txt
+-rw-r--r-- 1 root root   1331 Nov  7 20:01 theme-mk.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-ml.txt
+-rw-r--r-- 1 root root   1342 Nov  7 20:01 theme-mn.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-mr.txt
+-rw-r--r-- 1 root root   1322 Nov  7 20:01 theme-ms.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-my.txt
+-rw-r--r-- 1 root root   1314 Nov  7 20:01 theme-nb.txt
+-rw-r--r-- 1 root root   1315 Nov  7 20:01 theme-nds.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-ne.txt
+-rw-r--r-- 1 root root   1314 Nov  7 20:01 theme-nl.txt
+-rw-r--r-- 1 root root   1314 Nov  7 20:01 theme-nn.txt
+-rw-r--r-- 1 root root   1328 Nov  7 20:01 theme-nso.txt
+-rw-r--r-- 1 root root   1316 Nov  7 20:01 theme-oc.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-or.txt
+-rw-r--r-- 1 root root   1330 Nov  7 20:01 theme-os.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-pa.txt
+-rw-r--r-- 1 root root   1320 Nov  7 20:01 theme-pl.txt
+-rw-r--r-- 1 root root   1318 Nov  7 20:01 theme-pt-br.txt
+-rw-r--r-- 1 root root   1323 Nov  7 20:01 theme-pt-pt.txt
+-rw-r--r-- 1 root root   1317 Nov  7 20:01 theme-ro.txt
+-rw-r--r-- 1 root root   1336 Nov  7 20:01 theme-ru.txt
+-rw-r--r-- 1 root root   1323 Nov  7 20:01 theme-rw.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-sat.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-ab.txt
+-rw-r--r-- 1 root root   1263 Nov  7 20:01 theme-sb-af.txt
+-rw-r--r-- 1 root root   1284 Nov  7 20:01 theme-sb-am.txt
+-rw-r--r-- 1 root root   1269 Nov  7 20:01 theme-sb-an.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-ar.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-as.txt
+-rw-r--r-- 1 root root   1267 Nov  7 20:01 theme-sb-ast.txt
+-rw-r--r-- 1 root root   1274 Nov  7 20:01 theme-sb-az.txt
+-rw-r--r-- 1 root root   1269 Nov  7 20:01 theme-sb-be-latn.txt
+-rw-r--r-- 1 root root   1284 Nov  7 20:01 theme-sb-be.txt
+-rw-r--r-- 1 root root   1285 Nov  7 20:01 theme-sb-bg.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-bn.txt
+-rw-r--r-- 1 root root   1269 Nov  7 20:01 theme-sb-br.txt
+-rw-r--r-- 1 root root   1273 Nov  7 20:01 theme-sb-bs.txt
+-rw-r--r-- 1 root root   1274 Nov  7 20:01 theme-sb-ca-valencia.txt
+-rw-r--r-- 1 root root   1275 Nov  7 20:01 theme-sb-ca.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-ckb.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-crh.txt
+-rw-r--r-- 1 root root   1267 Nov  7 20:01 theme-sb-cs.txt
+-rw-r--r-- 1 root root   1280 Nov  7 20:01 theme-sb-cy.txt
+-rw-r--r-- 1 root root   1264 Nov  7 20:01 theme-sb-da.txt
+-rw-r--r-- 1 root root   1264 Nov  7 20:01 theme-sb-de.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-dz.txt
+-rw-r--r-- 1 root root   1288 Nov  7 20:01 theme-sb-el.txt
+-rw-r--r-- 1 root root   1267 Nov  7 20:01 theme-sb-en.txt
+-rw-r--r-- 1 root root   1270 Nov  7 20:01 theme-sb-eo.txt
+-rw-r--r-- 1 root root   1269 Nov  7 20:01 theme-sb-es.txt
+-rw-r--r-- 1 root root   1271 Nov  7 20:01 theme-sb-et.txt
+-rw-r--r-- 1 root root   1269 Nov  7 20:01 theme-sb-eu.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-fa.txt
+-rw-r--r-- 1 root root   1274 Nov  7 20:01 theme-sb-fi.txt
+-rw-r--r-- 1 root root   1263 Nov  7 20:01 theme-sb-fo.txt
+-rw-r--r-- 1 root root   1269 Nov  7 20:01 theme-sb-fr.txt
+-rw-r--r-- 1 root root   1269 Nov  7 20:01 theme-sb-fur.txt
+-rw-r--r-- 1 root root   1263 Nov  7 20:01 theme-sb-fy.txt
+-rw-r--r-- 1 root root   1271 Nov  7 20:01 theme-sb-ga.txt
+-rw-r--r-- 1 root root   1285 Nov  7 20:01 theme-sb-gd.txt
+-rw-r--r-- 1 root root   1267 Nov  7 20:01 theme-sb-gl.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-gu.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-he.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-hi.txt
+-rw-r--r-- 1 root root   1273 Nov  7 20:01 theme-sb-hr.txt
+-rw-r--r-- 1 root root   1269 Nov  7 20:01 theme-sb-hu.txt
+-rw-r--r-- 1 root root   1279 Nov  7 20:01 theme-sb-hy.txt
+-rw-r--r-- 1 root root   1267 Nov  7 20:01 theme-sb-ia.txt
+-rw-r--r-- 1 root root   1274 Nov  7 20:01 theme-sb-id.txt
+-rw-r--r-- 1 root root   1268 Nov  7 20:01 theme-sb-ie.txt
+-rw-r--r-- 1 root root   1267 Nov  7 20:01 theme-sb-is.txt
+-rw-r--r-- 1 root root   1269 Nov  7 20:01 theme-sb-it.txt
+-rw-r--r-- 1 root root   1280 Nov  7 20:01 theme-sb-ja.txt
+-rw-r--r-- 1 root root   1290 Nov  7 20:01 theme-sb-ka.txt
+-rw-r--r-- 1 root root   1266 Nov  7 20:01 theme-sb-kab.txt
+-rw-r--r-- 1 root root   1291 Nov  7 20:01 theme-sb-kk.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-km.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-kn.txt
+-rw-r--r-- 1 root root   1280 Nov  7 20:01 theme-sb-ko.txt
+-rw-r--r-- 1 root root   1281 Nov  7 20:01 theme-sb-ku.txt
+-rw-r--r-- 1 root root   1269 Nov  7 20:01 theme-sb-kw.txt
+-rw-r--r-- 1 root root   1282 Nov  7 20:01 theme-sb-ky.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-lo.txt
+-rw-r--r-- 1 root root   1271 Nov  7 20:01 theme-sb-lt.txt
+-rw-r--r-- 1 root root   1267 Nov  7 20:01 theme-sb-lv.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-mai.txt
+-rw-r--r-- 1 root root   1285 Nov  7 20:01 theme-sb-mg.txt
+-rw-r--r-- 1 root root   1284 Nov  7 20:01 theme-sb-mi.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-mjw.txt
+-rw-r--r-- 1 root root   1281 Nov  7 20:01 theme-sb-mk.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-ml.txt
+-rw-r--r-- 1 root root   1292 Nov  7 20:01 theme-sb-mn.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-mr.txt
+-rw-r--r-- 1 root root   1272 Nov  7 20:01 theme-sb-ms.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-my.txt
+-rw-r--r-- 1 root root   1264 Nov  7 20:01 theme-sb-nb.txt
+-rw-r--r-- 1 root root   1265 Nov  7 20:01 theme-sb-nds.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-ne.txt
+-rw-r--r-- 1 root root   1264 Nov  7 20:01 theme-sb-nl.txt
+-rw-r--r-- 1 root root   1264 Nov  7 20:01 theme-sb-nn.txt
+-rw-r--r-- 1 root root   1278 Nov  7 20:01 theme-sb-nso.txt
+-rw-r--r-- 1 root root   1266 Nov  7 20:01 theme-sb-oc.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-or.txt
+-rw-r--r-- 1 root root   1280 Nov  7 20:01 theme-sb-os.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-pa.txt
+-rw-r--r-- 1 root root   1270 Nov  7 20:01 theme-sb-pl.txt
+-rw-r--r-- 1 root root   1268 Nov  7 20:01 theme-sb-pt-br.txt
+-rw-r--r-- 1 root root   1273 Nov  7 20:01 theme-sb-pt-pt.txt
+-rw-r--r-- 1 root root   1267 Nov  7 20:01 theme-sb-ro.txt
+-rw-r--r-- 1 root root   1286 Nov  7 20:01 theme-sb-ru.txt
+-rw-r--r-- 1 root root   1273 Nov  7 20:01 theme-sb-rw.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-sat.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-si.txt
+-rw-r--r-- 1 root root   1266 Nov  7 20:01 theme-sb-sk.txt
+-rw-r--r-- 1 root root   1271 Nov  7 20:01 theme-sb-sl.txt
+-rw-r--r-- 1 root root   1261 Nov  7 20:01 theme-sb-sq.txt
+-rw-r--r-- 1 root root   1277 Nov  7 20:01 theme-sb-sr-cyrl.txt
+-rw-r--r-- 1 root root   1268 Nov  7 20:01 theme-sb-sr-latn.txt
+-rw-r--r-- 1 root root   1264 Nov  7 20:01 theme-sb-sv.txt
+-rw-r--r-- 1 root root   1270 Nov  7 20:01 theme-sb-sw.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-ta.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-te.txt
+-rw-r--r-- 1 root root   1298 Nov  7 20:01 theme-sb-tg.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-th.txt
+-rw-r--r-- 1 root root   1274 Nov  7 20:01 theme-sb-tr.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-ug.txt
+-rw-r--r-- 1 root root   1282 Nov  7 20:01 theme-sb-uk.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-sb-uz-cyrl.txt
+-rw-r--r-- 1 root root   1281 Nov  7 20:01 theme-sb-uz.txt
+-rw-r--r-- 1 root root   1281 Nov  7 20:01 theme-sb-vi.txt
+-rw-r--r-- 1 root root   1251 Nov  7 20:01 theme-sb-wa.txt
+-rw-r--r-- 1 root root   1270 Nov  7 20:01 theme-sb-xh.txt
+-rw-r--r-- 1 root root   1271 Nov  7 20:01 theme-sb-zh-hans.txt
+-rw-r--r-- 1 root root   1271 Nov  7 20:01 theme-sb-zh-hant.txt
+-rw-r--r-- 1 root root   1266 Nov  7 20:01 theme-sb-zu.txt
+-rw-r--r-- 1 root root   1267 Nov  7 20:01 theme-sb.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-si.txt
+-rw-r--r-- 1 root root   1316 Nov  7 20:01 theme-sk.txt
+-rw-r--r-- 1 root root   1321 Nov  7 20:01 theme-sl.txt
+-rw-r--r-- 1 root root   1311 Nov  7 20:01 theme-sq.txt
+-rw-r--r-- 1 root root   1327 Nov  7 20:01 theme-sr-cyrl.txt
+-rw-r--r-- 1 root root   1318 Nov  7 20:01 theme-sr-latn.txt
+-rw-r--r-- 1 root root   1314 Nov  7 20:01 theme-sv.txt
+-rw-r--r-- 1 root root   1320 Nov  7 20:01 theme-sw.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-ta.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-te.txt
+-rw-r--r-- 1 root root   1348 Nov  7 20:01 theme-tg.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-th.txt
+-rw-r--r-- 1 root root   1324 Nov  7 20:01 theme-tr.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-ug.txt
+-rw-r--r-- 1 root root   1332 Nov  7 20:01 theme-uk.txt
+-rw-r--r-- 1 root root   1351 Nov  7 20:01 theme-uz-cyrl.txt
+-rw-r--r-- 1 root root   1331 Nov  7 20:01 theme-uz.txt
+-rw-r--r-- 1 root root   1331 Nov  7 20:01 theme-vi.txt
+-rw-r--r-- 1 root root   1301 Nov  7 20:01 theme-wa.txt
+-rw-r--r-- 1 root root   1320 Nov  7 20:01 theme-xh.txt
+-rw-r--r-- 1 root root   1321 Nov  7 20:01 theme-zh-hans.txt
+-rw-r--r-- 1 root root   1321 Nov  7 20:01 theme-zh-hant.txt
+-rw-r--r-- 1 root root   1316 Nov  7 20:01 theme-zu.txt
+-rw-r--r-- 1 root root   1317 Nov  7 20:01 theme.txt
