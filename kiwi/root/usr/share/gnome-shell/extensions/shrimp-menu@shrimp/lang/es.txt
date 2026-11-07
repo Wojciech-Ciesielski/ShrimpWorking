@@ -1,0 +1,14 @@
+1	Acerca de este equipo
+2	Configuración
+3	Software
+4	Actualizaciones
+5	Monitor del sistema
+6	Discos
+7	Terminal
+8	Extensiones
+9	Suspender
+10	Reiniciar…
+11	Apagar…
+12	Bloquear la pantalla
+13	Cerrar la sesión…
+14	Menú de Shrimp
