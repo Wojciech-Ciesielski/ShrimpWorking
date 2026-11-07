@@ -37,7 +37,7 @@ echo "$REPO/" > out/desc/root/usr/share/shrimp/linux/build/repo.url
       f=\$(find out/build/build/image-root/usr/share/icons/Adwaita -name \"\$n.svg\" -print -quit)
       [ -n \"\$f\" ] && echo \"ICON-SVG \$n \$(base64 -w0 \"\$f\")\" || true
     done
-    grep -h 'GRUB fonts\|WARNING\|extension installed\|config.sh\|LinU(x)' out/kiwi.log | tail -40 || true
+    grep -h 'GRUB fonts\|WARNING\|extension installed\|optional package installed\|config.sh\|LinU(x)' out/kiwi.log | tail -40 || true
     rm -rf out/build out/desc
   "
 ls -lh out/*.iso
