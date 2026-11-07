@@ -42,3 +42,7 @@ Fork Rufusa 4.16: pobiera Shrimp, zapisuje nośnik, kopiuje pliki i listę progr
 ## Cocktail (aktualizacje i pakiety)
 
 `apps/cocktail`: GTK4 + libadwaita w Rust, nakładka na zyppera i `transactional-update` (Aktualizacje, Urządzenia, Pakiety, Historia). Zmiany w systemie przez pkexec (`cocktail-helper`, `cocktail-query`, polkit `org.shrimp.cocktail.*`). Opis, budowa, testy i lista braków: `apps/cocktail/README.md`. Workflow **Cocktail** (artefakt `cocktail-screens`).
+
+## Aplikacje GNOME (GTK4 + libadwaita, Rust)
+
+- **Panko** (`apps/panko`): cofanie zmian w systemie – migawki, porównanie z obecnym stanem, przywracanie plików i systemu, ustawienia migawek. Podgląd bez systemu: `cd apps/panko && cargo run -- --demo`. Stan i braki: `apps/panko/README.md`. Jeszcze nie ma go na ISO.
