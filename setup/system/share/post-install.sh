@@ -30,6 +30,31 @@ if ! chroot "$T" rpm -q shrimp-setup >/dev/null 2>&1; then
   chroot "$T" systemctl --global enable shrimp-app-style-user.service || true
 fi
 
+# Cichy start zainstalowanego systemu: menu GRUB ukryte (Esc, F4 lub F8 w ciągu sekundy je pokazuje,
+# pod BIOS także wciśnięty Shift), bez komunikatów „Loading Linux/initial ramdisk” i bez logów jądra.
+GRUB_REGEN=0
+DEF=$T/etc/default/grub
+if [ -f "$DEF" ]; then
+  setkey() {
+    if grep -q "^$1=" "$DEF"; then sed -i "s|^$1=.*|$1=$2|" "$DEF"; else echo "$1=$2" >> "$DEF"; fi
+  }
+  setkey GRUB_TIMEOUT 1
+  setkey GRUB_TIMEOUT_STYLE hidden
+  setkey GRUB_HIDDEN_TIMEOUT_QUIET true
+  CMD=$(sed -n 's/^GRUB_CMDLINE_LINUX_DEFAULT="\(.*\)"$/\1/p' "$DEF" | head -n1)
+  for o in quiet splash=silent loglevel=3 rd.udev.log_level=3 udev.log_level=3 systemd.show_status=false rd.systemd.show_status=false vt.global_cursor_default=0; do
+    case " $CMD " in *" ${o%%=*}="*|*" $o "*) ;; *) CMD="$CMD $o";; esac
+  done
+  setkey GRUB_CMDLINE_LINUX_DEFAULT "\"${CMD# }\""
+  GRUB_REGEN=1
+  log "GRUB: ukryte menu, cichy start"
+fi
+# 10_linux wypisuje echo przed jądrem i initrd; plik jest %config, więc aktualizacja zostawi .rpmnew.
+if [ -f "$T/etc/grub.d/10_linux" ]; then
+  sed -i "/^[[:space:]]*echo[[:space:]]*'\$(echo \"\$message\" | grub_quote)'/d" "$T/etc/grub.d/10_linux"
+  GRUB_REGEN=1
+fi
+
 # GRUB w języku konta: nazwa wpisu „Computer settings” (i18n/grub, motyw Shrimp: lang/<znacznik>.cfg).
 # Wpis firmware GRUB-a w docelowym systemie pochodzi z pakietu (angielski), więc podmieniamy go tutaj.
 grub_tag() {
@@ -53,7 +78,10 @@ FW=$(sed -n 's/^set shrimp_fw="\(.*\)"$/\1/p' "/usr/share/grub2/themes/shrimp/la
 if [ -n "$FW" ] && [ -f "$T/etc/grub.d/30_uefi-firmware" ]; then
   sed -i "s|UEFI Firmware Settings|$FW|" "$T/etc/grub.d/30_uefi-firmware"
   log "GRUB: wpis firmware w języku $TAG"
-  chroot "$T" grub2-mkconfig -o /boot/grub2/grub.cfg >/dev/null 2>&1 || log "grub2-mkconfig nie powiodło się (wpis zmieni się przy następnej aktualizacji GRUB)"
+  GRUB_REGEN=1
+fi
+if [ "$GRUB_REGEN" = 1 ]; then
+  chroot "$T" grub2-mkconfig -o /boot/grub2/grub.cfg >/dev/null 2>&1 || log "grub2-mkconfig nie powiodło się (zmiany GRUB wejdą przy jego następnej aktualizacji)"
 fi
 
 # Pierwsza konfiguracja: znacznik + jednorazowe logowanie automatyczne (zdejmuje je shrimp-setup-apply).

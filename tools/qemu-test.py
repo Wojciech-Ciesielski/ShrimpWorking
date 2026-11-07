@@ -2,9 +2,9 @@
 """Boot the Shrimp live ISO in QEMU and capture screenshots of every stage.
 
 Usage: qemu-test.py <iso> <outdir> <mode>
-  mode: uefi        full run: GRUB, Plymouth, desktop, extensions, lock screen, GDM, shutdown
-        secureboot  OVMF with Microsoft keys enrolled, boot stages only
-        bios        SeaBIOS, boot stages only
+  mode: uefi        full run: silent GRUB (no menu), Plymouth, desktop, extensions, lock screen, GDM, shutdown
+        secureboot  OVMF with Microsoft keys enrolled, F4 opens the hidden GRUB menu, boot stages only
+        bios        SeaBIOS, F4 opens the hidden GRUB menu, boot stages only
 
 Screenshots are taken through QMP (screendump), keys and clicks are injected
 through QMP too, and diagnostics typed into a terminal in the live session are
@@ -212,7 +212,16 @@ def run_dialog(command):
 
 # ----------------------------------------------------------------- plan ----
 try:
-    # GRUB menu (5 s timeout) and the Plymouth boot splash: dense frames.
+    if MODE != "uefi":
+        # The menu is hidden (1 s); F4 during that second must open it. F4 does nothing in
+        # SeaBIOS/OVMF (Esc would open their own menus), so tap it from power-on.
+        while t() < 25 and qemu.poll() is None:
+            press(["f4"])
+            shot("grub-f4")
+            time.sleep(0.25)
+        shot("grub-menu", keep_duplicates=True)
+        keys("ret")
+    # Normal start: no GRUB menu, no boot text, then the Plymouth splash. Dense frames.
     wait_shooting(45, 1, "boot")
     if MODE != "uefi":
         wait_shooting(240, 5, "boot")
