@@ -15,10 +15,43 @@ if [ -f /usr/lib/os-release ]; then
   sed -e 's/^NAME=.*/NAME="Shrimp"/' \
       -e 's/^PRETTY_NAME=.*/PRETTY_NAME="Shrimp Beta"/' \
       -e 's/^LOGO=.*/LOGO="shrimp-logo"/' \
+      -e '/^VARIANT=/d' -e '/^VARIANT_ID=/d' \
       /usr/lib/os-release > /etc/os-release
   grep -q '^LOGO=' /etc/os-release || echo 'LOGO="shrimp-logo"' >> /etc/os-release
+  # LinU(x) – "Linux is now usable": Shrimp's layer on top of plain Linux (/usr/share/shrimp/linux)
+  printf '%s\n' 'VARIANT="LinU(x) – Linux is now usable"' 'VARIANT_ID=linu-x' >> /etc/os-release
 fi
 gtk-update-icon-cache -f /usr/share/icons/hicolor || true
+
+#--------------------------------------
+# MoreWaita: Shrimp's main icon theme (Adwaita style, adds the app icons Adwaita lacks).
+# Not packaged for Leap, so it comes from GitHub: the latest release, or the main branch
+# when the API gives no release. MOREWAITA_REF pins a tag/branch. Set as default in
+# 99_shrimp.gschema.override (icon-theme='MoreWaita') and for GDM in dconf gdm.d.
+#--------------------------------------
+MW_DIR=/usr/share/icons/MoreWaita
+MW_REF="${MOREWAITA_REF:-}"
+if [ -z "$MW_REF" ]; then
+  MW_REF="$(curl -fsSL https://api.github.com/repos/somepaulo/MoreWaita/releases/latest 2>/dev/null \
+            | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p' | head -n1)"
+fi
+MW_REF="${MW_REF:-main}"
+curl -fsSL -o /tmp/morewaita.zip "https://github.com/somepaulo/MoreWaita/archive/${MW_REF}.zip" \
+  || die "MoreWaita ${MW_REF}: download failed"
+rm -rf /tmp/morewaita "$MW_DIR"
+mkdir -p /tmp/morewaita
+unzip -q /tmp/morewaita.zip -d /tmp/morewaita
+MW_SRC="$(dirname "$(find /tmp/morewaita -maxdepth 2 -name index.theme | head -n1)")"
+[ -f "$MW_SRC/index.theme" ] || die "MoreWaita ${MW_REF}: no index.theme in the archive"
+mkdir -p "$MW_DIR"
+cp -a "$MW_SRC"/. "$MW_DIR"/
+# keep only the theme itself (no installer scripts, docs, git metadata)
+rm -rf "$MW_DIR"/.git* "$MW_DIR"/*.sh "$MW_DIR"/*.md "$MW_DIR"/*.txt "$MW_DIR"/LICENSE* "$MW_DIR"/meson* "$MW_DIR"/screenshots
+grep -q '^Name=MoreWaita' "$MW_DIR/index.theme" || echo "WARNING: MoreWaita index.theme has an unexpected Name= line"
+chmod -R a+rX "$MW_DIR"
+gtk-update-icon-cache -f "$MW_DIR" || true
+rm -rf /tmp/morewaita /tmp/morewaita.zip
+echo "icon theme installed: MoreWaita ${MW_REF} ($(find "$MW_DIR" -name '*.svg' | wc -l) icons)"
 
 #--------------------------------------
 # Fonts
@@ -126,6 +159,54 @@ glib-compile-resources --sourcedir="$work$prefix" --target="$RES" "$work/theme.g
 rm -rf "$work"
 
 #--------------------------------------
+# System menu and system tools (packages that may be missing or renamed in Leap 16.1).
+# config.kiwi fails the whole build on an unknown name, so these are optional: the first
+# available name of each group is installed (with its -lang package), a missing group is a WARNING.
+# The build repository is not part of the image (--set-repo), so it is added here and removed after.
+#--------------------------------------
+VERSION_ID="$(. /etc/os-release && echo "$VERSION_ID")"
+LEAP="https://download.opensuse.org/distribution/leap/${VERSION_ID}/repo/oss"
+OPT_REPO=""
+for candidate in "$LEAP/x86_64" "$LEAP"; do
+  if curl -fsSLI "$candidate/repodata/repomd.xml" >/dev/null 2>&1; then OPT_REPO="$candidate"; break; fi
+done
+opt_pkg() {
+  local p
+  for p in "$@"; do
+    if zypper -n --gpg-auto-import-keys install --no-recommends "$p" >/dev/null 2>&1; then
+      zypper -n --gpg-auto-import-keys install --no-recommends "$p-lang" >/dev/null 2>&1 || true
+      echo "optional package installed: $p"
+      return 0
+    fi
+  done
+  echo "WARNING: none of these packages is available: $*"
+}
+if [ -n "$OPT_REPO" ]; then
+  zypper -n --gpg-auto-import-keys addrepo -f "$OPT_REPO" shrimp-build-oss
+  zypper -n --gpg-auto-import-keys refresh shrimp-build-oss
+  opt_pkg gnome-bluetooth                       # Quick Settings: Bluetooth toggle
+  opt_pkg typelib-1_0-GnomeBluetooth-3_0
+  opt_pkg tuned-ppd power-profiles-daemon       # Quick Settings: power mode
+  opt_pkg iio-sensor-proxy                      # Quick Settings: auto-rotate (2-in-1 laptops)
+  opt_pkg gnome-software                        # Shrimp menu: Software, Updates (Flathub)
+  opt_pkg gnome-software-plugin-flatpak
+  opt_pkg gnome-system-monitor                  # Shrimp menu: System Monitor
+  opt_pkg gnome-disk-utility                    # Shrimp menu: Disks
+  opt_pkg gnome-extensions                      # Shrimp menu: Extensions
+  opt_pkg baobab                                # Apps Menu › System Tools: disk usage
+  opt_pkg gnome-logs                            # Apps Menu › System Tools: system log
+  zypper -n removerepo shrimp-build-oss
+  zypper -n clean -a
+else
+  echo "WARNING: Leap ${VERSION_ID} repository not reachable, optional system tools skipped"
+fi
+for unit in bluetooth.service tuned.service tuned-ppd.service power-profiles-daemon.service; do
+  [ -f "/usr/lib/systemd/system/$unit" ] && systemctl enable "$unit" || true
+done
+# Shrimp Menu logo (symbolic, coloured by the top bar)
+gtk-update-icon-cache -f /usr/share/icons/hicolor || true
+
+#--------------------------------------
 # GNOME Shell extensions from extensions.gnome.org
 # (Leap 16 does not ship Light Style or Apps Menu in a package,
 #  so they come from extensions.gnome.org as well)
@@ -164,6 +245,19 @@ if [ ! -d "$EXT/$uuid" ] && ! install_ext "$uuid"; then
 fi
 ls "$EXT"
 glib-compile-schemas /usr/share/glib-2.0/schemas
+
+#--------------------------------------
+# LinU(x): official NVIDIA driver, PipeWire codecs, libadwaita look for Qt/Electron
+# (scripts in /usr/share/shrimp/linux/build, see linux.conf there; failures are WARNING lines)
+#--------------------------------------
+for s in /usr/share/shrimp/linux/build/*.sh; do
+  echo "config.sh: LinU(x) $(basename "$s")"
+  bash "$s"
+done
+if [ -f /tmp/shrimp-build-oss ]; then
+  zypper --non-interactive removerepo shrimp-build-oss || true
+fi
+rm -rf /usr/share/shrimp/linux/build /tmp/shrimp-build-oss
 
 #--------------------------------------
 # GDM settings database

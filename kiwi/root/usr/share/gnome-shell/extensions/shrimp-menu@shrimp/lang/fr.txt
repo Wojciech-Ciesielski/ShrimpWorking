@@ -1,0 +1,14 @@
+1	À propos de cet ordinateur
+2	Paramètres
+3	Logiciels
+4	Mises à jour
+5	Moniteur système
+6	Disques
+7	Terminal
+8	Extensions
+9	Mettre en veille
+10	Redémarrer…
+11	Éteindre…
+12	Verrouiller l’écran
+13	Se déconnecter…
+14	Menu Shrimp

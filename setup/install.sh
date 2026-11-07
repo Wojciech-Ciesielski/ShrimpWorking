@@ -10,7 +10,10 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 ROOT=$(cd "$HERE/.." && pwd)
 
 (cd "$HERE/web" && npm ci && npm run build)
-(cd "$HERE/shell" && cargo build --release --locked)
+# SHRIMP_SETUP_PREBUILT=1: okno Rust zbudowane wcześniej (tools/build-setup.sh, chroot Leap).
+if [ -z "${SHRIMP_SETUP_PREBUILT:-}" ]; then
+  (cd "$HERE/shell" && cargo build --release --locked)
+fi
 
 install -Dm755 "$HERE/shell/target/release/shrimp-setup" "$D/usr/bin/shrimp-setup"
 install -d "$D/usr/share/shrimp-setup/ui"

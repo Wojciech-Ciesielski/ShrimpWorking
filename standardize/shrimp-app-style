@@ -4,7 +4,8 @@
 # Toolkitu aplikacji nie da się podmienić z zewnątrz, więc wyrównujemy wygląd i zachowanie:
 #   GTK4/libadwaita  bez zmian (wzorzec).
 #   GTK3             motyw adw-gtk3 (port libadwaita na GTK3), jasny/ciemny wg systemu.
-#   Qt 5/6 (KDE)     styl i paleta Adwaita z rozszerzenia org.kde.KStyle.Adwaita, okna plików
+#   Qt 5/6 (KDE)     styl i paleta Adwaita z rozszerzenia org.kde.KStyle.Adwaita, pasek tytułu
+#                    Adwaita (dekoracje „adwaita” z QtWayland 6.8+), okna plików
 #                    i ustawienia przez portal xdg-desktop-portal (wybór plików z GNOME).
 #   Electron/Chromium  okna plików GNOME (portal), jasny/ciemny i kolor akcentu z portalu
 #                    Settings, Wayland; własny pasek tytułu aplikacji zostaje.
@@ -41,7 +42,8 @@ global_overrides() {
   # Qt: styl Adwaita (rozszerzenie KStyle), okna plików i jasny/ciemny przez portal.
   flatpak override --system \
     --env=QT_QPA_PLATFORMTHEME=xdgdesktopportal \
-    --env=QT_STYLE_OVERRIDE=Adwaita
+    --env=QT_STYLE_OVERRIDE=Adwaita \
+    --env=QT_WAYLAND_DECORATION=adwaita
   # Electron/Chromium: natywny Wayland (skalowanie, wygląd okien GNOME) i okna plików przez portal.
   flatpak override --system \
     --env=ELECTRON_OZONE_PLATFORM_HINT=auto \
