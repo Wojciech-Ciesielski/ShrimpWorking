@@ -8,6 +8,7 @@
     "bitlocker": "bitlocker",
     "offline": "no-internet",
     "boot": "boot-from-usb",
-    "nvidia": "nvidia-driver"
+    "nvidia": "nvidia-driver",
+    "apps": "shrimp-apps"
   }
 }

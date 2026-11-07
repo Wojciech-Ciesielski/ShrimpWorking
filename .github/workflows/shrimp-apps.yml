@@ -1,0 +1,63 @@
+name: Shrimp Apps
+
+on:
+  push:
+    paths: ["apps/shrimp-apps/**", "site/help.json", ".github/workflows/shrimp-apps.yml"]
+  pull_request:
+    paths: ["apps/shrimp-apps/**", "site/help.json", ".github/workflows/shrimp-apps.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apps:
+    runs-on: ubuntu-24.04
+    defaults: { run: { working-directory: apps/shrimp-apps } }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Zależności
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libgtk-4-dev libadwaita-1-dev libflatpak-dev \
+            flatpak ostree imagemagick xvfb xdotool dbus-x11 adwaita-icon-theme fonts-cantarell
+      - run: cargo test --locked
+      - run: cargo build --locked
+
+      - name: Lokalne repozytorium testowe (instalacja, aktualizacja, usuwanie)
+        run: |
+          set -e
+          tests/test-repo.py build "$RUNNER_TEMP/trepo" > "$RUNNER_TEMP/trepo.log"
+          flatpak remote-add --user --no-gpg-verify flathub "file://$RUNNER_TEMP/trepo/repo"
+          export SHRIMP_APPS_INSTALLATION=user
+          ./target/debug/shrimp-apps --self-test org.shrimp.test.Paint
+          # Aktualizacja: zainstaluj, wydaj wersję 1.1, sprawdź
+          flatpak install --user -y --noninteractive flathub org.shrimp.test.Music
+          tests/test-repo.py bump "$RUNNER_TEMP/trepo" org.shrimp.test.Music > /dev/null
+          ./target/debug/shrimp-apps --self-test org.shrimp.test.Music | tee "$RUNNER_TEMP/upd.log"
+          grep -q 'po aktualizacji: Some("1.1")' "$RUNNER_TEMP/upd.log"
+          flatpak uninstall --user -y --all
+          flatpak remote-delete --user flathub
+
+      - name: Prawdziwy Flathub (katalog, wyszukiwanie, instalacja, usuwanie)
+        run: |
+          sudo flatpak remote-add --system --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          sudo -E ./target/debug/shrimp-apps --self-test com.github.tchx84.Flatseal
+
+      - name: Zrzuty ekranu z prawdziwym Flathub
+        run: |
+          sudo flatpak install --system -y --noninteractive flathub com.github.tchx84.Flatseal
+          sudo -E env SHRIMP_APPS_WAIT=40 HOME=$HOME tests/screenshots.sh "$GITHUB_WORKSPACE/test-results/shrimp-apps"
+          sudo chown -R "$USER" "$GITHUB_WORKSPACE/test-results/shrimp-apps"
+          rm -f "$GITHUB_WORKSPACE/test-results/shrimp-apps/app.log"
+      - uses: actions/upload-artifact@v4
+        with: { name: shrimp-apps-screens, path: test-results/shrimp-apps }
+      - name: Zapisz zrzuty w gałęzi
+        if: github.event_name == 'push'
+        working-directory: .
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add test-results/shrimp-apps
+          git commit -m "Shrimp Apps screenshots (run ${{ github.run_id }}) [skip ci]" || exit 0
+          for i in 1 2 3; do git pull --rebase -q origin "${{ github.ref_name }}" && git push origin HEAD:"${{ github.ref_name }}" && break; sleep 5; done
