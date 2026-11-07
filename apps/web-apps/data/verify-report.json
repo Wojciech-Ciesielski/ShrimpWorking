@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-11-07 20:32 UTC",
+ "checked_at": "2026-11-07 20:35 UTC",
  "apps": [
   {
    "id": "whatsapp",
@@ -11,7 +11,7 @@
    "icon_source": "https://web.whatsapp.com/favicon.ico",
    "icon_kind": "favicon",
    "icon_px": 64,
-   "result": "błąd"
+   "result": "zablokowane"
   },
   {
    "id": "telegram",
@@ -32,9 +32,9 @@
    "final_url": "https://www.messenger.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.messenger.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 192,
    "result": "ok"
   },
   {
@@ -44,10 +44,10 @@
    "final_url": "https://www.facebook.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.facebook.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 60,
-   "result": "błąd"
+   "icon_source": "https://www.facebook.com/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 180,
+   "result": "zablokowane"
   },
   {
    "id": "instagram",
@@ -80,9 +80,9 @@
    "final_url": "https://www.threads.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://static.cdninstagram.com/rsrc.php/yP/r/0Qa-AOmHi0c.ico",
-   "icon_kind": "icon",
-   "icon_px": 64,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.threads.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 256,
    "result": "ok"
   },
   {
@@ -116,9 +116,9 @@
    "final_url": "https://www.reddit.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.reddit.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.reddit.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 192,
    "result": "zablokowane"
   },
   {
@@ -128,8 +128,8 @@
    "final_url": "https://www.linkedin.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://static.licdn.com/aero-v1/sc/h/akt4ae504epesldzj74dzred8",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.linkedin.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 64,
    "result": "ok"
   },
@@ -152,8 +152,8 @@
    "final_url": "https://discord.com/app",
    "error": null,
    "manifest": false,
-   "icon_source": "https://discord.com/assets/favicon.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=discord.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 256,
    "result": "ok"
   },
@@ -188,8 +188,8 @@
    "final_url": "https://app.zoom.us/wc",
    "error": null,
    "manifest": true,
-   "icon_source": "https://st1.zoom.us/zoom.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=app.zoom.us&sz=256",
+   "icon_kind": "s2",
    "icon_px": 96,
    "result": "ok"
   },
@@ -200,9 +200,9 @@
    "final_url": "https://workspace.google.com/products/meet/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.gstatic.com/images/branding/googleg_gradient/1x/googleg_gradient_standard_20dp.png",
-   "icon_kind": "icon",
-   "icon_px": 20,
+   "icon_source": "https://workspace.google.com/favicon.ico",
+   "icon_kind": "favicon",
+   "icon_px": 32,
    "result": "ok"
   },
   {
@@ -233,11 +233,11 @@
    "id": "gmail",
    "url": "https://mail.google.com/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://mail.google.com/mail/u/0/&emr=1&followup=https://mail.google.com/mail/u/0/&osid=1&passive=1209600&service=mail&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-617923709:1794083562530716",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://mail.google.com/mail/u/0/&emr=1&followup=https://mail.google.com/mail/u/0/&osid=1&passive=1209600&service=mail&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1392406970:1794083697131456",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=accounts.google.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 32,
    "result": "ok"
   },
@@ -308,9 +308,9 @@
    "final_url": "https://claude.ai/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://claude.ai/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 48,
+   "icon_source": "https://claude.ai/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 180,
    "result": "zablokowane"
   },
   {
@@ -327,13 +327,13 @@
   },
   {
    "id": "microsoft-copilot",
-   "url": "https://copilot.microsoft.com/",
+   "url": "https://copilot.com/",
    "status": 200,
    "final_url": "https://copilot.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://res.cdn.office.net/officehub/images/content/images/unauth-copilotcom/favicon-copilot-brand-refresh-23392c1f66.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=copilot.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 48,
    "result": "ok"
   },
@@ -356,9 +356,9 @@
    "final_url": "https://allegro.pl/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://allegro.pl/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 48,
+   "icon_source": "https://allegro.pl/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 57,
    "result": "zablokowane"
   },
   {
@@ -380,8 +380,8 @@
    "final_url": "https://www.amazon.pl/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.amazon.pl/favicon.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.amazon.pl&sz=256",
+   "icon_kind": "s2",
    "icon_px": 48,
    "result": "ok"
   },
@@ -389,35 +389,35 @@
    "id": "aliexpress",
    "url": "https://www.aliexpress.com/",
    "status": 302,
-   "final_url": "https://login.aliexpress.us/sync_cookie_write.htm?acs_random_token=699d6db7c9f94fab92fd5426bc6bd108&xman_goto=https%3A%2F%2Fwww.aliexpress.us%2F%3FgatewayAdapt%3Dglo2usa%26_randl_shipto%3DUS&_ga=GA1.1.1105252198176179.1794083565298",
+   "final_url": "https://login.aliexpress.us/sync_cookie_write.htm?acs_random_token=6dec08864fb647cfb5a1e486ae46f51c&xman_goto=https%3A%2F%2Fwww.aliexpress.us%2F%3FgatewayAdapt%3Dglo2usa%26_randl_shipto%3DUS&_ga=GA1.1.232976786141038.1794083699512",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
-   "result": "błąd"
+   "icon_source": "https://www.google.com/s2/favicons?domain=login.aliexpress.us&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 16,
+   "result": "zablokowane"
   },
   {
    "id": "paypal",
    "url": "https://www.paypal.com/",
-   "status": 403,
+   "status": 200,
    "final_url": "https://www.paypal.com/us/home",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.paypal.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
-   "result": "zablokowane"
+   "icon_source": "https://www.paypalobjects.com/marketing/web/icons/monogram/pp144.png",
+   "icon_kind": "apple",
+   "icon_px": 144,
+   "result": "ok"
   },
   {
    "id": "google-docs",
    "url": "https://docs.google.com/document/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/document/&followup=https://docs.google.com/document/&ltmpl=docs&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-617923709:1794083562774537",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/document/&followup=https://docs.google.com/document/&ltmpl=docs&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1681446187:1794083697658180",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=accounts.google.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 32,
    "result": "ok"
   },
@@ -425,11 +425,11 @@
    "id": "google-sheets",
    "url": "https://docs.google.com/spreadsheets/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/spreadsheets/&followup=https://docs.google.com/spreadsheets/&ltmpl=sheets&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1009884480:1794083562881569",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/spreadsheets/&followup=https://docs.google.com/spreadsheets/&ltmpl=sheets&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1459722312:1794083697847254",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=accounts.google.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 32,
    "result": "ok"
   },
@@ -437,11 +437,11 @@
    "id": "google-slides",
    "url": "https://docs.google.com/presentation/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/presentation/&followup=https://docs.google.com/presentation/&ltmpl=slides&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1709615217:1794083562842770",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/presentation/&followup=https://docs.google.com/presentation/&ltmpl=slides&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S153324416:1794083697840137",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=accounts.google.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 32,
    "result": "ok"
   },
@@ -449,11 +449,11 @@
    "id": "google-forms",
    "url": "https://docs.google.com/forms/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/forms/&followup=https://docs.google.com/forms/&ltmpl=forms&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1009884480:1794083562841533",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/forms/&followup=https://docs.google.com/forms/&ltmpl=forms&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1338306639:1794083697837730",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=accounts.google.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 32,
    "result": "ok"
   },
@@ -461,11 +461,11 @@
    "id": "google-drive",
    "url": "https://drive.google.com/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://drive.google.com/&emr=1&followup=https://drive.google.com/&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1709615217:1794083562863669",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://drive.google.com/&emr=1&followup=https://drive.google.com/&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1260934457:1794083697838585",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=accounts.google.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 32,
    "result": "ok"
   },
@@ -473,11 +473,11 @@
    "id": "google-calendar",
    "url": "https://calendar.google.com/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://calendar.google.com/calendar/u/0/r&emr=1&followup=https://calendar.google.com/calendar/u/0/r&osid=1&passive=1209600&service=cl&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-617923709:1794083562937974",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://calendar.google.com/calendar/u/0/r&emr=1&followup=https://calendar.google.com/calendar/u/0/r&osid=1&passive=1209600&service=cl&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S469833535:1794083698093478",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=accounts.google.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 32,
    "result": "ok"
   },
@@ -485,11 +485,11 @@
    "id": "google-keep",
    "url": "https://keep.google.com/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://keep.google.com/&followup=https://keep.google.com/&ltmpl=keep&passive=1209600&service=memento&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-617923709:1794083563137161",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://keep.google.com/&followup=https://keep.google.com/&ltmpl=keep&passive=1209600&service=memento&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1338306639:1794083698197297",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=accounts.google.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 32,
    "result": "ok"
   },
@@ -500,8 +500,8 @@
    "final_url": "https://m365.cloud.microsoft/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://res.cdn.office.net/officehub/images/content/images/unauth-copilotcom/favicon-copilot-brand-refresh-23392c1f66.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=m365.cloud.microsoft&sz=256",
+   "icon_kind": "s2",
    "icon_px": 48,
    "result": "ok"
   },
@@ -548,14 +548,14 @@
    "final_url": "https://www.microsoft.com/en-us/microsoft-365/onedrive/online-cloud-storage",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.microsoft.com/favicon.ico?v2",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.microsoft.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 128,
    "result": "ok"
   },
   {
    "id": "onenote",
-   "url": "https://www.onenote.com/notebooks",
+   "url": "https://onenote.cloud.microsoft/",
    "status": 200,
    "final_url": "https://onenote.cloud.microsoft/",
    "error": null,
@@ -572,8 +572,8 @@
    "final_url": "https://www.dropbox.com/login?cont=%2Fhome",
    "error": null,
    "manifest": false,
-   "icon_source": "https://cfl.dropboxstatic.com/static/metaserver/static/images/favicon.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.dropbox.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 32,
    "result": "ok"
   },
@@ -620,8 +620,8 @@
    "final_url": "https://trello.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.trello.com/favicon.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=trello.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 256,
    "result": "ok"
   },
@@ -644,9 +644,9 @@
    "final_url": "https://start.atlassian.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://start.atlassian.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 48,
+   "icon_source": "https://start.atlassian.com/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 180,
    "result": "ok"
   },
   {
@@ -656,9 +656,9 @@
    "final_url": "https://app.clickup.com/",
    "error": null,
    "manifest": true,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=app.clickup.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 192,
    "result": "ok"
   },
   {
@@ -668,9 +668,9 @@
    "final_url": "https://monday.com/lang/pl",
    "error": null,
    "manifest": false,
-   "icon_source": "https://monday.com/static/img/favicons/favicon-monday5-57.png",
+   "icon_source": "https://monday.com/static/img/favicons/favicon-monday5-180.png",
    "icon_kind": "apple",
-   "icon_px": 57,
+   "icon_px": 180,
    "result": "ok"
   },
   {
@@ -692,9 +692,9 @@
    "final_url": "https://miro.com/pl/signup/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://static-website.miro.com/miro-site-auth-assets/favicon.ico",
-   "icon_kind": "icon",
-   "icon_px": 48,
+   "icon_source": "https://www.google.com/s2/favicons?domain=miro.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 128,
    "result": "ok"
   },
   {
@@ -716,9 +716,9 @@
    "final_url": "https://www.grammarly.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://static-web.grammarly.com/cms/master/public/favicon-32x32.png",
-   "icon_kind": "icon",
-   "icon_px": 32,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.grammarly.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 48,
    "result": "ok"
   },
   {
@@ -737,11 +737,11 @@
    "id": "google-classroom",
    "url": "https://classroom.google.com/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://classroom.google.com/&emr=1&followup=https://classroom.google.com/&passive=1209600&service=classroom&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-617923709:1794083563613030",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://classroom.google.com/&emr=1&followup=https://classroom.google.com/&passive=1209600&service=classroom&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S469833535:1794083699204504",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=accounts.google.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 32,
    "result": "ok"
   },
@@ -800,9 +800,9 @@
    "final_url": "https://www.primevideo.com/offers/nonprimehomepage?ref_=dv_web_force_root",
    "error": null,
    "manifest": false,
-   "icon_source": "https://m.media-amazon.com/images/G/01/digital/video/DVUI/favicons/apple-touch-icon-precomposed.png",
+   "icon_source": "https://m.media-amazon.com/images/G/01/digital/video/DVUI/favicons/apple-touch-icon-152x152.png",
    "icon_kind": "apple",
-   "icon_px": 76,
+   "icon_px": 152,
    "result": "ok"
   },
   {
@@ -860,9 +860,9 @@
    "final_url": "https://polsatboxgo.pl/start?pk=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NHcm91cHMiOlsiYXBwOmFsbCIsImFwcDpicm93c2VyIiwiYXBwOmNocm9tZSIsImJ1aWxkOjMiLCJjcHVzZXI6ZmFsc2UiLCJkZXY6YWxsIiwiZGV2OnBjIiwiZm9yY2VwbDpmYWxzZSIsImxlZ2FjeV91c2VyOmZhbHNlIiwibG9jOmFsbCIsImxvYzp3b3JsZCIsImxvZ2dlZDpmYWxzZSIsIm9zOmFsbCIsIm9zOmxpbnV4IiwicGxheWVyOmFsbCIsInBsYXllcjpodG1sIiwicGx1c3VzZXI6ZmFsc2UiLCJwb3J0YWw6cGJnIiwicHJlc3M6ZmFsc2UiLCJ0ZXN0ZXI6ZmFsc2UiLCJ0ZXN0ZXJfcGVyOmZhbHNlIiwidmVyaWZpZWQ6ZmFsc2UiLCJ2cG46ZmFsc2UiXSwiY29uc3RhbnRzIjpbInJvZG9FeHRlcm5hbENvb2tpZXNFbmFibGVkIl19.GcCI9LEIXduSkGZw8aQ7tdKFHPEy3Y6S_O5SohwObBk",
    "error": null,
    "manifest": false,
-   "icon_source": "https://polsatboxgo.pl/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 48,
+   "icon_source": "https://www.google.com/s2/favicons?domain=polsatboxgo.pl&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
    "result": "ok"
   },
   {
@@ -872,8 +872,8 @@
    "final_url": "https://vod.tvp.pl/",
    "error": null,
    "manifest": true,
-   "icon_source": "https://vod.tvp.pl/static/images/favicon.png",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=vod.tvp.pl&sz=256",
+   "icon_kind": "s2",
    "icon_px": 60,
    "result": "ok"
   },
@@ -896,9 +896,9 @@
    "final_url": "https://www.crunchyroll.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.crunchyroll.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 120,
    "result": "zablokowane"
   },
   {
@@ -908,9 +908,9 @@
    "final_url": "https://www.twitch.tv/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://assets.twitch.tv/assets/favicon-32-5c61aa63605bca4f740d.png",
-   "icon_kind": "icon",
-   "icon_px": 32,
+   "icon_source": "https://www.twitch.tv/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 180,
    "result": "ok"
   },
   {
@@ -932,9 +932,9 @@
    "final_url": "https://app.plex.tv/desktop/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://app.plex.tv/desktop/static/icon-iphone.png",
+   "icon_source": "https://app.plex.tv/desktop/static/icon-ipad@2x.png",
    "icon_kind": "apple",
-   "icon_px": 57,
+   "icon_px": 144,
    "result": "ok"
   },
   {
@@ -944,9 +944,9 @@
    "final_url": "https://app.clipchamp.com/consumer/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://app.clipchamp.com/clipchamp/release-2026-11-05-00-rc00/consumer/favicon.svg",
-   "icon_kind": "icon",
-   "icon_px": 96,
+   "icon_source": "https://www.google.com/s2/favicons?domain=app.clipchamp.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 256,
    "result": "ok"
   },
   {
@@ -980,9 +980,9 @@
    "final_url": "https://music.youtube.com/",
    "error": null,
    "manifest": true,
-   "icon_source": "https://www.gstatic.com/youtube/media/ytm/images/applauncher/music_icon_192x192.png",
+   "icon_source": "https://www.gstatic.com/youtube/media/ytm/images/applauncher/music_icon_144x144.png",
    "icon_kind": "manifest",
-   "icon_px": 32,
+   "icon_px": 144,
    "result": "ok"
   },
   {
@@ -1016,8 +1016,8 @@
    "final_url": "https://tidal.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://tidal.com/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=tidal.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 48,
    "result": "zablokowane"
   },
@@ -1052,9 +1052,9 @@
    "final_url": "https://bandcamp.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=bandcamp.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
    "result": "zablokowane"
   },
   {
@@ -1071,7 +1071,7 @@
   },
   {
    "id": "pocket-casts",
-   "url": "https://play.pocketcasts.com/",
+   "url": "https://pocketcasts.com/play",
    "status": 200,
    "final_url": "https://pocketcasts.com/play",
    "error": null,
@@ -1088,9 +1088,9 @@
    "final_url": "https://www.audible.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://m.media-amazon.com/images/G/01/Audible/images/navigation/MobileWeb_IOSandAndroid_460._SY120_CB651482445_.png",
+   "icon_source": "https://m.media-amazon.com/images/G/01/Audible/images/navigation/MobileWeb_IOSandAndroid_460._SY180_CB651482445_.png",
    "icon_kind": "apple",
-   "icon_px": 120,
+   "icon_px": 180,
    "result": "ok"
   },
   {
@@ -1112,9 +1112,9 @@
    "final_url": "https://radio.garden/",
    "error": null,
    "manifest": true,
-   "icon_source": "https://radio.garden/public/icons/ios/ios-appicon-76-76.png",
+   "icon_source": "https://radio.garden/public/icons/ios/ios-appicon-180-180.png",
    "icon_kind": "apple",
-   "icon_px": 76,
+   "icon_px": 180,
    "result": "ok"
   },
   {
@@ -1136,9 +1136,9 @@
    "final_url": "https://www.canva.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.canva.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.canva.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
    "result": "zablokowane"
   },
   {
@@ -1167,7 +1167,7 @@
   },
   {
    "id": "adobe-express",
-   "url": "https://new.express.adobe.com/",
+   "url": "https://express.adobe.com/",
    "status": 200,
    "final_url": "https://express.adobe.com/",
    "error": null,
@@ -1280,9 +1280,9 @@
    "final_url": "https://coolors.co/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=coolors.co&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 192,
    "result": "zablokowane"
   },
   {
@@ -1335,7 +1335,7 @@
   },
   {
    "id": "xbox-cloud-gaming",
-   "url": "https://www.xbox.com/play",
+   "url": "https://play.xbox.com/",
    "status": 200,
    "final_url": "https://play.xbox.com/",
    "error": null,
@@ -1352,10 +1352,10 @@
    "final_url": "https://cloud.boosteroid.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://cloud.boosteroid.com/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=cloud.boosteroid.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 48,
-   "result": "błąd"
+   "result": "zablokowane"
   },
   {
    "id": "steam",
@@ -1364,8 +1364,8 @@
    "final_url": "https://store.steampowered.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://store.steampowered.com/favicon.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=store.steampowered.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 256,
    "result": "ok"
   },
@@ -1496,9 +1496,9 @@
    "final_url": "https://codepen.io/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=codepen.io&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
    "result": "zablokowane"
   },
   {
@@ -1508,9 +1508,9 @@
    "final_url": "https://codesandbox.io/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=codesandbox.io&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 48,
    "result": "ok"
   },
   {
@@ -1544,9 +1544,9 @@
    "final_url": "https://stackoverflow.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=stackoverflow.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
    "result": "zablokowane"
   },
   {
@@ -1580,8 +1580,8 @@
    "final_url": "https://godbolt.org/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://static.ce-cdn.net/favicon.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=godbolt.org&sz=256",
+   "icon_kind": "s2",
    "icon_px": 128,
    "result": "ok"
   },
@@ -1616,9 +1616,9 @@
    "final_url": "https://dash.cloudflare.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://dash.cloudflare.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 99,
+   "icon_source": "https://dash.cloudflare.com/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 180,
    "result": "zablokowane"
   },
   {
@@ -1628,8 +1628,8 @@
    "final_url": "https://huggingface.co/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://huggingface.co/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=huggingface.co&sz=256",
+   "icon_kind": "s2",
    "icon_px": 256,
    "result": "ok"
   },
@@ -1736,9 +1736,9 @@
    "final_url": "https://wetransfer.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://wetransfer.com/apple-touch-icon-180x180.png",
+   "icon_source": "https://wetransfer.com/apple-touch-icon-167x167.png",
    "icon_kind": "apple",
-   "icon_px": 180,
+   "icon_px": 167,
    "result": "ok"
   },
   {
@@ -1807,11 +1807,11 @@
    "id": "google-chat",
    "url": "https://chat.google.com/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://chat.google.com/&emr=1&osid=1&passive=1209600&service=dynamite&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1709615217:1794083567258987",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://chat.google.com/&emr=1&osid=1&passive=1209600&service=dynamite&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1392406970:1794083703814284",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=accounts.google.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 32,
    "result": "ok"
   },
@@ -1846,9 +1846,9 @@
    "final_url": "https://mail.yahoo.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://s.yimg.com/cv/apiv2/default/hp/favicon.ico",
-   "icon_kind": "icon",
-   "icon_px": 32,
+   "icon_source": "https://mail.yahoo.com/favicon.ico",
+   "icon_kind": "favicon",
+   "icon_px": 48,
    "result": "ok"
   },
   {
@@ -1870,9 +1870,9 @@
    "final_url": "https://medium.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://medium.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://www.google.com/s2/favicons?domain=medium.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
    "result": "zablokowane"
   },
   {
@@ -1882,9 +1882,9 @@
    "final_url": "https://substack.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=substack.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
    "result": "zablokowane"
   },
   {
@@ -1930,9 +1930,9 @@
    "final_url": "https://chat.mistral.ai/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=chat.mistral.ai&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
    "result": "zablokowane"
   },
   {
@@ -1954,9 +1954,9 @@
    "final_url": "https://chat.deepseek.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=chat.deepseek.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
    "result": "ok"
   },
   {
@@ -1990,9 +1990,9 @@
    "final_url": "https://to-do.office.com/tasks/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=to-do.office.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
    "result": "ok"
   },
   {
@@ -2014,9 +2014,9 @@
    "final_url": "https://mega.nz/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://mega.nz/favicon.ico?v=3",
-   "icon_kind": "icon",
-   "icon_px": 32,
+   "icon_source": "https://mega.nz/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 180,
    "result": "ok"
   },
   {
@@ -2038,9 +2038,9 @@
    "final_url": "https://www.icloud.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.icloud.com/favicon.ico",
-   "icon_kind": "icon",
-   "icon_px": 48,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.icloud.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
    "result": "ok"
   },
   {
@@ -2074,8 +2074,8 @@
    "final_url": "https://www.airtable.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.airtable.com/favicon.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.airtable.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 48,
    "result": "ok"
   },
@@ -2093,15 +2093,15 @@
   },
   {
    "id": "calendly",
-   "url": "https://calendly.com/app",
-   "status": 404,
-   "final_url": "https://calendly.com/app",
+   "url": "https://calendly.com/",
+   "status": 200,
+   "final_url": "https://calendly.com/",
    "error": null,
-   "manifest": false,
-   "icon_source": "https://calendly.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 48,
-   "result": "błąd"
+   "manifest": true,
+   "icon_source": "https://calendly.com/media/favicon/icon-192x192.png",
+   "icon_kind": "manifest",
+   "icon_px": 192,
+   "result": "ok"
   },
   {
    "id": "khan-academy",
@@ -2110,9 +2110,9 @@
    "final_url": "https://www.khanacademy.org/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.khanacademy.org/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.khanacademy.org&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 144,
    "result": "ok"
   },
   {
@@ -2122,9 +2122,9 @@
    "final_url": "https://quizlet.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=quizlet.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
    "result": "zablokowane"
   },
   {
@@ -2146,9 +2146,9 @@
    "final_url": "https://www.udemy.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.udemy.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
    "result": "zablokowane"
   },
   {
@@ -2242,9 +2242,9 @@
    "final_url": "https://genius.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=genius.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
    "result": "zablokowane"
   },
   {
@@ -2266,9 +2266,9 @@
    "final_url": "https://unsplash.com/.within.website?redir=%2F",
    "error": null,
    "manifest": false,
-   "icon_source": "https://unsplash.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://unsplash.com/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 180,
    "result": "zablokowane"
   },
   {
@@ -2278,9 +2278,9 @@
    "final_url": "https://www.behance.net/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.behance.net/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 144,
    "result": "zablokowane"
   },
   {
@@ -2338,8 +2338,8 @@
    "final_url": "https://www.wolframalpha.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.wolframalpha.com/_next/static/images/favicon_b48d893b991ff67016124a4d51822e63.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.wolframalpha.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 64,
    "result": "ok"
   },
@@ -2350,9 +2350,9 @@
    "final_url": "https://track.toggl.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://track.toggl.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 96,
+   "icon_source": "https://www.google.com/s2/favicons?domain=track.toggl.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 256,
    "result": "ok"
   },
   {
@@ -2386,8 +2386,8 @@
    "final_url": "https://earth.google.com/web/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.gstatic.com/earth/00-favicon.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=earth.google.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 48,
    "result": "ok"
   }
