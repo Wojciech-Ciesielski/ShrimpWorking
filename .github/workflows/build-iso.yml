@@ -3,7 +3,7 @@ name: Build ISO
 on:
   push:
     branches: [main, "claude/**"]
-    paths: ["kiwi/**", "tools/build-iso.sh", ".github/workflows/build-iso.yml"]
+    paths: ["kiwi/**", "standardize/**", "tools/build-iso.sh", ".github/workflows/build-iso.yml"]
   workflow_dispatch:
     inputs:
       leap_version:

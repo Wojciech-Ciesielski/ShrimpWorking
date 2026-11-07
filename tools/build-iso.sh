@@ -15,13 +15,21 @@ done
 echo "Using repository: $REPO"
 
 mkdir -p out
+# KIWI description = kiwi/ plus files kept elsewhere in the repo
+rm -rf out/desc && cp -a kiwi out/desc
+install -Dm755 standardize/shrimp-app-style out/desc/root/usr/bin/shrimp-app-style
+install -Dm644 standardize/shrimp-app-style.service out/desc/root/usr/lib/systemd/system/shrimp-app-style.service
+install -Dm644 standardize/shrimp-app-style.path out/desc/root/usr/lib/systemd/system/shrimp-app-style.path
+install -Dm644 standardize/shrimp-app-style-user.service out/desc/root/usr/lib/systemd/user/shrimp-app-style-user.service
+# LinU(x) build scripts add this repo if KIWI left none configured inside the image
+echo "$REPO/" > out/desc/root/usr/share/shrimp/linux/build/repo.url
 "$ENGINE" run --rm --privileged -v /dev:/dev -v "$PWD:/work" -w /work \
   docker.io/opensuse/tumbleweed:latest bash -euxc "
     zypper -n --gpg-auto-import-keys ref
     zypper -n in --no-recommends python3-kiwi kiwi-systemdeps-iso-media kiwi-systemdeps-bootloaders kiwi-systemdeps-filesystems binutils findutils gawk sed coreutils
     rm -rf out/build
     kiwi-ng --logfile out/kiwi.log --color-output system build \
-      --description kiwi --set-repo '$REPO' --target-dir out/build
+      --description out/desc --set-repo '$REPO' --target-dir out/build
     mv out/build/*.iso out/
     # Adwaita icon sources used by the boot themes, printed for design previews
     for n in go-next-symbolic changes-prevent-symbolic system-lock-screen-symbolic network-wireless-signal-excellent-symbolic \\
@@ -29,7 +37,7 @@ mkdir -p out
       f=\$(find out/build/build/image-root/usr/share/icons/Adwaita -name \"\$n.svg\" -print -quit)
       [ -n \"\$f\" ] && echo \"ICON-SVG \$n \$(base64 -w0 \"\$f\")\" || true
     done
-    grep -h 'GRUB fonts\|WARNING\|extension installed\|config.sh' out/kiwi.log | tail -40 || true
-    rm -rf out/build
+    grep -h 'GRUB fonts\|WARNING\|extension installed\|config.sh\|LinU(x)' out/kiwi.log | tail -40 || true
+    rm -rf out/build out/desc
   "
 ls -lh out/*.iso
