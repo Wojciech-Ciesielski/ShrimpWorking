@@ -1,6 +1,6 @@
 # Weryfikacja katalogu aplikacji internetowych
 
-Sprawdzono: 2026-11-07 20:33 UTC (GitHub Actions, `apps/web-apps/tools/verify.py`).
+Sprawdzono: 2026-11-07 20:37 UTC (GitHub Actions, `apps/web-apps/tools/verify.py`).
 
 Główna lista: 150 pozycji. Odpowiada poprawnie (2xx): 134, serwer odrzuca automat (401/403/429/503): 12, błąd (404, 5xx, DNS, TLS, limit czasu): 4. Ikony pobrane: 140.
 
@@ -29,7 +29,7 @@ Główna lista: 150 pozycji. Odpowiada poprawnie (2xx): 134, serwer odrzuca auto
 | Google Meet | https://meet.google.com/ | ok | 200 | https://workspace.google.com/products/meet/ | nie | icon 20px |
 | Snapchat | https://www.snapchat.com/web | ok | 200 |  | tak | manifest 192px |
 | TikTok | https://www.tiktok.com/ | ok | 200 |  | tak | manifest 192px |
-| Gmail | https://mail.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://mail.google.com/mail/u/0/&emr=1&followup=https://mail.google.com/mail/u/0/&osid=1&passive=1209600&service=mail&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1461318428:1794083579018959 | nie | favicon 32px |
+| Gmail | https://mail.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://mail.google.com/mail/u/0/&emr=1&followup=https://mail.google.com/mail/u/0/&osid=1&passive=1209600&service=mail&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1724748346:1794083831253261 | nie | favicon 32px |
 | Outlook | https://outlook.live.com/mail/ | ok | 200 |  | nie | apple 180px |
 | Proton Mail | https://mail.proton.me/ | ok | 200 |  | tak | manifest 192px |
 | Tuta | https://app.tuta.com/ | ok | 200 |  | nie | apple 512px |
@@ -41,16 +41,16 @@ Główna lista: 150 pozycji. Odpowiada poprawnie (2xx): 134, serwer odrzuca auto
 | Perplexity | https://www.perplexity.ai/ | ok | 200 |  | nie | apple 180px |
 | Allegro | https://allegro.pl/ | zablokowane | 403 |  | nie | favicon 48px |
 | OLX | https://www.olx.pl/ | ok | 200 |  | nie | apple 192px |
-| Amazon | https://www.amazon.pl/ | ok | 202 |  | nie | favicon 48px |
-| AliExpress | https://www.aliexpress.com/ | błąd | 302 | https://login.aliexpress.us/sync_cookie_write.htm?acs_random_token=bf691824b9a74facb2971136c31383be&xman_goto=https%3A%2F%2Fwww.aliexpress.us%2F%3FgatewayAdapt%3Dglo2usa%26_randl_shipto%3DUS&_ga=GA1.1.28722231144108.1794083582635 | nie | brak (litera) |
+| Amazon | https://www.amazon.pl/ | ok | 200 |  | nie | icon 48px |
+| AliExpress | https://www.aliexpress.com/ | błąd | 302 | https://login.aliexpress.us/sync_cookie_write.htm?acs_random_token=ce27c239a2fa4ec4af4e34c076e09491&xman_goto=https%3A%2F%2Fwww.aliexpress.us%2F%3FgatewayAdapt%3Dglo2usa%26_randl_shipto%3DUS&_ga=GA1.1.1049400613044004.1794083833181 | nie | brak (litera) |
 | PayPal | https://www.paypal.com/ | ok | 200 | https://www.paypal.com/us/home | nie | apple 144px |
-| Google Docs | https://docs.google.com/document/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/document/&followup=https://docs.google.com/document/&ltmpl=docs&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1156274686:1794083579335573 | nie | favicon 32px |
-| Google Sheets | https://docs.google.com/spreadsheets/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/spreadsheets/&followup=https://docs.google.com/spreadsheets/&ltmpl=sheets&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1156274686:1794083579369482 | nie | favicon 32px |
-| Google Slides | https://docs.google.com/presentation/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/presentation/&followup=https://docs.google.com/presentation/&ltmpl=slides&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-248101775:1794083579374141 | nie | favicon 32px |
-| Google Forms | https://docs.google.com/forms/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/forms/&followup=https://docs.google.com/forms/&ltmpl=forms&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-248101775:1794083579402234 | nie | favicon 32px |
-| Google Drive | https://drive.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://drive.google.com/&emr=1&followup=https://drive.google.com/&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-248101775:1794083579398562 | nie | favicon 32px |
-| Google Calendar | https://calendar.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://calendar.google.com/calendar/u/0/r&emr=1&followup=https://calendar.google.com/calendar/u/0/r&osid=1&passive=1209600&service=cl&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1312291418:1794083579447544 | nie | favicon 32px |
-| Google Keep | https://keep.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://keep.google.com/&followup=https://keep.google.com/&ltmpl=keep&passive=1209600&service=memento&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1657990248:1794083579474498 | nie | favicon 32px |
+| Google Docs | https://docs.google.com/document/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/document/&followup=https://docs.google.com/document/&ltmpl=docs&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-350847846:1794083831426846 | nie | favicon 32px |
+| Google Sheets | https://docs.google.com/spreadsheets/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/spreadsheets/&followup=https://docs.google.com/spreadsheets/&ltmpl=sheets&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-736507382:1794083831547066 | nie | favicon 32px |
+| Google Slides | https://docs.google.com/presentation/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/presentation/&followup=https://docs.google.com/presentation/&ltmpl=slides&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1025232510:1794083831476843 | nie | favicon 32px |
+| Google Forms | https://docs.google.com/forms/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/forms/&followup=https://docs.google.com/forms/&ltmpl=forms&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-350847846:1794083831535365 | nie | favicon 32px |
+| Google Drive | https://drive.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://drive.google.com/&emr=1&followup=https://drive.google.com/&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-333227382:1794083831630643 | nie | favicon 32px |
+| Google Calendar | https://calendar.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://calendar.google.com/calendar/u/0/r&emr=1&followup=https://calendar.google.com/calendar/u/0/r&osid=1&passive=1209600&service=cl&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1724748346:1794083831752847 | nie | favicon 32px |
+| Google Keep | https://keep.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://keep.google.com/&followup=https://keep.google.com/&ltmpl=keep&passive=1209600&service=memento&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1057900015:1794083831765471 | nie | favicon 32px |
 | Microsoft 365 | https://m365.cloud.microsoft/ | ok | 200 |  | nie | icon 48px |
 | Word | https://word.cloud.microsoft/ | ok | 200 | https://word.cloud.microsoft/pl-pl/ | nie | apple 144px |
 | Excel | https://excel.cloud.microsoft/ | ok | 200 | https://excel.cloud.microsoft/pl-pl/ | nie | apple 144px |
@@ -71,7 +71,7 @@ Główna lista: 150 pozycji. Odpowiada poprawnie (2xx): 134, serwer odrzuca auto
 | Overleaf | https://www.overleaf.com/ | ok | 200 |  | tak | manifest 261px |
 | Grammarly | https://app.grammarly.com/ | ok | 200 | https://www.grammarly.com/ | nie | icon 32px |
 | LanguageTool | https://languagetool.org/editor | ok | 200 | https://languagetool.org/pl/user-login | tak | manifest 192px |
-| Google Classroom | https://classroom.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://classroom.google.com/&emr=1&followup=https://classroom.google.com/&passive=1209600&service=classroom&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1461318428:1794083580215675 | nie | favicon 32px |
+| Google Classroom | https://classroom.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://classroom.google.com/&emr=1&followup=https://classroom.google.com/&passive=1209600&service=classroom&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-736507382:1794083832420080 | nie | favicon 32px |
 | Duolingo | https://www.duolingo.com/ | ok | 200 |  | tak | manifest 192px |
 | YouTube | https://www.youtube.com/ | ok | 200 |  | tak | manifest 192px |
 | Netflix | https://www.netflix.com/ | ok | 200 |  | nie | apple 64px |
@@ -121,7 +121,7 @@ Główna lista: 150 pozycji. Odpowiada poprawnie (2xx): 134, serwer odrzuca auto
 | Chess.com | https://www.chess.com/ | ok | 200 |  | tak | manifest 192px |
 | Lichess | https://lichess.org/ | ok | 200 |  | tak | manifest 192px |
 | GeForce NOW | https://play.geforcenow.com/ | ok | 200 | https://play.geforcenow.com/mall/ | tak | manifest 192px |
-| Xbox Cloud Gaming | https://www.xbox.com/play | ok | 200 | https://play.xbox.com/ | tak | manifest 192px |
+| Xbox Cloud Gaming | https://www.xbox.com/play | ok | 200 | https://www.xbox.com/en-US/play | tak | manifest 192px |
 | Boosteroid | https://cloud.boosteroid.com/ | błąd | 307 |  | nie | favicon 48px |
 | Steam | https://store.steampowered.com/ | ok | 200 |  | nie | icon 256px |
 | itch.io | https://itch.io/ | ok | 200 |  | tak | manifest 144px |
@@ -165,7 +165,7 @@ Główna lista: 150 pozycji. Odpowiada poprawnie (2xx): 134, serwer odrzuca auto
 
 | Nazwa | Adres | Wynik | HTTP | Przekierowanie | Manifest PWA | Ikona |
 |---|---|---|---|---|---|---|
-| Google Chat | https://chat.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://chat.google.com/&emr=1&osid=1&passive=1209600&service=dynamite&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1312291418:1794083583910206 | nie | favicon 32px |
+| Google Chat | https://chat.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://chat.google.com/&emr=1&osid=1&passive=1209600&service=dynamite&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1025232510:1794083835986557 | nie | favicon 32px |
 | Element | https://app.element.io/ | ok | 200 |  | tak | manifest 180px |
 | Tumblr | https://www.tumblr.com/ | ok | 200 |  | tak | manifest 192px |
 | Yahoo Mail | https://mail.yahoo.com/ | ok | 200 |  | nie | icon 32px |
