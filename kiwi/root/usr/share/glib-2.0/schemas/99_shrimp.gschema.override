@@ -16,6 +16,9 @@ secondary-color='#000000'
 [org.gnome.desktop.interface]
 accent-color='blue'
 clock-format='24h'
+# top bar: weekday next to the date, battery level in percent
+clock-show-weekday=true
+show-battery-percentage=true
 
 [org.gnome.desktop.input-sources]
 sources=[('xkb', 'pl')]
@@ -24,7 +27,7 @@ sources=[('xkb', 'pl')]
 button-layout='appmenu:minimize,maximize,close'
 
 [org.gnome.shell]
-enabled-extensions=['ding@rastersoft.com', 'blur-my-shell@aunetx', 'dash-to-dock@micxgx.gmail.com', 'just-perfection-desktop@just-perfection', 'light-style@gnome-shell-extensions.gcampax.github.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com']
+enabled-extensions=['shrimp-menu@shrimp', 'ding@rastersoft.com', 'blur-my-shell@aunetx', 'dash-to-dock@micxgx.gmail.com', 'just-perfection-desktop@just-perfection', 'light-style@gnome-shell-extensions.gcampax.github.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com']
 disable-user-extensions=false
 favorite-apps=['org.gnome.Nautilus.desktop', 'org.gnome.Console.desktop', 'org.gnome.Settings.desktop']
 welcome-dialog-last-shown-version='999'

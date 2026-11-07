@@ -1,0 +1,14 @@
+1	Informazioni su questo computer
+2	Impostazioni
+3	Software
+4	Aggiornamenti
+5	Monitor di sistema
+6	Dischi
+7	Terminale
+8	Estensioni
+9	Sospendi
+10	Riavvia…
+11	Spegni…
+12	Blocca schermo
+13	Termina sessione…
+14	Menu Shrimp

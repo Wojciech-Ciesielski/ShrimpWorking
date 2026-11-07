@@ -15,7 +15,9 @@ echo "=== gnome-shell"; ls "$r/usr/share/gnome-shell/extensions"
 for d in "$r"/usr/share/gnome-shell/extensions/*/; do
   python3 -c "import json,sys;d=json.load(open(sys.argv[1]));print(d['uuid'],'version',d.get('version'),d.get('version-name',''),'shell',d.get('shell-version'))" "$d/metadata.json"
 done
-rpm --root "$r" -q gnome-shell gnome-shell-extensions-common gdm plymouth grub2 2>/dev/null || ls "$r"/usr/lib64/gnome-shell 2>/dev/null
+rpm --root "$r" -q gnome-shell gnome-shell-extensions-common gdm plymouth grub2 \
+  pipewire wireplumber bluez upower gnome-bluetooth tuned-ppd power-profiles-daemon iio-sensor-proxy \
+  gnome-software gnome-system-monitor gnome-disk-utility gnome-extensions baobab gnome-logs 2>/dev/null || ls "$r"/usr/lib64/gnome-shell 2>/dev/null
 echo "=== typelibs"; ls "$r"/usr/lib64/girepository-1.0/ | grep -i -E 'gnomedesktop|gnomebg' || echo "no GnomeDesktop typelib"
 echo "=== schema defaults"
 S="$r/usr/share/glib-2.0/schemas"
