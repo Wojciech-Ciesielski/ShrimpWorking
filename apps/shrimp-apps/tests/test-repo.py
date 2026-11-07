@@ -80,8 +80,11 @@ def icon(path, color, letter_seed):
 
 def screenshot(path, color, text):
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    run("convert", "-size", "1248x702", f"gradient:{color}-#f6f5f4", "-gravity", "center", "-pointsize", "64",
-        "-fill", "white", "-annotate", "0", text, path)
+    base = ["convert", "-size", "1248x702", f"gradient:{color}-#f6f5f4"]
+    try:
+        run(*base, "-gravity", "center", "-pointsize", "64", "-fill", "white", "-annotate", "0", text, path)
+    except subprocess.CalledProcessError:
+        run(*base, path)  # bez czcionek ImageMagick nie napisze tekstu: sam gradient
 
 
 def metainfo(app_id, name, cats, summary, color, version, ts):
