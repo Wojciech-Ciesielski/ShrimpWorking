@@ -1,0 +1,25 @@
+name: Cocktail
+
+on:
+  push:
+    paths: ["apps/cocktail/**", ".github/workflows/cocktail.yml"]
+  pull_request:
+    paths: ["apps/cocktail/**", ".github/workflows/cocktail.yml"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    defaults: { run: { working-directory: apps/cocktail } }
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgtk-4-dev libadwaita-1-dev shellcheck xvfb imagemagick
+      - run: cargo test --locked
+      - run: cargo build --locked --release
+      - run: shellcheck -S warning install.sh system/libexec/* tests/*.sh
+      - run: tests/test-helper.sh
+      - run: python3 -c "import xml.dom.minidom; xml.dom.minidom.parse('system/polkit/org.shrimp.cocktail.policy')"
+      - name: Zrzuty zakładek na atrapach zyppera (jasny i ciemny)
+        run: xvfb-run -s "-screen 0 1000x700x24" tests/screens.sh screens target/release/cocktail
+      - uses: actions/upload-artifact@v4
+        with: { name: cocktail-screens, path: apps/cocktail/screens }
