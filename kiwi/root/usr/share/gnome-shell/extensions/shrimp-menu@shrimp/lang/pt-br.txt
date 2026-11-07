@@ -1,0 +1,14 @@
+1	Sobre este computador
+2	Configurações
+3	Programas
+4	Atualizações
+5	Monitor do sistema
+6	Discos
+7	Terminal
+8	Extensões
+9	Suspender
+10	Reiniciar…
+11	Desligar…
+12	Bloquear tela
+13	Encerrar sessão…
+14	Menu do Shrimp
