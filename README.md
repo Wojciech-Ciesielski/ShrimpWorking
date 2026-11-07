@@ -6,6 +6,7 @@ Pracujemy nad distro
 - Opis obrazu KIWI: `kiwi/` (`config.kiwi`, `config.sh`, nakładka plików `kiwi/root/`).
 - Budowa: workflow **Build ISO** w GitHub Actions (artefakt `shrimp-live-iso`) albo lokalnie `sudo tools/build-iso.sh 16.1` (Docker/Podman).
 - Użytkownik live: `shrimp`, hasło `shrimp` (logowanie automatyczne).
+- Menu systemowe: logo Shrimp z lewej strony górnego paska (własne rozszerzenie `shrimp-menu@shrimp` w `kiwi/root/usr/share/gnome-shell/extensions/`, teksty w `lang/` w formacie `i18n/`): O tym komputerze, Ustawienia, Oprogramowanie, Aktualizacje, Monitor systemu, Dyski, Terminal, Rozszerzenia, Uśpij, Uruchom ponownie, Wyłącz, Zablokuj, Wyloguj. Szybkie ustawienia (prawy róg) mają dźwięk (PipeWire), Bluetooth, tryb zasilania i baterię w procentach.
 - Grafiki Plymouth/GRUB są renderowane z makiety `boot.html`: `node tools/render-boot-assets.js <shrimp-handoff> <out>`.
 
 ## LinU(x) – Linux is now usable

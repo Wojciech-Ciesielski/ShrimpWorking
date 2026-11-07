@@ -89,6 +89,15 @@
         <package name="xdg-desktop-portal-gnome"/>
         <package name="adwaita-icon-theme"/>
         <package name="gjs"/>
+        <!-- Quick Settings (system menu, top right): volume and microphone sliders need the
+             PipeWire stack, the Bluetooth toggle needs bluez, battery and power state need upower.
+             Packages that may be named differently in Leap 16.1 are installed in config.sh. -->
+        <package name="pipewire"/>
+        <package name="pipewire-pulseaudio"/>
+        <package name="pipewire-alsa"/>
+        <package name="wireplumber"/>
+        <package name="bluez"/>
+        <package name="upower"/>
         <!-- Polish translations (lang packages are only recommended, so list them) -->
         <package name="gnome-shell-lang"/>
         <package name="gdm-lang"/>

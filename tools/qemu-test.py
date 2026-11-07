@@ -222,10 +222,24 @@ try:
     wait_shooting(150, 10, "session")
     shot("desktop", keep_duplicates=True)
 
-    # Apps Menu: first item on the left of the top bar.
-    click(60, 16)
+    # Shrimp Menu: the logo, first item on the left of the top bar.
+    click(20, 16)
+    pause(3)
+    shot("shrimp-menu", keep_duplicates=True)
+    keys("esc")
+    pause(2)
+
+    # Apps Menu ("Programy"): right of the logo.
+    click(85, 16)
     pause(3)
     shot("apps-menu", keep_duplicates=True)
+    keys("esc")
+    pause(2)
+
+    # Quick Settings (system menu): status icons on the right of the top bar.
+    click(W - 30, 16)
+    pause(3)
+    shot("quick-settings", keep_duplicates=True)
     keys("esc")
     pause(2)
 
