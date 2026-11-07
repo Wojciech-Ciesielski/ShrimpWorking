@@ -1,0 +1,85 @@
+1	Geri
+6	İrəli
+7	Keç
+8	Ləğv et
+9	Hazırdır
+10	Əlavə
+11	Avtomatik
+12	Heç biri
+13	Gəlin Shrimp-i kompüterinizdə hazırlayaq.
+14	Başlayaq
+15	Dil seçin
+16	Haradasınız?
+18	Klaviatura düzümünü seçin
+22	Sürücü
+24	Diskin şifrələnməsi
+25	Söndürülü
+26	Aktiv
+27	Disk parolu
+29	Shrimp harada quraşdırılsın?
+30	Windows ilə yanaşı
+31	Windows əvəzinə
+38	Hesab yaradın
+40	Tam ad
+41	İstifadəçi adı
+42	Parol
+43	Parolu təsdiqləyin
+44	Quraşdırmağa hazırdır
+45	“Quraşdır” düyməsini basana qədər heç nə dəyişməyəcək.
+46	Dil
+47	Region
+48	Klaviatura
+49	Sürücü
+50	Quraşdırma
+56	Quraşdır
+57	Shrimp quraşdırılır
+58	Quraşdırılır
+62	Təxminən {min} dəq qalıb
+63	Bir az gözləyin
+64	Quraşdırma tamamlandı
+65	Bitirmək üçün kompüteri yenidən başladın.
+66	Yenidən başlat
+67	Salam, {name}
+70	Şəbəkəyə qoşulun
+71	{ssid} şəbəkəsinin parolu
+79	Qoşul
+84	Görünüş seçin
+85	Açıq
+86	Tünd
+88	Rəng seçin
+89	Mavi
+90	Firuzəyi
+91	Yaşıl
+92	Sarı
+93	Narıncı
+94	Qırmızı
+95	Çəhrayı
+96	Bənövşəyi
+97	Boz
+100	Quraşdır
+101	Sonra edəcəyəm
+108	Kompüterdən necə istifadə edirsiniz?
+109	Ən çox ehtiyacınız olan proqramları quraşdıracağıq.
+110	İş və təhsil
+111	Oyunlar
+112	Yaradıcılıq
+113	Proqramlaşdırma
+114	Multimedia
+122	Hər şey hazırdır
+123	Shrimp-dən zövq alın.
+143	Kömək
+145	Disk parolları uyğun gəlmir
+147	Parollar uyğun gəlmir
+149	Yenidən cəhd edin
+150	Kifayət qədər yer yoxdur
+153	Geri qayıt
+154	Quraşdırma uğursuz oldu
+156	Çıx
+160	İnternet bağlantısı yoxdur
+163	E-poçt
+164	Oyunlar
+166	Rəsm
+167	Video montajı
+168	Qrafika
+171	Filmlər və musiqi
+172	Musiqi

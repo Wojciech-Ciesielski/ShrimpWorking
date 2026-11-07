@@ -1,0 +1,85 @@
+1	Terug
+6	Volgende
+7	Slaan oor
+8	Kanselleer
+9	Klaar
+10	Gevorderd
+11	Outomaties
+12	Geen
+13	Kom ons maak Shrimp gereed op jou rekenaar.
+14	Kom ons begin
+15	Kies 'n taal
+16	Waar is jy?
+18	Kies 'n sleutelborduitleg
+22	Skyf
+24	Skyfenkripsie
+25	Af
+26	Aan
+27	Skyfwagwoord
+29	Waar moet Shrimp geïnstalleer word?
+30	Langs Windows
+31	In plaas van Windows
+38	Skep 'n rekening
+40	Volle naam
+41	Gebruikernaam
+42	Wagwoord
+43	Bevestig wagwoord
+44	Gereed om te installeer
+45	Niks verander totdat jy op “Installeer” klik nie.
+46	Taal
+47	Streek
+48	Sleutelbord
+49	Skyf
+50	Installasie
+56	Installeer
+57	Installeer tans Shrimp
+58	Installeer tans
+62	Ongeveer {min} min oor
+63	Net 'n oomblik
+64	Installasie voltooi
+65	Herbegin die rekenaar om klaar te maak.
+66	Herbegin
+67	Hallo, {name}
+70	Koppel aan 'n netwerk
+71	Wagwoord vir netwerk {ssid}
+79	Koppel
+84	Kies 'n voorkoms
+85	Lig
+86	Donker
+88	Kies 'n kleur
+89	Blou
+90	Blougroen
+91	Groen
+92	Geel
+93	Oranje
+94	Rooi
+95	Pienk
+96	Pers
+97	Grys
+100	Installeer
+101	Ek doen dit later
+108	Hoe gebruik jy jou rekenaar?
+109	Ons installeer die programme wat jy die meeste nodig het.
+110	Werk en studie
+111	Speletjies
+112	Kreatiwiteit
+113	Programmering
+114	Multimedia
+122	Alles gereed
+123	Geniet Shrimp.
+143	Hulp
+145	Die skyfwagwoorde stem nie ooreen nie
+147	Die wagwoorde stem nie ooreen nie
+149	Probeer weer
+150	Nie genoeg spasie nie
+153	Gaan terug
+154	Installasie het misluk
+156	Verlaat
+160	Geen internetverbinding nie
+163	E-pos
+164	Speletjies
+166	Teken
+167	Video-redigering
+168	Grafika
+171	Flieks en musiek
+172	Musiek

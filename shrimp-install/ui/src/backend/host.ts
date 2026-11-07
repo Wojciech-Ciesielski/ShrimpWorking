@@ -75,6 +75,7 @@ export class HostBackend implements Backend {
   }
   async cancel() { await this.call("cancel"); this.run = null; }
   async reboot() { await this.call("reboot"); }
+  openUrl(url: string) { this.wv.postMessage([0, "open", url].join("\t")); }
   later() { this.send("later"); }
   minimize() { this.send("minimize"); }
   close() { this.send("close"); }

@@ -35,6 +35,8 @@ export interface Info {
   /** Minimalny rozmiar nośnika. */
   minSize: number;
   folders: Folder[];
+  /** Adres strony pomocy z manifestu wydania (https://…); bez niego działa wpis z site/help.json. */
+  helpUrl?: string;
 }
 
 export type Phase = 1 | 2 | 3;
@@ -79,6 +81,8 @@ export interface Backend {
   cancel(): Promise<void>;
   /** Ustawia jednorazowy start z nośnika i uruchamia ponownie. Rzuca błąd z opisem. */
   reboot(): Promise<void>;
+  /** Otwiera stronę (https://…) w przeglądarce użytkownika; host odrzuca inne adresy. */
+  openUrl(url: string): void;
   later(): void;
   minimize(): void;
   close(): void;

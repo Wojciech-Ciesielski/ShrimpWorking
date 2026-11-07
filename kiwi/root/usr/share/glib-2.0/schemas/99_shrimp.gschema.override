@@ -24,7 +24,7 @@ sources=[('xkb', 'pl')]
 button-layout='appmenu:minimize,maximize,close'
 
 [org.gnome.shell]
-enabled-extensions=['ding@rastersoft.com', 'blur-my-shell@aunetx', 'dash-to-dock@micxgx.gmail.com', 'just-perfection-desktop@just-perfection', 'light-style@gnome-shell-extensions.gcampax.github.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com', 'workspace-indicator@gnome-shell-extensions.gcampax.github.com']
+enabled-extensions=['ding@rastersoft.com', 'blur-my-shell@aunetx', 'dash-to-dock@micxgx.gmail.com', 'just-perfection-desktop@just-perfection', 'light-style@gnome-shell-extensions.gcampax.github.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com']
 disable-user-extensions=false
 favorite-apps=['org.gnome.Nautilus.desktop', 'org.gnome.Console.desktop', 'org.gnome.Settings.desktop']
 welcome-dialog-last-shown-version='999'
@@ -32,6 +32,13 @@ welcome-dialog-last-shown-version='999'
 # Just Perfection: no Activities button in the top bar
 [org.gnome.shell.extensions.just-perfection]
 activities-button=false
+
+# Blur my Shell: the wallpaper is blurred in the Overview, the top bar stays sharp
+[org.gnome.shell.extensions.blur-my-shell.overview]
+blur=true
+
+[org.gnome.shell.extensions.blur-my-shell.panel]
+blur=false
 
 [org.gnome.shell.extensions.dash-to-dock]
 dock-position='BOTTOM'

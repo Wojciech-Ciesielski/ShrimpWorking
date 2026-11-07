@@ -1,0 +1,41 @@
+1	Retro
+6	Sequente
+7	Saltar
+8	Cancellar
+9	Facite
+10	Avantiate
+11	Automatic
+12	Nulle
+14	Comenciamos
+15	Selige un lingua
+22	Unitate
+25	Disactivate
+26	Activate
+29	Ubi installar Shrimp?
+30	Presso Windows
+31	In loco de Windows
+42	Contrasigno
+46	Lingua
+47	Region
+48	Claviero
+49	Unitate
+50	Installation
+56	Installar
+57	Installation de Shrimp
+58	Installation
+63	Un momento
+64	Installation complete
+66	Reinitiar
+67	Salute, {name}
+79	Connecter
+85	Clar
+86	Obscur
+89	Blau
+91	Verde
+92	Jalne
+94	Rubie
+111	Jocos
+143	Adjuta
+149	Reprobar
+153	Retornar
+156	Quitar

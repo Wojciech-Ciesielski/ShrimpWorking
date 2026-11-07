@@ -1,0 +1,85 @@
+1	Nazad
+6	Dalje
+7	Preskoči
+8	Otkaži
+9	Gotovo
+10	Napredno
+11	Automatski
+12	Ništa
+13	Pripremimo Shrimp na vašem računaru.
+14	Počnimo
+15	Odaberite jezik
+16	Gdje se nalazite?
+18	Odaberite raspored tastature
+22	Disk
+24	Šifriranje diska
+25	Isključeno
+26	Uključeno
+27	Lozinka diska
+29	Gdje instalirati Shrimp?
+30	Pored Windowsa
+31	Umjesto Windowsa
+38	Napravite račun
+40	Puno ime
+41	Korisničko ime
+42	Lozinka
+43	Potvrdite lozinku
+44	Spremno za instalaciju
+45	Ništa se neće promijeniti dok ne kliknete „Instaliraj”.
+46	Jezik
+47	Regija
+48	Tastatura
+49	Disk
+50	Instalacija
+56	Instaliraj
+57	Instaliranje sistema Shrimp
+58	Instaliranje
+62	Preostalo oko {min} min
+63	Samo trenutak
+64	Instalacija je završena
+65	Ponovo pokrenite računar da završite.
+66	Ponovo pokreni
+67	Zdravo, {name}
+70	Povežite se na mrežu
+71	Lozinka za mrežu {ssid}
+79	Poveži
+84	Odaberite izgled
+85	Svijetla
+86	Tamna
+88	Odaberite boju
+89	Plava
+90	Tirkizna
+91	Zelena
+92	Žuta
+93	Narandžasta
+94	Crvena
+95	Roza
+96	Ljubičasta
+97	Siva
+100	Instaliraj
+101	Uradit ću to kasnije
+108	Kako koristite računar?
+109	Instalirat ćemo programe koji su vam najpotrebniji.
+110	Posao i učenje
+111	Igre
+112	Kreativnost
+113	Programiranje
+114	Multimedija
+122	Sve je spremno
+123	Uživajte u sistemu Shrimp.
+143	Pomoć
+145	Lozinke diska se ne podudaraju
+147	Lozinke se ne podudaraju
+149	Pokušaj ponovo
+150	Nema dovoljno prostora
+153	Nazad
+154	Instalacija nije uspjela
+156	Izađi
+160	Nema internetske veze
+163	E-pošta
+164	Igre
+166	Crtanje
+167	Montaža videa
+168	Grafika
+171	Filmovi i muzika
+172	Muzika

@@ -1,0 +1,41 @@
+1	Indaûr
+6	Indevant
+7	Salte
+8	Anule
+9	Fat
+10	Avanzât
+11	Automatic
+12	Nissun
+14	Scomencìn
+15	Sielç une lenghe
+22	Unitât
+25	Distudât
+26	Impiât
+29	Dulà instalâ Shrimp?
+30	Dongje di Windows
+31	Al puest di Windows
+42	Peraule di ordin
+46	Lenghe
+47	Regjon
+48	Tastiere
+49	Unitât
+50	Instalazion
+56	Instale
+57	O instali Shrimp
+58	O instali
+63	Un moment
+64	Instalazion completade
+66	Torne a inviâ
+67	Mandi, {name}
+79	Conet
+85	Clâr
+86	Scûr
+89	Blu
+91	Vert
+92	Zâl
+94	Ros
+111	Zucs
+143	Jutori
+149	Prove di gnûf
+153	Torne indaûr
+156	Jes

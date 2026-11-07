@@ -1,0 +1,85 @@
+1	Orqaga
+6	Keyingi
+7	Oʻtkazib yuborish
+8	Bekor qilish
+9	Tayyor
+10	Qoʻshimcha
+11	Avtomatik
+12	Yoʻq
+13	Keling, Shrimpʼni kompyuteringizda tayyorlaymiz.
+14	Boshlaymiz
+15	Tilni tanlang
+16	Qayerdasiz?
+18	Klaviatura terilmasini tanlang
+22	Disk
+24	Diskni shifrlash
+25	Oʻchiq
+26	Yoqilgan
+27	Disk paroli
+29	Shrimp qayerga oʻrnatilsin?
+30	Windows yoniga
+31	Windows oʻrniga
+38	Hisob yarating
+40	Toʻliq ism
+41	Foydalanuvchi nomi
+42	Parol
+43	Parolni tasdiqlang
+44	Oʻrnatishga tayyor
+45	“Oʻrnatish” tugmasini bosmaguningizcha hech narsa oʻzgarmaydi.
+46	Til
+47	Hudud
+48	Klaviatura
+49	Disk
+50	Oʻrnatish
+56	Oʻrnatish
+57	Shrimp oʻrnatilmoqda
+58	Oʻrnatilmoqda
+62	Taxminan {min} daqiqa qoldi
+63	Bir lahza
+64	Oʻrnatish yakunlandi
+65	Tugatish uchun kompyuterni qayta ishga tushiring.
+66	Qayta ishga tushirish
+67	Salom, {name}
+70	Tarmoqqa ulaning
+71	{ssid} tarmogʻining paroli
+79	Ulanish
+84	Koʻrinishni tanlang
+85	Yorugʻ
+86	Qorongʻi
+88	Rangni tanlang
+89	Koʻk
+90	Moviy yashil
+91	Yashil
+92	Sariq
+93	Zargaldoq
+94	Qizil
+95	Pushti
+96	Binafsha
+97	Kulrang
+100	Oʻrnatish
+101	Keyin qilaman
+108	Kompyuterdan qanday foydalanasiz?
+109	Sizga eng kerakli dasturlarni oʻrnatamiz.
+110	Ish va oʻqish
+111	Oʻyinlar
+112	Ijodkorlik
+113	Dasturlash
+114	Multimedia
+122	Hammasi tayyor
+123	Shrimpdan zavqlaning.
+143	Yordam
+145	Disk parollari mos kelmaydi
+147	Parollar mos kelmaydi
+149	Qayta urinib koʻring
+150	Joy yetarli emas
+153	Orqaga qaytish
+154	Oʻrnatish amalga oshmadi
+156	Chiqish
+160	Internet aloqasi yoʻq
+163	Elektron pochta
+164	Oʻyinlar
+166	Rasm chizish
+167	Video montaji
+168	Grafika
+171	Filmlar va musiqa
+172	Musiqa

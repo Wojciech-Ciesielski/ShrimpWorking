@@ -21,13 +21,13 @@ describe("konto", () => {
 describe("programy", () => {
   const win = mapWindowsApps(["Spotify", "Microsoft 365 Apps for business - pl-pl", "Microsoft Office Proofing Tools 2016 - Polski", "Nieznany program"]);
   it("mapuje programy Windows na odpowiedniki i pomija nieznane", () => {
-    expect(win.map((w) => w.id)).toEqual(["org.libreoffice.LibreOffice", "com.spotify.Client"]);
-    expect(windowsList(win)[0].label).toBe('Microsoft Office<span class="arr">→</span>LibreOffice');
-    expect(windowsList(win)[1].label).toBe("Spotify");
+    expect(win.map((w) => w.id)).toEqual(["com.spotify.Client", "org.libreoffice.LibreOffice"]);
+    expect(windowsList(win)[1].label).toBe('Microsoft Office<span class="arr">→</span>LibreOffice');
+    expect(windowsList(win)[0].label).toBe("Spotify");
   });
   it("rozpoznaje nazwy z wersją, pakiety Store i nie powtarza odpowiedników", () => {
     const w = mapWindowsApps(["Adobe Photoshop 2024", "Adobe Photoshop Lightroom Classic", "Zoom Workplace", "Epic Games Launcher", "GOG GALAXY", "Google Chrome"], ["SpotifyAB.SpotifyMusic", "Microsoft.WindowsCalculator"]);
-    expect(w.map((x) => x.windows)).toEqual(["Google Chrome", "Zoom", "Spotify", "Adobe Photoshop", "Adobe Lightroom", "Epic Games Launcher"]);
+    expect(w.map((x) => x.windows)).toEqual(["Google Chrome", "Spotify", "Zoom", "Epic Games Launcher", "Adobe Photoshop", "Adobe Lightroom"]);
     expect(mapWindowsApps(["Microsoft Office File Validation Add-In"])).toEqual([]);
   });
   it("proponuje maks. 5 programów na zmianę z kategorii, bez tych z Windows", () => {
@@ -60,6 +60,19 @@ describe("katalog programów Windows", () => {
     }
     const own = WIN_CATALOG.filter((a) => a.re.test(a.windows)).length;
     expect(own / WIN_CATALOG.length).toBeGreaterThan(0.9);
+  });
+  it("ma dokładnie 100 najpopularniejszych programów, z miejscami 1–100 i odpowiednikiem w Linuksie", () => {
+    const top = WIN_CATALOG.filter((a) => a.top !== undefined);
+    expect(top.map((a) => a.top).sort((a, b) => a! - b!)).toEqual(Array.from({ length: 100 }, (_, i) => i + 1));
+    for (const a of top) {
+      expect(a.linux, a.windows).not.toBeNull();
+      expect(a.base, a.windows).toBeUndefined();
+      expect(a.skip, a.windows).toBeUndefined();
+    }
+  });
+  it("podpowiedzi zaczynają od rankingu, niezależnie od kolejności programów w Windows", () => {
+    const got = mapWindowsApps(["Zotero", "Discord", "Google Chrome", "Spotify"]).map((a) => a.windows);
+    expect(got.slice(0, 3)).toEqual(["Google Chrome", "Spotify", "Discord"]);
   });
   it("pomija sterowniki, składniki systemu i odpowiedniki już zainstalowane", () => {
     expect(mapWindowsApps(["NVIDIA Graphics Driver 560.94", "Microsoft Visual C++ 2015-2022 Redistributable (x64)", "Avast Free Antivirus", "7-Zip 23.01"])).toEqual([]);

@@ -1,0 +1,44 @@
+1	Kiçeltmek
+2	Ýapmak
+3	Shrimp-i guramak
+4	Ilkinji başlanyşdan işleýän asuda, tertipli ulgam.
+5	Awtomatik ýüklemek
+6	Guraýjy zerur zatlaryň hemmesini ýükleýär.
+7	Faýllaryňyz howpsuz
+8	Faýllaryňyz saklanar.
+9	Tanyş programmalar
+12	Başlalyň
+14	Disk saýlaň
+16	Disk
+19	Yza
+20	Indiki
+23	Disk tapylmady
+24	Disk goşuň, ol şu ýerde görner.
+25	Gaty kiçi
+27	USB flaş
+28	SD kart
+29	Daşky disk
+30	Näme goralmaly?
+34	(Maslahat berilýär)
+36	Özüm saýlaryn
+39	Resminamalar
+40	Suratlar
+41	Iş stoly
+42	Aýdym-saz
+43	Wideolar
+44	Ýüklenenler
+59	Shrimp taýýarlanýar
+62	Taýýarlyk tamamlandy
+63	Hemme zat taýýar.
+64	Shrimp ýüklenýär
+65	Diske ýazylýar
+66	Faýllar göçürilýär
+67	Gutarýança diski çykarmaň.
+68	Ýatyrmak
+69	Gaýtadan synanyşyň
+82	Internet birikmesi ýok
+99	Bir zat nädogry boldy
+101	Hemme zat taýýar
+102	Tamamlamak üçin kompýuteri gaýtadan işlediň.
+110	Soňrak
+111	Gaýtadan işletmek

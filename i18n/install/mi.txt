@@ -1,0 +1,44 @@
+1	Whakaiti
+2	Katia
+3	Tāutaina a Shrimp
+4	He pūnaha marino, hāngai e mahi ana mai i te tīmatanga tuatahi.
+5	Tikiake aunoa
+6	Ka tikiake te kaitāuta i ngā mea katoa e hiahiatia ana.
+7	Kei te haumaru ō kōnae
+8	Ka tiakina ō kōnae.
+9	Ngā hōtaka e mōhiotia ana
+12	Me tīmata
+14	Kōwhiria he puku taraiwa
+16	Puku taraiwa
+19	Hoki ki muri
+20	Panuku
+23	Kāore he puku taraiwa i kitea
+24	Hoatu he puku taraiwa ka puta ki konei.
+25	Rawa iti
+27	Rākau USB
+28	Kāri SD
+29	Puku taraiwa o waho
+30	He aha te mea hei tiaki?
+34	(E taunakitia ana)
+36	Māku e kōwhiri
+39	Tuhinga
+40	Whakaahua
+41	Papamahi
+42	Puoro
+43	Ataata
+44	Ngā tikiake
+59	E whakarite ana a Shrimp
+62	Kua oti te whakarite
+63	Kua rite katoa.
+64	E tikiake ana a Shrimp
+65	E tuhi ana ki te puku taraiwa
+66	E kape ana i ngā kōnae
+67	Kaua e tango i te puku taraiwa kia oti ra anō.
+68	Whakakore
+69	Whakamātauria anō
+82	Kāore he hononga ipurangi
+99	I pōhēhē tētahi mea
+101	Kua rite katoa
+102	Whakaarahia anō te rorohiko kia oti.
+110	Muri atu
+111	Whakaara anō
