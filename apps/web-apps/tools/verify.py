@@ -138,6 +138,10 @@ def candidates(page_url, html_text):
             sz = max(sz, 512)
         base = 2000 if kind == "apple" else 1000
         out.append((kind, urllib.parse.urljoin(page_url, href), base + rank(sz)))
+    host = urllib.parse.urlsplit(page_url).netloc
+    out.append(("apple", urllib.parse.urljoin(page_url, "/apple-touch-icon.png"), 1500))
+    # Usługa ikon Google: działa też dla stron, które nie wpuszczają skryptu.
+    out.append(("s2", f"https://www.google.com/s2/favicons?domain={host}&sz=256", 1200))
     out.append(("favicon", urllib.parse.urljoin(page_url, "/favicon.ico"), 0))
     out.sort(key=lambda c: -c[2])
     return p.manifest is not None, out
@@ -184,23 +188,34 @@ def check(app):
         res["result"] = "błąd"
     elif 200 <= st < 300:
         res["result"] = "ok"
-    elif st in (401, 403, 405, 429, 451, 503):
-        res["result"] = "zablokowane"  # serwer odpowiada, ale odrzuca automat
+    elif st in (400, 401, 403, 405, 429, 451, 503) or 300 <= st < 400:
+        # Serwer odpowiada, ale odrzuca automat (ochrona przed botami, 400 dla nieznanej
+        # przeglądarki, pętla przekierowań bez ciasteczek).
+        res["result"] = "zablokowane"
     else:
         res["result"] = "błąd"
     page = final if st else app["url"]
     text = body.decode("utf-8", "replace") if "html" in ctype or body[:200].lstrip().startswith(b"<") else ""
     has_manifest, cands = candidates(page, text)
     res["manifest"] = has_manifest
+    if app.get("icon_url"):  # ręcznie wskazana ikona ma pierwszeństwo
+        cands.insert(0, ("ręczna", app["icon_url"], 9999))
     dest = os.path.join(ICONS, app["id"] + ".png")
+    tmp = dest + ".try.png"
+    best = 0
     for kind, url, _ in cands:
         ist, _, ictype, data, _ = fetch(url, limit=2_000_000)
         if ist != 200 or len(data) < 100 or "html" in ictype:
             continue
-        px = convert_icon(data, ictype, dest)
-        if px is not None:
+        px = convert_icon(data, ictype, tmp)
+        if px is not None and px > best:
+            best = px
+            os.replace(tmp, dest)
             res.update(icon_source=url, icon_kind=kind, icon_px=px)
-            break
+            if px >= 128 or kind == "ręczna":
+                break
+    if os.path.exists(tmp):
+        os.remove(tmp)
     return res
 
 
@@ -256,10 +271,13 @@ def write_md(now, apps, reserve, results):
         "# Weryfikacja katalogu aplikacji internetowych", "",
         f"Sprawdzono: {now} (GitHub Actions, `apps/web-apps/tools/verify.py`).", "",
         f"Główna lista: {len(apps)} pozycji. Odpowiada poprawnie (2xx): {cnt(apps, 'ok')}, "
-        f"serwer odrzuca automat (401/403/429/503): {cnt(apps, 'zablokowane')}, "
+        f"serwer odrzuca automat (400/401/403/429/503, pętla przekierowań): {cnt(apps, 'zablokowane')}, "
         f"błąd (404, 5xx, DNS, TLS, limit czasu): {cnt(apps, 'błąd')}. Ikony pobrane: {icons}.", "",
         "„zablokowane” znaczy, że serwer istnieje i odpowiada, ale nie wpuszcza skryptu "
-        "(np. ochrona przed botami); adresu nie dało się więc potwierdzić w pełni.", "",
+        "(ochrona przed botami, kod 400 dla nieznanej przeglądarki albo pętla przekierowań bez "
+        "ciasteczek); adresu nie dało się więc potwierdzić w pełni.", "",
+        "Przekierowanie na stronę logowania albo stronę produktu jest normalne dla aplikacji, "
+        "które wymagają konta: skrypt nie jest zalogowany.", "",
         "## Główna lista", "", head, *[row(a) for a in apps], "",
         "## Rezerwa (do podmiany błędnych pozycji)", "", head, *[row(a) for a in reserve], "",
     ]
