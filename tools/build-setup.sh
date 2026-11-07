@@ -12,12 +12,12 @@ ROOT=$PWD
 BR=${SHRIMP_BUILDROOT:-/var/tmp/shrimp-setup-buildroot}
 
 # 1. Leap build root
-if [ ! -x "$BR/usr/bin/rustup" ]; then
+if [ ! -x "$BR/usr/bin/rustup" ] || [ ! -x "$BR/usr/bin/gawk" ]; then
   rm -rf "$BR"; mkdir -p "$BR"
   zypper -n --root "$BR" ar -f "$REPO" leap
   zypper -n --root "$BR" --gpg-auto-import-keys ref
   zypper -n --root "$BR" --gpg-auto-import-keys in --no-recommends \
-    bash coreutils findutils gcc pkg-config rustup ca-certificates ca-certificates-mozilla \
+    bash coreutils findutils gawk gcc pkg-config rustup ca-certificates ca-certificates-mozilla \
     'pkgconfig(gtk4)' 'pkgconfig(webkitgtk-6.0)'
 fi
 cp -L /etc/resolv.conf "$BR/etc/resolv.conf"
@@ -37,8 +37,8 @@ chroot "$BR" /bin/bash -euxc '
 mkdir -p "$ROOT/setup/shell/target/release"
 cp "$BR/src/shell/target/release/shrimp-setup" "$ROOT/setup/shell/target/release/shrimp-setup"
 echo "shrimp-setup libraries (packages the ISO must contain):"
-chroot "$BR" ldd /src/shell/target/release/shrimp-setup | awk '/=>/ {print $3}' \
-  | xargs -r chroot "$BR" rpm -qf --qf '%{NAME}\n' 2>/dev/null | sort -u | sed 's/^/  /'
+chroot "$BR" /bin/bash -c "ldd /src/shell/target/release/shrimp-setup | awk '/=>/ {print \$3}' \
+  | xargs -r rpm -qf --qf '%{NAME}\n' 2>/dev/null | sort -u | sed 's/^/  /'" || true
 
 # 3. Web UI (platform independent) + install into DESTDIR
 SHRIMP_SETUP_PREBUILT=1 setup/install.sh "$DEST" --live
