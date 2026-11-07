@@ -45,11 +45,12 @@ done
 install -Dm644 "$SCH/99_shrimp.gschema.override" "$T$SCH/99_shrimp.gschema.override"
 for p in /usr/share/backgrounds/shrimp /usr/share/gnome-background-properties/shrimp.xml /usr/share/shrimp/logo \
          /usr/share/icons/hicolor/scalable/apps/shrimp-logo.svg /usr/share/icons/hicolor/scalable/apps/shrimp-logo-dark.svg \
-         /usr/share/icons/hicolor/scalable/apps/shrimp-logo-symbolic.svg; do
+         /usr/share/icons/hicolor/scalable/apps/shrimp-logo-symbolic.svg /usr/share/icons/MoreWaita; do
   [ -e "$p" ] && { mkdir -p "$T$(dirname "$p")"; cp -a "$p" "$T$(dirname "$p")/"; }
 done
 chroot "$T" glib-compile-schemas "$SCH" || log "glib-compile-schemas nie powiodło się"
 chroot "$T" gtk-update-icon-cache -f /usr/share/icons/hicolor >/dev/null 2>&1 || true
+chroot "$T" gtk-update-icon-cache -f /usr/share/icons/MoreWaita >/dev/null 2>&1 || true
 
 # GRUB w języku konta: nazwa wpisu „Computer settings” (i18n/grub, motyw Shrimp: lang/<znacznik>.cfg).
 # Wpis firmware GRUB-a w docelowym systemie pochodzi z pakietu (angielski), więc podmieniamy go tutaj.
