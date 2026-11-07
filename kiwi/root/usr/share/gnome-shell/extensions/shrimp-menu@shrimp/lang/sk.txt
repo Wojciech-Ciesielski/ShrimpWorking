@@ -1,0 +1,14 @@
+1	O tomto počítači
+2	Nastavenia
+3	Softvér
+4	Aktualizácie
+5	Monitor systému
+6	Disky
+7	Terminál
+8	Rozšírenia
+9	Uspať
+10	Reštartovať…
+11	Vypnúť…
+12	Uzamknúť obrazovku
+13	Odhlásiť sa…
+14	Ponuka Shrimp
