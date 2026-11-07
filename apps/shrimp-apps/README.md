@@ -1,6 +1,6 @@
 # Shrimp Apps
 
-Sklep z aplikacjami Shrimp: tylko Flathub (i w przyszłości aplikacje internetowe). GTK4 + libadwaita + Rust, backend libflatpak. Projekt: `specs/gnome-apps.md` i `mockups/shrimp-apps.html` z `shrimp-handoff.zip`.
+Sklep z aplikacjami Shrimp: Flathub i aplikacje internetowe. GTK4 + libadwaita + Rust, backend libflatpak. Projekt: `specs/gnome-apps.md` i `mockups/shrimp-apps.html` z `shrimp-handoff.zip`.
 
 ## Co działa
 
@@ -14,11 +14,11 @@ Sklep z aplikacjami Shrimp: tylko Flathub (i w przyszłości aplikacje interneto
 - **Otwórz** uruchamia aplikację przez libflatpak.
 - Linki `appstream://ID` otwierają stronę aplikacji (plik `.desktop` obsługuje `x-scheme-handler/appstream`).
 - Jasny i ciemny motyw według systemu, akcent z ustawień GNOME, wąskie okno zwija pasek boczny.
+- **Aplikacje internetowe**: strona z biblioteki `apps/web-apps` (`shrimp_webapps::page()`): katalog popularnych aplikacji i tworzenie własnych.
 - Słowo „flatpak” nie pojawia się w interfejsie.
 
 ## Czego brakuje
 
-- **Aplikacje internetowe**: strona jest na razie pusta („Wkrótce…”). Katalog 150 aplikacji i tworzenie przez portal `DynamicLauncher` robi osobny wątek w `apps/web-apps/`; potem trzeba go podpiąć w `window.rs` (`web_page`).
 - **Na nośniku ISO**: program nie jest jeszcze budowany do obrazu. Trzeba go zbudować w chroocie Leap jak Setup (`tools/build-setup.sh`, z `pkgconfig(gtk4)`, `pkgconfig(libadwaita-1)`, `pkgconfig(flatpak)`) i zainstalować `install.sh` do `kiwi/root`. Menu Shrimp już woła najpierw `org.shrimp.Apps.desktop`, potem GNOME Software.
 - **Ikona programu**: na razie `system-software-install` z motywu; własnej ikony w paczce nie ma.
 - **Tłumaczenia**: interfejs tylko po polsku (format `i18n/` do podpięcia).

@@ -714,12 +714,9 @@ impl Shell {
     }
 
     fn web_page(self: &Rc<Self>) -> adw::NavigationPage {
-        let st = adw::StatusPage::builder()
-            .icon_name(widgets::pick_icon(widgets::ICON_WEB))
-            .title("Aplikacje internetowe")
-            .description("Wkrótce dowolną stronę zainstalujesz tu jak aplikację.")
-            .build();
-        self.root_page("Aplikacje internetowe", "web", &st, false)
+        // Katalog i tworzenie aplikacji internetowych: skrzynka apps/web-apps.
+        let content = shrimp_webapps::page();
+        self.root_page("Aplikacje internetowe", "web", &content, true)
     }
 
     fn installed_page(self: &Rc<Self>) -> adw::NavigationPage {
