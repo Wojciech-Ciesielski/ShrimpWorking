@@ -1,6 +1,7 @@
 // Shrimp Install: ekrany z makiety (mockups/shrimp-install.html) sterowane przez Backend.
 import type { I18n } from "../../../i18n/core";
 import type { Backend, Device, Failure, Folder, FolderKey, Info, Picked, Progress } from "./backend/types";
+import { helpUrl } from "../../../site/help";
 import { deviceLabel, dur, fmtGB, fmtSize, hostMessage, phaseFrac, phaseText, remaining, space } from "./logic";
 
 const $ = <T extends HTMLElement = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector(s) as T;
@@ -50,6 +51,7 @@ export class App {
     this.folders = this.info.folders.map((f) => ({ ...f, on: false }));
     this.defaults();
     $("#bitlocker").hidden = !this.info.bitlocker;
+    this.initHelp();
     this.be.onDevices((d) => { this.devices = d; this.pickDevice(); this.drawCb(); });
     this.be.onFolders((f) => {
       this.folders = f.map((x) => ({ ...x, on: this.folders.find((o) => o.key === x.key)?.on ?? false }));
@@ -224,6 +226,20 @@ export class App {
     );
   }
 
+  // ---------- strony pomocy ----------
+  /** Ikony z data-help otwierają stronę pomocy, gdy jest adres (site/help.json albo manifest); inaczej zostaje sama podpowiedź. */
+  private initHelp() {
+    $$<HTMLElement>("[data-help]").forEach((el) => {
+      const url = helpUrl(el.dataset.help!, this.L.lang, "install", this.info.helpUrl);
+      el.classList.toggle("help", !!url);
+      if (url) el.dataset.url = url; else delete el.dataset.url;
+    });
+  }
+  private openHelp(el: HTMLElement | null) {
+    const url = el?.dataset.url;
+    if (url) this.be.openUrl(url);
+  }
+
   // ---------- dialog ----------
   private openDlg() { $("#scrim").hidden = false; $("#dlgNo").focus(); }
   private closeDlg() { $("#scrim").hidden = true; $("#cancelBtn")?.focus(); this.closeAfterCancel = false; }
@@ -260,6 +276,10 @@ export class App {
     document.addEventListener("click", (e) => {
       const g = (e.target as Element).closest<HTMLButtonElement>("[data-go]");
       if (g && !g.disabled) { e.preventDefault(); this.go(g.dataset.go as Route); }
+    });
+    document.addEventListener("click", (e) => this.openHelp((e.target as Element).closest<HTMLElement>("[data-help].help")));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && (e.target as Element).matches?.("[data-help].help")) this.openHelp(e.target as HTMLElement);
     });
     // pasek tytułu: przeciąganie i przyciski okna
     $(".titlebar").addEventListener("mousedown", (e) => { if (e.button === 0 && !(e.target as Element).closest(".caps")) this.be.drag(); });

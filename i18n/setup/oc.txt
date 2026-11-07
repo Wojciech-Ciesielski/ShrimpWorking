@@ -1,0 +1,67 @@
+1	Precedent
+6	Seguent
+7	Passar
+8	Anullar
+9	Acabat
+10	Avançat
+11	Automatic
+12	Cap
+13	Preparem Shrimp sus vòstre ordenador.
+14	Començam
+15	Causissètz una lenga
+16	Ont sètz ?
+18	Causissètz una disposicion de clavièr
+22	Disc
+24	Chifratge del disc
+25	Desactivat
+26	Activat
+27	Senhal del disc
+29	Ont installar Shrimp ?
+30	Al costat de Windows
+31	A la plaça de Windows
+38	Crear un compte
+40	Nom complet
+41	Nom d'utilizaire
+42	Senhal
+43	Confirmar lo senhal
+44	Prèst per installar
+46	Lenga
+47	Region
+48	Clavièr
+49	Disc
+50	Installacion
+56	Installar
+57	Installacion de Shrimp
+58	Installacion
+63	Un moment
+64	Installacion acabada
+65	Reaviatz l'ordenador per acabar.
+66	Reaviar
+67	Adieu, {name}
+70	Se connectar a un ret
+79	Se connectar
+85	Clar
+86	Escur
+89	Blau
+90	Verd blau
+91	Verd
+92	Jaune
+93	Irange
+94	Roge
+95	Ròse
+96	Violet
+97	Gris
+100	Installar
+101	O farai mai tard
+111	Jòcs
+122	Tot es prèst
+123	Profechatz de Shrimp.
+143	Ajuda
+145	Los senhals del disc correspondon pas
+147	Los senhals correspondon pas
+149	Tornar ensajar
+150	Pas pro d'espaci
+153	Tornar
+154	L'installacion a fracassat
+156	Quitar
+160	Cap de connexion a Internet

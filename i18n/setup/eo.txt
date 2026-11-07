@@ -1,0 +1,67 @@
+1	Reen
+6	Sekva
+7	Preterlasi
+8	Nuligi
+9	Farite
+10	Altnivela
+11	Aŭtomata
+12	Neniu
+13	Ni pretigu Shrimp en via komputilo.
+14	Ni komencu
+15	Elektu lingvon
+16	Kie vi estas?
+18	Elektu klavararanĝon
+22	Disko
+24	Ĉifrado de disko
+25	Malŝaltita
+26	Ŝaltita
+27	Pasvorto de disko
+29	Kie instali Shrimp?
+30	Apud Windows
+31	Anstataŭ Windows
+38	Kreu konton
+40	Plena nomo
+41	Uzantnomo
+42	Pasvorto
+43	Konfirmu pasvorton
+44	Preta por instalo
+46	Lingvo
+47	Regiono
+48	Klavaro
+49	Disko
+50	Instalado
+56	Instali
+57	Instalado de Shrimp
+58	Instalado
+63	Momenton
+64	Instalado finita
+65	Restartigu la komputilon por fini.
+66	Restartigi
+67	Saluton, {name}
+70	Konektiĝu al reto
+79	Konekti
+85	Hela
+86	Malhela
+89	Blua
+90	Verdblua
+91	Verda
+92	Flava
+93	Oranĝa
+94	Ruĝa
+95	Rozkolora
+96	Purpura
+97	Griza
+100	Instali
+101	Mi faros tion poste
+111	Ludoj
+122	Ĉio preta
+123	Ĝuu Shrimp.
+143	Helpo
+145	La diskaj pasvortoj ne kongruas
+147	La pasvortoj ne kongruas
+149	Provu denove
+150	Ne sufiĉas spaco
+153	Reen
+154	Instalado malsukcesis
+156	Eliri
+160	Neniu interreta konekto

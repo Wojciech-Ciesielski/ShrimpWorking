@@ -422,6 +422,24 @@ static void cancel(int id)
 	}
 }
 
+/* Strona pomocy w przeglądarce: tylko https:// i zwykłe znaki adresu, żeby wiadomość z interfejsu nie mogła
+ * uruchomić niczego innego (ShellExecute otwiera też pliki i programy). */
+static void open_help_url(const char* url)
+{
+	size_t i, n = strlen(url);
+	if (n < 12 || n > 500 || strncmp(url, "https://", 8) != 0)
+		return;
+	for (i = 0; i < n; i++) {
+		char c = url[i];
+		if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || strchr(".-_~:/?&=%", c) != NULL))
+			return;
+	}
+	wchar_t* w = utf8_to_wchar(url);
+	if (w != NULL)
+		ShellExecuteW(NULL, L"open", w, NULL, NULL, SW_SHOWNORMAL);
+	free(w);
+}
+
 LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg) {
@@ -481,6 +499,9 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 				else
 					reply_error(id, "rebootFail");
 			}
+		} else if (strcmp(call, "open") == 0) {
+			if (nf > 2)
+				open_help_url(f[2]);
 		} else if (strcmp(call, "later") == 0 || strcmp(call, "close") == 0) {
 			PostMessage(hShrimpWnd, WM_CLOSE, 0, 0);
 		} else if (strcmp(call, "minimize") == 0) {

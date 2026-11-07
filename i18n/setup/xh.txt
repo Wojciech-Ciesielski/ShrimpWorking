@@ -1,0 +1,84 @@
+1	Emva
+6	Okulandelayo
+7	Tsiba
+8	Rhoxisa
+9	Kugqityiwe
+10	Okuphambili
+11	Ngokuzenzekelayo
+12	Akukho
+13	Masilungiselele i-Shrimp kwikhompyuter yakho.
+14	Masiqale
+15	Khetha ulwimi
+16	Ukuphi?
+18	Khetha uyilo lwebhodi yezitshixo
+22	Idrayivu
+24	Ukufihlwa kwediski
+25	Kucinyiwe
+26	Kuvuliwe
+27	Igama lokugqitha ledisk
+29	I-Shrimp mayifakwe phi?
+30	Ecaleni kwe-Windows
+31	Endaweni ye-Windows
+38	Yenza iakhawunti
+40	Igama elipheleleyo
+41	Igama lomsebenzisi
+42	Igama lokugqitha
+43	Qinisekisa igama lokugqitha
+44	Ukulungele ukufakwa
+45	Akukho nto iza kutshintsha de ucofe “Faka”.
+46	Ulwimi
+47	Ummandla
+48	Ibhodi yezitshixo
+49	Idrayivu
+50	Ukufaka
+56	Faka
+57	Ifaka i-Shrimp
+58	Iyafaka
+62	Malunga nemizuzu emi-{min} eseleyo
+63	Linda kancinci
+64	Ukufaka kugqityiwe
+65	Qala kwakhona ikhompyuter ukugqiba.
+66	Qala kwakhona
+67	Molo, {name}
+70	Qhagamshela kwinethiwekhi
+71	Igama lokugqitha lenethiwekhi {ssid}
+79	Qhagamshela
+84	Khetha imbonakalo
+85	Ekhanyayo
+86	Emnyama
+88	Khetha umbala
+89	Luhlaza okwesibhakabhaka
+90	Luhlaza okuntsundu
+91	Luhlaza
+92	Mthubi
+93	Orenji
+94	Bomvu
+95	Pinki
+96	Mfusa
+97	Ngwevu
+100	Faka
+101	Ndiza kukwenza kamva
+108	Uyisebenzisa njani ikhompyuter yakho?
+110	Umsebenzi nokufunda
+111	Imidlalo
+112	Ubuchule
+113	Ukwenza iinkqubo
+114	Imultimidia
+122	Yonke into ilungile
+123	Yonwabela i-Shrimp.
+143	Uncedo
+145	Amagama okugqitha ediski awahambelani
+147	Amagama okugqitha awahambelani
+149	Zama kwakhona
+150	Akukho ndawo eyaneleyo
+153	Buya umva
+154	Ukufaka akuphumelelanga
+156	Phuma
+160	Akukho kuqhagamshelwa kwi-intanethi
+163	I-imeyile
+164	Imidlalo
+166	Ukuzoba
+167	Ukuhlela ividiyo
+168	Imizobo
+171	Iifilimu nomculo
+172	Umculo

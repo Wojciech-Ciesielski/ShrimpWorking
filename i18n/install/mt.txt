@@ -1,0 +1,44 @@
+1	Naqqas
+2	Agħlaq
+3	Installa Shrimp
+4	Sistema kwieta u mogħtija ordni li taħdem mill-ewwel bidu.
+5	Download awtomatiku
+6	L-installatur jniżżel dak kollu li jeħtieġ.
+7	Il-fajls tiegħek jibqgħu siguri
+8	Il-fajls tiegħek se jinżammu.
+9	Programmi familjari
+12	Nibdew
+14	Agħżel drive
+16	Drive
+19	Lura
+20	Li jmiss
+23	Ma nstab l-ebda drive
+24	Qabbad drive u se tidher hawn.
+25	Żgħir wisq
+27	USB stick
+28	Karta SD
+29	Drive estern
+30	Xiex għandu jinżamm sigur?
+34	(Rakkomandat)
+36	Se nagħżel jien
+39	Dokumenti
+40	Stampi
+41	Desktop
+42	Mużika
+43	Vidjows
+44	Downloads
+59	Qed nippreparaw Shrimp
+62	Il-preparazzjoni tlestiet
+63	Kollox lest.
+64	Qed jitniżżel Shrimp
+65	Qed nikteb fuq id-drive
+66	Qed nikkupjaw il-fajls
+67	Taqlax id-drive sakemm jitlesta.
+68	Ikkanċella
+69	Erġa’ pprova
+82	L-ebda konnessjoni mal-internet
+99	Xi ħaġa marret ħażin
+101	Kollox lest
+102	Erġa’ ibda l-kompjuter biex tispiċċa.
+110	Aktar tard
+111	Erġa’ ibda

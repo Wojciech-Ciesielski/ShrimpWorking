@@ -1,0 +1,67 @@
+1	Vegere
+6	Pêş
+7	Derbaz bike
+8	Betal bike
+9	Qediya
+10	Pêşketî
+11	Bixweber
+12	Ne yek
+13	Werin em Shrimp li ser komputera te amade bikin.
+14	Dest pê bikin
+15	Zimanek hilbijêre
+16	Tu li ku yî?
+18	Plana klavyeyê hilbijêre
+22	Ajovan
+24	Şîfrekirina dîskê
+25	Girtî
+26	Vekirî
+27	Şîfreya dîskê
+29	Shrimp li ku were sazkirin?
+30	Li kêleka Windowsê
+31	Li şûna Windowsê
+38	Hesabek biafirîne
+40	Navê temam
+41	Navê bikarhêner
+42	Şîfre
+43	Şîfreyê bipejirîne
+44	Ji bo sazkirinê amade ye
+46	Ziman
+47	Herêm
+48	Klavye
+49	Ajovan
+50	Sazkirin
+56	Saz bike
+57	Shrimp tê sazkirin
+58	Tê sazkirin
+63	Tenê gavek
+64	Sazkirin qediya
+65	Ji bo qedandinê komputerê ji nû ve bide destpêkirin.
+66	Ji nû ve bide destpêkirin
+67	Silav, {name}
+70	Bi torê ve girêbide
+79	Girêbide
+85	Ronî
+86	Tarî
+89	Şîn
+90	Şîn-kesk
+91	Kesk
+92	Zer
+93	Porteqalî
+94	Sor
+95	Pembe
+96	Mor
+97	Gewr
+100	Saz bike
+101	Ez ê paşê bikim
+111	Lîstik
+122	Her tişt amade ye
+123	Ji Shrimpê kêf bike.
+143	Alîkarî
+145	Şîfreyên dîskê hevûdu nagirin
+147	Şîfre hevûdu nagirin
+149	Dîsa biceribîne
+150	Cîh têr nake
+153	Vegere
+154	Sazkirin têk çû
+156	Derkeve
+160	Girêdana înternetê tune ye

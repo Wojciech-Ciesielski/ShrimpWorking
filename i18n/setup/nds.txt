@@ -1,0 +1,67 @@
+1	Trüch
+6	Wieder
+7	Överspringen
+8	Afbreken
+9	Fardig
+10	Verwiedert
+11	Automatisch
+12	Keen
+13	Laat uns Shrimp op dien Reekner kloormaken.
+14	Laat uns anfangen
+15	Söök en Spraak ut
+16	Wo büst du?
+18	Söök en Tastatuurinrichten ut
+22	Laufwark
+24	Schiefverslötelung
+25	Ut
+26	An
+27	Schiefpaswoord
+29	Wo schall Shrimp installeert warrn?
+30	Blangen Windows
+31	In Städ vun Windows
+38	Maak en Konto
+40	Vullen Naam
+41	Brukernaam
+42	Paswoord
+43	Paswoord bestätigen
+44	Klaar to’n Installeren
+46	Spraak
+47	Regioon
+48	Tastatuur
+49	Laufwark
+50	Installatschoon
+56	Installeren
+57	Shrimp warrt installeert
+58	Warrt installeert
+63	Een Ogenblick
+64	Installatschoon afslaten
+65	Start den Reekner nieg, um klaar to warrn.
+66	Nieg starten
+67	Moin, {name}
+70	Mit en Netz verbinnen
+79	Verbinnen
+85	Hell
+86	Düüster
+89	Blau
+90	Blaugröön
+91	Gröön
+92	Geel
+93	Orange
+94	Root
+95	Rosa
+96	Lila
+97	Grau
+100	Installeren
+101	Ik do dat later
+111	Speelen
+122	Allens klaar
+123	Veel Spaß mit Shrimp.
+143	Hülp
+145	De Schiefpaswöör passen nich tosamen
+147	De Paswöör passen nich tosamen
+149	Nochmal versöken
+150	Nich nog Platz
+153	Trüch gahn
+154	Installatschoon fehlslaan
+156	Beennen
+160	Keen Internetverbinnen

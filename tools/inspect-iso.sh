@@ -21,12 +21,15 @@ echo "=== schema defaults"
 S="$r/usr/share/glib-2.0/schemas"
 for k in "org.gnome.shell enabled-extensions" "org.gnome.shell.extensions.just-perfection activities-button" \
          "org.gnome.desktop.background picture-uri" "org.gnome.desktop.interface color-scheme" \
-         "org.gnome.shell.extensions.dash-to-dock dock-position"; do
+         "org.gnome.shell.extensions.dash-to-dock dock-position" \
+         "org.gnome.shell.extensions.blur-my-shell.overview blur" "org.gnome.shell.extensions.blur-my-shell.panel blur"; do
   echo "$k = $(GSETTINGS_SCHEMA_DIR=$S gsettings get $k 2>&1)"
 done
 for d in "$r"/usr/share/gnome-shell/extensions/*/schemas; do
   [ -f "$d/gschemas.compiled" ] || continue
   echo "local $(basename "$(dirname "$d")"): just-perfection activities-button = $(GSETTINGS_SCHEMA_DIR=$d gsettings get org.gnome.shell.extensions.just-perfection activities-button 2>&1 | head -1)"
+  case "$d" in *blur-my-shell*)
+    echo "local blur-my-shell: overview blur = $(GSETTINGS_SCHEMA_DIR=$d gsettings get org.gnome.shell.extensions.blur-my-shell.overview blur 2>&1 | head -1), panel blur = $(GSETTINGS_SCHEMA_DIR=$d gsettings get org.gnome.shell.extensions.blur-my-shell.panel blur 2>&1 | head -1)";; esac
 done
 echo "=== libraries"; ls -l "$r"/usr/lib64/libz.so* "$r"/lib64/libz.so* 2>&1
 ls "$r"/usr/lib64/girepository-1.0/ | grep -i -E 'gmenu|dbusmenu' || echo "no GMenu/Dbusmenu typelib"

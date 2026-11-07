@@ -1,0 +1,85 @@
+1	Rudi
+6	Endelea
+7	Ruka
+8	Ghairi
+9	Imekamilika
+10	Mipangilio ya hali ya juu
+11	Kiotomatiki
+12	Hakuna
+13	Tuiandae Shrimp kwenye kompyuta yako.
+14	Tuanze
+15	Chagua lugha
+16	Uko wapi?
+18	Chagua mpangilio wa kibodi
+22	Diski
+24	Usimbaji fiche wa diski
+25	Imezimwa
+26	Imewashwa
+27	Nenosiri la diski
+29	Shrimp isakinishwe wapi?
+30	Pamoja na Windows
+31	Badala ya Windows
+38	Fungua akaunti
+40	Jina kamili
+41	Jina la mtumiaji
+42	Nenosiri
+43	Thibitisha nenosiri
+44	Tayari kusakinisha
+45	Hakuna kitakachobadilika hadi ubofye “Sakinisha”.
+46	Lugha
+47	Eneo
+48	Kibodi
+49	Diski
+50	Usakinishaji
+56	Sakinisha
+57	Inasakinisha Shrimp
+58	Inasakinisha
+62	Takriban dakika {min} zimebaki
+63	Subiri kidogo
+64	Usakinishaji umekamilika
+65	Washa upya kompyuta ili kumaliza.
+66	Washa upya
+67	Habari, {name}
+70	Unganisha kwenye mtandao
+71	Nenosiri la mtandao {ssid}
+79	Unganisha
+84	Chagua mwonekano
+85	Mwanga
+86	Giza
+88	Chagua rangi
+89	Samawati
+90	Kijani-samawati
+91	Kijani
+92	Njano
+93	Chungwa
+94	Nyekundu
+95	Waridi
+96	Zambarau
+97	Kijivu
+100	Sakinisha
+101	Nitafanya baadaye
+108	Unatumiaje kompyuta yako?
+109	Tutasakinisha programu unazohitaji zaidi.
+110	Kazi na masomo
+111	Michezo
+112	Ubunifu
+113	Kupanga programu
+114	Multimedia
+122	Kila kitu kiko tayari
+123	Furahia Shrimp.
+143	Msaada
+145	Manenosiri ya diski hayalingani
+147	Manenosiri hayalingani
+149	Jaribu tena
+150	Nafasi haitoshi
+153	Rudi nyuma
+154	Usakinishaji umeshindwa
+156	Toka
+160	Hakuna muunganisho wa intaneti
+163	Barua pepe
+164	Michezo
+166	Kuchora
+167	Kuhariri video
+168	Picha za kompyuta
+171	Filamu na muziki
+172	Muziki
