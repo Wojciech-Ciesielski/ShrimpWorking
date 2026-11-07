@@ -27,6 +27,9 @@ while IFS=$'\t' read -r tag text; do
   done
 done < "$theme_dir/lang/timeouts.tsv"
 
+# The text theme has icon_width/height 0, but icons/ holds the Secure Boot entry images (os.png,
+# efi-<tag>.png): GRUB would scale them to 0x0 and print "zero dimension" when the menu is opened.
+# So with the text theme the entry classes get a "txt-" prefix that matches no icon file.
 # Under Secure Boot (lockdown) the signed GRUB refuses unsigned font files
 # ("prohibited by secure boot policy"), so fonts and the text theme are used only outside lockdown;
 # with lockdown (or for scripts Inter has no glyphs for, shrimp_img=1) the image-based
@@ -49,7 +52,7 @@ while IFS= read -r cfg; do
     inentry && /^}/ {
       inentry = 0; added = 1
       print "if [ \"${grub_platform}\" = \"efi\" ]; then"
-      print "    menuentry \"${shrimp_fw}\" --class efi-${shrimp_lang} --unrestricted {"
+      print "    menuentry \"${shrimp_fw}\" --class ${shrimp_ic}efi-${shrimp_lang} --unrestricted {"
       print "        fwsetup"
       print "    }"
       print "fi"
@@ -92,12 +95,14 @@ while IFS= read -r cfg; do
       print "if [ \"${lockdown}\" != \"y\" -a \"${shrimp_img}\" != \"1\" ]; then"
       printf "%s", ENVIRON["FONTLINES"]
       print "    set theme=" pre "theme-${shrimp_lang}.txt"
+      print "    set shrimp_ic=txt-"
       print "else"
       print "    set theme=" pre "theme-sb-${shrimp_lang}.txt"
       print "fi"
       next
     }
-    NR == 1 { print "set shrimp_lang=en"; print "set shrimp_fw=\"Computer settings\""; print "set shrimp_img=0" }
+    NR == 1 { print "set shrimp_lang=en"; print "set shrimp_fw=\"Computer settings\""; print "set shrimp_img=0"; print "set shrimp_ic=" }
+    /^menuentry "Shrimp" --class os / { sub(/--class os /, "--class ${shrimp_ic}os ") }
     { print }
   ' "$cfg.new" > "$cfg.new2" && mv "$cfg.new2" "$cfg.new"
   mv "$cfg.new" "$cfg"
