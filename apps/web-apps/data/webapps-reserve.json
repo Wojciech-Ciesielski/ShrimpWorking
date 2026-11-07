@@ -25,7 +25,7 @@
   {"id": "ticktick", "name": "TickTick", "url": "https://ticktick.com/webapp", "category": "biuro", "icon": "icons/ticktick.png"},
   {"id": "airtable", "name": "Airtable", "url": "https://airtable.com/", "category": "biuro", "icon": "icons/airtable.png"},
   {"id": "coda", "name": "Coda", "url": "https://coda.io/", "category": "biuro", "icon": "icons/coda.png"},
-  {"id": "calendly", "name": "Calendly", "url": "https://calendly.com/app", "category": "biuro", "icon": "icons/calendly.png"},
+  {"id": "calendly", "name": "Calendly", "url": "https://calendly.com/", "category": "biuro", "icon": "icons/calendly.png"},
   {"id": "khan-academy", "name": "Khan Academy", "url": "https://www.khanacademy.org/", "category": "biuro", "icon": "icons/khan-academy.png"},
   {"id": "quizlet", "name": "Quizlet", "url": "https://quizlet.com/", "category": "biuro"},
   {"id": "coursera", "name": "Coursera", "url": "https://www.coursera.org/", "category": "biuro", "icon": "icons/coursera.png"},
