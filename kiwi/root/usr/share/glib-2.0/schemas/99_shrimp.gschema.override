@@ -15,6 +15,8 @@ secondary-color='#000000'
 
 [org.gnome.desktop.interface]
 accent-color='blue'
+# main icon theme (installed by kiwi/config.sh, inherits Adwaita)
+icon-theme='MoreWaita'
 clock-format='24h'
 # top bar: weekday next to the date, battery level in percent
 clock-show-weekday=true
