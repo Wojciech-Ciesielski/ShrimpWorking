@@ -1,5 +1,5 @@
 {
-  "//": "Strony pomocy na stronie Shrimp: ikony ⓘ / ? w Shrimp Install i Setup otwierają base + '/' + ścieżka tematu + '?lang=<język>&from=<program>'. Dopóki 'base' jest puste (albo nie zaczyna się od https://), ikony działają jak dotąd: tylko podpowiedź. Adres strony wpisz tu jednym wpisem, nic więcej nie trzeba zmieniać. Ścieżki tematów to adresy podstron do przygotowania.",
+  "//": "Strony pomocy na stronie Shrimp: ikony ⓘ / ? w Shrimp Install, Setup i Panko otwierają base + '/' + ścieżka tematu + '?lang=<język>&from=<program>'. Dopóki 'base' jest puste (albo nie zaczyna się od https://), ikony działają jak dotąd: tylko podpowiedź. Adres strony wpisz tu jednym wpisem, nic więcej nie trzeba zmieniać. Ścieżki tematów to adresy podstron do przygotowania.",
   "base": "",
   "topics": {
     "iso": "download-iso",
@@ -9,6 +9,7 @@
     "offline": "no-internet",
     "boot": "boot-from-usb",
     "nvidia": "nvidia-driver",
-    "apps": "shrimp-apps"
+    "apps": "shrimp-apps",
+    "panko": "panko"
   }
 }
