@@ -2,6 +2,8 @@
 # KIWI editbootconfig hook (runs on the build host, cwd = image root).
 # $1 = "iso:<media dir>". Shapes the live ISO GRUB menu to the design:
 #   Shrimp / Computer settings (UEFI firmware, translated), Shrimp theme fonts, 1920x1080.
+# A normal start shows no menu and no text: hidden 1 s timeout (Esc, F4 or F8 open the menu;
+# under BIOS holding Shift does too), no "Loading kernel/initrd..." or "press 't'" messages.
 # Menu language: boot/grub2/shrimp-lang.cfg on the media (written by Shrimp Install from the Windows
 # language) sets shrimp_lang; themes/shrimp/lang/<tag>.cfg (tools/render-grub-i18n.js) has the entry
 # name and whether it must be an image; no file or unknown language means English.
@@ -53,6 +55,27 @@ while IFS= read -r cfg; do
       print "fi"
     }
   ' "$cfg" > "$cfg.new"
+  # silent start: no echo lines (an empty if-body is a syntax error, so they become "true"),
+  # hidden menu; Shift via keystatus only under BIOS (EFI firmware often has no key state and
+  # a missing module would print an error on screen)
+  awk '
+    /^[ \t]*echo[ \t]/ { match($0, /^[ \t]*/); print substr($0, 1, RLENGTH) "true"; next }
+    /^[ \t]*set timeout_style=/ { next }
+    /^[ \t]*set timeout=/ {
+      print "set timeout=1"
+      print "set timeout_style=hidden"
+      print "if [ \"${grub_platform}\" = \"pc\" ]; then"
+      print "    insmod keystatus"
+      print "    if keystatus --shift; then"
+      print "        set timeout=-1"
+      print "        set timeout_style=menu"
+      print "    fi"
+      print "fi"
+      next
+    }
+    { print }
+  ' "$cfg.new" > "$cfg.new2" && mv "$cfg.new2" "$cfg.new"
+  grep -q '^set timeout_style=hidden' "$cfg.new" || { echo "edit_boot_config: no timeout in $cfg" >&2; exit 1; }
   # language, theme fonts, and the 1920x1080 mode the theme is drawn for
   sed -i -e "s|^\(\s*\)set gfxmode=.*|\1set gfxmode=1920x1080,auto|" "$cfg.new"
   FONTLINES="$fontlines" awk '
