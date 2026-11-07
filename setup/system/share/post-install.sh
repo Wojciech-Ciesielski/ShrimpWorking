@@ -55,6 +55,28 @@ if [ -f "$T/etc/grub.d/10_linux" ]; then
   GRUB_REGEN=1
 fi
 
+# Pulpit Shrimp jak na nośniku: rozszerzenia (Menu Shrimp, Programy, dok…), ustawienia domyślne
+# (99_shrimp.gschema.override), tapeta i logo. Leap nie ma tych rozszerzeń w pakietach.
+log "kopiuję wygląd pulpitu Shrimp"
+EXT=/usr/share/gnome-shell/extensions
+SCH=/usr/share/glib-2.0/schemas
+for d in "$EXT"/*/; do
+  uuid=$(basename "$d")
+  [ -e "$T$EXT/$uuid" ] || cp -a "$d" "$T$EXT/$uuid"
+done
+for f in "$SCH"/org.gnome.shell.extensions.*.gschema.xml; do
+  [ -f "$f" ] && { [ -e "$T$f" ] || install -Dm644 "$f" "$T$f"; }
+done
+install -Dm644 "$SCH/99_shrimp.gschema.override" "$T$SCH/99_shrimp.gschema.override"
+for p in /usr/share/backgrounds/shrimp /usr/share/gnome-background-properties/shrimp.xml /usr/share/shrimp/logo \
+         /usr/share/icons/hicolor/scalable/apps/shrimp-logo.svg /usr/share/icons/hicolor/scalable/apps/shrimp-logo-dark.svg \
+         /usr/share/icons/hicolor/scalable/apps/shrimp-logo-symbolic.svg /usr/share/icons/MoreWaita; do
+  [ -e "$p" ] && { mkdir -p "$T$(dirname "$p")"; cp -a "$p" "$T$(dirname "$p")/"; }
+done
+chroot "$T" glib-compile-schemas "$SCH" || log "glib-compile-schemas nie powiodło się"
+chroot "$T" gtk-update-icon-cache -f /usr/share/icons/hicolor >/dev/null 2>&1 || true
+chroot "$T" gtk-update-icon-cache -f /usr/share/icons/MoreWaita >/dev/null 2>&1 || true
+
 # GRUB w języku konta: nazwa wpisu „Computer settings” (i18n/grub, motyw Shrimp: lang/<znacznik>.cfg).
 # Wpis firmware GRUB-a w docelowym systemie pochodzi z pakietu (angielski), więc podmieniamy go tutaj.
 grub_tag() {

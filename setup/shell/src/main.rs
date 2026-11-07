@@ -21,6 +21,8 @@ const UI_DIR: &str = "/usr/share/shrimp-setup/ui";
 /// Kopia tokenu Agamy czytelna dla użytkownika nośnika (shrimp-setup-token.service).
 const TOKEN_FILES: [&str; 2] = ["/run/shrimp-setup/token", "/run/agama/token"];
 const AGAMA_URL: &str = "http://127.0.0.1";
+/// Jak długo `--install` czeka na token Agamy (start usług po zalogowaniu sesji live).
+const TOKEN_WAIT_SECS: u32 = 180;
 
 enum Mode {
     Install,
@@ -75,10 +77,23 @@ fn main() -> glib::ExitCode {
 
     let url = match mode {
         Mode::Install => {
-            let token = TOKEN_FILES
-                .iter()
-                .find_map(|f| std::fs::read_to_string(f).ok())
-                .map(|t| t.trim().to_string());
+            // Sesja live startuje szybciej niż Agama: czekamy na token zamiast od razu kończyć
+            // (wcześniej okno po prostu się nie pokazywało).
+            let read_token = || {
+                TOKEN_FILES
+                    .iter()
+                    .find_map(|f| std::fs::read_to_string(f).ok())
+                    .map(|t| t.trim().to_string())
+                    .filter(|t| !t.is_empty())
+            };
+            let mut token = read_token();
+            for _ in 0..TOKEN_WAIT_SECS * 2 {
+                if token.is_some() {
+                    break;
+                }
+                std::thread::sleep(std::time::Duration::from_millis(500));
+                token = read_token();
+            }
             match token {
                 Some(t) => format!("{AGAMA_URL}/login?token={t}"),
                 None => {
