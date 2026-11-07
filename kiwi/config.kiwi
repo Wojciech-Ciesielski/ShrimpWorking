@@ -64,6 +64,11 @@
         <package name="plymouth-dracut"/>
         <package name="plymouth-plugin-script"/>
         <package name="plymouth-plugin-label"/>
+        <!-- sound and video: PipeWire only (LinU(x), codecs in config.sh) -->
+        <package name="pipewire"/>
+        <package name="wireplumber"/>
+        <package name="pipewire-pulseaudio"/>
+        <package name="pipewire-alsa"/>
         <!-- GNOME -->
         <namedCollection name="gnome_basic"/>
         <package name="gdm"/>
