@@ -1,0 +1,36 @@
+name: Setup ISO probe
+
+# Builds Shrimp Setup the way the ISO build does (tools/build-setup.sh in a Leap chroot)
+# and lists the Agama / WebKitGTK packages of the Leap repository, without building the ISO.
+
+on:
+  push:
+    branches: ["claude/**"]
+    paths: ["tools/build-setup.sh", "setup/install.sh", ".github/workflows/setup-iso-probe.yml"]
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Setup in a Leap 16.1 chroot
+        run: |
+          REPO=https://download.opensuse.org/distribution/leap/16.1/repo/oss/x86_64
+          curl -fsSLI "$REPO/repodata/repomd.xml" >/dev/null || REPO=https://download.opensuse.org/distribution/leap/16.1/repo/oss
+          sudo docker run --rm --privileged -v "$PWD:/work" -w /work docker.io/opensuse/tumbleweed:latest bash -euxc "
+            zypper -n --gpg-auto-import-keys ref
+            zypper -n in --no-recommends nodejs-default npm-default tar gzip findutils gawk
+            tools/build-setup.sh '$REPO' /tmp/dest > /tmp/build.log 2>&1 || { tail -n 80 /tmp/build.log; exit 1; }
+            sed -n '/shrimp-setup libraries/,/^Setup Shrimp/p' /tmp/build.log | grep -v '^+'
+            find /tmp/dest -type f | grep -v /ui/ | sort
+            BR=/var/tmp/shrimp-setup-buildroot
+            echo '=== agama packages'
+            zypper -n --root \$BR se -s 'agama*' || true
+            zypper -n --root \$BR se -s '*webkitgtk*' 'libgtk-4*' || true
+            mkdir -p /tmp/rpms
+            zypper -q -n --root \$BR --pkg-cache-dir /tmp/rpms in --download-only --no-recommends agama 'agama-*' || true
+            zypper -n --root \$BR se -s bubblewrap xdg-dbus-proxy 'webkitgtk-6*' polkit || true
+            for f in \$(find /tmp/rpms -name 'agama*.rpm'); do echo \"=== files \$f\"; rpm -qp --requires \"\$f\" | grep -v '^rpmlib' | head -30; rpm -qlp \"\$f\" | grep -E 'bin/|\\.service|\\.socket|products.d|share/agama/web|token' | head -40; done
+          "
