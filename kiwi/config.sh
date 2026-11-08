@@ -274,6 +274,13 @@ flatpak remote-add --system --if-not-exists flathub https://dl.flathub.org/repo/
 #--------------------------------------
 systemctl set-default graphical.target
 systemctl enable NetworkManager.service
+
+# Shrimp Setup on the live medium: Agama (installer back end) serves the Setup UI,
+# shrimp-setup-token.service hands its token to the live user, the window starts from
+# /etc/xdg/autostart/shrimp-setup-install.desktop.
+[ -x /usr/bin/shrimp-setup ] || die "shrimp-setup missing (tools/build-setup.sh did not run)"
+[ -f /etc/xdg/autostart/shrimp-setup-install.desktop ] || die "Setup autostart missing"
+systemctl enable agama.service agama-web-server.service shrimp-setup-token.service
 if [ -f /etc/sysconfig/displaymanager ]; then
   sed -i -e 's/^DISPLAYMANAGER=.*/DISPLAYMANAGER="gdm"/' \
          -e 's/^DISPLAYMANAGER_AUTOLOGIN=.*/DISPLAYMANAGER_AUTOLOGIN="shrimp"/' /etc/sysconfig/displaymanager
