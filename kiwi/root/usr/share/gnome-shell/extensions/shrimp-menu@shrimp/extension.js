@@ -161,22 +161,13 @@ class ShrimpMenuButton extends PanelMenu.Button {
         this._appItem(shell('Settings'), ['org.gnome.Settings.desktop', 'gnome-control-center.desktop']);
         this._separator();
 
-<<<<<<< HEAD
-        // Shrimp's own apps first; GNOME Software only until Shrimp Apps is in the image.
-        // Updates = Cocktail (the whole system: packages, drivers, Flatpaks), never GNOME Software,
-        // which on the read-only system would update Flatpaks only.
-        this._appItem(t['menu.software'], ['org.shrimp.Apps.desktop', 'org.gnome.Software.desktop']);
-        this._appItem(t['menu.updates'], ['org.shrimp.Cocktail.desktop']);
+        // Shrimp Apps is the store (GNOME Software is not in the image). Updates = Cocktail (the whole
+        // system: packages, drivers, Flatpaks); until Cocktail is in the image, the "Installed"
+        // page of Shrimp Apps, which updates the Flatpaks.
+        const store = this._appItem(t['menu.software'], ['org.shrimp.Apps.desktop', 'org.gnome.Software.desktop']);
+        if (!this._appItem(t['menu.updates'], ['org.shrimp.Cocktail.desktop']) && store)
+            this._item(t['menu.updates'], () => store.activate());
         this._appItem(t['menu.restore'], ['org.shrimp.Panko.desktop']);
-=======
-        const software = this._appItem('menu.software', ['org.shrimp.Apps.desktop', 'org.gnome.Software.desktop']);
-        if (software)
-            this._item('menu.updates', () => spawn(['gnome-software', '--mode=updates']));
-        this._appItem('menu.monitor', ['org.gnome.SystemMonitor.desktop', 'gnome-system-monitor.desktop']);
-        this._appItem('menu.disks', ['org.gnome.DiskUtility.desktop', 'gnome-disks.desktop']);
-        this._appItem('menu.terminal', ['org.gnome.Console.desktop', 'org.gnome.Terminal.desktop']);
-        this._appItem('menu.extensions', ['org.gnome.Extensions.desktop', 'com.mattjakeman.ExtensionManager.desktop']);
->>>>>>> origin/main
         this._separator();
 
         const tools = [

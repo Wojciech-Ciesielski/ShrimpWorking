@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
- "checked_at": "2026-11-08 14:33 UTC",
-=======
  "checked_at": "2026-11-08 12:12 UTC",
->>>>>>> origin/main
  "apps": [
   {
    "id": "whatsapp",
@@ -142,13 +138,8 @@
    "final_url": "https://www.linkedin.com/",
    "error": null,
    "manifest": false,
-<<<<<<< HEAD
-   "icon_source": "https://static.licdn.com/aero-v1/sc/h/al2o9zrvru7aqj8e1x2rzsrca",
-   "icon_kind": "icon",
-=======
    "icon_source": "https://www.google.com/s2/favicons?domain=www.linkedin.com&sz=256",
    "icon_kind": "s2",
->>>>>>> origin/main
    "icon_px": 64,
    "icon_style": "kafelek",
    "result": "ok"
@@ -261,11 +252,7 @@
    "id": "gmail",
    "url": "https://mail.google.com/",
    "status": 200,
-<<<<<<< HEAD
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://mail.google.com/mail/u/0/&emr=1&followup=https://mail.google.com/mail/u/0/&osid=1&passive=1209600&service=mail&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1009884480:1794148424564533",
-=======
    "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://mail.google.com/mail/u/0/&emr=1&followup=https://mail.google.com/mail/u/0/&osid=1&passive=1209600&service=mail&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1009884480:1794139853888114",
->>>>>>> origin/main
    "error": null,
    "manifest": false,
    "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/gmail_2020q4_512dp.png",
@@ -424,13 +411,8 @@
    "final_url": "https://www.amazon.pl/",
    "error": null,
    "manifest": false,
-<<<<<<< HEAD
-   "icon_source": "https://www.amazon.pl/favicon.ico",
-   "icon_kind": "icon",
-=======
    "icon_source": "https://www.google.com/s2/favicons?domain=www.amazon.pl&sz=256",
    "icon_kind": "s2",
->>>>>>> origin/main
    "icon_px": 48,
    "icon_style": "kafelek",
    "result": "ok"
@@ -439,11 +421,7 @@
    "id": "aliexpress",
    "url": "https://www.aliexpress.com/",
    "status": 302,
-<<<<<<< HEAD
-   "final_url": "https://login.aliexpress.us/sync_cookie_write.htm?acs_random_token=7edb3fefb1da46878522073d9812753a&xman_goto=https%3A%2F%2Fwww.aliexpress.us%2F%3FgatewayAdapt%3Dglo2usa%26_randl_shipto%3DUS&_ga=GA1.1.625655081150101.1794148427157",
-=======
    "final_url": "https://login.aliexpress.us/sync_cookie_write.htm?acs_random_token=9a3d0847dd2b495c954dbc91cc71f638&xman_goto=https%3A%2F%2Fwww.aliexpress.us%2F%3FgatewayAdapt%3Dglo2usa%26_randl_shipto%3DUS&_ga=GA1.1.457472469237019.1794139856220",
->>>>>>> origin/main
    "error": null,
    "manifest": false,
    "icon_source": "https://www.google.com/s2/favicons?domain=login.aliexpress.us&sz=256",
@@ -469,11 +447,7 @@
    "id": "google-docs",
    "url": "https://docs.google.com/document/",
    "status": 200,
-<<<<<<< HEAD
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/document/&followup=https://docs.google.com/document/&ltmpl=docs&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1076107672:1794148424784332",
-=======
    "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/document/&followup=https://docs.google.com/document/&ltmpl=docs&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1009884480:1794139854435872",
->>>>>>> origin/main
    "error": null,
    "manifest": false,
    "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/docs_2020q4_512dp.png",
@@ -486,11 +460,7 @@
    "id": "google-sheets",
    "url": "https://docs.google.com/spreadsheets/",
    "status": 200,
-<<<<<<< HEAD
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/spreadsheets/&followup=https://docs.google.com/spreadsheets/&ltmpl=sheets&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-617923709:1794148424855544",
-=======
    "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/spreadsheets/&followup=https://docs.google.com/spreadsheets/&ltmpl=sheets&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1709615217:1794139854454266",
->>>>>>> origin/main
    "error": null,
    "manifest": false,
    "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/sheets_2020q4_512dp.png",
@@ -503,11 +473,7 @@
    "id": "google-slides",
    "url": "https://docs.google.com/presentation/",
    "status": 200,
-<<<<<<< HEAD
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/presentation/&followup=https://docs.google.com/presentation/&ltmpl=slides&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1709615217:1794148424805095",
-=======
    "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/presentation/&followup=https://docs.google.com/presentation/&ltmpl=slides&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1009884480:1794139854400215",
->>>>>>> origin/main
    "error": null,
    "manifest": false,
    "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/slides_2020q4_512dp.png",
@@ -520,11 +486,7 @@
    "id": "google-forms",
    "url": "https://docs.google.com/forms/",
    "status": 200,
-<<<<<<< HEAD
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/forms/&followup=https://docs.google.com/forms/&ltmpl=forms&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-617923709:1794148424820663",
-=======
    "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/forms/&followup=https://docs.google.com/forms/&ltmpl=forms&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1076107672:1794139854544013",
->>>>>>> origin/main
    "error": null,
    "manifest": false,
    "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/forms_2020q4_512dp.png",
@@ -537,11 +499,7 @@
    "id": "google-drive",
    "url": "https://drive.google.com/",
    "status": 200,
-<<<<<<< HEAD
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://drive.google.com/&emr=1&followup=https://drive.google.com/&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-617923709:1794148425014775",
-=======
    "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://drive.google.com/&emr=1&followup=https://drive.google.com/&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1709615217:1794139854555779",
->>>>>>> origin/main
    "error": null,
    "manifest": false,
    "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/drive_2020q4_512dp.png",
@@ -554,11 +512,7 @@
    "id": "google-calendar",
    "url": "https://calendar.google.com/",
    "status": 200,
-<<<<<<< HEAD
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://calendar.google.com/calendar/u/0/r&emr=1&followup=https://calendar.google.com/calendar/u/0/r&osid=1&passive=1209600&service=cl&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1009884480:1794148424977810",
-=======
    "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://calendar.google.com/calendar/u/0/r&emr=1&followup=https://calendar.google.com/calendar/u/0/r&osid=1&passive=1209600&service=cl&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1009884480:1794139854743343",
->>>>>>> origin/main
    "error": null,
    "manifest": false,
    "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/calendar_2020q4_512dp.png",
@@ -571,11 +525,7 @@
    "id": "google-keep",
    "url": "https://keep.google.com/",
    "status": 200,
-<<<<<<< HEAD
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://keep.google.com/&followup=https://keep.google.com/&ltmpl=keep&passive=1209600&service=memento&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1709615217:1794148424975860",
-=======
    "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://keep.google.com/&followup=https://keep.google.com/&ltmpl=keep&passive=1209600&service=memento&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1076107672:1794139854698813",
->>>>>>> origin/main
    "error": null,
    "manifest": false,
    "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/keep_2020q4_512dp.png",
@@ -848,11 +798,7 @@
    "id": "google-classroom",
    "url": "https://classroom.google.com/",
    "status": 200,
-<<<<<<< HEAD
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://classroom.google.com/&emr=1&followup=https://classroom.google.com/&passive=1209600&service=classroom&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1076107672:1794148425870457",
-=======
    "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://classroom.google.com/&emr=1&followup=https://classroom.google.com/&passive=1209600&service=classroom&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1076107672:1794139856270214",
->>>>>>> origin/main
    "error": null,
    "manifest": false,
    "icon_source": "https://www.google.com/s2/favicons?domain=accounts.google.com&sz=256",
@@ -1076,7 +1022,7 @@
    "final_url": "https://app.clipchamp.com/consumer/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://app.clipchamp.com/clipchamp/release-2026-11-05-00-rc00/consumer/favicon.svg",
+   "icon_source": "https://app.clipchamp.com/clipchamp/release-2026-11-04-00-rc00/consumer/favicon.svg",
    "icon_kind": "icon",
    "icon_px": 512,
    "icon_style": "ostra",
@@ -1502,10 +1448,10 @@
    "id": "xbox-cloud-gaming",
    "url": "https://play.xbox.com/",
    "status": 200,
-   "final_url": "https://www.xbox.com/en-US/play",
+   "final_url": "https://play.xbox.com/",
    "error": null,
    "manifest": true,
-   "icon_source": "https://assets.play.xbox.com/playxbox/static/media/manifest-icon-192.d3ef356e.png",
+   "icon_source": "https://play.xbox.com/app-icon-192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
    "icon_style": "ostra",
@@ -1547,10 +1493,7 @@
    "icon_source": "https://itch.io/static/images/itchio-square-144.png",
    "icon_kind": "manifest",
    "icon_px": 144,
-<<<<<<< HEAD
-=======
    "icon_style": "ostra",
->>>>>>> origin/main
    "result": "ok"
   },
   {
@@ -2014,11 +1957,7 @@
    "id": "google-chat",
    "url": "https://chat.google.com/",
    "status": 200,
-<<<<<<< HEAD
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://chat.google.com/&emr=1&osid=1&passive=1209600&service=dynamite&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-617923709:1794148430208824",
-=======
    "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://chat.google.com/&emr=1&osid=1&passive=1209600&service=dynamite&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-617923709:1794139861501799",
->>>>>>> origin/main
    "error": null,
    "manifest": false,
    "icon_source": "https://www.google.com/s2/favicons?domain=accounts.google.com&sz=256",
