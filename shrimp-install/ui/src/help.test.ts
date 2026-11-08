@@ -1,9 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { helpUrl } from "../../../site/help";
+import cfg from "../../../site/help.json";
 
 describe("strony pomocy", () => {
-  it("bez adresu strony zwracają null (ikona zostaje samą podpowiedzią)", () => {
-    expect(helpUrl("iso", "pl", "install", "")).toBeNull();
+  it("bez adresu z manifestu biorą adres z site/help.json (puste = sama podpowiedź)", () => {
+    const want = cfg.base ? `${cfg.base.replace(/\/+$/, "")}/download-iso?lang=pl&from=install` : null;
+    expect(helpUrl("iso", "pl", "install", "")).toBe(want);
+  });
+  it("adres strony to https://shrimp-organization.dev/help", () => {
+    expect(cfg.base).toBe("https://shrimp-organization.dev/help");
   });
   it("składają adres z tematu, języka i programu", () => {
     expect(helpUrl("iso", "pl", "install", "https://example.org/help/")).toBe("https://example.org/help/download-iso?lang=pl&from=install");
