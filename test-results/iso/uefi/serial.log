@@ -68,560 +68,503 @@ shrimp-menu@shrimp
   Włączone: Tak
   Stan: ACTIVE
 ===SHELL
-<<<<<<< HEAD
-[   13.784910] shrimp gnome-shell[1545]: Running GNOME Shell (using mutter 48.8) as a Wayland display server
-[   16.164606] shrimp gnome-shell[1545]: Thread 'KMS thread' will be using high priority scheduling
-[   16.441081] shrimp gnome-shell[1545]: libEGL warning: egl: failed to create dri2 screen
-[   16.442887] shrimp gnome-shell[1545]: libEGL warning: egl: failed to create dri2 screen
-[   16.443266] shrimp gnome-shell[1545]: libEGL warning: NEEDS EXTENSION: falling back to kms_swrast
-[   16.445786] shrimp gnome-shell[1545]: Added device '/dev/dri/card1' (virtio_gpu) using atomic mode setting.
-[   16.447204] shrimp gnome-shell[1545]: Failed to initialize accelerated iGPU/dGPU framebuffer sharing: Not hardware accelerated
-[   16.447220] shrimp gnome-shell[1545]: Created gbm renderer for '/dev/dri/card1'
-[   16.447226] shrimp gnome-shell[1545]: Boot VGA GPU /dev/dri/card1 selected as primary
-[   16.802926] shrimp gnome-shell[1545]: Using public X11 display :0, (using :1 for managed services)
-[   16.802993] shrimp gnome-shell[1545]: Using Wayland display name 'wayland-0'
-[   17.279139] shrimp gnome-shell[1545]: There is no colord server available
-[   17.635929] shrimp gnome-shell[1545]: Unset XDG_SESSION_ID, getCurrentSessionProxy() called outside a user session. Asking logind directly.
-[   18.103866] shrimp gnome-shell[1545]: Can not load calendars: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name is not activatable
-[   18.521728] shrimp gnome-shell[1545]: Will monitor session 1
-[   18.533272] shrimp gnome-shell[1545]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
-[   20.371356] shrimp gnome-shell[1545]: Failed to get PolKit permission: Polkit.Error: GDBus.Error:org.freedesktop.PolicyKit1.Error.Failed: Action org.freedesktop.bolt.enroll is not registered
-[   22.048322] shrimp gnome-shell[1545]: GNOME Shell started at Sun Nov 08 2026 02:00:14 GMT+0100 (czas środkowoeuropejski standardowy)
-[   22.048603] shrimp gnome-shell[1545]: Registering session with GDM
-[   22.167027] shrimp gnome-shell[1545]: Failed to import DBusMenu, quicklists are not available: Error: Requiring Dbusmenu, version none: Typelib file for namespace 'Dbusmenu' (any version) not found
-[   22.167175] shrimp gnome-shell[1545]: Failed to import DBusMenu, quicklists are not available: Error: Requiring Dbusmenu, version none: Typelib file for namespace 'Dbusmenu' (any version) not found
-[   22.167243] shrimp gnome-shell[1545]: Failed to import DBusMenu, quicklists are not available: Error: Requiring Dbusmenu, version none: Typelib file for namespace 'Dbusmenu' (any version) not found
-[   22.334301] shrimp gnome-shell[1545]: Launching DING process
-[   22.652183] shrimp gnome-shell[2159]: Xwayland glamor: GBM Wayland interfaces not available
-[   22.652183] shrimp gnome-shell[2159]: Failed to initialize glamor, falling back to sw
-[   23.307278] shrimp gsd-media-keys[1874]: Failed to grab accelerator for keybinding settings:hibernate
-[   23.307296] shrimp gsd-media-keys[1874]: Failed to grab accelerator for keybinding settings:playback-repeat
-[   23.535991] shrimp gnome-shell[2205]: The XKEYBOARD keymap compiler (xkbcomp) reports:
-[   23.535991] shrimp gnome-shell[2205]: > Warning:          Multiple symbols for level 1/group 1 on key <FK23>
-[   23.535991] shrimp gnome-shell[2205]: >                   Using F23, ignoring XF86TouchpadOff
-[   23.535991] shrimp gnome-shell[2205]: > Warning:          Symbol map for key <FK23> redefined
-[   23.535991] shrimp gnome-shell[2205]: >                   Using last definition for conflicting fields
-[   23.535991] shrimp gnome-shell[2205]: > Warning:          Symbol map for key <FK24> redefined
-[   23.535991] shrimp gnome-shell[2205]: >                   Using last definition for conflicting fields
-[   23.538124] shrimp gnome-shell[2205]: Errors from xkbcomp are not fatal to the X server
-[   24.104106] shrimp gnome-shell[2207]: The XKEYBOARD keymap compiler (xkbcomp) reports:
-[   24.104106] shrimp gnome-shell[2207]: > Warning:          Unsupported maximum keycode 709, clipping.
-[   24.104106] shrimp gnome-shell[2207]: >                   X11 cannot support keycodes above 255.
-[   24.106113] shrimp gnome-shell[2207]: Errors from xkbcomp are not fatal to the X server
-[   24.286583] shrimp gnome-shell[1545]: DING: Detected async api for thumbnails
-[   24.425782] shrimp gnome-shell[1545]: DING: ** Message: 02:00:20.932: Connecting to org.freedesktop.Tracker3.Miner.Files
-[   24.430285] shrimp gnome-shell[2241]: libEGL warning: DRI3 error: Could not get DRI3 device
-[   24.430285] shrimp gnome-shell[2241]: libEGL warning: Ensure your X server supports DRI3 to get accelerated rendering
-[   24.466385] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 35 with keysym 35 (keycode e).
-[   24.466521] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 31 with keysym 31 (keycode a).
-[   24.466584] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 32 with keysym 32 (keycode b).
-[   24.466612] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 33 with keysym 33 (keycode c).
-[   24.466689] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 34 with keysym 34 (keycode d).
-[   24.466709] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 36 with keysym 36 (keycode f).
-[   24.466800] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 31 with keysym 31 (keycode a).
-[   24.466821] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 38 with keysym 38 (keycode 11).
-[   24.466873] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 34 with keysym 34 (keycode d).
-[   24.466888] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 33 with keysym 33 (keycode c).
-[   24.466918] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 37 with keysym 37 (keycode 10).
-[   24.466931] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 32 with keysym 32 (keycode b).
-[   24.466944] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 39 with keysym 39 (keycode 12).
-[   24.467039] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 36 with keysym 36 (keycode f).
-[   24.467068] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 37 with keysym 37 (keycode 10).
-[   24.467113] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 38 with keysym 38 (keycode 11).
-[   24.467134] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 35 with keysym 35 (keycode e).
-[   24.467211] shrimp gnome-shell[1545]: Overwriting existing binding of keysym 39 with keysym 39 (keycode 12).
-[   24.535228] shrimp gnome-shell[1545]: DING: DBus interface for Gvfs daemon (org.gtk.vfs.Metadata) is now available.
-[   24.616941] shrimp gnome-shell[1545]: Received notification for window. 0 notifications remaining.
-[   25.428886] shrimp gnome-shell[1545]: DING: DBus interface for Nautilus (org.gnome.Nautilus.FileOperations2) is now available.
-[   25.429535] shrimp gnome-shell[1545]: DING: DBus interface for Nautilus (org.freedesktop.FileManager1) is now available.
-[   25.434440] shrimp gnome-shell[1545]: DING: GNOME nautilus 48.7
-[   41.052172] shrimp localsearch-3[2392]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   41.947738] shrimp localsearch-3[2393]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   42.948696] shrimp localsearch-3[2394]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   43.948868] shrimp localsearch-3[2395]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   44.947885] shrimp localsearch-3[2396]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   45.947577] shrimp localsearch-3[2397]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   46.949533] shrimp localsearch-3[2398]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   47.948578] shrimp localsearch-3[2399]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   48.948641] shrimp localsearch-3[2400]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   49.944401] shrimp localsearch-3[2401]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   50.948379] shrimp localsearch-3[2402]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   51.948652] shrimp localsearch-3[2403]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   52.949126] shrimp localsearch-3[2404]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   53.947476] shrimp localsearch-3[2411]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   54.947860] shrimp localsearch-3[2412]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   55.948856] shrimp localsearch-3[2413]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   56.948629] shrimp localsearch-3[2414]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   57.947522] shrimp localsearch-3[2415]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   58.948795] shrimp localsearch-3[2416]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   59.948345] shrimp localsearch-3[2417]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   60.948570] shrimp localsearch-3[2418]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   61.947609] shrimp localsearch-3[2419]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   62.948890] shrimp localsearch-3[2420]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   63.948375] shrimp localsearch-3[2421]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   64.947452] shrimp localsearch-3[2422]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   65.947395] shrimp localsearch-3[2423]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   66.948511] shrimp localsearch-3[2424]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   67.948323] shrimp localsearch-3[2425]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   68.947525] shrimp localsearch-3[2426]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   69.947481] shrimp localsearch-3[2427]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   70.949638] shrimp localsearch-3[2428]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   71.948385] shrimp localsearch-3[2430]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   72.948186] shrimp localsearch-3[2431]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   73.947681] shrimp localsearch-3[2432]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   74.948356] shrimp localsearch-3[2433]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   75.947386] shrimp localsearch-3[2434]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   76.948216] shrimp localsearch-3[2435]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   77.947614] shrimp localsearch-3[2436]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   78.947560] shrimp localsearch-3[2437]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   79.944693] shrimp localsearch-3[2438]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   80.948472] shrimp localsearch-3[2439]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   81.947584] shrimp localsearch-3[2440]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   82.948630] shrimp localsearch-3[2444]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   83.948546] shrimp localsearch-3[2445]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   84.947464] shrimp localsearch-3[2446]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   85.947310] shrimp localsearch-3[2452]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   86.948443] shrimp localsearch-3[2453]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   87.947373] shrimp localsearch-3[2454]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   88.944922] shrimp localsearch-3[2455]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   89.947698] shrimp localsearch-3[2456]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   90.948464] shrimp localsearch-3[2457]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   91.948306] shrimp localsearch-3[2458]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   92.947419] shrimp localsearch-3[2459]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   93.947312] shrimp localsearch-3[2460]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   94.948349] shrimp localsearch-3[2461]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   95.947492] shrimp localsearch-3[2462]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   96.947239] shrimp localsearch-3[2463]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   97.947371] shrimp localsearch-3[2464]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   98.948362] shrimp localsearch-3[2465]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   99.948499] shrimp localsearch-3[2466]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  100.947679] shrimp localsearch-3[2467]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  101.947360] shrimp localsearch-3[2468]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  102.948224] shrimp localsearch-3[2469]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  103.948117] shrimp localsearch-3[2470]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  104.948218] shrimp localsearch-3[2471]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  105.947330] shrimp localsearch-3[2472]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  106.948366] shrimp localsearch-3[2473]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  107.948245] shrimp localsearch-3[2474]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  108.947306] shrimp localsearch-3[2475]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  109.947466] shrimp localsearch-3[2476]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  110.948487] shrimp localsearch-3[2477]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  111.948121] shrimp localsearch-3[2478]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  112.948290] shrimp localsearch-3[2479]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  113.947383] shrimp localsearch-3[2480]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  114.948495] shrimp localsearch-3[2481]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  115.947471] shrimp localsearch-3[2482]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  116.947354] shrimp localsearch-3[2483]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  117.947366] shrimp localsearch-3[2484]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  118.948474] shrimp localsearch-3[2485]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  119.948251] shrimp localsearch-3[2486]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  120.948189] shrimp localsearch-3[2487]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  121.948179] shrimp localsearch-3[2488]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  122.948266] shrimp localsearch-3[2489]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  123.947327] shrimp localsearch-3[2490]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  124.948131] shrimp localsearch-3[2491]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  125.947398] shrimp localsearch-3[2492]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  126.948213] shrimp localsearch-3[2493]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  127.948244] shrimp localsearch-3[2494]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  128.948105] shrimp localsearch-3[2495]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  129.947233] shrimp localsearch-3[2496]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  130.948770] shrimp localsearch-3[2497]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  131.947544] shrimp localsearch-3[2498]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  132.947953] shrimp localsearch-3[2499]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  133.947436] shrimp localsearch-3[2500]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  134.948375] shrimp localsearch-3[2501]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  135.947328] shrimp localsearch-3[2503]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  136.948314] shrimp localsearch-3[2504]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  137.947456] shrimp localsearch-3[2505]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  138.948597] shrimp localsearch-3[2506]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  139.948204] shrimp localsearch-3[2507]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  140.948140] shrimp localsearch-3[2508]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  141.947478] shrimp localsearch-3[2509]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  142.948488] shrimp localsearch-3[2510]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  143.948259] shrimp localsearch-3[2511]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  144.947865] shrimp localsearch-3[2512]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  145.947240] shrimp localsearch-3[2513]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  146.948337] shrimp localsearch-3[2514]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  147.947347] shrimp localsearch-3[2515]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  148.948128] shrimp localsearch-3[2516]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  149.947306] shrimp localsearch-3[2517]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  150.948309] shrimp localsearch-3[2518]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  151.948063] shrimp localsearch-3[2519]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  152.947399] shrimp localsearch-3[2520]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  153.947578] shrimp localsearch-3[2521]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  154.948283] shrimp localsearch-3[2522]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  155.947328] shrimp localsearch-3[2523]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  156.947308] shrimp localsearch-3[2524]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  157.947464] shrimp localsearch-3[2525]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  158.948348] shrimp localsearch-3[2529]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  159.948441] shrimp localsearch-3[2530]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  160.947694] shrimp localsearch-3[2531]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  161.943677] shrimp localsearch-3[2532]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  162.948296] shrimp localsearch-3[2533]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  163.947476] shrimp localsearch-3[2534]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  164.948269] shrimp localsearch-3[2537]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  165.947670] shrimp localsearch-3[2538]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  166.948216] shrimp localsearch-3[2539]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  167.948169] shrimp localsearch-3[2540]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  168.948208] shrimp localsearch-3[2541]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  169.947244] shrimp localsearch-3[2542]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  170.948400] shrimp localsearch-3[2543]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  171.948243] shrimp localsearch-3[2544]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  172.948046] shrimp localsearch-3[2545]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  173.947482] shrimp localsearch-3[2546]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  174.948174] shrimp localsearch-3[2547]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  175.951595] shrimp localsearch-3[2548]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  176.947327] shrimp localsearch-3[2549]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  177.946306] shrimp localsearch-3[2550]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  178.948167] shrimp localsearch-3[2551]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  179.947983] shrimp localsearch-3[2552]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  180.948397] shrimp localsearch-3[2553]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  181.454275] shrimp systemd[1222]: Started Application launched by gnome-shell.
-[  181.654844] shrimp gnome-shell[2554]: libEGL warning: failed to get driver name for fd -1
-[  181.655221] shrimp gnome-shell[2554]: libEGL warning: MESA-LOADER: failed to retrieve device information
-[  181.655221] shrimp gnome-shell[2554]: libEGL warning: failed to get driver name for fd -1
-[  181.658974] shrimp gnome-shell[2554]: MESA: error: ZINK: failed to choose pdev
-[  181.659071] shrimp gnome-shell[2554]: libEGL warning: egl: failed to create dri2 screen
-[  181.948179] shrimp localsearch-3[2619]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  182.590607] shrimp gnome-shell[1545]: Invalid sequence for VSYNC frame info
-[  182.948333] shrimp localsearch-3[2620]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  183.946633] shrimp localsearch-3[2621]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  184.948126] shrimp localsearch-3[2622]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  185.947279] shrimp localsearch-3[2623]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  186.943536] shrimp localsearch-3[2624]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  187.948305] shrimp localsearch-3[2625]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  188.948605] shrimp localsearch-3[2626]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  190.025687] shrimp localsearch-3[2627]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  190.948166] shrimp localsearch-3[2629]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  191.943695] shrimp localsearch-3[2630]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  192.948182] shrimp localsearch-3[2631]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  193.943357] shrimp localsearch-3[2632]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  194.948320] shrimp localsearch-3[2636]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  195.947506] shrimp localsearch-3[2637]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  196.948590] shrimp localsearch-3[2638]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  197.943347] shrimp localsearch-3[2639]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  198.948359] shrimp localsearch-3[2640]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  199.947118] shrimp localsearch-3[2641]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  200.947299] shrimp localsearch-3[2642]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  201.943448] shrimp localsearch-3[2643]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  202.948316] shrimp localsearch-3[2644]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  203.943402] shrimp localsearch-3[2645]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  204.948280] shrimp localsearch-3[2646]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  205.948144] shrimp localsearch-3[2647]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  206.948349] shrimp localsearch-3[2648]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  207.947584] shrimp localsearch-3[2649]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  208.948243] shrimp localsearch-3[2650]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  209.947180] shrimp localsearch-3[2651]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  210.948704] shrimp localsearch-3[2652]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  211.947387] shrimp localsearch-3[2653]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  212.943335] shrimp localsearch-3[2654]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  213.947311] shrimp localsearch-3[2655]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  214.948377] shrimp localsearch-3[2656]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  215.947486] shrimp localsearch-3[2657]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  216.948206] shrimp localsearch-3[2658]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  217.947512] shrimp localsearch-3[2659]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  218.948248] shrimp localsearch-3[2660]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  219.947304] shrimp localsearch-3[2661]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  220.948665] shrimp localsearch-3[2662]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  221.947156] shrimp localsearch-3[2663]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  222.948288] shrimp localsearch-3[2664]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  223.948555] shrimp localsearch-3[2665]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  224.947250] shrimp localsearch-3[2666]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  225.947226] shrimp localsearch-3[2667]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  226.948150] shrimp localsearch-3[2668]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  227.943667] shrimp localsearch-3[2669]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  228.947405] shrimp localsearch-3[2670]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  229.947268] shrimp localsearch-3[2671]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  230.948613] shrimp localsearch-3[2672]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  231.947554] shrimp localsearch-3[2673]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  232.947659] shrimp localsearch-3[2674]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  233.948978] shrimp localsearch-3[2675]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  234.948081] shrimp localsearch-3[2676]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  235.913295] shrimp systemd[1222]: Created slice Slice /app/dbus-:1.2-org.gnome.Shell.Extensions.
-[  235.914256] shrimp systemd[1222]: Started dbus-:1.2-org.gnome.Shell.Extensions@0.service.
-[  235.948173] shrimp localsearch-3[2694]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-=======
-[   17.275545] shrimp gnome-shell[1509]: Running GNOME Shell (using mutter 48.8) as a Wayland display server
-[   20.481073] shrimp gnome-shell[1509]: Thread 'KMS thread' will be using high priority scheduling
-[   20.708722] shrimp gnome-shell[1509]: libEGL warning: egl: failed to create dri2 screen
-[   20.711297] shrimp gnome-shell[1509]: libEGL warning: egl: failed to create dri2 screen
-[   20.711710] shrimp gnome-shell[1509]: libEGL warning: NEEDS EXTENSION: falling back to kms_swrast
-[   20.715111] shrimp gnome-shell[1509]: Added device '/dev/dri/card1' (virtio_gpu) using atomic mode setting.
-[   20.716633] shrimp gnome-shell[1509]: Failed to initialize accelerated iGPU/dGPU framebuffer sharing: Not hardware accelerated
-[   20.716665] shrimp gnome-shell[1509]: Created gbm renderer for '/dev/dri/card1'
-[   20.716673] shrimp gnome-shell[1509]: Boot VGA GPU /dev/dri/card1 selected as primary
-[   21.093556] shrimp gnome-shell[1509]: Using public X11 display :0, (using :1 for managed services)
-[   21.093640] shrimp gnome-shell[1509]: Using Wayland display name 'wayland-0'
-[   22.009548] shrimp gnome-shell[1509]: Unset XDG_SESSION_ID, getCurrentSessionProxy() called outside a user session. Asking logind directly.
-[   22.656467] shrimp gnome-shell[1509]: Can not load calendars: GDBus.Error:org.freedesktop.DBus.Error.ServiceUnknown: The name is not activatable
-[   22.946755] shrimp gnome-shell[1509]: There is no colord server available
-[   22.985576] shrimp gnome-shell[1509]: Will monitor session 1
-[   24.118539] shrimp gnome-shell[1509]: Error looking up permission: GDBus.Error:org.freedesktop.portal.Error.NotFound: No entry for geolocation
-[   25.887705] shrimp gnome-shell[1509]: Failed to get PolKit permission: Polkit.Error: GDBus.Error:org.freedesktop.PolicyKit1.Error.Failed: Action org.freedesktop.bolt.enroll is not registered
-[   26.413065] shrimp gnome-shell[1509]: Failed to import DBusMenu, quicklists are not available: Error: Requiring Dbusmenu, version none: Typelib file for namespace 'Dbusmenu' (any version) not found
-[   26.413208] shrimp gnome-shell[1509]: Failed to import DBusMenu, quicklists are not available: Error: Requiring Dbusmenu, version none: Typelib file for namespace 'Dbusmenu' (any version) not found
-[   26.413315] shrimp gnome-shell[1509]: Failed to import DBusMenu, quicklists are not available: Error: Requiring Dbusmenu, version none: Typelib file for namespace 'Dbusmenu' (any version) not found
-[   26.519715] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 36 with keysym 36 (keycode f).
-[   26.519768] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 38 with keysym 38 (keycode 11).
-[   26.520075] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 34 with keysym 34 (keycode d).
-[   26.520093] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 35 with keysym 35 (keycode e).
-[   26.520388] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 35 with keysym 35 (keycode e).
-[   26.521438] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 37 with keysym 37 (keycode 10).
-[   26.521538] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 31 with keysym 31 (keycode a).
-[   26.522300] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 32 with keysym 32 (keycode b).
-[   26.522354] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 33 with keysym 33 (keycode c).
-[   26.522406] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 31 with keysym 31 (keycode a).
-[   26.522448] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 39 with keysym 39 (keycode 12).
-[   26.522465] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 39 with keysym 39 (keycode 12).
-[   26.522495] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 33 with keysym 33 (keycode c).
-[   26.522524] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 38 with keysym 38 (keycode 11).
-[   26.522542] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 37 with keysym 37 (keycode 10).
-[   26.522568] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 34 with keysym 34 (keycode d).
-[   26.522593] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 32 with keysym 32 (keycode b).
-[   26.522620] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 36 with keysym 36 (keycode f).
-[   26.829660] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 36 with keysym 36 (keycode f).
-[   26.829784] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 38 with keysym 38 (keycode 11).
-[   26.830165] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 34 with keysym 34 (keycode d).
-[   26.830187] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 35 with keysym 35 (keycode e).
-[   26.830473] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 35 with keysym 35 (keycode e).
-[   26.830578] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 37 with keysym 37 (keycode 10).
-[   26.830615] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 31 with keysym 31 (keycode a).
-[   26.830773] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 32 with keysym 32 (keycode b).
-[   26.830821] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 33 with keysym 33 (keycode c).
-[   26.830902] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 31 with keysym 31 (keycode a).
-[   26.830939] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 39 with keysym 39 (keycode 12).
-[   26.830956] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 39 with keysym 39 (keycode 12).
-[   26.830982] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 33 with keysym 33 (keycode c).
-[   26.831061] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 38 with keysym 38 (keycode 11).
-[   26.831079] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 37 with keysym 37 (keycode 10).
-[   26.831107] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 34 with keysym 34 (keycode d).
-[   26.831136] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 32 with keysym 32 (keycode b).
-[   26.831163] shrimp gnome-shell[1509]: Overwriting existing binding of keysym 36 with keysym 36 (keycode f).
-[   27.242517] shrimp gsd-media-keys[1845]: Failed to grab accelerator for keybinding settings:playback-repeat
-[   27.242533] shrimp gsd-media-keys[1845]: Failed to grab accelerator for keybinding settings:hibernate
-[   28.172769] shrimp gnome-shell[1509]: GNOME Shell started at Sun Nov 08 2026 01:54:49 GMT+0100 (czas środkowoeuropejski standardowy)
-[   28.173224] shrimp gnome-shell[1509]: Registering session with GDM
-[   28.344190] shrimp gnome-shell[1509]: Launching DING process
-[   28.372487] shrimp gnome-shell[2156]: Xwayland glamor: GBM Wayland interfaces not available
-[   28.372487] shrimp gnome-shell[2156]: Failed to initialize glamor, falling back to sw
-[   28.591365] shrimp gnome-shell[2171]: The XKEYBOARD keymap compiler (xkbcomp) reports:
-[   28.591365] shrimp gnome-shell[2171]: > Warning:          Multiple symbols for level 1/group 1 on key <FK23>
-[   28.591365] shrimp gnome-shell[2171]: >                   Using F23, ignoring XF86TouchpadOff
-[   28.591365] shrimp gnome-shell[2171]: > Warning:          Symbol map for key <FK23> redefined
-[   28.591365] shrimp gnome-shell[2171]: >                   Using last definition for conflicting fields
-[   28.591365] shrimp gnome-shell[2171]: > Warning:          Symbol map for key <FK24> redefined
-[   28.591365] shrimp gnome-shell[2171]: >                   Using last definition for conflicting fields
-[   28.592696] shrimp gnome-shell[2171]: Errors from xkbcomp are not fatal to the X server
-[   29.814740] shrimp gnome-shell[1509]: DING: Detected async api for thumbnails
-[   29.893743] shrimp gnome-shell[1509]: DING: DBus interface for Gvfs daemon (org.gtk.vfs.Metadata) is now available.
-[   29.911766] shrimp gnome-shell[2202]: The XKEYBOARD keymap compiler (xkbcomp) reports:
-[   29.912195] shrimp gnome-shell[2202]: > Warning:          Unsupported maximum keycode 709, clipping.
-[   29.912259] shrimp gnome-shell[2202]: >                   X11 cannot support keycodes above 255.
-[   29.914388] shrimp gnome-shell[2202]: Errors from xkbcomp are not fatal to the X server
-[   30.050094] shrimp gnome-shell[1509]: DING: ** Message: 01:54:56.149: Connecting to org.freedesktop.Tracker3.Miner.Files
-[   30.236215] shrimp gnome-shell[2225]: libEGL warning: DRI3 error: Could not get DRI3 device
-[   30.236215] shrimp gnome-shell[2225]: libEGL warning: Ensure your X server supports DRI3 to get accelerated rendering
-[   30.304035] shrimp gnome-shell[1509]: Received notification for window. 0 notifications remaining.
-[   31.737494] shrimp gnome-shell[1509]: DING: DBus interface for Nautilus (org.gnome.Nautilus.FileOperations2) is now available.
-[   31.737792] shrimp gnome-shell[1509]: DING: DBus interface for Nautilus (org.freedesktop.FileManager1) is now available.
-[   31.738881] shrimp gnome-shell[1509]: DING: GNOME nautilus 48.7
-[   47.043995] shrimp localsearch-3[2352]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   47.947620] shrimp localsearch-3[2353]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   48.948556] shrimp localsearch-3[2354]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   49.948205] shrimp localsearch-3[2355]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   50.949279] shrimp localsearch-3[2356]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   51.947657] shrimp localsearch-3[2357]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   52.948718] shrimp localsearch-3[2358]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   53.948205] shrimp localsearch-3[2359]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   54.948701] shrimp localsearch-3[2360]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   55.948826] shrimp localsearch-3[2361]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   56.948272] shrimp localsearch-3[2368]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   57.948176] shrimp localsearch-3[2369]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   58.948697] shrimp localsearch-3[2370]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   59.948145] shrimp localsearch-3[2371]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   60.948427] shrimp localsearch-3[2372]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   61.948250] shrimp localsearch-3[2373]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   62.948917] shrimp localsearch-3[2374]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   63.948708] shrimp localsearch-3[2375]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   64.948120] shrimp localsearch-3[2376]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   65.946511] shrimp localsearch-3[2377]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   66.948720] shrimp localsearch-3[2378]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   67.947833] shrimp localsearch-3[2379]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   68.948984] shrimp localsearch-3[2380]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   69.947815] shrimp localsearch-3[2381]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   70.948612] shrimp localsearch-3[2382]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   71.947660] shrimp localsearch-3[2383]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   72.949232] shrimp localsearch-3[2384]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   73.947251] shrimp localsearch-3[2385]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   74.948461] shrimp localsearch-3[2387]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   75.949174] shrimp localsearch-3[2388]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   76.950194] shrimp localsearch-3[2389]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   77.947438] shrimp localsearch-3[2390]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   78.948418] shrimp localsearch-3[2391]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   79.948454] shrimp localsearch-3[2392]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   80.948535] shrimp localsearch-3[2393]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   81.947788] shrimp localsearch-3[2394]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   82.945366] shrimp localsearch-3[2395]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   83.945263] shrimp localsearch-3[2396]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   84.948435] shrimp localsearch-3[2397]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   85.947601] shrimp localsearch-3[2398]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   86.948393] shrimp localsearch-3[2399]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   87.948333] shrimp localsearch-3[2403]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   88.948451] shrimp localsearch-3[2404]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   89.948051] shrimp localsearch-3[2405]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   90.948317] shrimp localsearch-3[2411]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   91.947959] shrimp localsearch-3[2412]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   92.949127] shrimp localsearch-3[2413]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   93.944531] shrimp localsearch-3[2414]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   94.948410] shrimp localsearch-3[2415]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   95.948396] shrimp localsearch-3[2416]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   96.948441] shrimp localsearch-3[2417]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   97.947564] shrimp localsearch-3[2418]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   98.948974] shrimp localsearch-3[2419]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[   99.947865] shrimp localsearch-3[2420]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  100.948463] shrimp localsearch-3[2421]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  101.947583] shrimp localsearch-3[2422]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  102.949261] shrimp localsearch-3[2423]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  103.948362] shrimp localsearch-3[2424]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  104.947825] shrimp localsearch-3[2425]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  105.947960] shrimp localsearch-3[2426]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  106.948815] shrimp localsearch-3[2427]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  107.944976] shrimp localsearch-3[2428]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  108.948400] shrimp localsearch-3[2429]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  109.947712] shrimp localsearch-3[2430]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  110.948464] shrimp localsearch-3[2431]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  111.948459] shrimp localsearch-3[2432]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  112.948580] shrimp localsearch-3[2433]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  113.947545] shrimp localsearch-3[2434]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  114.946735] shrimp localsearch-3[2435]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  115.947709] shrimp localsearch-3[2436]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  116.948405] shrimp localsearch-3[2437]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  117.947557] shrimp localsearch-3[2438]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  118.948341] shrimp localsearch-3[2439]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  119.948372] shrimp localsearch-3[2440]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  120.948425] shrimp localsearch-3[2441]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  121.947595] shrimp localsearch-3[2442]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  122.948790] shrimp localsearch-3[2443]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  123.944119] shrimp localsearch-3[2444]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  124.948481] shrimp localsearch-3[2445]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  125.948383] shrimp localsearch-3[2446]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  126.948570] shrimp localsearch-3[2447]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  127.948421] shrimp localsearch-3[2448]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  128.948765] shrimp localsearch-3[2449]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  129.947788] shrimp localsearch-3[2450]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  130.948810] shrimp localsearch-3[2451]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  131.947640] shrimp localsearch-3[2452]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  132.948576] shrimp localsearch-3[2453]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  133.947676] shrimp localsearch-3[2454]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  134.948707] shrimp localsearch-3[2455]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  135.947713] shrimp localsearch-3[2456]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  136.949077] shrimp localsearch-3[2457]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  137.947671] shrimp localsearch-3[2458]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  138.948726] shrimp localsearch-3[2460]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  139.947824] shrimp localsearch-3[2461]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  140.948556] shrimp localsearch-3[2462]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  141.948060] shrimp localsearch-3[2463]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  142.948922] shrimp localsearch-3[2464]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  143.947711] shrimp localsearch-3[2465]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  144.948573] shrimp localsearch-3[2466]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  145.947469] shrimp localsearch-3[2467]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  146.948558] shrimp localsearch-3[2468]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  147.947752] shrimp localsearch-3[2469]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  148.949187] shrimp localsearch-3[2470]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  149.947804] shrimp localsearch-3[2471]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  150.948974] shrimp localsearch-3[2472]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  151.947724] shrimp localsearch-3[2473]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  152.948611] shrimp localsearch-3[2474]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  153.947567] shrimp localsearch-3[2475]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  154.948568] shrimp localsearch-3[2476]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  155.947593] shrimp localsearch-3[2480]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  156.948761] shrimp localsearch-3[2481]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  157.947482] shrimp localsearch-3[2482]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  158.948667] shrimp localsearch-3[2483]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  159.947100] shrimp localsearch-3[2484]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  160.948577] shrimp localsearch-3[2485]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  161.947621] shrimp localsearch-3[2488]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  162.948430] shrimp localsearch-3[2489]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  163.947452] shrimp localsearch-3[2490]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  164.949062] shrimp localsearch-3[2491]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  165.947553] shrimp localsearch-3[2492]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  166.948884] shrimp localsearch-3[2493]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  167.947653] shrimp localsearch-3[2494]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  168.948511] shrimp localsearch-3[2495]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  169.947696] shrimp localsearch-3[2496]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  170.948567] shrimp localsearch-3[2497]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  171.948276] shrimp localsearch-3[2498]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  172.948484] shrimp localsearch-3[2499]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  173.947573] shrimp localsearch-3[2500]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  174.947288] shrimp localsearch-3[2501]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  175.948495] shrimp localsearch-3[2502]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  176.948616] shrimp localsearch-3[2503]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  177.953361] shrimp localsearch-3[2504]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  178.810294] shrimp systemd[1194]: Started Application launched by gnome-shell.
-[  178.946732] shrimp localsearch-3[2515]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  179.052418] shrimp gnome-shell[2505]: libEGL warning: failed to get driver name for fd -1
-[  179.052682] shrimp gnome-shell[2505]: libEGL warning: MESA-LOADER: failed to retrieve device information
-[  179.052682] shrimp gnome-shell[2505]: libEGL warning: failed to get driver name for fd -1
-[  179.057500] shrimp gnome-shell[2505]: MESA: error: ZINK: failed to choose pdev
-[  179.057540] shrimp gnome-shell[2505]: libEGL warning: egl: failed to create dri2 screen
-[  179.947961] shrimp localsearch-3[2568]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  180.257824] shrimp gnome-shell[1509]: Invalid sequence for VSYNC frame info
-[  180.948610] shrimp localsearch-3[2569]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  181.946587] shrimp localsearch-3[2570]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  182.948629] shrimp localsearch-3[2571]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  183.943684] shrimp localsearch-3[2572]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  184.948562] shrimp localsearch-3[2573]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  185.947895] shrimp localsearch-3[2574]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  186.948518] shrimp localsearch-3[2575]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  187.947560] shrimp localsearch-3[2576]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  188.944595] shrimp localsearch-3[2578]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  189.944383] shrimp localsearch-3[2579]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  190.948527] shrimp localsearch-3[2580]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  191.948357] shrimp localsearch-3[2581]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  192.948659] shrimp localsearch-3[2585]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  193.947551] shrimp localsearch-3[2586]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  194.948552] shrimp localsearch-3[2587]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  195.948939] shrimp localsearch-3[2588]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  196.949062] shrimp localsearch-3[2589]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  197.947807] shrimp localsearch-3[2590]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  198.948240] shrimp localsearch-3[2591]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  199.948368] shrimp localsearch-3[2592]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  200.948522] shrimp localsearch-3[2593]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  201.947731] shrimp localsearch-3[2594]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  202.949089] shrimp localsearch-3[2595]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  203.948368] shrimp localsearch-3[2596]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  204.948582] shrimp localsearch-3[2597]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  205.947643] shrimp localsearch-3[2598]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  206.948537] shrimp localsearch-3[2599]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  207.947881] shrimp localsearch-3[2600]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  208.949067] shrimp localsearch-3[2601]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  209.947667] shrimp localsearch-3[2602]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  210.948415] shrimp localsearch-3[2603]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  211.947613] shrimp localsearch-3[2604]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  212.948594] shrimp localsearch-3[2605]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  213.947777] shrimp localsearch-3[2606]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  214.948481] shrimp localsearch-3[2607]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  215.947638] shrimp localsearch-3[2608]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  216.948699] shrimp localsearch-3[2609]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  217.947474] shrimp localsearch-3[2610]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  218.948713] shrimp localsearch-3[2611]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  219.947502] shrimp localsearch-3[2612]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  220.948529] shrimp localsearch-3[2613]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  221.947745] shrimp localsearch-3[2614]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  222.949865] shrimp localsearch-3[2615]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  223.947665] shrimp localsearch-3[2616]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  224.948770] shrimp localsearch-3[2617]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  225.947734] shrimp localsearch-3[2618]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  226.949330] shrimp localsearch-3[2619]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  227.948349] shrimp localsearch-3[2620]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  228.949800] shrimp localsearch-3[2621]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  229.949325] shrimp localsearch-3[2622]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  230.949451] shrimp localsearch-3[2623]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  231.947690] shrimp localsearch-3[2624]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  232.948463] shrimp localsearch-3[2625]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
-[  233.287292] shrimp systemd[1194]: Created slice Slice /app/dbus-:1.2-org.gnome.Shell.Extensions.
-[  233.288563] shrimp systemd[1194]: Started dbus-:1.2-org.gnome.Shell.Extensions@0.service.
->>>>>>> origin/main
+[   83.946136] shrimp localsearch-3[3038]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[   84.946905] shrimp localsearch-3[3039]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[   85.946991] shrimp localsearch-3[3040]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[   86.947770] shrimp localsearch-3[3045]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[   87.942739] shrimp localsearch-3[3046]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[   88.947394] shrimp localsearch-3[3047]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[   89.947649] shrimp localsearch-3[3048]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[   90.946668] shrimp localsearch-3[3049]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[   91.947788] shrimp localsearch-3[3050]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[   92.947522] shrimp localsearch-3[3051]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[   93.946991] shrimp localsearch-3[3052]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[   94.946620] shrimp localsearch-3[3053]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[   95.947704] shrimp localsearch-3[3054]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[   96.947496] shrimp localsearch-3[3055]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[   97.946435] shrimp localsearch-3[3056]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[   98.946801] shrimp localsearch-3[3057]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[   99.947414] shrimp localsearch-3[3058]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  100.947885] shrimp localsearch-3[3059]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  101.946529] shrimp localsearch-3[3060]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  102.947251] shrimp localsearch-3[3061]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  103.947463] shrimp localsearch-3[3062]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  104.947396] shrimp localsearch-3[3063]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  105.946785] shrimp localsearch-3[3065]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  106.946487] shrimp localsearch-3[3066]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  107.947837] shrimp localsearch-3[3071]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  108.947580] shrimp localsearch-3[3072]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  109.947773] shrimp localsearch-3[3073]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  110.946809] shrimp localsearch-3[3074]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  111.947550] shrimp localsearch-3[3075]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  112.949621] shrimp localsearch-3[3076]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  113.947153] shrimp localsearch-3[3077]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  114.943608] shrimp localsearch-3[3078]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  115.948599] shrimp localsearch-3[3079]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  116.946951] shrimp localsearch-3[3081]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  117.946489] shrimp localsearch-3[3082]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  118.946917] shrimp localsearch-3[3083]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  119.947490] shrimp localsearch-3[3084]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  120.947529] shrimp localsearch-3[3085]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  121.947874] shrimp localsearch-3[3086]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  122.947571] shrimp localsearch-3[3087]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  123.947801] shrimp localsearch-3[3088]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  124.947514] shrimp localsearch-3[3089]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  125.947792] shrimp localsearch-3[3090]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  126.946558] shrimp localsearch-3[3091]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  127.947466] shrimp localsearch-3[3092]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  128.947854] shrimp localsearch-3[3094]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  129.946508] shrimp localsearch-3[3095]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  130.947619] shrimp localsearch-3[3096]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  131.947503] shrimp localsearch-3[3097]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  132.948331] shrimp localsearch-3[3098]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  133.947460] shrimp localsearch-3[3099]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  134.944948] shrimp localsearch-3[3101]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  135.947899] shrimp localsearch-3[3102]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  136.947467] shrimp localsearch-3[3103]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  137.946732] shrimp localsearch-3[3104]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  138.945267] shrimp localsearch-3[3105]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  139.947733] shrimp localsearch-3[3106]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  140.947380] shrimp localsearch-3[3107]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  141.946534] shrimp localsearch-3[3108]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  142.947785] shrimp localsearch-3[3109]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  143.947516] shrimp localsearch-3[3110]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  144.947674] shrimp localsearch-3[3112]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  145.948742] shrimp localsearch-3[3113]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  146.945707] shrimp localsearch-3[3114]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  147.947970] shrimp localsearch-3[3115]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  148.947867] shrimp localsearch-3[3116]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  149.947772] shrimp localsearch-3[3117]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  150.947872] shrimp localsearch-3[3118]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  151.947982] shrimp localsearch-3[3119]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  152.947966] shrimp localsearch-3[3120]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  153.946919] shrimp localsearch-3[3121]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  154.945287] shrimp localsearch-3[3122]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  155.945454] shrimp localsearch-3[3123]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  156.947638] shrimp localsearch-3[3124]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  157.947464] shrimp localsearch-3[3125]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  158.946835] shrimp localsearch-3[3126]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  159.947489] shrimp localsearch-3[3127]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  160.947788] shrimp localsearch-3[3128]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  161.946559] shrimp localsearch-3[3129]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  162.945879] shrimp localsearch-3[3130]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  163.947840] shrimp localsearch-3[3131]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  164.947427] shrimp localsearch-3[3132]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  165.946995] shrimp localsearch-3[3134]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  166.946460] shrimp localsearch-3[3135]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  167.947778] shrimp localsearch-3[3136]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  168.947467] shrimp localsearch-3[3137]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  169.947736] shrimp localsearch-3[3138]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  170.944947] shrimp localsearch-3[3139]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  171.947883] shrimp localsearch-3[3140]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  172.946551] shrimp localsearch-3[3141]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  173.947486] shrimp localsearch-3[3142]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  174.946777] shrimp localsearch-3[3143]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  175.947507] shrimp localsearch-3[3144]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  176.946851] shrimp localsearch-3[3145]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  177.947439] shrimp localsearch-3[3146]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  178.945261] shrimp localsearch-3[3147]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  179.947539] shrimp localsearch-3[3148]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  180.946454] shrimp localsearch-3[3149]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  181.946794] shrimp localsearch-3[3150]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  182.947901] shrimp localsearch-3[3151]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  183.947963] shrimp localsearch-3[3152]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  184.944347] shrimp localsearch-3[3153]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  185.947094] shrimp localsearch-3[3154]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  186.945332] shrimp localsearch-3[3155]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  187.947877] shrimp localsearch-3[3156]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  188.947854] shrimp localsearch-3[3158]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  189.947845] shrimp localsearch-3[3159]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  190.947804] shrimp localsearch-3[3160]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  191.947453] shrimp localsearch-3[3161]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  192.948260] shrimp localsearch-3[3162]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  193.947438] shrimp localsearch-3[3163]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  194.947478] shrimp localsearch-3[3164]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  195.947697] shrimp localsearch-3[3165]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  196.947517] shrimp localsearch-3[3166]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  197.947681] shrimp localsearch-3[3167]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  198.947430] shrimp localsearch-3[3168]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  199.947724] shrimp localsearch-3[3169]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  200.947406] shrimp localsearch-3[3170]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  201.947817] shrimp localsearch-3[3172]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  202.947475] shrimp localsearch-3[3173]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  203.947459] shrimp localsearch-3[3174]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  204.947757] shrimp localsearch-3[3175]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  205.947414] shrimp localsearch-3[3176]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  206.947651] shrimp localsearch-3[3177]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  207.943918] shrimp localsearch-3[3178]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  208.947718] shrimp localsearch-3[3179]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  209.946454] shrimp localsearch-3[3180]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  210.944958] shrimp localsearch-3[3181]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  211.947785] shrimp localsearch-3[3182]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  212.947695] shrimp localsearch-3[3183]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  213.947969] shrimp localsearch-3[3184]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  214.947412] shrimp localsearch-3[3185]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  215.947768] shrimp localsearch-3[3186]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  216.947351] shrimp localsearch-3[3187]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  217.947410] shrimp localsearch-3[3188]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  218.948138] shrimp localsearch-3[3189]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  219.947512] shrimp localsearch-3[3190]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  220.947781] shrimp localsearch-3[3191]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  221.944791] shrimp localsearch-3[3192]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  222.947249] shrimp localsearch-3[3193]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  223.947431] shrimp localsearch-3[3194]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  224.947705] shrimp localsearch-3[3195]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  225.947393] shrimp localsearch-3[3196]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  226.944893] shrimp localsearch-3[3197]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  227.947751] shrimp localsearch-3[3198]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  228.947626] shrimp localsearch-3[3199]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  229.946736] shrimp localsearch-3[3200]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  230.943895] shrimp localsearch-3[3201]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  231.947840] shrimp localsearch-3[3203]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  232.946590] shrimp localsearch-3[3204]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  233.946911] shrimp localsearch-3[3205]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  234.945388] shrimp localsearch-3[3206]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  235.947495] shrimp localsearch-3[3207]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  236.946546] shrimp localsearch-3[3208]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  237.942601] shrimp localsearch-3[3209]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  238.946767] shrimp localsearch-3[3210]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  239.947461] shrimp localsearch-3[3211]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  240.947443] shrimp localsearch-3[3212]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  241.948333] shrimp localsearch-3[3213]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  242.945280] shrimp localsearch-3[3214]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  243.947866] shrimp localsearch-3[3215]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  244.947374] shrimp localsearch-3[3216]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  245.947732] shrimp localsearch-3[3217]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  246.661938] shrimp gnome-shell[3218]: pkill: killing pid 1739 failed: Operation not permitted
+[  246.680435] shrimp gnome-shell[1668]: Could not create transient scope for PID 3218: GDBus.Error:org.freedesktop.DBus.Error.UnixProcessIdUnknown: Failed to set unit properties: No such process
+[  246.947879] shrimp localsearch-3[3227]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  247.947567] shrimp localsearch-3[3228]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  248.947484] shrimp localsearch-3[3229]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  249.947455] shrimp localsearch-3[3230]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  250.944953] shrimp localsearch-3[3231]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  251.947228] shrimp localsearch-3[3232]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  252.948335] shrimp localsearch-3[3233]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  253.947443] shrimp localsearch-3[3234]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  254.946485] shrimp localsearch-3[3235]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  255.947430] shrimp localsearch-3[3236]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  256.944509] shrimp localsearch-3[3237]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  257.947465] shrimp localsearch-3[3238]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  258.945557] shrimp localsearch-3[3241]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  259.947474] shrimp localsearch-3[3242]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  260.946434] shrimp localsearch-3[3243]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  261.947515] shrimp localsearch-3[3244]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  262.946836] shrimp localsearch-3[3246]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  263.947359] shrimp localsearch-3[3247]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  264.947807] shrimp localsearch-3[3254]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  265.947377] shrimp localsearch-3[3255]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  266.945117] shrimp localsearch-3[3256]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  267.947473] shrimp localsearch-3[3257]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  268.947854] shrimp localsearch-3[3258]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  269.947814] shrimp localsearch-3[3259]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  270.947819] shrimp localsearch-3[3260]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  271.947694] shrimp localsearch-3[3261]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  272.947492] shrimp localsearch-3[3262]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  273.947414] shrimp localsearch-3[3263]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  274.947865] shrimp localsearch-3[3264]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  275.947444] shrimp localsearch-3[3265]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  276.947385] shrimp localsearch-3[3266]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  277.947388] shrimp localsearch-3[3267]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  278.947846] shrimp localsearch-3[3268]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  279.947345] shrimp localsearch-3[3269]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  280.947820] shrimp localsearch-3[3270]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  281.438463] shrimp systemd[1463]: Started Application launched by gnome-shell.
+[  281.563454] shrimp gnome-shell[3271]: libEGL warning: failed to get driver name for fd -1
+[  281.563704] shrimp gnome-shell[3271]: libEGL warning: MESA-LOADER: failed to retrieve device information
+[  281.563704] shrimp gnome-shell[3271]: libEGL warning: failed to get driver name for fd -1
+[  281.566555] shrimp gnome-shell[3271]: MESA: error: ZINK: failed to choose pdev
+[  281.566605] shrimp gnome-shell[3271]: libEGL warning: egl: failed to create dri2 screen
+[  281.948039] shrimp localsearch-3[3336]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  282.948168] shrimp localsearch-3[3337]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  283.947813] shrimp localsearch-3[3338]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  284.947797] shrimp localsearch-3[3339]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  285.946772] shrimp localsearch-3[3340]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  286.947694] shrimp localsearch-3[3341]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  287.947678] shrimp localsearch-3[3342]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  288.948148] shrimp localsearch-3[3343]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  289.947663] shrimp localsearch-3[3344]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  290.946801] shrimp localsearch-3[3346]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  291.947742] shrimp localsearch-3[3347]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  292.947762] shrimp localsearch-3[3348]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  293.947780] shrimp localsearch-3[3349]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  294.946785] shrimp localsearch-3[3353]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  295.947835] shrimp localsearch-3[3354]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  296.947486] shrimp localsearch-3[3355]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  297.947471] shrimp localsearch-3[3356]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  298.947790] shrimp localsearch-3[3357]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  299.948807] shrimp localsearch-3[3358]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  300.948118] shrimp localsearch-3[3359]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  301.946873] shrimp localsearch-3[3360]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  302.947821] shrimp localsearch-3[3361]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  303.947794] shrimp localsearch-3[3362]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  304.947781] shrimp localsearch-3[3363]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  305.946907] shrimp localsearch-3[3364]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  306.947856] shrimp localsearch-3[3367]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  307.947808] shrimp localsearch-3[3368]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  308.946864] shrimp localsearch-3[3370]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  309.946837] shrimp localsearch-3[3371]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  310.947787] shrimp localsearch-3[3372]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  311.947820] shrimp localsearch-3[3373]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  312.948206] shrimp localsearch-3[3374]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  313.946874] shrimp localsearch-3[3375]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  314.946183] shrimp localsearch-3[3376]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  315.947825] shrimp localsearch-3[3377]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  316.947858] shrimp localsearch-3[3378]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  317.947797] shrimp localsearch-3[3379]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  318.947256] shrimp localsearch-3[3380]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  319.947832] shrimp localsearch-3[3381]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  320.947741] shrimp localsearch-3[3382]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  321.946872] shrimp localsearch-3[3383]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  322.946920] shrimp localsearch-3[3384]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  323.947792] shrimp localsearch-3[3385]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  324.947868] shrimp localsearch-3[3386]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  325.947677] shrimp localsearch-3[3387]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  326.947360] shrimp localsearch-3[3388]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  327.947851] shrimp localsearch-3[3389]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  328.947843] shrimp localsearch-3[3390]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  329.947777] shrimp localsearch-3[3391]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  330.946927] shrimp localsearch-3[3392]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  331.948062] shrimp localsearch-3[3393]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  332.946947] shrimp localsearch-3[3394]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  333.947791] shrimp localsearch-3[3395]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  334.946845] shrimp localsearch-3[3396]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  335.947839] shrimp localsearch-3[3398]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  336.946853] shrimp localsearch-3[3401]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  337.947817] shrimp localsearch-3[3402]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  338.947138] shrimp localsearch-3[3403]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  339.947836] shrimp localsearch-3[3404]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  340.947814] shrimp localsearch-3[3405]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  341.947836] shrimp localsearch-3[3406]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  342.947223] shrimp localsearch-3[3407]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  343.947888] shrimp localsearch-3[3408]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  344.946926] shrimp localsearch-3[3409]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  345.947760] shrimp localsearch-3[3410]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  346.946936] shrimp localsearch-3[3411]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  347.947809] shrimp localsearch-3[3412]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  348.946951] shrimp localsearch-3[3413]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  349.947800] shrimp localsearch-3[3414]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  350.946878] shrimp localsearch-3[3416]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  351.947923] shrimp localsearch-3[3417]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  352.946945] shrimp localsearch-3[3418]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  353.947799] shrimp localsearch-3[3419]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  354.946811] shrimp localsearch-3[3420]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  355.947871] shrimp localsearch-3[3421]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  356.946831] shrimp localsearch-3[3422]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  357.947762] shrimp localsearch-3[3423]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  358.946854] shrimp localsearch-3[3424]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  359.947387] shrimp localsearch-3[3425]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  360.946877] shrimp localsearch-3[3426]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  361.947749] shrimp localsearch-3[3427]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  362.948475] shrimp localsearch-3[3428]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  363.947863] shrimp localsearch-3[3429]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  364.946820] shrimp localsearch-3[3430]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  365.947807] shrimp localsearch-3[3431]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  366.946909] shrimp localsearch-3[3432]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  367.947778] shrimp localsearch-3[3433]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  368.946878] shrimp localsearch-3[3434]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  369.947794] shrimp localsearch-3[3435]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  370.946892] shrimp localsearch-3[3436]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  371.943046] shrimp localsearch-3[3437]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  372.948262] shrimp localsearch-3[3438]: /usr/libexec/localsearch-extractor-3: error while loading shared libraries: libz.so.1: cannot open shared object file: No such file or directory
+[  373.615628] shrimp systemd[1463]: Created slice Slice /app/dbus-:1.2-org.gnome.Shell.Extensions.
+[  373.616527] shrimp systemd[1463]: Started dbus-:1.2-org.gnome.Shell.Extensions@0.service.
+===SETUP
+-rw-r--r-- 1 root root     292 lis  8 02:32 /etc/xdg/autostart/shrimp-setup-install.desktop
+-rwxr-xr-x 1 root root 1925608 lis  8 02:32 /usr/bin/shrimp-setup
+
+/run/agama:
+total 12
+srwxrwxrwx 1 root root   0 lis  8 02:46 bus
+-rw-r--r-- 1 root root  24 lis  8 02:46 bus.address
+-rw-r--r-- 1 root root   4 lis  8 02:46 bus.pid
+-r-------- 1 root root 173 lis  8 02:46 token
+drwxr-xr-x 5 root root 100 lis  8 02:46 zypp
+
+/run/shrimp-setup:
+total 4
+-rw-r----- 1 root users 173 lis  8 02:46 token
+● agama-web-server.service - Agama Web Server
+     Loaded: loaded (/usr/lib/systemd/system/agama-web-server.service; enabled; preset: disabled)
+    Drop-In: /usr/lib/systemd/system/agama-web-server.service.d
+             └─50-shrimp.conf
+     Active: active (running) since Sun 2026-11-08 02:46:56 CET; 5min ago
+ Invocation: 0465e75f716445fab95ad3146bc9b8cb
+   Main PID: 1739 (Zypp-main)
+      Tasks: 13 (limit: 6890)
+        CPU: 1.443s
+     CGroup: /system.slice/agama-web-server.service
+             └─1739 /usr/bin/agama-web-server serve --address 127.0.0.1:80 --web-ui-dir /usr/share/shrimp-setup/ui
+
+● agama.service - Agama Installer Service
+     Loaded: loaded (/usr/lib/systemd/system/agama.service; enabled; preset: disabled)
+     Active: active (running) since Sun 2026-11-08 02:46:42 CET; 6min ago
+ Invocation: 0b7bc9984d8f42a3bcb869666422d3e7
+   Main PID: 1677 (dbus-daemon)
+      Tasks: 5 (limit: 6890)
+        CPU: 1.483s
+     CGroup: /system.slice/agama.service
+             ├─1677 /usr/bin/dbus-daemon --config-file /usr/share/dbus-1/agama.conf --address unix:path=/run/agama/bus --systemd-activation --print-pid
+             └─1802 /usr/bin/ruby.ruby3.4 /usr/bin/agamactl.ruby3.4-24.devel92.b3589a3ff storage
+
+Warning: some journal files were not opened due to insufficient permissions.
+
+● shrimp-setup-token.service - Shrimp Setup: token Agamy dla sesji live
+     Loaded: loaded (/usr/lib/systemd/system/shrimp-setup-token.service; enabled; preset: disabled)
+     Active: active (exited) since Sun 2026-11-08 02:46:56 CET; 5min ago
+ Invocation: d06adc644d2944ea8862b0713b76643e
+    Process: 2702 ExecStart=/usr/bin/bash -c for i in $(seq 360); do [ -s /run/agama/token ] && break; sleep 0.5; done; install -d -m 0755 /run/shrimp-setup && install -m 0640 -o root -g users /run/agama/token /run/shrimp-setup/token (code=exited, status=0/SUCCESS)
+   Main PID: 2702 (code=exited, status=0/SUCCESS)
+        CPU: 13ms
+[   25.806672] shrimp agama-web-server[1739]: Executing[C] 'rpm' '--root' '/run/agama/zypp' '--dbpath' '/usr/lib/sysimage/rpm' '--import' '--' '/var/tmp/zypp.tmp/TmpFile.G42f8b'
+[   25.808458] shrimp agama-web-server[1739]: pid 2720 launched
+[   25.817915] shrimp agama-web-server[1739]: Pid 2720 successfully completed
+[   25.818030] shrimp agama-web-server[1739]: Key [8A49EB0325DB7AE0-645bae34] [openSUSE:Backports OBS Project <openSUSE:Backports@build.opensuse.org>] [wygasa: 2027-05-09] imported in rpm trusted keyring.
+[   25.818133] shrimp agama-web-server[1739]: unlink /var/tmp/zypp.tmp/TmpFile.G42f8b
+[   25.818180] shrimp agama-web-server[1739]: TmpPath cleaned up /var/tmp/zypp.tmp/TmpFile.G42f8b{- 0644 0/0 size 1705}
+[   25.818230] shrimp agama-web-server[1739]: Importing GPG key: /usr/lib/rpm/gnupg/keys/gpg-pubkey-287a0027-682477e3.asc
+[   25.818304] shrimp agama-web-server[1739]: /var/tmp/zypp.tmp/TmpFile.i5ePz6
+[   25.823504] shrimp agama-web-server[1739]: Taking pubkey from /usr/lib/rpm/gnupg/keys/gpg-pubkey-287a0027-682477e3.asc of size 1714 and sha1 b3190b0d0e72946a0eaec8fd716fe920073e510c
+[   25.823548] shrimp agama-web-server[1739]: hardlinkCopy /usr/lib/rpm/gnupg/keys/gpg-pubkey-287a0027-682477e3.asc -> /var/tmp/zypp.tmp/TmpFile.i5ePz6unlink /var/tmp/zypp.tmp/TmpFile.i5ePz6
+[   25.823630] shrimp agama-web-server[1739]: 
+[   25.823681] shrimp agama-web-server[1739]: Reading pubkey from /var/tmp/zypp.tmp/TmpFile.i5ePz6 of size 1714 and sha1 b3190b0d0e72946a0eaec8fd716fe920073e510c
+[   25.823715] shrimp agama-web-server[1739]: /var/tmp/zypp.tmp/zypp.LcVLcj/PublicKey.L1i72y
+[   25.836904] shrimp agama-web-server[1739]: recursive_rmdir /var/tmp/zypp.tmp/zypp.LcVLcj/PublicKey.L1i72y
+[   25.836971] shrimp agama-web-server[1739]: TmpPath cleaned up /var/tmp/zypp.tmp/zypp.LcVLcj/PublicKey.L1i72y{d 0700 0/0}
+[   25.837034] shrimp agama-web-server[1739]: Read pubkey from /var/tmp/zypp.tmp/TmpFile.i5ePz6: [488C583D287A0027-682477e3] [openSUSE Backports for SUSE Linux 16 <sle-backports-202500514@opensuse.org>] [wygasa: 2036-04-26]
+[   25.841777] shrimp agama-web-server[1739]: /var/tmp/zypp.tmp/zypp.LcVLcj/zypp-trusted-kr8u0h3n {
+[   25.841962] shrimp agama-web-server[1739]:   [FEC28EAF09D9EA69-68595a8c] [SUSE 16 Package Signing Key <build-suse16@suse.de>] [wygasa: 2029-08-01]
+[   25.842014] shrimp agama-web-server[1739]:   [8A49EB0325DB7AE0-645bae34] [openSUSE:Backports OBS Project <openSUSE:Backports@build.opensuse.org>] [wygasa: 2027-05-09]
+[   25.842042] shrimp agama-web-server[1739]: }
+[   25.842073] shrimp agama-web-server[1739]: Import Tkey + [488C583D287A0027-682477e3] [openSUSE Backports for SUSE Linux 16 <sle-backports-202500514@opensuse.org>] [wygasa: 2036-04-26] to trustedKeyRing
+[   25.848010] shrimp agama-web-server[1739]: trusted key added to zypp Keyring. Importing...
+[   25.848124] shrimp agama-web-server[1739]: Open database '(/run/agama/zypp)/usr/lib/sysimage/rpm'
+[   25.848659] shrimp agama-web-server[1739]: Close database ReferenceCounted(@0x7f769c04d780<=0){'(/run/agama/zypp)/usr/lib/sysimage/rpm'}
+[   25.848874] shrimp agama-web-server[1739]: Key [488C583D287A0027-682477e3] [openSUSE Backports for SUSE Linux 16 <sle-backports-202500514@opensuse.org>] [wygasa: 2036-04-26] will be imported into the rpm trusted keyring.(new)
+[   25.848944] shrimp agama-web-server[1739]: Executing[C] 'rpm' '--root' '/run/agama/zypp' '--dbpath' '/usr/lib/sysimage/rpm' '--import' '--' '/var/tmp/zypp.tmp/TmpFile.i5ePz6'
+[   25.850523] shrimp agama-web-server[1739]: pid 2730 launched
+[   25.858447] shrimp agama-web-server[1739]: Pid 2730 successfully completed
+[   25.858528] shrimp agama-web-server[1739]: Key [488C583D287A0027-682477e3] [openSUSE Backports for SUSE Linux 16 <sle-backports-202500514@opensuse.org>] [wygasa: 2036-04-26] imported in rpm trusted keyring.
+[   25.858599] shrimp agama-web-server[1739]: unlink /var/tmp/zypp.tmp/TmpFile.i5ePz6
+[   25.858636] shrimp agama-web-server[1739]: TmpPath cleaned up /var/tmp/zypp.tmp/TmpFile.i5ePz6{- 0644 0/0 size 1714}
+[   25.858665] shrimp agama-web-server[1739]: Importing GPG key: /usr/lib/rpm/gnupg/keys/gpg-pubkey-29b700a4-6a17fa38.asc
+[   25.858741] shrimp agama-web-server[1739]: /var/tmp/zypp.tmp/TmpFile.oCfsQt
+[   25.868960] shrimp agama-web-server[1739]: Taking pubkey from /usr/lib/rpm/gnupg/keys/gpg-pubkey-29b700a4-6a17fa38.asc of size 1680 and sha1 469f56f36caf6a7d16038073f0aec33f0b93f233
+[   25.869004] shrimp agama-web-server[1739]: hardlinkCopy /usr/lib/rpm/gnupg/keys/gpg-pubkey-29b700a4-6a17fa38.asc -> /var/tmp/zypp.tmp/TmpFile.oCfsQtunlink /var/tmp/zypp.tmp/TmpFile.oCfsQt
+[   25.869098] shrimp agama-web-server[1739]: 
+[   25.869147] shrimp agama-web-server[1739]: Reading pubkey from /var/tmp/zypp.tmp/TmpFile.oCfsQt of size 1680 and sha1 469f56f36caf6a7d16038073f0aec33f0b93f233
+[   25.869180] shrimp agama-web-server[1739]: /var/tmp/zypp.tmp/zypp.LcVLcj/PublicKey.ivQjv2
+[   25.885225] shrimp agama-web-server[1739]: recursive_rmdir /var/tmp/zypp.tmp/zypp.LcVLcj/PublicKey.ivQjv2
+[   25.885336] shrimp agama-web-server[1739]: TmpPath cleaned up /var/tmp/zypp.tmp/zypp.LcVLcj/PublicKey.ivQjv2{d 0700 0/0}
+[   25.885482] shrimp agama-web-server[1739]: Read pubkey from /var/tmp/zypp.tmp/TmpFile.oCfsQt: [35A2F86E29B700A4-6a17fa38] [openSUSE Project Signing Key <opensuse@opensuse.org>] [wygasa: 2030-05-27]
+[   25.891982] shrimp agama-web-server[1739]: /var/tmp/zypp.tmp/zypp.LcVLcj/zypp-trusted-kr8u0h3n {
+[   25.892228] shrimp agama-web-server[1739]:   [FEC28EAF09D9EA69-68595a8c] [SUSE 16 Package Signing Key <build-suse16@suse.de>] [wygasa: 2029-08-01]
+[   25.892289] shrimp agama-web-server[1739]:   [8A49EB0325DB7AE0-645bae34] [openSUSE:Backports OBS Project <openSUSE:Backports@build.opensuse.org>] [wygasa: 2027-05-09]
+[   25.892358] shrimp agama-web-server[1739]:   [488C583D287A0027-682477e3] [openSUSE Backports for SUSE Linux 16 <sle-backports-202500514@opensuse.org>] [wygasa: 2036-04-26]
+[   25.892397] shrimp agama-web-server[1739]: }
+[   25.892443] shrimp agama-web-server[1739]: Import Tkey + [35A2F86E29B700A4-6a17fa38] [openSUSE Project Signing Key <opensuse@opensuse.org>] [wygasa: 2030-05-27] to trustedKeyRing
+[   25.899783] shrimp agama-web-server[1739]: trusted key added to zypp Keyring. Importing...
+[   25.900025] shrimp agama-web-server[1739]: Open database '(/run/agama/zypp)/usr/lib/sysimage/rpm'
+[   25.900953] shrimp agama-web-server[1739]: Close database ReferenceCounted(@0x7f769c069560<=0){'(/run/agama/zypp)/usr/lib/sysimage/rpm'}
+[   25.901111] shrimp agama-web-server[1739]: Key [35A2F86E29B700A4-6a17fa38] [openSUSE Project Signing Key <opensuse@opensuse.org>] [wygasa: 2030-05-27] will be imported into the rpm trusted keyring.(new)
+[   25.901183] shrimp agama-web-server[1739]: Executing[C] 'rpm' '--root' '/run/agama/zypp' '--dbpath' '/usr/lib/sysimage/rpm' '--import' '--' '/var/tmp/zypp.tmp/TmpFile.oCfsQt'
+[   25.903558] shrimp agama-web-server[1739]: pid 2742 launched
+[   25.913902] shrimp agama-web-server[1739]: Pid 2742 successfully completed
+[   25.914045] shrimp agama-web-server[1739]: Key [35A2F86E29B700A4-6a17fa38] [openSUSE Project Signing Key <opensuse@opensuse.org>] [wygasa: 2030-05-27] imported in rpm trusted keyring.
+[   25.914153] shrimp agama-web-server[1739]: unlink /var/tmp/zypp.tmp/TmpFile.oCfsQt
+[   25.914203] shrimp agama-web-server[1739]: TmpPath cleaned up /var/tmp/zypp.tmp/TmpFile.oCfsQt{- 0644 0/0 size 1680}
+[   25.914252] shrimp agama-web-server[1739]: Importing GPG key: /usr/lib/rpm/gnupg/keys/gpg-pubkey-39db7c82-66c5d91a.asc
+[   25.914322] shrimp agama-web-server[1739]: /var/tmp/zypp.tmp/TmpFile.51TXtF
+[   25.915368] shrimp agama-web-server[1739]: Taking pubkey from /usr/lib/rpm/gnupg/keys/gpg-pubkey-39db7c82-66c5d91a.asc of size 969 and sha1 ebeff401629b365eb79a8093501ad1a7d990ef25
+[   25.915453] shrimp agama-web-server[1739]: hardlinkCopy /usr/lib/rpm/gnupg/keys/gpg-pubkey-39db7c82-66c5d91a.asc -> /var/tmp/zypp.tmp/TmpFile.51TXtFunlink /var/tmp/zypp.tmp/TmpFile.51TXtF
+[   25.915553] shrimp agama-web-server[1739]: 
+[   25.915627] shrimp agama-web-server[1739]: Reading pubkey from /var/tmp/zypp.tmp/TmpFile.51TXtF of size 969 and sha1 ebeff401629b365eb79a8093501ad1a7d990ef25
+[   25.915673] shrimp agama-web-server[1739]: /var/tmp/zypp.tmp/zypp.LcVLcj/PublicKey.MOYEDi
+[   25.930645] shrimp agama-web-server[1739]: recursive_rmdir /var/tmp/zypp.tmp/zypp.LcVLcj/PublicKey.MOYEDi
+[   25.930708] shrimp agama-web-server[1739]: TmpPath cleaned up /var/tmp/zypp.tmp/zypp.LcVLcj/PublicKey.MOYEDi{d 0700 0/0}
+[   25.930762] shrimp agama-web-server[1739]: Read pubkey from /var/tmp/zypp.tmp/TmpFile.51TXtF: [70AF9E8139DB7C82-66c5d91a] [SuSE Package Signing Key <build@suse.de>] [wygasa: 2028-10-02]
+[   25.937969] shrimp agama-web-server[1739]: /var/tmp/zypp.tmp/zypp.LcVLcj/zypp-trusted-kr8u0h3n {
+[   25.938133] shrimp agama-web-server[1739]:   [FEC28EAF09D9EA69-68595a8c] [SUSE 16 Package Signing Key <build-suse16@suse.de>] [wygasa: 2029-08-01]
+[   25.938178] shrimp agama-web-server[1739]:   [8A49EB0325DB7AE0-645bae34] [openSUSE:Backports OBS Project <openSUSE:Backports@build.opensuse.org>] [wygasa: 2027-05-09]
+[   25.938231] shrimp agama-web-server[1739]:   [488C583D287A0027-682477e3] [openSUSE Backports for SUSE Linux 16 <sle-backports-202500514@opensuse.org>] [wygasa: 2036-04-26]
+[   25.938263] shrimp agama-web-server[1739]:   [35A2F86E29B700A4-6a17fa38] [openSUSE Project Signing Key <opensuse@opensuse.org>] [wygasa: 2030-05-27]
+[   25.938288] shrimp agama-web-server[1739]: }
+[   25.938323] shrimp agama-web-server[1739]: Import Tkey + [70AF9E8139DB7C82-66c5d91a] [SuSE Package Signing Key <build@suse.de>] [wygasa: 2028-10-02] to trustedKeyRing
+[   25.943808] shrimp agama-web-server[1739]: trusted key added to zypp Keyring. Importing...
+[   25.943851] shrimp agama-web-server[1739]: Open database '(/run/agama/zypp)/usr/lib/sysimage/rpm'
+[   25.944879] shrimp agama-web-server[1739]: Close database ReferenceCounted(@0x7f769c0a4300<=0){'(/run/agama/zypp)/usr/lib/sysimage/rpm'}
+[   25.944961] shrimp agama-web-server[1739]: Key [70AF9E8139DB7C82-66c5d91a] [SuSE Package Signing Key <build@suse.de>] [wygasa: 2028-10-02] will be imported into the rpm trusted keyring.(new)
+[   25.944990] shrimp agama-web-server[1739]: Executing[C] 'rpm' '--root' '/run/agama/zypp' '--dbpath' '/usr/lib/sysimage/rpm' '--import' '--' '/var/tmp/zypp.tmp/TmpFile.51TXtF'
+[   25.948135] shrimp agama-web-server[1739]: pid 2766 launched
+[   25.956925] shrimp agama-web-server[1739]: Pid 2766 successfully completed
+[   25.957780] shrimp agama-web-server[1739]: Key [70AF9E8139DB7C82-66c5d91a] [SuSE Package Signing Key <build@suse.de>] [wygasa: 2028-10-02] imported in rpm trusted keyring.
+[   25.957863] shrimp agama-web-server[1739]: unlink /var/tmp/zypp.tmp/TmpFile.51TXtF
+[   25.957898] shrimp agama-web-server[1739]: TmpPath cleaned up /var/tmp/zypp.tmp/TmpFile.51TXtF{- 0644 0/0 size 969}
+[   25.957935] shrimp agama-web-server[1739]: Importing GPG key: /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc
+[   25.958048] shrimp agama-web-server[1739]: /var/tmp/zypp.tmp/TmpFile.PoybwK
+[   25.958208] shrimp agama-web-server[1739]: Taking pubkey from /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc of size 1665 and sha1 e7cd3605ddc674007f202424a5d4d5f74269c6ca
+[   25.958263] shrimp agama-web-server[1739]: hardlinkCopy /usr/lib/rpm/gnupg/keys/gpg-pubkey-3fa1d6ce-67c856ee.asc -> /var/tmp/zypp.tmp/TmpFile.PoybwKunlink /var/tmp/zypp.tmp/TmpFile.PoybwK
+[   25.958348] shrimp agama-web-server[1739]: 
+[   25.958487] shrimp agama-web-server[1739]: Reading pubkey from /var/tmp/zypp.tmp/TmpFile.PoybwK of size 1665 and sha1 e7cd3605ddc674007f202424a5d4d5f74269c6ca
+[   25.958568] shrimp agama-web-server[1739]: /var/tmp/zypp.tmp/zypp.LcVLcj/PublicKey.dBYIyY
+[   25.970193] shrimp agama-web-server[1739]: recursive_rmdir /var/tmp/zypp.tmp/zypp.LcVLcj/PublicKey.dBYIyY
+[   25.970216] shrimp agama-web-server[1739]: TmpPath cleaned up /var/tmp/zypp.tmp/zypp.LcVLcj/PublicKey.dBYIyY{d 0700 0/0}
+[   25.970255] shrimp agama-web-server[1739]: Read pubkey from /var/tmp/zypp.tmp/TmpFile.PoybwK: [F74F09BC3FA1D6CE-67c856ee] [SUSE Package Signing Key <build@suse.de>] [wygasa: 2029-03-05]
+[   25.974740] shrimp agama-web-server[1739]: /var/tmp/zypp.tmp/zypp.LcVLcj/zypp-trusted-kr8u0h3n {
+[   25.974791] shrimp agama-web-server[1739]:   [FEC28EAF09D9EA69-68595a8c] [SUSE 16 Package Signing Key <build-suse16@suse.de>] [wygasa: 2029-08-01]
+[   25.974807] shrimp agama-web-server[1739]:   [8A49EB0325DB7AE0-645bae34] [openSUSE:Backports OBS Project <openSUSE:Backports@build.opensuse.org>] [wygasa: 2027-05-09]
+[   25.974820] shrimp agama-web-server[1739]:   [488C583D287A0027-682477e3] [openSUSE Backports for SUSE Linux 16 <sle-backports-202500514@opensuse.org>] [wygasa: 2036-04-26]
+[   25.974833] shrimp agama-web-server[1739]:   [35A2F86E29B700A4-6a17fa38] [openSUSE Project Signing Key <opensuse@opensuse.org>] [wygasa: 2030-05-27]
+[   25.974847] shrimp agama-web-server[1739]:   [70AF9E8139DB7C82-66c5d91a] [SuSE Package Signing Key <build@suse.de>] [wygasa: 2028-10-02]
+[   25.974853] shrimp agama-web-server[1739]: }
+[   25.974868] shrimp agama-web-server[1739]: Import Tkey + [F74F09BC3FA1D6CE-67c856ee] [SUSE Package Signing Key <build@suse.de>] [wygasa: 2029-03-05] to trustedKeyRing
+[   25.979607] shrimp agama-web-server[1739]: trusted key added to zypp Keyring. Importing...
+[   25.979659] shrimp agama-web-server[1739]: Open database '(/run/agama/zypp)/usr/lib/sysimage/rpm'
+[   25.980487] shrimp agama-web-server[1739]: Close database ReferenceCounted(@0x7f769c0a4960<=0){'(/run/agama/zypp)/usr/lib/sysimage/rpm'}
+[   25.980573] shrimp agama-web-server[1739]: Key [F74F09BC3FA1D6CE-67c856ee] [SUSE Package Signing Key <build@suse.de>] [wygasa: 2029-03-05] will be imported into the rpm trusted keyring.(new)
+[   25.980599] shrimp agama-web-server[1739]: Executing[C] 'rpm' '--root' '/run/agama/zypp' '--dbpath' '/usr/lib/sysimage/rpm' '--import' '--' '/var/tmp/zypp.tmp/TmpFile.PoybwK'
+[   25.982241] shrimp agama-web-server[1739]: pid 2776 launched
+[   25.991760] shrimp agama-web-server[1739]: Pid 2776 successfully completed
+[   25.991818] shrimp agama-web-server[1739]: Key [F74F09BC3FA1D6CE-67c856ee] [SUSE Package Signing Key <build@suse.de>] [wygasa: 2029-03-05] imported in rpm trusted keyring.
+[   25.991847] shrimp agama-web-server[1739]: unlink /var/tmp/zypp.tmp/TmpFile.PoybwK
+[   25.991858] shrimp agama-web-server[1739]: TmpPath cleaned up /var/tmp/zypp.tmp/TmpFile.PoybwK{- 0644 0/0 size 1665}
+[   25.991890] shrimp agama-web-server[1739]: zypp initialized
+[   27.215823] shrimp shrimp-setup-install.desktop[2156]: libEGL warning: failed to get driver name for fd -1
+[   27.216075] shrimp shrimp-setup-install.desktop[2156]: libEGL warning: MESA-LOADER: failed to retrieve device information
+[   27.216075] shrimp shrimp-setup-install.desktop[2156]: libEGL warning: failed to get driver name for fd -1
+[   27.222661] shrimp shrimp-setup-install.desktop[2156]: MESA: error: ZINK: failed to choose pdev
+[   27.223138] shrimp shrimp-setup-install.desktop[2156]: libEGL warning: egl: failed to create dri2 screen
+[   28.462317] shrimp agama-web-server[1739]: request 549755813901: GET /login
+[   28.462687] shrimp agama-web-server[1739]: response for 549755813901: 307 Temporary Redirect 400.027µs
+[   28.518566] shrimp agama-web-server[1739]: request 2252349569499149: GET /
+[   28.518945] shrimp agama-web-server[1739]: response for 2252349569499149: 200 OK 406.866µs
+[   28.602049] shrimp agama-web-server[1739]: request 1099511627786: GET /assets/index-Dl9Ds1ou.js
+[   28.602305] shrimp agama-web-server[1739]: request 4504149383184397: GET /assets/index-DiNgj4cX.css
+[   28.602502] shrimp agama-web-server[1739]: response for 4504149383184397: 200 OK 201.054µs
+[   28.602520] shrimp agama-web-server[1739]: response for 1099511627786: 200 OK 526.528µs
+[   28.624378] shrimp agama-web-server[1739]: request 824633720840: GET /assets/pl-Ba7XyhS7.js
+[   28.625217] shrimp agama-web-server[1739]: response for 824633720840: 200 OK 876.804µs
+[   28.638903] shrimp agama-web-server[1739]: Error serving connection from 127.0.0.1:49140: connection closed before message completed
+[   28.639113] shrimp agama-web-server[1739]: request 2252624447406088: GET /
+[   28.639688] shrimp agama-web-server[1739]: response for 2252624447406088: 200 OK 580.86µs
+[   28.675366] shrimp agama-web-server[1739]: request 274877906957: GET /assets/index-Dl9Ds1ou.js
+[   28.675519] shrimp agama-web-server[1739]: response for 274877906957: 200 OK 177.84µs
+[   28.675822] shrimp agama-web-server[1739]: request 274877906958: GET /assets/index-DiNgj4cX.css
+[   28.676255] shrimp agama-web-server[1739]: response for 274877906958: 200 OK 453.949µs
+[   28.684890] shrimp agama-web-server[1739]: request 2252899325313034: GET /assets/pl-Ba7XyhS7.js
+[   28.685082] shrimp agama-web-server[1739]: response for 2252899325313034: 200 OK 207.323µs
+[   28.687962] shrimp agama-web-server[1739]: request 4504699138998282: GET /api/system
+[   28.688229] shrimp agama-web-server[1739]: Filtering products for language: pl
+[   28.690473] shrimp agama-web-server[1739]: request 1099511627788: GET /assets/inter-latin-400-normal-C38fXH4l.woff2
+[   28.690856] shrimp agama-web-server[1739]: request 1099511627789: GET /assets/wall-blur-CJVGT3I4.jpg
+[   28.691185] shrimp agama-web-server[1739]: response for 1099511627788: 200 OK 714.763µs
+[   28.692597] shrimp agama-web-server[1739]: response for 1099511627789: 200 OK 1.738515ms
+[   28.695727] shrimp agama-web-server[1739]: Skipped connection because of flags: 15
+[   28.702380] shrimp agama-web-server[1739]: request 549755813902: GET /assets/inter-latin-ext-400-normal-C1nco2VV.woff2
+[   28.702670] shrimp agama-web-server[1739]: response for 549755813902: 200 OK 296.513µs
+[   28.704669] shrimp agama-web-server[1739]: response for 4504699138998282: 200 OK 16.709917ms
+[   28.719694] shrimp agama-web-server[1739]: request 549755813904: GET /assets/inter-latin-600-normal-LgqL8muc.woff2
+[   28.723184] shrimp agama-web-server[1739]: response for 549755813904: 200 OK 3.505602ms
+[  246.683108] shrimp WebKitWebProces[2868]: Error releasing name org.shrimp.Setup.Sandboxed.WebProcess-dbf08784-bf6d-4e89-b257-38c58208554b: The connection is closed
 ===FAILED
   UNIT LOAD ACTIVE SUB DESCRIPTION
 
