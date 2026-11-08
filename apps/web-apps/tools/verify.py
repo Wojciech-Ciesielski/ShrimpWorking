@@ -147,43 +147,110 @@ def candidates(page_url, html_text):
     return p.manifest is not None, out
 
 
-def convert_icon(data, ctype, dest):
+def run(args, timeout=60):
+    return subprocess.run(args, capture_output=True, text=True, timeout=timeout)
+
+
+def decode_icon(data, ctype, dest):
+    """Zamienia pobrany plik (png/jpg/webp/ico/svg) na PNG bez zmiany rozmiaru rastrów.
+    SVG jest renderowany ostro w 512 px. Zwraca efektywną liczbę pikseli (rozdzielczość
+    źródła) albo None, gdy plik nie jest obrazem."""
     with tempfile.TemporaryDirectory() as tmp:
-        ext = ".svg" if (b"<svg" in data[:2000] or "svg" in ctype) else ".ico" if data[:4] == b"\0\0\1\0" else ".img"
+        is_svg = b"<svg" in data[:3000] or "svg" in ctype
+        ext = ".svg" if is_svg else ".ico" if data[:4] == b"\0\0\1\0" else ".img"
         src = os.path.join(tmp, "src" + ext)
         with open(src, "wb") as f:
             f.write(data)
-        frame = src
+        frame = src + "[0]"
         if ext == ".ico":
-            try:
-                ident = subprocess.run(["identify", "-format", "%[scene] %w\n", src],
-                                       capture_output=True, text=True, timeout=30).stdout.split("\n")
-                frames = [tuple(map(int, l.split())) for l in ident if l.strip()]
+            ident = run(["identify", "-format", "%[scene] %w\n", src]).stdout.split("\n")
+            frames = [tuple(map(int, l.split())) for l in ident if len(l.split()) == 2]
+            if frames:
                 frame = f"{src}[{max(frames, key=lambda x: x[1])[0]}]"
-            except Exception:
-                frame = src + "[0]"
-        elif ext == ".img":
-            frame = src + "[0]"
-        args = ["convert", "-background", "none"]
-        if ext == ".svg":
-            args += ["-density", "384"]
-        args += [frame, "-trim", "+repage", "-resize", "128x128", "-gravity", "center",
-                 "-extent", "128x128", "-strip", "PNG32:" + dest]
-        r = subprocess.run(args, capture_output=True, text=True, timeout=60)
+        if is_svg:
+            r = run(["convert", "-background", "none", "-density", "600", src, "-resize", "512x512",
+                     "-strip", "PNG32:" + dest])
+            px = 512
+        else:
+            r = run(["convert", "-background", "none", frame, "-strip", "PNG32:" + dest])
+            px = 0
         if r.returncode != 0 or not os.path.exists(dest):
             return None
-        w = subprocess.run(["identify", "-format", "%w", src if ext != ".ico" else frame],
-                           capture_output=True, text=True, timeout=30).stdout.strip()
-        try:
-            return int(w.split("\n")[0][:5] or 0)
-        except ValueError:
-            return 0
+        if not is_svg:
+            w = run(["identify", "-format", "%w", dest]).stdout.strip()
+            px = int(w[:5] or 0)
+        return px
+
+
+def dominant_color(png):
+    """Średni kolor ikony (ważony nasyceniem i kryciem), przyciemniony pod białą literę."""
+    raw = subprocess.run(["convert", png, "-resize", "16x16!", "-depth", "8", "rgba:-"],
+                         capture_output=True, timeout=30).stdout
+    tot = [0.0, 0.0, 0.0]
+    wsum = 0.0
+    for i in range(0, len(raw) - 3, 4):
+        r, g, b, a = raw[i:i + 4]
+        sat = (max(r, g, b) - min(r, g, b)) / 255
+        w = (a / 255) * (0.1 + sat)
+        wsum += w
+        for k, v in enumerate((r, g, b)):
+            tot[k] += v * w
+    if wsum == 0:
+        return "#3584e4"
+    r, g, b = (t / wsum for t in tot)
+    lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+    if lum > 0.55:  # biała litera musi być czytelna
+        f = 0.55 / lum
+        r, g, b = r * f, g * f, b * f
+    return "#%02x%02x%02x" % (int(r), int(g), int(b))
+
+
+def corner_opaque(png):
+    out = run(["convert", png, "-format", "%[fx:p{0,0}.a]", "info:"]).stdout.strip()
+    try:
+        return float(out) > 0.9
+    except ValueError:
+        return False
+
+
+def finish_icon(work, px, kind, name, dest):
+    """Składa końcową ikonę 128x128 z pliku `work`. Zwraca styl: ostra / kafelek / litera."""
+    mask = ["(", "-size", "128x128", "xc:none", "-fill", "white", "-draw",
+            "roundrectangle 0,0 127,127 26,26", ")"]
+    if kind != "simple" and px >= 96:
+        args = ["convert", work, "-filter", "Lanczos", "-resize", "128x128", "-background", "none",
+                "-gravity", "center", "-extent", "128x128"]
+        if corner_opaque(work):  # pełne tło do krawędzi: zaokrąglamy rogi jak w GNOME
+            args += mask + ["-compose", "DstIn", "-composite"]
+        r = run(args + ["-strip", "PNG32:" + dest])
+        return "ostra" if r.returncode == 0 else None
+    if kind == "simple" or px >= 48:
+        # Mała albo jednokolorowa ikona: na jasnym kafelku, bez rozciągania ponad ~1,5x.
+        size = 80 if kind == "simple" else min(80, int(px * 1.5))
+        r = run(["convert", "-size", "128x128", "xc:none", "-fill", "#f6f5f4", "-draw",
+                 "roundrectangle 0,0 127,127 26,26", "(", work, "-filter", "Lanczos", "-resize",
+                 f"{size}x{size}", ")", "-gravity", "center", "-composite", "-strip", "PNG32:" + dest])
+        return "kafelek" if r.returncode == 0 else None
+    letter = (name.strip()[:1] or "?").upper()
+    color = dominant_color(work)
+    r = run(["convert", "-size", "128x128", "xc:none", "-fill", color, "-draw",
+             "roundrectangle 0,0 127,127 26,26", "-fill", "white", "-font", "DejaVu-Sans-Bold",
+             "-pointsize", "76", "-gravity", "center", "-annotate", "+0+6", letter,
+             "-strip", "PNG32:" + dest])
+    return "litera" if r.returncode == 0 else None
+
+
+def simple_slugs(app):
+    base = re.sub(r"[^a-z0-9]", "", app["name"].lower().split(" (")[0].replace("+", "plus"))
+    ids = re.sub(r"[^a-z0-9]", "", app["id"])
+    return list(dict.fromkeys([base, ids]))
 
 
 def check(app):
     st, final, ctype, body, err = fetch(app["url"])
     res = {"id": app["id"], "url": app["url"], "status": st, "final_url": final, "error": err,
-           "manifest": False, "icon_source": None, "icon_kind": None, "icon_px": None}
+           "manifest": False, "icon_source": None, "icon_kind": None, "icon_px": None,
+           "icon_style": None}
     if st is None:
         res["result"] = "błąd"
     elif 200 <= st < 300:
@@ -198,24 +265,40 @@ def check(app):
     text = body.decode("utf-8", "replace") if "html" in ctype or body[:200].lstrip().startswith(b"<") else ""
     has_manifest, cands = candidates(page, text)
     res["manifest"] = has_manifest
+    host = urllib.parse.urlsplit(page).netloc
+    cands.append(("ddg", f"https://icons.duckduckgo.com/ip3/{host}.ico", 100))
+    for slug in simple_slugs(app):  # ostatnia deska ratunku: jednokolorowy znak marki
+        cands.append(("simple", f"https://cdn.simpleicons.org/{slug}", 50))
     if app.get("icon_url"):  # ręcznie wskazana ikona ma pierwszeństwo
         cands.insert(0, ("ręczna", app["icon_url"], 9999))
     dest = os.path.join(ICONS, app["id"] + ".png")
-    tmp = dest + ".try.png"
-    best = 0
-    for kind, url, _ in cands:
-        ist, _, ictype, data, _ = fetch(url, limit=2_000_000)
-        if ist != 200 or len(data) < 100 or "html" in ictype:
-            continue
-        px = convert_icon(data, ictype, tmp)
-        if px is not None and px > best:
-            best = px
-            os.replace(tmp, dest)
-            res.update(icon_source=url, icon_kind=kind, icon_px=px)
-            if px >= 128 or kind == "ręczna":
-                break
-    if os.path.exists(tmp):
-        os.remove(tmp)
+    with tempfile.TemporaryDirectory() as tmp:
+        best_px, best_work = 0, os.path.join(tmp, "best.png")
+        work = os.path.join(tmp, "try.png")
+        for kind, url, _ in cands:
+            if kind == "simple" and best_px >= 64:
+                continue
+            ist, _, ictype, data, _ = fetch(url, limit=2_000_000)
+            if ist != 200 or len(data) < 100 or "html" in ictype:
+                continue
+            px = decode_icon(data, ictype, work)
+            if px is None:
+                continue
+            if kind == "simple":
+                px = 100  # sztucznie: ostry znak wygrywa z ikonką 16-48 px, nie ze zwykłą ikoną
+            if px > best_px:
+                best_px = px
+                os.replace(work, best_work)
+                res.update(icon_source=url, icon_kind=kind, icon_px=px)
+                if px >= 128 or kind == "ręczna":
+                    break
+        if best_px:
+            style = finish_icon(best_work, best_px, res["icon_kind"], app["name"], dest)
+            res["icon_style"] = style
+            if style is None:
+                res.update(icon_source=None, icon_kind=None, icon_px=None)
+        elif os.path.exists(dest):
+            os.remove(dest)  # bez źródła zostaje litera rysowana przez aplikację
     return res
 
 
@@ -262,7 +345,7 @@ def write_md(now, apps, reserve, results):
         r = results[a["id"]]
         st = r["status"] if r["status"] is not None else (r["error"] or "")[:60]
         final = r["final_url"] if r["final_url"] != a["url"] else ""
-        icon = f"{r['icon_kind']} {r['icon_px']}px" if r["icon_source"] else "brak (litera)"
+        icon = f"{r['icon_kind']} {r['icon_px']}px, {r['icon_style']}" if r["icon_source"] else "brak (litera z aplikacji)"
         return f"| {a['name']} | {a['url']} | {r['result']} | {st} | {final} | {'tak' if r['manifest'] else 'nie'} | {icon} |"
     head = "| Nazwa | Adres | Wynik | HTTP | Przekierowanie | Manifest PWA | Ikona |\n|---|---|---|---|---|---|---|"
     cnt = lambda lst, k: sum(1 for a in lst if results[a["id"]]["result"] == k)
