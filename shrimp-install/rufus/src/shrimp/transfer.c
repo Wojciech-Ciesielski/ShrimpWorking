@@ -5,6 +5,7 @@
  *   shrimp-transfer/shrimp.json          opis (schemat w shrimp-install/README.md)
  *   shrimp-transfer/files/<klucz>/…      Moje foldery: documents, pictures, desktop, music, videos, downloads
  *   shrimp-transfer/files/other/<nazwa>  Wybiorę sam
+ *   shrimp-backup/…                      dawna zawartość nośnika (usbbackup.c), wraca na niego po instalacji
  * Pliki większe niż pozwala FAT32 dzielimy na części <plik>.shrimp-part000, 001…; Setup je skleja.
  *
  * Copyright © 2026 Shrimp. GPLv3.
@@ -354,8 +355,20 @@ DWORD WINAPI ShrimpCopyThread(LPVOID param)
 
 	for (int i = 0; i < t->count; i++)
 		c.total += ShrimpTreeSize(t->items[i].source, &ShrimpCancel);
+	c.total += 2 * ShrimpUsbBackupBytes;    /* zapis i sprawdzenie zawartości nośnika */
 	ShrimpSpeed(0, TRUE);
 	ShrimpProgress(3, 0, c.total, 0);
+
+	/* Najpierw dawna zawartość nośnika: to jedyna kopia tych plików. */
+	{
+		wchar_t media[16];
+		swprintf(media, ARRAYSIZE(media), L"\\\\?\\%c:", root[0]);
+		if (!ShrimpUsbWriteBack(media, &c.done, c.total)) {
+			c.fatal = TRUE;
+			free(files_dir);
+			goto out;
+		}
+	}
 
 	for (int i = 0; i < t->count && !ShrimpCancel && !c.fatal; i++) {
 		shrimp_item* it = &t->items[i];
