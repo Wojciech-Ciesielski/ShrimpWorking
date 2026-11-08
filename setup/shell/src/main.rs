@@ -131,6 +131,26 @@ fn main() -> glib::ExitCode {
     app.run_with_args::<&str>(&[])
 }
 
+fn hide_overview() {
+    use gtk::gio;
+    let Ok(bus) = gio::bus_get_sync(gio::BusType::Session, gio::Cancellable::NONE) else {
+        return;
+    };
+    let args = ("org.gnome.Shell", "OverviewActive", false.to_variant()).to_variant();
+    bus.call(
+        Some("org.gnome.Shell"),
+        "/org/gnome/Shell",
+        "org.freedesktop.DBus.Properties",
+        "Set",
+        Some(&args),
+        None,
+        gio::DBusCallFlags::NONE,
+        1000,
+        gio::Cancellable::NONE,
+        |_| {},
+    );
+}
+
 fn build(app: &gtk::Application, url: &str, install: bool, windowed: bool, hint: Option<&str>) {
     let view = webkit6::WebView::new();
     if let (Some(js), Some(ucm)) = (hint, view.user_content_manager()) {
@@ -190,6 +210,13 @@ fn build(app: &gtk::Application, url: &str, install: bool, windowed: bool, hint:
     }
     view.load_uri(url);
     win.present();
+    if !windowed {
+        // GNOME po zalogowaniu otwiera widok przeglądu i okno Setup jest wtedy tylko miniaturą.
+        // Zamykamy przegląd przez D-Bus (właściwość OverviewActive), także po animacji startowej.
+        for delay in [0, 2, 5] {
+            glib::timeout_add_seconds_local_once(delay, hide_overview);
+        }
+    }
 
     // Serwer pierwszej konfiguracji prosi o zamknięcie okna po „Zaczynajmy”.
     let app = app.clone();
