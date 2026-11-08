@@ -26,12 +26,14 @@ echo "$REPO/" > out/desc/root/usr/share/shrimp/linux/build/repo.url
 "$ENGINE" run --rm --privileged -v /dev:/dev -v "$PWD:/work" -w /work \
   docker.io/opensuse/tumbleweed:latest bash -euxc "
     zypper -n --gpg-auto-import-keys ref
-    # Tumbleweed mirrors are sometimes mid-sync (404 on single RPMs): retry with a fresh refresh
+    # Tumbleweed mirrors lag behind a new snapshot (404 on single RPMs, e.g. binutils, for hours):
+    # after a failure, fetch straight from the origin server (downloadcontent.opensuse.org) instead.
     ok=0
     for i in 1 2 3; do
       zypper -n in --no-recommends python3-kiwi kiwi-systemdeps-iso-media kiwi-systemdeps-bootloaders kiwi-systemdeps-filesystems binutils findutils gawk sed coreutils \
         nodejs-default npm-default tar gzip && { ok=1; break; }
-      sleep 60; zypper -n --gpg-auto-import-keys ref -f
+      sed -i -E 's#https?://(download|cdn)\.opensuse\.org#https://downloadcontent.opensuse.org#' /etc/zypp/repos.d/*.repo
+      zypper -n clean -a; sleep 20; zypper -n --gpg-auto-import-keys ref -f
     done
     [ \$ok = 1 ]
     rm -rf out/build
