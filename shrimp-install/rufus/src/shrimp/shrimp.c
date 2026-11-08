@@ -49,6 +49,8 @@ static volatile LONG fail_sent = 0;
 static char last_error[512];
 static BOOL folders_started = FALSE;
 static int opt_auto_disk = -1;
+static volatile uint64_t copied_bytes = 0;
+static BOOL speed_armed = FALSE;
 
 /* ---------- dziennik w pliku ---------- */
 static HANDLE log_file = INVALID_HANDLE_VALUE;
@@ -199,22 +201,42 @@ uint64_t ShrimpSpeed(uint64_t done, BOOL reset)
 	return (uint64_t)ema;
 }
 
-void ShrimpProgress(int phase, uint64_t done, uint64_t total, uint64_t speed)
+void ShrimpProgressStep(int phase, const char* step, uint64_t done, uint64_t total, uint64_t speed)
 {
 	static uint64_t last = 0;
 	static int last_phase = 0;
+	static const char* last_step = NULL;
 	char* s;
 	uint64_t now = GetTickCount64();
-	if (phase == last_phase && done < total && now - last < 150)
+	if (phase == last_phase && step == last_step && done < total && now - last < 150)
 		return;
 	last = now;
 	last_phase = phase;
-	s = malloc(160);
+	last_step = step;
+	s = malloc(200);
 	if (s == NULL)
 		return;
-	snprintf(s, 160, "{\"event\":\"progress\",\"phase\":%d,\"done\":%llu,\"total\":%llu,\"speed\":%llu}",
-		phase, (unsigned long long)done, (unsigned long long)total, (unsigned long long)speed);
+	snprintf(s, 200, "{\"event\":\"progress\",\"phase\":%d,\"done\":%llu,\"total\":%llu,\"speed\":%llu%s%s%s}",
+		phase, (unsigned long long)done, (unsigned long long)total, (unsigned long long)speed,
+		step ? ",\"step\":\"" : "", step ? step : "", step ? "\"" : "");
 	ShrimpEmit(s);
+}
+
+void ShrimpProgress(int phase, uint64_t done, uint64_t total, uint64_t speed)
+{
+	ShrimpProgressStep(phase, NULL, done, total, speed);
+}
+
+void ShrimpEmitImage(void)
+{
+	jb b;
+	jb_init(&b);
+	jb_obj(&b, NULL);
+	jb_str(&b, "event", "image");
+	jb_u64(&b, "size", ShrimpManifest.size);
+	jb_str(&b, "version", ShrimpManifest.version);
+	jb_end_obj(&b);
+	ShrimpEmit(b.s);
 }
 
 void ShrimpFail(int phase, const char* kind, const char* message)
@@ -622,7 +644,7 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 		}
 		uprintf("Shrimp: obraz gotowy (%s), analiza w Rufusie", ShrimpIsoPath);
 		state = ST_SCAN;
-		ShrimpProgress(2, 0, 100, 0);
+		ShrimpProgressStep(2, "prepare", 0, 0, 0);
 		free(image_path);
 		image_path = _strdup(ShrimpIsoPath);
 		ErrorStatus = 0;
@@ -675,6 +697,9 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 		ShrimpUsbBackupMarkFormatted();
 		uprintf("Shrimp: kopia zawartości nośnika gotowa (%llu B), START w Rufusie", (unsigned long long)ShrimpUsbBackupBytes);
 		state = ST_FORMAT;
+		copied_bytes = 0;
+		ShrimpSpeed(0, TRUE);
+		ShrimpProgressStep(2, "prepare", 0, 0, 0);
 		SendMessage(hMainDialog, WM_COMMAND, IDC_START, 0);
 		break;
 
@@ -772,15 +797,34 @@ void ShrimpOnImageScanned(BOOL ok)
 		PostMessage(hShrimpWnd, WM_SHRIMP_SCANNED, ok && img_report.is_iso, 0);
 }
 
+/* Pasek fazy 2 to pasek Rufusa (formatowanie i zapis plików obrazu) przeliczony na bajty obrazu.
+ * Prędkość tylko z bajtów naprawdę zapisanych na nośnik (kopia plików ISO), nie z przeskoków paska
+ * po formatowaniu: inaczej wychodziły bzdury w rodzaju 1116 MB/s. Do pierwszych bajtów: krok „prepare”. */
+void ShrimpOnFileCopy(uint64_t processed, uint64_t total)
+{
+	(void)total;
+	if (shrimp_mode && state == ST_FORMAT)
+		copied_bytes = processed * 2048;
+}
+
 void ShrimpOnProgress(int pos, int max)
 {
-	uint64_t size;
+	uint64_t size, done;
 	if (!shrimp_mode || state != ST_FORMAT || max <= 0)
 		return;
 	size = ShrimpManifest.size ? ShrimpManifest.size : SHRIMP_ISO_ESTIMATE;
-	/* Pasek fazy 2 obejmuje też kopię zawartości nośnika (odczyt i sprawdzenie: 2 × bajty). */
-	uint64_t done = 2 * ShrimpUsbBackupBytes + size * (uint64_t)pos / (uint64_t)max;
-	ShrimpProgress(2, done, size + 2 * ShrimpUsbBackupBytes, ShrimpSpeed(done, FALSE));
+	done = size * (uint64_t)pos / (uint64_t)max;
+	if (copied_bytes == 0) {
+		speed_armed = FALSE;
+		ShrimpProgressStep(2, "prepare", done, size, 0);
+		return;
+	}
+	if (!speed_armed) {
+		/* Pomiar od pierwszych zapisanych bajtów, bez czasu formatowania. */
+		speed_armed = TRUE;
+		ShrimpSpeed(copied_bytes, TRUE);
+	}
+	ShrimpProgress(2, done, size, ShrimpSpeed(copied_bytes, FALSE));
 }
 
 void ShrimpOnFormatDone(DWORD error_status)
