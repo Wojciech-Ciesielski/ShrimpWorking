@@ -34,6 +34,7 @@ install -Dm644 "$ROOT/standardize/shrimp-app-style-user.service" "$D/usr/lib/sys
 
 if [ "$LIVE" = --live ]; then
   install -Dm644 "$HERE/system/autostart/shrimp-setup-install.desktop" "$D/etc/xdg/autostart/shrimp-setup-install.desktop"
+  install -Dm644 "$HERE/system/autostart/shrimp-setup-launcher.desktop" "$D/usr/share/applications/org.shrimp.Setup.desktop"
   install -Dm644 "$HERE/system/systemd/agama-web-server.service.d/50-shrimp.conf" "$D/usr/lib/systemd/system/agama-web-server.service.d/50-shrimp.conf"
   install -Dm644 "$HERE/system/systemd/shrimp-setup-token.service" "$D/usr/lib/systemd/system/shrimp-setup-token.service"
 fi
