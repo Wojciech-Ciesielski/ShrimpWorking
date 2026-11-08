@@ -131,9 +131,10 @@ class ShrimpMenuButton extends PanelMenu.Button {
         this._appItem('menu.settings', ['org.gnome.Settings.desktop', 'gnome-control-center.desktop']);
         this._separator();
 
-        const software = this._appItem('menu.software', ['org.shrimp.Apps.desktop', 'org.gnome.Software.desktop']);
+        // Shrimp Apps is the store; updates are on its "Installed" page, so the same window opens.
+        const software = this._appItem('menu.software', ['org.shrimp.Apps.desktop']);
         if (software)
-            this._item('menu.updates', () => spawn(['gnome-software', '--mode=updates']));
+            this._item('menu.updates', () => software.activate());
         this._appItem('menu.monitor', ['org.gnome.SystemMonitor.desktop', 'gnome-system-monitor.desktop']);
         this._appItem('menu.disks', ['org.gnome.DiskUtility.desktop', 'gnome-disks.desktop']);
         this._appItem('menu.terminal', ['org.gnome.Console.desktop', 'org.gnome.Terminal.desktop']);
