@@ -4,6 +4,7 @@ mod backend;
 mod catalog;
 mod categories;
 mod details;
+mod headless;
 mod net;
 mod selftest;
 mod store;
@@ -38,6 +39,11 @@ fn main() -> glib::ExitCode {
     // Sprawdzenie bez okna: shrimp-apps --self-test [ID_APLIKACJI]
     if args.get(1).map(String::as_str) == Some("--self-test") {
         return selftest::run(args.get(2).cloned());
+    }
+
+    // Instalacja bez okna (obraz, onboarding): shrimp-apps --install [--base] [ID...]
+    if args.get(1).map(String::as_str) == Some("--install") {
+        return headless::run(&args[2..]);
     }
 
     let app = adw::Application::builder()
