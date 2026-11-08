@@ -134,3 +134,25 @@ Argumenty: `--demo` (dane z makiety, nic nie zapisuje), `--screen <ekran> --them
 - Limit rozmiaru kopii (teraz: tyle, ile mieści nośnik).
 - Podpis Authenticode `.exe` (SmartScreen ostrzega przed niepodpisanymi programami).
 - Nie testowane na prawdziwym sprzęcie: zapis nośnika i BootNext sprawdzi dopiero komputer z UEFI.
+
+
+## Zawartość nośnika (kopia i przywracanie)
+
+Formatowanie nośnika nie kasuje plików użytkownika. Przebieg (implementacja: `rufus/src/shrimp/usbbackup.c`,
+`setup/system/libexec/shrimp-usb-backup`, krok „pendrive” w Setup):
+
+1. **Przed formatowaniem** Shrimp Install kopiuje całą zawartość nośnika do `%LOCALAPPDATA%\Shrimp\usb-backup\<id>\files`,
+   licząc SHA-256, a potem czyta kopię z dysku jeszcze raz i porównuje sumy. Błąd, brak miejsca na dysku
+   albo na nośniku (kopia + obraz Shrimp + pliki z Windows) kończy przygotowanie, zanim cokolwiek zostanie skasowane.
+2. **Po zapisie Shrimp** pliki idą do ukrytego `shrimp-backup/` na nośniku (`manifest.tsv` + `files/`; pliki ≥ 4 GB dzielone na
+   `.shrimp-part000…`), są czytane z nośnika i porównywane. Dopiero wtedy kopia w Windows znika. Ponowne przygotowanie
+   tego samego nośnika (etykieta `SHRIMP_LIVE`) bierze oryginały z jego `shrimp-backup/`, z weryfikacją sum.
+3. **Instalacja**: `post-install.sh` woła `shrimp-usb-backup stash`: sumy z manifestu, kopia na dysk komputera
+   (`/var/lib/shrimp-setup/usb`), drugie sprawdzenie, zapis numeru seryjnego i rozmiaru pendrive'a.
+4. **Pierwsza konfiguracja**: krok „pendrive” pokazuje się tylko wtedy, gdy jest co przywracać. „Przywróć” woła
+   (pkexec) `shrimp-usb-backup restore`: sprawdza kopię, formatuje wyłącznie dysk USB o zapisanym numerze seryjnym i
+   rozmiarze (nigdy dysku systemowego), wgrywa pliki, odmontowuje, czyta z urządzenia i porównuje sumy; dopiero potem
+   usuwa kopię z dysku komputera. Gdy cokolwiek zawiedzie albo użytkownik rezygnuje, pliki trafiają do `~/Pendrive`.
+
+`manifest.tsv`: `#shrimp-backup 1`, wiersze `label`, `fs`, `scheme`, `d<TAB>ścieżka`, `f<TAB>sha256<TAB>bajty<TAB>mtime<TAB>części<TAB>ścieżka`.
+Test: `setup/tests/test-usb-backup.sh` (bez prawdziwego pendrive'a) i `shrimp-install.exe --backup-test ŹRÓDŁO CEL KOPIA` w CI.
