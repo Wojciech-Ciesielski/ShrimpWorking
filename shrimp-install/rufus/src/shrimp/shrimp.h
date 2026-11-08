@@ -35,6 +35,7 @@ void ShrimpOnFormatDone(DWORD error_status);
 typedef struct { char* s; size_t len, cap; int depth; BOOL first[32]; } jb;
 void jb_init(jb* b);
 void jb_free(jb* b);
+void jb_text(jb* b, const char* s);   /* dopisuje tekst bez zmian */
 void jb_obj(jb* b, const char* key);        /* key NULL wewnątrz tablicy */
 void jb_end_obj(jb* b);
 void jb_arr(jb* b, const char* key);
@@ -56,6 +57,7 @@ BOOL json_get(const char* json, const char* key, char* out, size_t out_size);
 #define WM_SHRIMP_FORMATTED (WM_APP + 0x303)
 #define WM_SHRIMP_FETCHED  (WM_APP + 0x304)   /* wParam: TRUE gdy ISO gotowe */
 #define WM_SHRIMP_COPIED   (WM_APP + 0x305)   /* wParam: TRUE gdy kopia skończona */
+#define WM_SHRIMP_BACKED_UP (WM_APP + 0x306)  /* wParam: TRUE gdy zawartość nośnika jest bezpieczna w kopii */
 extern HWND hShrimpWnd;
 BOOL ShrimpWindowCreate(HINSTANCE hInstance, const char* opts_json);
 void ShrimpWindowCleanup(void);
@@ -105,6 +107,15 @@ typedef struct {
 } shrimp_transfer;
 extern shrimp_transfer ShrimpTransfer;
 DWORD WINAPI ShrimpCopyThread(LPVOID param);
+
+/* usbbackup.c: zawartość nośnika wraca na niego po instalacji (shrimp-backup/, Setup) */
+extern uint64_t ShrimpUsbBackupBytes;      /* bajty plików z nośnika (0: pusty) */
+/* Wątek (param: DriveIndex): kopia w Windows ze sprawdzeniem sum. Kończy WM_SHRIMP_BACKED_UP. Błąd: ShrimpFail(). */
+DWORD WINAPI ShrimpUsbBackupThread(LPVOID param);
+void ShrimpUsbBackupMarkFormatted(void);
+/* Kopia do <nośnik>\shrimp-backup, odczyt i porównanie sum, potem usunięcie kopii w Windows. */
+BOOL ShrimpUsbWriteBack(const wchar_t* media_root, uint64_t* done, uint64_t total);
+int ShrimpUsbBackupTest(const wchar_t* src, const wchar_t* dst, const wchar_t* work);
 
 /* boot.c: jednorazowy start z nośnika */
 /* Zwraca NULL albo opis błędu (po polsku, dla użytkownika). */
