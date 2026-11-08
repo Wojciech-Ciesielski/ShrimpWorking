@@ -42,3 +42,7 @@
 102	Whakaarahia anō te rorohiko kia oti.
 110	Muri atu
 111	Whakaara anō
+134	Me whai a Shrimp Install i te wāhanga Microsoft Edge WebView2, engari kāore i taea te whakaoho.\n\nWhakahōuhia a Windows, whakaurua rānei te WebView2 Runtime mai i a Microsoft, ka ngana anō.
+135	Kāore i taea te whakatuwhera i te matapihi o Shrimp Install (WebView2).
+136	Kāore i taea te whakaoho i te wāhanga WebView2.
+138	Kāore he atanga o te hōtaka.

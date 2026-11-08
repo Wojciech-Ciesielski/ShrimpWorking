@@ -42,3 +42,7 @@
 102	Tún kọ̀ǹpútà bẹ̀rẹ̀ láti parí.
 110	Lẹ́yìn náà
 111	Tún bẹ̀rẹ̀
+134	Shrimp Install nílò ẹ̀yà Microsoft Edge WebView2, ṣùgbọ́n kò ṣeé ṣe láti bẹ̀rẹ̀ rẹ̀.\n\nṢe ìmúdójúìwọ̀n Windows tàbí fi WebView2 Runtime sórí ẹ̀rọ láti ọ̀dọ̀ Microsoft kí o sì gbìyànjú lẹ́ẹ̀kan sí i.
+135	Kò ṣeé ṣe láti ṣí fèrèsé Shrimp Install (WebView2).
+136	Kò ṣeé ṣe láti bẹ̀rẹ̀ ẹ̀yà WebView2.
+138	Ojú ètò náà kò sí.

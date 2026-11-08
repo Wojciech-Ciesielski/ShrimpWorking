@@ -42,3 +42,7 @@
 102	ንምውዳእ ኮምፒተር ዳግማይ ጀምር።
 110	ደሓር
 111	ዳግማይ ጀምር
+134	Shrimp Install ናይ Microsoft Edge WebView2 ክፋል የድልዮ፣ ግን ክጅምር ኣይተኻእለን።\n\nWindows ኣሐድሱ ወይ WebView2 Runtime ካብ Microsoft ኣቐምጡ እሞ ደጊምኩም ፈትኑ።
+135	መስኮት Shrimp Install (WebView2) ክኽፈት ኣይተኻእለን።
+136	ክፋል WebView2 ክጅምር ኣይተኻእለን።
+138	መተሓላለፊ ናይቲ ፕሮግራም የለን።

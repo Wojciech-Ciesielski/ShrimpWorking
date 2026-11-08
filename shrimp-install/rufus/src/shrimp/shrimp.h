@@ -75,6 +75,9 @@ BOOL ShrimpBitLocker(void);
 /* Pełny zbiór danych do shrimp.json (bez plików): windows, user, locale, apps. */
 void ShrimpCollect(jb* b);
 
+/* transfer.c: znacznik języka Shrimp (np. „pt-br”, „zh-hant”) z nazwy języka Windows (BCP-47). */
+void ShrimpLangTag(const char* bcp, char* out, size_t n);
+
 /* fetch.c: obraz Shrimp */
 typedef struct {
 	char version[64];

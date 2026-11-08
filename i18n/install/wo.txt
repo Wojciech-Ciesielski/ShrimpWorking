@@ -1,0 +1,4 @@
+134	Shrimp Install dafa soxla bant bu Microsoft Edge WebView2, waaye manuñu ko tàmbali.\n\nYeesal Windows walla nga samp WebView2 Runtime bu jóge Microsoft te jéemaat.
+135	Manuñu ubbi palanteeru Shrimp Install (WebView2).
+136	Manuñu tàmbali bant bu WebView2.
+138	Interface bu prograam bi amul.

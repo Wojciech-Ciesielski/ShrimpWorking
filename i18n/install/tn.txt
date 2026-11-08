@@ -21,3 +21,7 @@
 101	Tsotlhe di siametse
 110	Moragonyana
 111	Simolola gape
+134	Shrimp Install e tlhoka karolo ya Microsoft Edge WebView2, mme ga e a kgona go simololwa.\n\nTlhabolola Windows kgotsa o tsenye WebView2 Runtime go tswa kwa Microsoft mme o leke gape.
+135	Ga go a kgonega go bula letlhabaphefo la Shrimp Install (WebView2).
+136	Ga go a kgonega go simolola karolo ya WebView2.
+138	Tebogano ya porogeramo ga e yo.

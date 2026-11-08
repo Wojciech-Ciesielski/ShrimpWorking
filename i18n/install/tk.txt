@@ -42,3 +42,7 @@
 102	Tamamlamak üçin kompýuteri gaýtadan işlediň.
 110	Soňrak
 111	Gaýtadan işletmek
+134	Shrimp Install üçin Microsoft Edge WebView2 komponenti gerek, emma ony işledip bolmady.\n\nWindows-y täzeläň ýa-da Microsoft-dan WebView2 Runtime guruň we täzeden synanyşyň.
+135	Shrimp Install penjiresini (WebView2) açyp bolmady.
+136	WebView2 komponentini işledip bolmady.
+138	Programmanyň interfeýsi ýok.

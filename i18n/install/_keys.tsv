@@ -136,3 +136,4 @@
 135	native.windowFail	Couldn't open the Shrimp Install window (WebView2).
 136	native.wv2fail	Couldn't start the WebView2 component.
 137	host.noSlot	No free slot for the boot entry.
+138	native.noUi	The program's interface is missing.

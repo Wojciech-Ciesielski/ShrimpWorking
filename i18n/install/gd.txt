@@ -42,3 +42,7 @@
 102	Ath-thòisich an coimpiutair gus crìoch a chur air.
 110	Nas fhaide air adhart
 111	Ath-thòisich
+134	Feumaidh Shrimp Install a’ cho-phàirt Microsoft Edge WebView2 ach cha b’ urrainn dhuinn a tòiseachadh.\n\nÙraich Windows no stàlaich WebView2 Runtime o Microsoft agus feuch ris a-rithist.
+135	Cha b’ urrainn dhuinn uinneag Shrimp Install (WebView2) fhosgladh.
+136	Cha b’ urrainn dhuinn a’ cho-phàirt WebView2 a thòiseachadh.
+138	Tha eadar-aghaidh a’ phrògraim a dhìth.

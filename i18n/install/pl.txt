@@ -135,3 +135,4 @@
 135	Nie udało się otworzyć okna Shrimp Install (WebView2).
 136	Nie udało się uruchomić składnika WebView2.
 137	Brak wolnego miejsca na wpis uruchamiania.
+138	Brak interfejsu w programie.

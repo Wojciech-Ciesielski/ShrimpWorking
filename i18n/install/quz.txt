@@ -1,0 +1,4 @@
+134	Shrimp Install nisqaqa Microsoft Edge WebView2 nisqa t’aqatam necesitan, ichaqa manam qallarichiyta atikunchu.\n\nWindowsta musuqyachiy otaq Microsoftmanta WebView2 Runtimeta churay, hinaspa wakmanta kallpachakuy.
+135	Manam Shrimp Install (WebView2) ventanata kichayta atikunchu.
+136	Manam WebView2 t’aqata qallarichiyta atikunchu.
+138	Programapa interfaz nisqan manam kanchu.
