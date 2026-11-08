@@ -1,6 +1,6 @@
 /* Setup Shrimp: styl z shrimp-handoff/mockups/setup.html (rodzina „Prezentacja”, DESIGN.md).
    Różnice względem makiety: ekran zajmuje całe okno, ikony Adwaita zamiast Fluent, tapeta z pliku. */
-:root { --font: "Inter", system-ui, sans-serif; }
+:root { --font: "Inter", "Noto Sans", system-ui, sans-serif; }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }

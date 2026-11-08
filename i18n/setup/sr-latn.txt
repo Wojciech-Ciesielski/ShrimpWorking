@@ -1,5 +1,6 @@
 1	Nazad
 2	Informacije
+3	Shrimp logo
 4	NVIDIA drajver daje pune performanse u igrama i grafičkim programima. Otvoreni drajver je jednostavniji, ali sporiji.
 5	(Preporučeno)
 6	Dalje
@@ -49,6 +50,7 @@
 50	Instalacija
 51	Ceo disk
 52	Podela diska
+53	Windows {win} · Shrimp {shrimp}
 54	Nalog
 55	Šifrovanje
 56	Instaliraj
@@ -132,7 +134,9 @@
 134	Vaše datoteke
 135	Dokumenti, fotografije i preuzimanja nalaze se u aplikaciji Datoteke, u vašoj ličnoj fascikli.
 136	Tamo ćete naći i Windows disk.
+137	Panko
 138	Nešto je prestalo da radi posle izmene? U programu Panko možete se vratiti na ranije stanje.
+139	Cocktail
 140	Ažuriranja, drajveri i kodeci na jednom mestu. Ažuriranja se instaliraju pri ponovnom pokretanju.
 141	Brza pretraga
 142	Pritisnite taster Super, onaj sa Windows logotipom, da nađete programe, datoteke i podešavanja.
@@ -166,3 +170,12 @@
 170	Razvojno okruženje
 171	Filmovi i muzika
 172	Muzika
+173	Njujork
+174	Čikago
+175	Denver
+176	Los Anđeles
+177	Toronto
+178	Vankuver
+179	Kanarska ostrva
+180	Sidnej
+181	Pert
