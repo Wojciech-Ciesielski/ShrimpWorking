@@ -203,6 +203,8 @@ h1 { margin: 0; font: 600 36px/44px var(--font-display); letter-spacing: -0.2px;
 .pbar > i { display: block; height: 100%; width: 0; border-radius: 2px; background: var(--accent); }
 .pbar.ind > i { width: 30%; animation: ind 1.4s ease-in-out infinite; }
 @keyframes ind { 0% { margin-left: -30%; } 100% { margin-left: 100%; } }
+.spin { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--track); border-top-color: var(--accent); animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
 .phase { align-items: flex-start; padding-block: 14px; }
 .phase .st { width: 28px; height: 28px; display: grid; place-items: center; color: var(--text-3); flex: none; }
 .phase.active .st, .phase.done .st, .phase.fail .st { color: var(--text); }
@@ -377,4 +379,5 @@ h1 { margin: 0; font: 600 36px/44px var(--font-display); letter-spacing: -0.2px;
 @media (prefers-reduced-motion: reduce) {
   .sh *, .sh .in, .rise { animation: none !important; }
   .pbar.ind > i { animation: none; margin-left: 35%; }
+  .spin { animation: none; border-top-color: var(--accent); border-right-color: var(--accent); }
 }

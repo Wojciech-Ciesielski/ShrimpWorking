@@ -35,6 +35,14 @@ export function dur(L: I18n, sec: number): string {
 
 export const mbps = (L: I18n, bps: number) => L.unit(Math.max(1, Math.round(bps / MiB)), "megabyte-per-second");
 
+/** Wymaganie jak na opakowaniu: najmniejsza typowa pojemność (4, 8, 16, 32… GB), w którą wchodzi minSize.
+ *  Pendrive „16 GB” ma naprawdę 14,5–16 mld bajtów, więc minSize jest niższy niż napis. */
+export function minLabel(L: I18n, minSize: number): string {
+  let g = 4;
+  while (g * 0.9e9 < minSize) g *= 2;
+  return L.unit(g, "gigabyte");
+}
+
 export const deviceLabel = (L: I18n, d: Device) => `${d.name} · ${fmtGB(L, d.size)}`;
 
 export interface Space { shrPct: number; filesPct: number; text: string; over: boolean }

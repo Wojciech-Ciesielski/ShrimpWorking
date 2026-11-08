@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { GiB, dur, fmtGB, fmtSize, hostMessage, phaseFrac, phaseText, remaining, space } from "./logic";
+import { GiB, dur, fmtGB, fmtSize, hostMessage, minLabel, phaseFrac, phaseText, remaining, space } from "./logic";
 import { load } from "./i18n";
 
 const en = load(["en-US"]);
@@ -25,6 +25,10 @@ describe("formatowanie", () => {
     expect(dur(en, 70)).toBe("about 1 minute");
     expect(dur(pl, 720)).toBe("około 12 minut");
     expect(dur(en, 720)).toBe("about 12 minutes");
+  });
+  it("wymagana pojemność jak na opakowaniu", () => {
+    expect(n(minLabel(pl, 14e9))).toBe("16 GB");
+    expect(n(minLabel(en, 7e9))).toBe("8 GB");
   });
   it("jednostki w języku interfejsu", () => {
     expect(n(fmtGB(load(["ru"]), 32e9))).toBe("29,8 ГБ");

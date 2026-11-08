@@ -12,7 +12,7 @@
 #include <stdint.h>
 
 #define SHRIMP_VERSION "0.1.0"
-#define SHRIMP_MIN_MEDIA_SIZE (16ULL * 1000 * 1000 * 1000)   /* „co najmniej 16 GB” na opakowaniu */
+#define SHRIMP_MIN_MEDIA_SIZE (14ULL * 1000 * 1000 * 1000)   /* pendrive „16 GB” ma naprawdę 14,5–16 mld bajtów; interfejs pisze „16 GB” */
 #define SHRIMP_ISO_ESTIMATE (2000ULL * 1024 * 1024)        /* zanim przyjdzie manifest (Beta 2: 1,94 GiB) */
 #define SHRIMP_TRANSFER_DIR "shrimp-transfer"
 
