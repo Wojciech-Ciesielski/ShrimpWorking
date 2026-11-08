@@ -6,6 +6,7 @@ Pracujemy nad distro
 - Opis obrazu KIWI: `kiwi/` (`config.kiwi`, `config.sh`, nakładka plików `kiwi/root/`).
 - Budowa: workflow **Build ISO** w GitHub Actions (artefakt `shrimp-live-iso`) albo lokalnie `sudo tools/build-iso.sh 16.1` (Docker/Podman).
 - Użytkownik live: `shrimp`, hasło `shrimp` (logowanie automatyczne).
+- Shrimp Setup jest częścią obrazu: `tools/build-setup.sh` buduje okno w chroocie Leap (te same biblioteki co ISO) i instaluje Setup (`setup/install.sh --live`) do kopii opisu KIWI w `out/desc`; Agama 24 serwuje interfejs na `127.0.0.1:80`, a okno startuje z autostartu sesji live.
 - Grafiki Plymouth/GRUB są renderowane z makiety `boot.html`: `node tools/render-boot-assets.js <shrimp-handoff> <out>`.
 
 ## Setup (instalator i pierwsza konfiguracja)
