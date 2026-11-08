@@ -46,7 +46,7 @@ Workflow **Cocktail** w GitHub Actions robi to samo i zapisuje zrzuty jako artef
 
 1. **Nie testowane na prawdziwym Leap 16.1.** Format XML zyppera i dziennika historii jest z dokumentacji i pamięci, sprawdzony tylko na atrapach.
    Pierwsza rzecz do zrobienia: uruchomić na nośniku/VM i porównać z `zypper --xmlout`.
-2. **Nie ma Cocktail na ISO.** Brakuje kroku w `kiwi/` (budowa w chroot Leap jak `tools/build-setup.sh` + `install.sh`), a pozycja „Aktualizacje” w menu Shrimp powinna otwierać Cocktail.
+2. **Na ISO od tej zmiany:** `tools/build-setup.sh` buduje Cocktail w chroocie Leap, a post-install Setup kopiuje go do zainstalowanego systemu. „Aktualizacje” w menu Shrimp otwierają Cocktail, gdy jest w systemie.
 3. **Nazwy pakietów w katalogu** (`src/catalog.rs`) są nazwami openSUSE, ale nie zostały sprawdzone na Leap 16.1 (np. `nodejs-default`, `fetchmsttfonts`, `qemu-kvm`).
    Kodeki są te same co w Setup (bez Packmana). Kategorii „Wygląd” (rozszerzenia GNOME, motywy Plymouth/GRUB) z makiety nie ma.
 4. **Sterowniki w Urządzeniach:** lista jest tylko do odczytu. Brakuje „Zainstaluj wszystkie” (sterownik NVIDIA przez logikę z `shrimp-setup-apply`, firmware przez fwupd) i znaczników „do zainstalowania / do aktualizacji”.
