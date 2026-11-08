@@ -26,8 +26,11 @@ echo "$REPO/" > out/desc/root/usr/share/shrimp/linux/build/repo.url
 "$ENGINE" run --rm --privileged -v /dev:/dev -v "$PWD:/work" -w /work \
   docker.io/opensuse/tumbleweed:latest bash -euxc "
     zypper -n --gpg-auto-import-keys ref
-    zypper -n in --no-recommends python3-kiwi kiwi-systemdeps-iso-media kiwi-systemdeps-bootloaders kiwi-systemdeps-filesystems binutils findutils gawk sed coreutils
+    zypper -n in --no-recommends python3-kiwi kiwi-systemdeps-iso-media kiwi-systemdeps-bootloaders kiwi-systemdeps-filesystems binutils findutils gawk sed coreutils \
+      nodejs-default npm-default tar gzip
     rm -rf out/build
+    # Shrimp Setup (installer + first boot) goes into out/desc/root as well
+    tools/build-setup.sh '$REPO' out/desc/root
     kiwi-ng --logfile out/kiwi.log --color-output system build \
       --description out/desc --set-repo '$REPO' --target-dir out/build
     mv out/build/*.iso out/

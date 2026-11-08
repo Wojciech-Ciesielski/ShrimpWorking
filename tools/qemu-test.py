@@ -229,6 +229,12 @@ try:
 
     # Live session: GDM autologin into GNOME (software rendering, so be patient).
     wait_shooting(150, 10, "session")
+    # Shrimp Setup opens full screen on its own once Agama is up (autostart, shrimp-setup --install).
+    wait_shooting(t() + 90, 10, "setup")
+    shot("setup", keep_duplicates=True)
+    # Close it for the desktop checks below (the window itself refuses to close).
+    run_dialog("pkill -f shrimp-setup")
+    pause(5)
     shot("desktop", keep_duplicates=True)
 
     # Shrimp Menu: the logo, first item on the left of the top bar.
@@ -270,6 +276,9 @@ try:
     diag = (
         "{ echo ===EXT; gnome-extensions list --details; echo ===SHELL; "
         "sudo journalctl -b _UID=$(id -u) -o short-monotonic --no-pager | grep -iE 'gnome-shell|extension|JS ERROR|ding' | tail -n 300; "
+        "echo ===SETUP; ls -l /usr/bin/shrimp-setup /etc/xdg/autostart/shrimp-setup-install.desktop /run/shrimp-setup /run/agama; "
+        "systemctl status --no-pager agama-web-server agama shrimp-setup-token | head -n 60; "
+        "sudo journalctl -b -o short-monotonic --no-pager | grep -iE 'shrimp-setup|agama|webkit' | tail -n 150; "
         "echo ===FAILED; systemctl --failed --no-pager; echo ===END; } 2>&1 | sudo tee /dev/ttyS0 >/dev/null\n"
     )
     type_text(diag)
