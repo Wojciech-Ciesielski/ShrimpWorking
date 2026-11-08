@@ -158,6 +158,14 @@ install -d -o "${OWNER%:*}" -g "${OWNER#*:}" "$T$HOME_DIR/.config"
 touch "$T$HOME_DIR/.config/gnome-initial-setup-done"
 chown "$OWNER" "$T$HOME_DIR/.config/gnome-initial-setup-done"
 
+# Bez okna powitalnego openSUSE (zasłaniało Setup przy pierwszym uruchomieniu, test w QEMU).
+for f in "$T"/usr/etc/xdg/autostart/*welcome*.desktop "$T"/etc/xdg/autostart/*welcome*.desktop; do
+  [ -f "$f" ] || continue
+  n=$(basename "$f")
+  printf '[Desktop Entry]\nType=Application\nName=%s\nHidden=true\n' "${n%.desktop}" > "$T/etc/xdg/autostart/$n"
+  log "ukryto autostart $n"
+done
+
 # Flathub dla całego systemu (instalacja programów w kroku Programy).
 chroot "$T" flatpak remote-add --system --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo || \
   log "Flathub zostanie dodany przy pierwszej konfiguracji"

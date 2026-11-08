@@ -38,7 +38,8 @@ Warning: 1817 packages had to be excluded from file conflicts check because they
     in the zypper manual page for details.
 
 Retrieving: ImageMagick-config-7-SUSE-7.1.2.31-160100.1.3.noarch (leap) (1/1817), 195.0 KiB    
-Retrieving: ImageMagick-config-7-SUSE-7.1.2.31-160100.1.3.noarch.rpm [..done (96.0 KiB/s)]
+Retrieving: ImageMagick-config-7-SUSE-7.1.2.31-160100.1.3.noarch.rpm [.not found]
+Retrieving: ImageMagick-config-7-SUSE-7.1.2.31-160100.1.3.noarch.rpm [.done (7.8 KiB/s)]
 (   1/1817) Installing: ImageMagick-config-7-SUSE-7.1.2.31-160100.1.3.noarch [..done]
 Retrieving: Mesa-libva-26.0.7-160100.2.2.x86_64 (leap) (2/1817), 267.8 KiB    
 Retrieving: Mesa-libva-26.0.7-160100.2.2.x86_64.rpm [.done]
@@ -81,7 +82,7 @@ Retrieving: debuginfod-profile-0.192-160100.2.1.x86_64.rpm [.done]
 (  14/1817) Installing: debuginfod-profile-0.192-160100.2.1.x86_64 [..done]
 Retrieving: desktop-translations-84.87.20240503.9343de5-bp161.1.2.noarch (leap) (15/1817),   5.0 MiB    
 Retrieving: desktop-translations-84.87.20240503.9343de5-bp161.1.2.noarch.rpm [.done]
-(  15/1817) Installing: desktop-translations-84.87.20240503.9343de5-bp161.1.2.noarch [..done]
+(  15/1817) Installing: desktop-translations-84.87.20240503.9343de5-bp161.1.2.noarch [...done]
 Retrieving: distribution-logos-openSUSE-Leap-20240424-lp161.2.1.noarch (leap) (16/1817),  28.0 KiB    
 Retrieving: distribution-logos-openSUSE-Leap-20240424-lp161.2.1.noarch.rpm [.done]
 (  16/1817) Installing: distribution-logos-openSUSE-Leap-20240424-lp161.2.1.noarch [..done]
@@ -138,7 +139,7 @@ Retrieving: info-std-7.3-160100.2.1.noarch.rpm [.done]
 (  33/1817) Installing: info-std-7.3-160100.2.1.noarch [..done]
 Retrieving: iso-codes-4.16.0-160100.2.1.noarch (leap) (34/1817),   3.1 MiB    
 Retrieving: iso-codes-4.16.0-160100.2.1.noarch.rpm [.done]
-(  34/1817) Installing: iso-codes-4.16.0-160100.2.1.noarch [..done]
+(  34/1817) Installing: iso-codes-4.16.0-160100.2.1.noarch [...done]
 Retrieving: javapackages-filesystem-6.5.1-160100.2.1.x86_64 (leap) (35/1817),  28.5 KiB    
 Retrieving: javapackages-filesystem-6.5.1-160100.2.1.x86_64.rpm [.done]
 (  35/1817) Installing: javapackages-filesystem-6.5.1-160100.2.1.x86_64 [..done]
@@ -155,8 +156,8 @@ Retrieving: libexttextcat-3.4.7-bp161.1.2.x86_64 (leap) (39/1817), 212.5 KiB
 Retrieving: libexttextcat-3.4.7-bp161.1.2.x86_64.rpm [.done]
 (  39/1817) Installing: libexttextcat-3.4.7-bp161.1.2.x86_64 [..done]
 Retrieving: libicu77-ledata-77.1-160100.2.1.noarch (leap) (40/1817),   8.6 MiB    
-Retrieving: libicu77-ledata-77.1-160100.2.1.noarch.rpm [..done (6.5 MiB/s)]
-(  40/1817) Installing: libicu77-ledata-77.1-160100.2.1.noarch [..done]
+Retrieving: libicu77-ledata-77.1-160100.2.1.noarch.rpm [.done]
+(  40/1817) Installing: libicu77-ledata-77.1-160100.2.1.noarch [...done]
 Retrieving: libldap-data-2.6.13+57-160100.2.2.noarch (leap) (41/1817),  14.5 KiB    
 Retrieving: libldap-data-2.6.13+57-160100.2.2.noarch.rpm [.done]
 (  41/1817) Installing: libldap-data-2.6.13+57-160100.2.2.noarch [..done]
@@ -239,7 +240,7 @@ Retrieving: vim-data-common-9.2.0957-160100.1.1.noarch (leap) (67/1817),   1.1 M
 Retrieving: vim-data-common-9.2.0957-160100.1.1.noarch.rpm [.done]
 (  67/1817) Installing: vim-data-common-9.2.0957-160100.1.1.noarch [..done]
 Retrieving: wallpaper-branding-openSUSE-16.1.20260917-lp161.1.1.noarch (leap) (68/1817), 257.6 KiB    
-Retrieving: wallpaper-branding-openSUSE-16.1.20260917-lp161.1.1.noarch.rpm [.done]
+Retrieving: wallpaper-branding-openSUSE-16.1.20260917-lp161.1.1.noarch.rpm [..done (85.9 KiB/s)]
 (  68/1817) Installing: wallpaper-branding-openSUSE-16.1.20260917-lp161.1.1.noarch [..done]
 Retrieving: xbitmaps-1.1.3-160100.2.1.noarch (leap) (69/1817),  34.0 KiB    
 Retrieving: xbitmaps-1.1.3-160100.2.1.noarch.rpm [.done]
@@ -947,7 +948,7 @@ Retrieving: diffutils-3.12-160100.2.1.x86_64 (leap) (303/1817), 197.9 KiB
 Retrieving: diffutils-3.12-160100.2.1.x86_64.rpm [.done]
 ( 303/1817) Installing: diffutils-3.12-160100.2.1.x86_64 [..done]
 Retrieving: terminfo-screen-6.5.20250531-160100.2.1.x86_64 (leap) (304/1817), 344.8 KiB    
-Retrieving: terminfo-screen-6.5.20250531-160100.2.1.x86_64.rpm [.done]
+Retrieving: terminfo-screen-6.5.20250531-160100.2.1.x86_64.rpm [..done (101.5 KiB/s)]
 ( 304/1817) Installing: terminfo-screen-6.5.20250531-160100.2.1.x86_64 [..done]
 Retrieving: psmisc-23.7-160100.2.2.x86_64 (leap) (305/1817),  96.0 KiB    
 Retrieving: psmisc-23.7-160100.2.2.x86_64.rpm [.done]
@@ -1250,7 +1251,7 @@ Retrieving: libjte2-1.22-160100.2.1.x86_64 (leap) (404/1817),  33.3 KiB
 Retrieving: libjte2-1.22-160100.2.1.x86_64.rpm [.done]
 ( 404/1817) Installing: libjte2-1.22-160100.2.1.x86_64 [..done]
 Retrieving: libbrotlienc1-1.1.0-160100.2.1.x86_64 (leap) (405/1817), 263.6 KiB    
-Retrieving: libbrotlienc1-1.1.0-160100.2.1.x86_64.rpm [.done]
+Retrieving: libbrotlienc1-1.1.0-160100.2.1.x86_64.rpm [..done (101.5 KiB/s)]
 ( 405/1817) Installing: libbrotlienc1-1.1.0-160100.2.1.x86_64 [..done]
 Retrieving: libbrotlidec1-1.1.0-160100.2.1.x86_64 (leap) (406/1817),  32.9 KiB    
 Retrieving: libbrotlidec1-1.1.0-160100.2.1.x86_64.rpm [.done]
@@ -1295,14 +1296,14 @@ Retrieving: libSM6-1.2.6-160100.2.1.x86_64 (leap) (419/1817),  26.0 KiB
 Retrieving: libSM6-1.2.6-160100.2.1.x86_64.rpm [.done]
 ( 419/1817) Installing: libSM6-1.2.6-160100.2.1.x86_64 [..done]
 Retrieving: glibc-locale-2.40-160100.3.1.x86_64 (leap) (420/1817),  18.2 MiB    
-Retrieving: glibc-locale-2.40-160100.3.1.x86_64.rpm [..done (11.4 MiB/s)]
+Retrieving: glibc-locale-2.40-160100.3.1.x86_64.rpm [..done (2.1 MiB/s)]
 ( 420/1817) Installing: glibc-locale-2.40-160100.3.1.x86_64 [...........done]
 Retrieving: javapackages-tools-6.5.1-160100.2.1.x86_64 (leap) (421/1817),  50.1 KiB    
 Retrieving: javapackages-tools-6.5.1-160100.2.1.x86_64.rpm [.done]
 ( 421/1817) Installing: javapackages-tools-6.5.1-160100.2.1.x86_64 [..done]
 Retrieving: terminfo-6.5.20250531-160100.2.1.x86_64 (leap) (422/1817), 852.5 KiB    
-Retrieving: terminfo-6.5.20250531-160100.2.1.x86_64.rpm [..done (464.0 KiB/s)]
-( 422/1817) Installing: terminfo-6.5.20250531-160100.2.1.x86_64 [...done]
+Retrieving: terminfo-6.5.20250531-160100.2.1.x86_64.rpm [.done]
+( 422/1817) Installing: terminfo-6.5.20250531-160100.2.1.x86_64 [....done]
 Retrieving: liblavfile-2_2-0-2.2.1-160100.2.1.x86_64 (leap) (423/1817),  50.3 KiB    
 Retrieving: liblavfile-2_2-0-2.2.1-160100.2.1.x86_64.rpm [.done]
 ( 423/1817) Installing: liblavfile-2_2-0-2.2.1-160100.2.1.x86_64 [..done]
@@ -1547,13 +1548,13 @@ Retrieving: libSPIRV-Tools-2026_1-2026.1-160100.2.1.x86_64 (leap) (503/1817),   
 Retrieving: libSPIRV-Tools-2026_1-2026.1-160100.2.1.x86_64.rpm [.done]
 ( 503/1817) Installing: libSPIRV-Tools-2026_1-2026.1-160100.2.1.x86_64 [..done]
 Retrieving: libLLVM21-21.1.8-160100.2.1.x86_64 (leap) (504/1817),  30.3 MiB    
-Retrieving: libLLVM21-21.1.8-160100.2.1.x86_64.rpm [...done (25.7 MiB/s)]
+Retrieving: libLLVM21-21.1.8-160100.2.1.x86_64.rpm [..done (8.1 MiB/s)]
 ( 504/1817) Installing: libLLVM21-21.1.8-160100.2.1.x86_64 [.....done]
 Retrieving: libImath-3_2-30-3.2.2-160100.2.1.x86_64 (leap) (505/1817),  79.7 KiB    
 Retrieving: libImath-3_2-30-3.2.2-160100.2.1.x86_64.rpm [.done]
 ( 505/1817) Installing: libImath-3_2-30-3.2.2-160100.2.1.x86_64 [..done]
 Retrieving: libIex-3_4-33-3.4.14-160100.1.1.x86_64 (leap) (506/1817), 143.9 KiB    
-Retrieving: libIex-3_4-33-3.4.14-160100.1.1.x86_64.rpm [.done]
+Retrieving: libIex-3_4-33-3.4.14-160100.1.1.x86_64.rpm [..done (93.7 KiB/s)]
 ( 506/1817) Installing: libIex-3_4-33-3.4.14-160100.1.1.x86_64 [..done]
 Retrieving: gptfdisk-1.0.10-160100.2.1.x86_64 (leap) (507/1817), 227.1 KiB    
 Retrieving: gptfdisk-1.0.10-160100.2.1.x86_64.rpm [.done]
@@ -1610,8 +1611,8 @@ Retrieving: pptp-1.10.0-bp161.1.2.x86_64 (leap) (524/1817),  62.9 KiB
 Retrieving: pptp-1.10.0-bp161.1.2.x86_64.rpm [.done]
 ( 524/1817) Installing: pptp-1.10.0-bp161.1.2.x86_64 [..done]
 Retrieving: perl-5.42.1-160100.2.1.x86_64 (leap) (525/1817),   8.3 MiB    
-Retrieving: perl-5.42.1-160100.2.1.x86_64.rpm [..done (5.8 MiB/s)]
-( 525/1817) Installing: perl-5.42.1-160100.2.1.x86_64 [.....done]
+Retrieving: perl-5.42.1-160100.2.1.x86_64.rpm [..done (1.7 MiB/s)]
+( 525/1817) Installing: perl-5.42.1-160100.2.1.x86_64 [......done]
 Retrieving: libcdio_paranoia2-10.2+2.0.1-160100.2.1.x86_64 (leap) (526/1817),  23.4 KiB    
 Retrieving: libcdio_paranoia2-10.2+2.0.1-160100.2.1.x86_64.rpm [.done]
 ( 526/1817) Installing: libcdio_paranoia2-10.2+2.0.1-160100.2.1.x86_64 [..done]
@@ -2096,7 +2097,7 @@ Retrieving: libopenjp2-7-x86-64-v3-2.5.3-160100.2.1.x86_64 (leap) (682/1817), 17
 Retrieving: libopenjp2-7-x86-64-v3-2.5.3-160100.2.1.x86_64.rpm [.done]
 ( 682/1817) Installing: libopenjp2-7-x86-64-v3-2.5.3-160100.2.1.x86_64 [..done]
 Retrieving: libopenblas_openmp0-0.3.33+backports-bp161.3.1.x86_64 (leap) (683/1817),   5.5 MiB    
-Retrieving: libopenblas_openmp0-0.3.33+backports-bp161.3.1.x86_64.rpm [..done (5.2 MiB/s)]
+Retrieving: libopenblas_openmp0-0.3.33+backports-bp161.3.1.x86_64.rpm [.done]
 ( 683/1817) Installing: libopenblas_openmp0-0.3.33+backports-bp161.3.1.x86_64 [..done]
 Retrieving: compatlibopenblas_openmp0-0.3.33+backports-bp161.3.1.x86_64 (leap) (684/1817), 108.8 KiB    
 Retrieving: compatlibopenblas_openmp0-0.3.33+backports-bp161.3.1.x86_64.rpm [.done]
@@ -2174,10 +2175,10 @@ Retrieving: libboost_iostreams1_86_0-x86-64-v3-1.86.0-160100.2.1.x86_64 (leap) (
 Retrieving: libboost_iostreams1_86_0-x86-64-v3-1.86.0-160100.2.1.x86_64.rpm [.done]
 ( 706/1817) Installing: libboost_iostreams1_86_0-x86-64-v3-1.86.0-160100.2.1.x86_64 [..done]
 Retrieving: libboost_filesystem1_86_0-x86-64-v3-1.86.0-160100.2.1.x86_64 (leap) (707/1817), 125.7 KiB    
-Retrieving: libboost_filesystem1_86_0-x86-64-v3-1.86.0-160100.2.1.x86_64.rpm [.done]
+Retrieving: libboost_filesystem1_86_0-x86-64-v3-1.86.0-160100.2.1.x86_64.rpm [..done (46.8 KiB/s)]
 ( 707/1817) Installing: libboost_filesystem1_86_0-x86-64-v3-1.86.0-160100.2.1.x86_64 [..done]
 Retrieving: libbabl-0_1-0-x86-64-v3-0.1.126-bp161.1.1.x86_64 (leap) (708/1817), 570.8 KiB    
-Retrieving: libbabl-0_1-0-x86-64-v3-0.1.126-bp161.1.1.x86_64.rpm [.done]
+Retrieving: libbabl-0_1-0-x86-64-v3-0.1.126-bp161.1.1.x86_64.rpm [..done (70.3 KiB/s)]
 ( 708/1817) Installing: libbabl-0_1-0-x86-64-v3-0.1.126-bp161.1.1.x86_64 [..done]
 Retrieving: libIex-3_4-33-x86-64-v3-3.4.14-160100.1.1.x86_64 (leap) (709/1817), 141.9 KiB    
 Retrieving: libIex-3_4-33-x86-64-v3-3.4.14-160100.1.1.x86_64.rpm [.done]
@@ -2226,7 +2227,7 @@ Retrieving: gnuchess-6.2.9-bp161.1.2.x86_64.rpm [.done]
 ( 723/1817) Installing: gnuchess-6.2.9-bp161.1.2.x86_64 [..done]
 Retrieving: gnome-themes-accessibility-3.28-160100.2.1.noarch (leap) (724/1817),   2.7 MiB    
 Retrieving: gnome-themes-accessibility-3.28-160100.2.1.noarch.rpm [.done]
-( 724/1817) Installing: gnome-themes-accessibility-3.28-160100.2.1.noarch [....done]
+( 724/1817) Installing: gnome-themes-accessibility-3.28-160100.2.1.noarch [.....done]
 Retrieving: gettext-runtime-0.22.5-160100.2.1.x86_64 (leap) (725/1817), 811.2 KiB    
 Retrieving: gettext-runtime-0.22.5-160100.2.1.x86_64.rpm [.done]
 ( 725/1817) Installing: gettext-runtime-0.22.5-160100.2.1.x86_64 [..done]
@@ -2433,7 +2434,7 @@ Retrieving: zypper-log-1.14.101-160100.1.1.noarch (leap) (790/1817), 144.9 KiB
 Retrieving: zypper-log-1.14.101-160100.1.1.noarch.rpm [.done]
 ( 790/1817) Installing: zypper-log-1.14.101-160100.1.1.noarch [..done]
 Retrieving: vim-data-9.2.0957-160100.1.1.noarch (leap) (791/1817),   8.7 MiB    
-Retrieving: vim-data-9.2.0957-160100.1.1.noarch.rpm [.done]
+Retrieving: vim-data-9.2.0957-160100.1.1.noarch.rpm [..done (85.9 KiB/s)]
 ( 791/1817) Installing: vim-data-9.2.0957-160100.1.1.noarch [.....done]
 Retrieving: timezone-2026c-160100.3.1.x86_64 (leap) (792/1817), 544.7 KiB    
 Retrieving: timezone-2026c-160100.3.1.x86_64.rpm [.done]
@@ -2487,7 +2488,7 @@ Retrieving: libinput10-1.30.4-160100.2.1.x86_64 (leap) (808/1817), 247.2 KiB
 Retrieving: libinput10-1.30.4-160100.2.1.x86_64.rpm [.done]
 ( 808/1817) Installing: libinput10-1.30.4-160100.2.1.x86_64 [..done]
 Retrieving: typelib-1_0-HarfBuzz-0_0-12.3.1-160100.2.1.x86_64 (leap) (809/1817), 125.8 KiB    
-Retrieving: typelib-1_0-HarfBuzz-0_0-12.3.1-160100.2.1.x86_64.rpm [.done]
+Retrieving: typelib-1_0-HarfBuzz-0_0-12.3.1-160100.2.1.x86_64.rpm [..done (101.5 KiB/s)]
 ( 809/1817) Installing: typelib-1_0-HarfBuzz-0_0-12.3.1-160100.2.1.x86_64 [..done]
 Retrieving: libavutil59-7.1.4-160100.2.1.x86_64 (leap) (810/1817), 351.6 KiB    
 Retrieving: libavutil59-7.1.4-160100.2.1.x86_64.rpm [.done]
@@ -2505,7 +2506,7 @@ Retrieving: Mesa-26.0.7-160100.2.1.x86_64 (leap) (814/1817), 271.8 KiB
 Retrieving: Mesa-26.0.7-160100.2.1.x86_64.rpm [.done]
 ( 814/1817) Installing: Mesa-26.0.7-160100.2.1.x86_64 [..done]
 Retrieving: Mesa-dri-26.0.7-160100.2.2.x86_64 (leap) (815/1817),  10.7 MiB    
-Retrieving: Mesa-dri-26.0.7-160100.2.2.x86_64.rpm [..done (8.0 MiB/s)]
+Retrieving: Mesa-dri-26.0.7-160100.2.2.x86_64.rpm [..done (992.2 KiB/s)]
 ( 815/1817) Installing: Mesa-dri-26.0.7-160100.2.2.x86_64 [...done]
 Retrieving: libglvnd-1.7.0-160100.2.1.x86_64 (leap) (816/1817), 253.8 KiB    
 Retrieving: libglvnd-1.7.0-160100.2.1.x86_64.rpm [.done]
@@ -2624,7 +2625,7 @@ Retrieving: pam-extra-1.7.2+git12-160100.2.3.x86_64.rpm [.done]
 ( 842/1817) Installing: pam-extra-1.7.2+git12-160100.2.3.x86_64 [..done]
 Retrieving: kbd-2.9.0-160100.3.1.x86_64 (leap) (843/1817),   2.2 MiB    
 Retrieving: kbd-2.9.0-160100.3.1.x86_64.rpm [.done]
-( 843/1817) Installing: kbd-2.9.0-160100.3.1.x86_64 [..
+( 843/1817) Installing: kbd-2.9.0-160100.3.1.x86_64 [...
 Updating /etc/sysconfig/console ...
 Updating /etc/sysconfig/keyboard ...
 done]
@@ -2674,7 +2675,7 @@ Retrieving: libavcodec61-7.1.4-160100.2.1.x86_64 (leap) (858/1817),   4.1 MiB
 Retrieving: libavcodec61-7.1.4-160100.2.1.x86_64.rpm [.done]
 ( 858/1817) Installing: libavcodec61-7.1.4-160100.2.1.x86_64 [..done]
 Retrieving: libva-glx2-2.23.0-160100.2.1.x86_64 (leap) (859/1817),  48.3 KiB    
-Retrieving: libva-glx2-2.23.0-160100.2.1.x86_64.rpm [.done]
+Retrieving: libva-glx2-2.23.0-160100.2.1.x86_64.rpm [..done (48.3 KiB/s)]
 ( 859/1817) Installing: libva-glx2-2.23.0-160100.2.1.x86_64 [..done]
 Retrieving: virt-what-1.25-160100.2.1.x86_64 (leap) (860/1817),  28.8 KiB    
 Retrieving: virt-what-1.25-160100.2.1.x86_64.rpm [.done]
@@ -2708,7 +2709,7 @@ Retrieving: sysuser-shadow-3.3-160100.2.1.noarch (leap) (866/1817),  14.5 KiB
 Retrieving: sysuser-shadow-3.3-160100.2.1.noarch.rpm [.done]
 ( 866/1817) Installing: sysuser-shadow-3.3-160100.2.1.noarch [..done]
 Retrieving: pam-config-2.13+git.20250715-160100.2.1.x86_64 (leap) (867/1817), 158.8 KiB    
-Retrieving: pam-config-2.13+git.20250715-160100.2.1.x86_64.rpm [.done]
+Retrieving: pam-config-2.13+git.20250715-160100.2.1.x86_64.rpm [..done (85.9 KiB/s)]
 ( 867/1817) Installing: pam-config-2.13+git.20250715-160100.2.1.x86_64 [..
 ERROR: module /lib64/security/pam_pwquality.so is not installed.
 *** write_config (account, /etc/pam.d/common-account-pc, ...)
