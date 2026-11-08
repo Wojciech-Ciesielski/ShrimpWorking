@@ -19,6 +19,7 @@ install -Dm755 "$HERE/shell/target/release/shrimp-setup" "$D/usr/bin/shrimp-setu
 install -d "$D/usr/share/shrimp-setup/ui"
 cp -a "$HERE/web/dist/." "$D/usr/share/shrimp-setup/ui/"
 install -Dm755 "$HERE/system/share/post-install.sh" "$D/usr/share/shrimp-setup/post-install.sh"
+install -Dm644 "$HERE/system/share/remove-packages.txt" "$D/usr/share/shrimp-setup/remove-packages.txt"
 install -Dm644 "$HERE/system/share/drivers.conf" "$D/usr/share/shrimp-setup/drivers.conf"
 install -Dm755 "$HERE/system/libexec/shrimp-setup-apply" "$D/usr/libexec/shrimp-setup-apply"
 install -Dm644 "$HERE/system/polkit/org.shrimp.setup.policy" "$D/usr/share/polkit-1/actions/org.shrimp.setup.policy"
