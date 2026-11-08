@@ -9,6 +9,7 @@ pub const STATE_DIR: &str = "/var/lib/shrimp-setup";
 /// Znacznik zostawiany przez post-install.sh; usuwa go shrimp-setup-apply po zakończeniu.
 pub const FIRST_BOOT_MARKER: &str = "/var/lib/shrimp-setup/first-boot";
 pub const APPLY_HELPER: &str = "/usr/libexec/shrimp-setup-apply";
+pub const USB_HELPER: &str = "/usr/libexec/shrimp-usb-backup";
 
 pub fn first_boot_pending() -> bool {
     Path::new(FIRST_BOOT_MARKER).exists()
@@ -270,9 +271,77 @@ pub async fn appearance(scheme: &str, accent: Option<&str>) -> Result<(), CmdErr
 
 // ---------- aplikacje ----------
 
+/// Dodatki, bez których aplikacja z Flathub nie działa albo kapryśnie się instaluje. Steam potrzebuje
+/// 32-bitowych bibliotek GL (gry i sam klient) oraz kodeków do wideo w sklepie. Instalowane przed Steamem,
+/// błąd któregokolwiek nie blokuje reszty (Flatpak dociągnie, co jeszcze brakuje).
+pub fn app_dependencies(id: &str) -> &'static [&'static str] {
+    match id {
+        "com.valvesoftware.Steam" => &["org.freedesktop.Platform.GL32.default", "org.freedesktop.Platform.ffmpeg-full"],
+        _ => &[],
+    }
+}
+
+const SHRIMP_APPS: &str = "/usr/bin/shrimp-apps";
+
+/// Aplikacje instaluje sklep Shrimp (shrimp-apps --install), a nie bezpośrednio flatpak:
+/// to jego repozytorium i backend pobierają wszystko. Bez sklepu (np. test na obrazie bez niego) działa flatpak.
 pub async fn install_app(id: &str) -> Result<(), CmdError> {
+    if std::path::Path::new(SHRIMP_APPS).exists() {
+        return run(SHRIMP_APPS, &["--install", id]).await.map(|_| ());
+    }
     let _ = run("flatpak", &["remote-add", "--system", "--if-not-exists", "flathub", "https://dl.flathub.org/repo/flathub.flatpakrepo"]).await;
+    for dep in app_dependencies(id) {
+        if let Err(e) = run("flatpak", &["install", "--system", "--noninteractive", "-y", "flathub", dep]).await {
+            eprintln!("shrimp-setup: {id}: dodatek {dep}: {}", e.0);
+        }
+    }
     run("flatpak", &["install", "--system", "--noninteractive", "-y", "flathub", id]).await.map(|_| ())
+}
+
+// ---------- pendrive z Shrimp Install ----------
+
+#[derive(Debug, Default, Deserialize, Serialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
+pub struct Usb {
+    #[serde(default)]
+    pub pending: bool,
+    /// Pendrive z kopii jest teraz podłączony.
+    #[serde(default)]
+    pub present: bool,
+    #[serde(default)]
+    pub device: String,
+    #[serde(default)]
+    pub bytes: u64,
+    #[serde(default)]
+    pub files: u64,
+}
+
+/// Czy po instalacji czeka zawartość pendrive'a i czy pendrive jest podłączony (bez uprawnień).
+pub async fn usb_status() -> Usb {
+    run(USB_HELPER, &["status"]).await.ok().and_then(|o| parse_usb(&o)).unwrap_or_default()
+}
+
+pub fn parse_usb(out: &str) -> Option<Usb> {
+    serde_json::from_str(out.lines().last()?).ok()
+}
+
+/// Formatuje podłączony pendrive i wgrywa na niego pliki (pkexec; pomocnik sam sprawdza kopię i tożsamość dysku).
+pub async fn usb_restore(device: &str) -> Result<(), CmdError> {
+    run("pkexec", &[USB_HELPER, "restore", device]).await.map(|_| ())
+}
+
+/// Pliki do ~/Pendrive: gdy pendrive nie wróci na miejsce albo użytkownik zrezygnuje.
+pub async fn usb_to_home() -> Result<(), CmdError> {
+    run("pkexec", &[USB_HELPER, "to-home"]).await.map(|_| ())
+}
+
+/// Zestaw podstawowy (Firefox i aplikacje GNOME z /usr/share/shrimp/base-apps.json) przez sklep Shrimp.
+/// Brak sklepu albo manifestu nie jest błędem (np. test), pojedyncze nieudane aplikacje też nie.
+pub async fn install_base_apps() -> Result<(), CmdError> {
+    if !std::path::Path::new(SHRIMP_APPS).exists() || !std::path::Path::new("/usr/share/shrimp/base-apps.json").exists() {
+        return Ok(());
+    }
+    run(SHRIMP_APPS, &["--install", "--base"]).await.map(|_| ())
 }
 
 // ---------- zakończenie ----------
@@ -295,6 +364,20 @@ pub async fn reboot() {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn steam_gets_32bit_gl() {
+        assert!(app_dependencies("com.valvesoftware.Steam").iter().any(|d| d.contains("GL32")));
+        assert!(app_dependencies("org.mozilla.firefox").is_empty());
+    }
+
+    #[test]
+    fn usb_status_json() {
+        let u = parse_usb("{\"pending\":true,\"present\":true,\"device\":\"/dev/sdb\",\"bytes\":5,\"files\":2}\n").unwrap();
+        assert!(u.pending && u.present && u.device == "/dev/sdb" && u.files == 2);
+        assert_eq!(parse_usb("{\"pending\":false}").unwrap(), Usb::default());
+        assert!(parse_usb("śmieci").is_none());
+    }
 
     #[test]
     fn nmcli_parsing_dedupes_and_unescapes() {

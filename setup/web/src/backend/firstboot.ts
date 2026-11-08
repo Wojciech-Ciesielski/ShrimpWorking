@@ -1,7 +1,7 @@
 // Część 2 Setup: pierwsza konfiguracja. Mówi z lokalnym serwerem shrimp-setup (Rust)
 // pod tym samym originem: /shrimp/api/*. Token sesji przychodzi w adresie strony (?k=…).
 import { mapWindowsApps } from "../logic";
-import { OfflineError, WifiError, type DriverChoice, type FirstBootBackend, type FirstBootInfo, type Network, type NetworkAdvanced, type Progress } from "./types";
+import { OfflineError, WifiError, type UsbResult, type UsbState, type DriverChoice, type FirstBootBackend, type FirstBootInfo, type Network, type NetworkAdvanced, type Progress } from "./types";
 
 const key = new URLSearchParams(location.search).get("k") || "";
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
@@ -50,6 +50,18 @@ export class ShrimpFirstBoot implements FirstBootBackend {
       if (j.state === "failed") throw new OfflineError(j.phase);
       onProgress({ percent: j.percent, phase: j.state === "done" ? "done" : j.phase, etaMin: j.etaMin });
       if (j.state === "done") return;
+    }
+  }
+  async usb(): Promise<UsbState> {
+    const u = await call<UsbState>("GET", "/usb").catch(() => null);
+    return u ?? { pending: false, present: false, bytes: 0, files: 0 };
+  }
+  async restoreUsb(action: "restore" | "home"): Promise<UsbResult> {
+    await call("POST", "/usb", { action });
+    for (;;) {
+      await sleep(1000);
+      const j = (await call<{ job: { state: string } }>("GET", "/usb")).job;
+      if (j.state === "done" || j.state === "home" || j.state === "failed") return j.state as UsbResult;
     }
   }
   async finish() { await call("POST", "/finish"); }
