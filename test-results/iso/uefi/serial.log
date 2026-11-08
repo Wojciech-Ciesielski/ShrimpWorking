@@ -1,6 +1,19 @@
 [2J[001;001H[=3h[2J[001;001H[2J[001;001H[8;042;160t[2J[001;001H[2J[001;001H[8;056;240t[2J[001;001HBdsDxe: loading Boot0002 "UEFI QEMU DVD-ROM QM00005 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)
 BdsDxe: starting Boot0002 "UEFI QEMU DVD-ROM QM00005 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)
 [0m[30m[40m[2J[001;001H[0m[37m[40m===EXT
+<<<<<<< HEAD
+=======
+apps-menu@gnome-shell-extensions.gcampax.github.com
+  Nazwa: Apps Menu
+  Opis: Add a category-based menu for apps.
+This extension is part of Classic Mode and is officially supported by GNOME. Please do not report bugs using the form below, use GNOME's GitLab instance instead.
+  Ścieżka: /usr/share/gnome-shell/extensions/apps-menu@gnome-shell-extensions.gcampax.github.com
+  Adres URL: https://gitlab.gnome.org/GNOME/gnome-shell-extensions
+  Wersja: 65
+  Włączone: Tak
+  Stan: ACTIVE
+
+>>>>>>> origin/main
 blur-my-shell@aunetx
   Nazwa: Blur my Shell
   Opis: Adds a blur look to different parts of GNOME Shell, including the top panel, dash and overview.
@@ -359,6 +372,7 @@ shrimp-menu@shrimp
 [  367.346351] shrimp systemd[1435]: Created slice Slice /app/dbus-:1.2-org.gnome.Shell.Extensions.
 [  367.347792] shrimp systemd[1435]: Started dbus-:1.2-org.gnome.Shell.Extensions@0.service.
 ===SETUP
+<<<<<<< HEAD
 -rw-r--r-- 1 root root     292 lis  8 15:38 /etc/xdg/autostart/shrimp-setup-install.desktop
 -rwxr-xr-x 1 root root 1925448 lis  8 15:38 /usr/bin/shrimp-setup
 
@@ -555,6 +569,15 @@ Warning: some journal files were not opened due to insufficient permissions.
 [   43.418348] shrimp agama-web-server[1568]: response for 2252624447406091: 200 OK 33.661917ms
 [   43.497276] shrimp agama-web-server[1568]: request 2252074691592201: GET /assets/inter-latin-600-normal-LgqL8muc.woff2
 [   43.498115] shrimp agama-web-server[1568]: response for 2252074691592201: 200 OK 883.517µs
+=======
+ls: cannot access '/usr/bin/shrimp-setup': No such file or directory
+ls: cannot access '/etc/xdg/autostart/shrimp-setup-install.desktop': No such file or directory
+ls: cannot access '/run/shrimp-setup': No such file or directory
+ls: cannot access '/run/agama': No such file or directory
+Unit agama-web-server.service could not be found.
+Unit agama.service could not be found.
+Unit shrimp-setup-token.service could not be found.
+>>>>>>> origin/main
 ===FAILED
   UNIT LOAD ACTIVE SUB DESCRIPTION
 
