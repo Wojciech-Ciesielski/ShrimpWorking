@@ -18,6 +18,8 @@ jobs:
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
+      - name: Komunikaty natywne (native_i18n.h) zgodne z i18n/install
+        run: node ../tools/gen-native-i18n.mjs --check
       - name: Test odczytu adresów z odpowiedzi API GitHub
         working-directory: shrimp-install
         run: gcc -Wall -Wextra -Werror -o /tmp/relurl_test tests/relurl_test.c && /tmp/relurl_test

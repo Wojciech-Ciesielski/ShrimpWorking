@@ -110,6 +110,11 @@
              window = GTK4 + WebKitGTK 6 (web processes run in bubblewrap), installer = Agama 24 -->
         <package name="libgtk-4-1"/>
         <package name="libwebkitgtk-6_0-4"/>
+        <!-- Shrimp Apps (store, built by tools/build-setup.sh): libflatpak + libadwaita; Steam needs gamemode and controller rules -->
+        <package name="libflatpak0"/>
+        <package name="libadwaita-1-0"/>
+        <package name="steam-devices"/>
+        <package name="gamemode"/>
         <package name="bubblewrap"/>
         <package name="xdg-dbus-proxy"/>
         <package name="polkit"/>

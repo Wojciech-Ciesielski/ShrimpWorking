@@ -30,6 +30,37 @@ if ! chroot "$T" rpm -q shrimp-setup >/dev/null 2>&1; then
   chroot "$T" systemctl --global enable shrimp-app-style-user.service || true
 fi
 
+# Sklep Shrimp (Shrimp Apps) instaluje zestaw podstawowy i programy z onboardingu; jego pakietu też jeszcze nie ma.
+if ! chroot "$T" rpm -q shrimp-apps >/dev/null 2>&1 && [ -x /usr/bin/shrimp-apps ]; then
+  log "kopiuję Shrimp Apps z nośnika"
+  install -Dm755 /usr/bin/shrimp-apps "$T/usr/bin/shrimp-apps"
+  install -Dm644 /usr/share/applications/org.shrimp.Apps.desktop "$T/usr/share/applications/org.shrimp.Apps.desktop"
+  install -Dm644 /usr/share/metainfo/org.shrimp.Apps.metainfo.xml "$T/usr/share/metainfo/org.shrimp.Apps.metainfo.xml"
+  install -Dm644 /usr/share/shrimp/base-apps.json "$T/usr/share/shrimp/base-apps.json"
+fi
+
+# Pakiety GNOME zastąpione przez Shrimp Apps, Cocktail i Flatpaki z zestawu podstawowego: usuwamy je teraz,
+# póki system docelowy jest jeszcze zapisywalny, i blokujemy, żeby aktualizacje ich nie przywracały.
+# Firefox i aplikacje GNOME wracają jako Flatpaki ze sklepu Shrimp przy pierwszej konfiguracji.
+LIST=$SRC/remove-packages.txt
+if [ -f "$LIST" ]; then
+  while IFS= read -r pkg; do
+    case "$pkg" in ''|'#'*) continue;; esac
+    chroot "$T" zypper -n --no-refresh rm --no-confirm "$pkg" >/dev/null 2>&1 || true
+    chroot "$T" zypper -n al "$pkg" >/dev/null 2>&1 || true
+  done < "$LIST"
+  log "usunięto zastąpione pakiety GNOME"
+fi
+# Firefox z Flatpaka jest domyślną przeglądarką, zanim się zainstaluje (wpis nieszkodliwy bez niego).
+mkdir -p "$T/etc/xdg"
+cat > "$T/etc/xdg/mimeapps.list" <<'MIME'
+[Default Applications]
+x-scheme-handler/http=org.mozilla.firefox.desktop
+x-scheme-handler/https=org.mozilla.firefox.desktop
+text/html=org.mozilla.firefox.desktop
+application/xhtml+xml=org.mozilla.firefox.desktop
+MIME
+
 # Cichy start zainstalowanego systemu: menu GRUB ukryte (Esc, F4 lub F8 w ciągu sekundy je pokazuje,
 # pod BIOS także wciśnięty Shift), bez komunikatów „Loading Linux/initial ramdisk” i bez logów jądra.
 GRUB_REGEN=0

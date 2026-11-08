@@ -164,7 +164,7 @@ class ShrimpMenuButton extends PanelMenu.Button {
         // Shrimp Apps is the store (GNOME Software is not in the image). Updates = Cocktail (the whole
         // system: packages, drivers, Flatpaks); until Cocktail is in the image, the "Installed"
         // page of Shrimp Apps, which updates the Flatpaks.
-        const store = this._appItem(t['menu.software'], ['org.shrimp.Apps.desktop', 'org.gnome.Software.desktop']);
+        const store = this._appItem(t['menu.software'], ['org.shrimp.Apps.desktop']);
         if (!this._appItem(t['menu.updates'], ['org.shrimp.Cocktail.desktop']) && store)
             this._item(t['menu.updates'], () => store.activate());
         this._appItem(t['menu.restore'], ['org.shrimp.Panko.desktop']);
