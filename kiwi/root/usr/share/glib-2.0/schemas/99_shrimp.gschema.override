@@ -37,6 +37,8 @@ welcome-dialog-last-shown-version='999'
 # Just Perfection: no Activities button in the top bar
 [org.gnome.shell.extensions.just-perfection]
 activities-button=false
+# start on the desktop, not in the Overview (first boot: Setup window instead of window thumbnails)
+startup-status=0
 
 # Blur my Shell: the wallpaper is blurred in the Overview, the top bar stays sharp
 [org.gnome.shell.extensions.blur-my-shell.overview]
