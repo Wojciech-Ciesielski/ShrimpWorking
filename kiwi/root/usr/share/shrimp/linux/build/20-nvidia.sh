@@ -1,5 +1,5 @@
 #!/bin/bash
-# LinU(x) 1/3: oficjalny sterownik NVIDIA na nośniku i w zainstalowanym systemie.
+# Linu(x) 1/3: oficjalny sterownik NVIDIA na nośniku i w zainstalowanym systemie.
 # Moduł jądra: otwarte moduły NVIDIA zbudowane i podpisane przez SUSE (repozytorium Leap),
 # więc ładują się przy włączonym Secure Boot bez MOK. Biblioteki (GL, Vulkan, VA-API/NVDEC,
 # CUDA): repozytorium NVIDIA dla openSUSE, które zostaje w systemie i daje aktualizacje.
@@ -27,19 +27,39 @@ fi
 "${ZYP[@]}" refresh NVIDIA || { warn "nie można odświeżyć repozytorium NVIDIA"; exit 0; }
 note "repozytorium NVIDIA: $repo"
 
+avail() { "${ZYP[@]}" -q se -x -t package "$1" >/dev/null 2>&1; }
+
 installed=""
 for S in $NVIDIA_OPEN_SERIES; do
-  # shellcheck disable=SC2086
-  pkgs=$(echo $NVIDIA_OPEN_PACKAGES | sed "s/@S@/$S/g")
-  # shellcheck disable=SC2086
-  if "${ZYP[@]}" install --no-recommends --auto-agree-with-licenses $pkgs; then installed=$S; break; fi
-  warn "seria $S niedostępna, próbuję następnej"
+  kmp=""
+  for k in "nvidia-open-driver-$S-signed-kmp-meta" "nvidia-open-driver-$S-signed-kmp-default"; do
+    avail "$k" && { kmp=$k; break; }
+  done
+  [ -n "$kmp" ] || { warn "seria $S: brak podpisanego modułu (nvidia-open-driver-$S-signed-kmp-*)"; continue; }
+  # Najpierw sam moduł: jego meta-pakiet wymaga nvidia-userspace-meta w DOKŁADNIE tej samej wersji,
+  # więc zypper dobiera biblioteki pasujące do modułu. Podanie bibliotek wprost wybierało najnowsze
+  # z repozytorium NVIDIA (np. 620.x przy module 595.x) i rozwiązanie się nie składało.
+  note "seria $S: instaluję $kmp"
+  if ! out=$("${ZYP[@]}" install --no-recommends --auto-agree-with-licenses "$kmp" 2>&1); then
+    echo "$out" | tail -25 | sed 's/^/Linu(x): zypper: /' >&2
+    warn "seria $S nie zainstalowała się, próbuję następnej"
+    continue
+  fi
+  ver=$(rpm -q --qf '%{VERSION}' "$kmp")
+  # brakujące biblioteki z listy, w wersji modułu
+  for p in $(echo "$NVIDIA_OPEN_PACKAGES" | sed "s/@S@/$S/g"); do
+    case "$p" in *kmp*) continue ;; esac
+    rpm -q "$p" >/dev/null 2>&1 && continue
+    "${ZYP[@]}" install --no-recommends --auto-agree-with-licenses "$p = $ver" >/dev/null 2>&1 \
+      || warn "seria $S: nie udało się doinstalować $p $ver"
+  done
+  installed=$S; break
 done
 if [ -z "$installed" ]; then
   warn "żadna seria otwartego sterownika NVIDIA ($NVIDIA_OPEN_SERIES) się nie zainstalowała"
   exit 0
 fi
-note "sterownik NVIDIA $installed zainstalowany: $(rpm -qa 'nvidia-open-driver*' 'nvidia-gl*' | tr '\n' ' ')"
+note "sterownik NVIDIA $installed zainstalowany: $(rpm -qa 'nvidia-open-driver*' 'nvidia-userspace*' 'nvidia-gl*' 'nvidia-video*' 'nvidia-compute*' | tr '\n' ' ')"
 
 # Pakiety NVIDIA wyłączają nouveau całkowicie (blacklist). Na nośniku dla każdego sprzętu
 # o nouveau decyduje shrimp-gpu-gate (Turing+ → nvidia, starsze → nouveau), więc blacklist
@@ -54,7 +74,7 @@ for f in /etc/modprobe.d/*.conf /usr/lib/modprobe.d/*.conf; do
   note "nouveau odblokowane w $dst"
 done
 cat > /etc/modprobe.d/60-shrimp-gpu.conf <<'CONF'
-# Shrimp LinU(x): karty NVIDIA od Turinga (GTX 16xx, RTX 20xx i nowsze) dostają oficjalny
+# Shrimp Linu(x): karty NVIDIA od Turinga (GTX 16xx, RTX 20xx i nowsze) dostają oficjalny
 # sterownik, starsze nouveau. Wymuszenie nouveau: parametr jądra shrimp.nouveau=1.
 install nouveau /usr/libexec/shrimp-gpu-gate
 # Wayland w GDM i GNOME, konsola przez sterownik NVIDIA, pamięć karty zachowana przy uśpieniu.

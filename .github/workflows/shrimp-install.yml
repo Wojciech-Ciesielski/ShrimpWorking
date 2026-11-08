@@ -81,6 +81,21 @@ jobs:
           if ($j.apps.Count -lt 1) { throw 'pusta lista programów' }
           if ($j.folders.Count -ne 6) { throw 'brak folderów' }
           "użytkownik: $($j.user.name), strefa: $($j.locale.timezone), programów: $($j.apps.Count), klawiatury: $($j.locale.keyboards -join ',')"
+      - name: Kopia zawartości nośnika (--backup-test)
+        shell: pwsh
+        run: |
+          $src = "$env:RUNNER_TEMP\usb-src"; $dst = "$env:RUNNER_TEMP\usb-dst"; $work = "$env:RUNNER_TEMP\usb-work"
+          New-Item -ItemType Directory -Force "$src\DCIM\100", "$src\Pusty folder", "$src\Zażółć", $work | Out-Null
+          Set-Content "$src\notatka.txt" "pendrive użytkownika" -Encoding utf8
+          [IO.File]::WriteAllBytes("$src\DCIM\100\a.bin", [byte[]](1..255 * 4000))
+          New-Item -ItemType File "$src\Zażółć\pusty.dat" | Out-Null
+          $f = [IO.File]::Create("$src\duzy.iso"); $f.SetLength(4.5GB); $f.Close()
+          $p = Start-Process out\shrimp-install.exe -ArgumentList '--backup-test', $src, $dst, $work -PassThru -Wait -NoNewWindow
+          if ($p.ExitCode -ne 0) { throw "kod wyjścia $($p.ExitCode)" }
+          if (-not (Test-Path "$dst\shrimp-backup\manifest.tsv")) { throw 'brak manifest.tsv' }
+          if (-not (Test-Path "$dst\shrimp-backup\files\duzy.iso.shrimp-part002")) { throw 'plik > 4 GB nie został podzielony' }
+          if (-not (Test-Path "$dst\shrimp-backup\files\Pusty folder")) { throw 'brak pustego folderu' }
+          Get-Content "$dst\shrimp-backup\manifest.tsv"
       - name: Okno z WebView2 (tryb --demo) i zrzuty
         shell: pwsh
         run: |

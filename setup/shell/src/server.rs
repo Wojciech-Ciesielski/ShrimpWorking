@@ -151,6 +151,14 @@ async fn apps_start(State(s): State<App>, Json(a): Json<Apps>) -> Response {
             inner.lock().await.apps.state = "offline";
             return;
         }
+        // Najpierw zestaw podstawowy ze sklepu Shrimp; niepowodzenie nie zatrzymuje wyboru użytkownika.
+        if let Err(e) = system::install_base_apps().await {
+            eprintln!("shrimp-setup: zestaw podstawowy: {}", e.0);
+            if !system::online().await {
+                inner.lock().await.apps.state = "offline";
+                return;
+            }
+        }
         let total = a.ids.len().max(1);
         let t0 = Instant::now();
         let mut failed = 0;

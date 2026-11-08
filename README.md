@@ -7,18 +7,18 @@ Pracujemy nad distro
 - Budowa: workflow **Build ISO** w GitHub Actions (artefakt `shrimp-live-iso`) albo lokalnie `sudo tools/build-iso.sh 16.1` (Docker/Podman).
 - Użytkownik live: `shrimp`, hasło `shrimp` (logowanie automatyczne).
 - Shrimp Setup jest częścią obrazu: `tools/build-setup.sh` buduje okno w chroocie Leap (te same biblioteki co ISO) i instaluje Setup (`setup/install.sh --live`) do kopii opisu KIWI w `out/desc`; Agama 24 serwuje interfejs na `127.0.0.1:80`, a okno startuje z autostartu sesji live.
-- Menu systemowe: logo Shrimp z lewej strony górnego paska (własne rozszerzenie `shrimp-menu@shrimp` w `kiwi/root/usr/share/gnome-shell/extensions/`, teksty w `lang/` w formacie `i18n/`): O tym komputerze, Ustawienia, Oprogramowanie, Aktualizacje, Monitor systemu, Dyski, Terminal, Rozszerzenia, Uśpij, Uruchom ponownie, Wyłącz, Zablokuj, Wyloguj. Szybkie ustawienia (prawy róg) mają dźwięk (PipeWire), Bluetooth, tryb zasilania i baterię w procentach.
+- Menu systemowe: logo Shrimp z lewej strony górnego paska (własne rozszerzenie `shrimp-menu@shrimp` w `kiwi/root/usr/share/gnome-shell/extensions/`): O tym komputerze, Ustawienia, Oprogramowanie (Shrimp Apps), Aktualizacje (Cocktail; do czasu jego dodania strona Zainstalowane w Shrimp Apps), Przywracanie systemu (Panko), narzędzia systemowe, Uśpij, Uruchom ponownie, Wyłącz, Zablokuj, Wyloguj. Pozycje programów, których nie ma w obrazie, są ukryte. Teksty: tłumaczenia GNOME (gnome-shell, nazwy programów), a czego GNOME nie ma, to `lang/` w formacie `i18n/` (wszystkie języki GNOME). Szybkie ustawienia (prawy róg) mają dźwięk (PipeWire), Bluetooth, tryb zasilania i baterię w procentach. Bez menu „Programy”: aplikacje są w siatce w doku.
 - Grafiki Plymouth/GRUB są renderowane z makiety `boot.html`: `node tools/render-boot-assets.js <shrimp-handoff> <out>`.
 
-## LinU(x) – Linux is now usable
+## Linu(x)
 
-Modyfikacje Shrimp ponad zwykłego Linuksa, już na nośniku live (`kiwi/root/usr/share/shrimp/linux/`, uruchamia je `kiwi/config.sh`; nazwa także w `os-release` jako `VARIANT`, w `/etc/issue.d` i `/etc/motd.d`):
+Standard Shrimp ponad zwykłego Linuksa (pełna nazwa i hasło tylko na stronie projektu). Użytkownik nie widzi nazwy w systemie: nie ma jej w `os-release`, `issue` ani `motd`. Na nośniku live jest w `kiwi/root/usr/share/shrimp/linux/` (uruchamia je `kiwi/config.sh`):
 
 - **Oficjalny sterownik NVIDIA** (`build/20-nvidia.sh`): otwarte moduły podpisane przez SUSE (Turing i nowsze, działają z Secure Boot) + biblioteki z repozytorium NVIDIA, które zostaje w systemie. Starsze karty zostają przy nouveau: decyduje `/usr/libexec/shrimp-gpu-gate` (awaryjnie parametr jądra `shrimp.nouveau=1`).
 - **Kodeki przez PipeWire** (`config.kiwi` + `build/10-codecs.sh`): PipeWire jako jedyny serwer dźwięku, GStreamer z wtyczką PipeWire i kodekami z Leap, H.264 przez openh264 od Cisco. Bez Packmana.
 - **Wygląd libadwaita dla Qt i Electron** (`build/30-app-style.sh` → `standardize/shrimp-app-style`, patrz niżej).
 
-Brak pakietu lub repozytorium nie przerywa budowy, tylko daje linię `WARNING: LinU(x): …` w logu (`tools/build-iso.sh` ją wypisuje).
+Brak pakietu lub repozytorium nie przerywa budowy, tylko daje linię `WARNING: Linu(x): …` w logu (`tools/build-iso.sh` ją wypisuje).
 
 ## Setup (instalator i pierwsza konfiguracja)
 
