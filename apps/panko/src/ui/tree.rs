@@ -29,6 +29,8 @@ pub enum Row {
         name: String,
         marker: Marker,
         checked: Rc<Cell<bool>>,
+        /// false: pole wyboru nieaktywne (plik z /usr, tylko do odczytu).
+        restorable: bool,
     },
 }
 
@@ -221,11 +223,17 @@ impl Tree {
                     name,
                     marker,
                     checked,
-                    ..
+                    restorable,
                 } => {
                     show(false, false, true, true, false, true);
                     w.root.add_css_class("panko-child");
-                    w.check.set_active(checked.get());
+                    w.check.set_active(checked.get() && *restorable);
+                    w.check.set_sensitive(*restorable);
+                    w.check.set_tooltip_text(if *restorable {
+                        None
+                    } else {
+                        Some("Plików systemowych z /usr nie da się przywrócić pojedynczo. Użyj „Przywróć system”.")
+                    });
                     w.check
                         .update_property(&[gtk::accessible::Property::Label(&format!(
                             "Wybierz {name}"

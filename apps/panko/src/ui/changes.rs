@@ -273,6 +273,7 @@ impl App {
                             name,
                             marker: c.marker(),
                             checked,
+                            restorable: c.restorable(),
                         });
                     }
                 }
@@ -302,7 +303,7 @@ impl App {
             let mut v: Vec<String> = st
                 .checked
                 .iter()
-                .filter(|(_, c)| c.get())
+                .filter(|(p, c)| c.get() && crate::model::restorable_path(p))
                 .map(|(p, _)| p.clone())
                 .collect();
             v.sort();

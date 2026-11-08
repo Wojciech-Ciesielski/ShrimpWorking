@@ -272,6 +272,13 @@ impl Marker {
 const CREATED: u32 = 1;
 const DELETED: u32 = 2;
 
+/// Zob. [`FileChange::restorable`].
+pub fn restorable_path(p: &str) -> bool {
+    let in_usr = p == "/usr" || p.starts_with("/usr/");
+    let local = p == "/usr/local" || p.starts_with("/usr/local/");
+    !in_usr || local
+}
+
 impl FileChange {
     /// Porównanie (migawka → obecny system): CREATED = plik doszedł po migawce.
     pub fn marker(&self) -> Marker {
@@ -282,6 +289,12 @@ impl FileChange {
         } else {
             Marker::Changed
         }
+    }
+
+    /// Czy plik da się przywrócić pojedynczo. /usr (poza /usr/local) jest na systemie niezmiennym
+    /// tylko do odczytu, więc `snapper undochange` zawsze tam zawodzi; właściwe jest „Przywróć system”.
+    pub fn restorable(&self) -> bool {
+        restorable_path(&self.path)
     }
 
     /// Katalog grupy i reszta ścieżki: "/etc/zypp/a.repo" → ("/etc", "zypp/a.repo"),
@@ -429,6 +442,11 @@ mod tests {
             c("/usr/bin/ninja", 1).split(),
             ("/usr/bin".into(), "ninja".into())
         );
+        assert!(!c("/usr/bin/ninja", 1).restorable());
+        assert!(!c("/usr", 1).restorable());
+        assert!(c("/usr/local/bin/x", 1).restorable());
+        assert!(c("/usrx/a", 1).restorable());
+        assert!(c("/etc/hosts", 1).restorable());
         assert_eq!(c("/usr/x", 1).split(), ("/usr".into(), "x".into()));
         assert_eq!(c("/vmlinuz", 1).split(), ("/".into(), "vmlinuz".into()));
         assert_eq!(c("/a", 1).marker(), Marker::Added);
