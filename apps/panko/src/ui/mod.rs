@@ -51,6 +51,8 @@ pub struct App {
     pub adv_page: RefCell<Option<advanced::Page>>,
     menu_timeline: gtk::Switch,
     menu_days: gtk::SpinButton,
+    menu_age_on: gtk::Switch,
+    max_age: Cell<Option<u32>>,
 }
 
 /// Uruchamia `work` w wątku i oddaje wynik do `done` w wątku interfejsu.
@@ -125,7 +127,7 @@ pub fn build(app: &adw::Application, backend: Arc<dyn Backend>) {
     }
     header.pack_start(&help);
 
-    let (menu_button, menu_timeline, menu_days, menu_about) = build_menu();
+    let (menu_button, menu_timeline, menu_days, menu_age_on, menu_about) = build_menu();
     header.pack_end(&menu_button);
 
     // Pasek boczny.
@@ -214,6 +216,8 @@ pub fn build(app: &adw::Application, backend: Arc<dyn Backend>) {
         adv_page: RefCell::new(None),
         menu_timeline: menu_timeline.clone(),
         menu_days: menu_days.clone(),
+        menu_age_on: menu_age_on.clone(),
+        max_age: Cell::new(None),
     });
 
     let sp = snapshots::Page::new(&this);
@@ -264,11 +268,20 @@ pub fn build(app: &adw::Application, backend: Arc<dyn Backend>) {
             app.queue_setting("TIMELINE_CREATE", if s.is_active() { "yes" } else { "no" });
         }
     });
+    // „Usuwaj migawki starsze niż N dni”: przełącznik + liczba, zapis jednym pkexec po chwili.
     let weak = Rc::downgrade(&this);
-    menu_days.connect_value_changed(move |s| {
+    menu_age_on.connect_active_notify(move |s| {
+        let Some(app) = weak.upgrade() else { return };
+        app.menu_days.set_sensitive(s.is_active());
+        if !app.updating.get() {
+            app.queue_max_age();
+        }
+    });
+    let weak = Rc::downgrade(&this);
+    menu_days.connect_value_changed(move |_| {
         let Some(app) = weak.upgrade() else { return };
         if !app.updating.get() {
-            app.queue_setting("TIMELINE_LIMIT_DAILY", &s.value_as_int().to_string());
+            app.queue_max_age();
         }
     });
     let win = window.clone();
@@ -317,7 +330,13 @@ pub fn build(app: &adw::Application, backend: Arc<dyn Backend>) {
     }
 }
 
-fn build_menu() -> (gtk::MenuButton, gtk::Switch, gtk::SpinButton, gtk::Button) {
+fn build_menu() -> (
+    gtk::MenuButton,
+    gtk::Switch,
+    gtk::SpinButton,
+    gtk::Switch,
+    gtk::Button,
+) {
     let b = gtk::Box::new(gtk::Orientation::Vertical, 0);
     b.set_size_request(290, -1);
     let row = |label: &str, w: &gtk::Widget| {
@@ -346,15 +365,22 @@ fn build_menu() -> (gtk::MenuButton, gtk::Switch, gtk::SpinButton, gtk::Button) 
     timeline.set_valign(gtk::Align::Center);
     timeline.update_property(&[gtk::accessible::Property::Label("Migawki cykliczne")]);
     b.append(&row("Migawki cykliczne", timeline.upcast_ref()));
-    let days = gtk::SpinButton::with_range(1.0, 99.0, 1.0);
+    // Usługa migawek nie ma limitu wieku: Panko czyści sam (retention.rs, panko-cleanup.timer).
+    let age_on = gtk::Switch::new();
+    age_on.set_valign(gtk::Align::Center);
+    age_on.update_property(&[gtk::accessible::Property::Label("Usuwaj stare migawki")]);
+    b.append(&row("Usuwaj stare migawki", age_on.upcast_ref()));
+    let days = gtk::SpinButton::with_range(1.0, f64::from(crate::retention::MAX_DAYS), 1.0);
     days.set_valign(gtk::Align::Center);
+    days.set_value(30.0);
+    days.set_sensitive(false);
     days.update_property(&[gtk::accessible::Property::Label("Liczba dni")]);
     let num = gtk::Box::new(gtk::Orientation::Horizontal, 6);
     num.append(&days);
     let d = gtk::Label::new(Some("dni"));
     d.add_css_class("dim-label");
     num.append(&d);
-    b.append(&row("Usuwaj migawki starsze niż", num.upcast_ref()));
+    b.append(&row("Starsze niż", num.upcast_ref()));
     let about = gtk::Button::with_label("O aplikacji Panko");
     about.add_css_class("flat");
     if let Some(l) = about.child().and_downcast::<gtk::Label>() {
@@ -367,7 +393,7 @@ fn build_menu() -> (gtk::MenuButton, gtk::Switch, gtk::SpinButton, gtk::Button) 
     mb.set_icon_name("open-menu-symbolic");
     mb.set_tooltip_text(Some("Menu główne"));
     mb.set_popover(Some(&pop));
-    (mb, timeline, days, about)
+    (mb, timeline, days, age_on, about)
 }
 
 impl App {
@@ -425,19 +451,20 @@ impl App {
                     Some(c) => backend.snapshots(&c.name)?,
                     None => vec![],
                 };
-                Ok::<_, Error>((configs, snaps))
+                Ok::<_, Error>((configs, snaps, backend.max_age()))
             },
             move |r| {
                 let Some(app) = weak.upgrade() else { return };
                 match r {
-                    Ok((configs, _)) if configs.is_empty() => app.show_status(
+                    Ok((configs, _, _)) if configs.is_empty() => app.show_status(
                         "document-open-recent-symbolic",
                         "Migawki są wyłączone",
                         "Włącz migawki, aby móc cofać zmiany w systemie.",
                         Some("Włącz"),
                         |app| app.enable_volume("root", "/"),
                     ),
-                    Ok((configs, snaps)) => {
+                    Ok((configs, snaps, max_age)) => {
+                        app.max_age.set(max_age);
                         *app.configs.borrow_mut() = configs;
                         *app.snaps.borrow_mut() = snaps;
                         app.body.set_visible_child_name("main");
@@ -509,8 +536,12 @@ impl App {
         self.updating.set(true);
         if let Some(c) = self.root_config() {
             self.menu_timeline.set_active(c.flag("TIMELINE_CREATE"));
-            self.menu_days
-                .set_value(c.number("TIMELINE_LIMIT_DAILY").max(1) as f64);
+        }
+        let age = self.max_age.get();
+        self.menu_age_on.set_active(age.is_some());
+        self.menu_days.set_sensitive(age.is_some());
+        if let Some(d) = age {
+            self.menu_days.set_value(f64::from(d));
         }
         self.updating.set(false);
         self.refresh_snapshots();
@@ -614,6 +645,42 @@ impl App {
                     if let Some(app) = weak.upgrade() {
                         app.save_settings(values);
                     }
+                },
+            ));
+        });
+    }
+
+    /// Wiek migawek: kilka kliknięć daje jedno okno hasła, jak w queue_setting.
+    pub fn queue_max_age(self: &Rc<Self>) {
+        thread_local! {
+            static PENDING: RefCell<Option<glib::SourceId>> = const { RefCell::new(None) };
+        }
+        PENDING.with(|p| {
+            if let Some(id) = p.borrow_mut().take() {
+                id.remove();
+            }
+            let weak = Rc::downgrade(self);
+            *p.borrow_mut() = Some(glib::timeout_add_local_once(
+                std::time::Duration::from_millis(900),
+                move || {
+                    PENDING.with(|p| p.borrow_mut().take());
+                    let Some(app) = weak.upgrade() else { return };
+                    let days = app
+                        .menu_age_on
+                        .is_active()
+                        .then(|| app.menu_days.value_as_int() as u32);
+                    let backend = app.backend.clone();
+                    let weak = Rc::downgrade(&app);
+                    run(
+                        move || backend.set_max_age(days),
+                        move |r| {
+                            let Some(app) = weak.upgrade() else { return };
+                            if let Err(e) = r {
+                                app.fail("Nie udało się zapisać ustawień.", &e);
+                            }
+                            app.reload();
+                        },
+                    );
                 },
             ));
         });

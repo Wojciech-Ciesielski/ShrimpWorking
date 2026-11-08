@@ -50,6 +50,9 @@ pub trait Backend: Send + Sync {
     /// Daje bieżącemu kontu dostęp do wszystkich konfiguracji.
     fn grant_access(&self, user: &str, configs: &[Config]) -> Result<()>;
     fn reboot(&self) -> Result<()>;
+    /// Po ilu dniach usuwać migawki (None = nie usuwaj).
+    fn max_age(&self) -> Option<u32>;
+    fn set_max_age(&self, days: Option<u32>) -> Result<()>;
     fn is_demo(&self) -> bool {
         false
     }
@@ -281,6 +284,18 @@ impl Backend for Dbus {
         Ok(())
     }
 
+    fn max_age(&self) -> Option<u32> {
+        crate::retention::read()
+    }
+
+    fn set_max_age(&self, days: Option<u32>) -> Result<()> {
+        let arg = days.map_or("off".to_owned(), |d| d.to_string());
+        let me = std::env::current_exe()
+            .map(|p| p.to_string_lossy().into_owned())
+            .unwrap_or_else(|_| "/usr/bin/panko".into());
+        pkexec(&me, &["--set-max-age".into(), arg])
+    }
+
     fn reboot(&self) -> Result<()> {
         let p = zbus::blocking::Proxy::new(
             &self.conn,
@@ -355,6 +370,12 @@ impl Backend for Offline {
         self.configs().map(|_| ())
     }
     fn reboot(&self) -> Result<()> {
+        self.configs().map(|_| ())
+    }
+    fn max_age(&self) -> Option<u32> {
+        None
+    }
+    fn set_max_age(&self, _: Option<u32>) -> Result<()> {
         self.configs().map(|_| ())
     }
 }
