@@ -46,6 +46,13 @@ CTX = ssl.create_default_context()
 
 
 def fetch(url, limit=4_000_000):
+    r = _fetch(url, limit)
+    if r[0] is None:  # DNS/TLS/limit czasu: jedna powtórka
+        r = _fetch(url, limit)
+    return r
+
+
+def _fetch(url, limit):
     req = urllib.request.Request(url, headers=HEADERS)
     try:
         with urllib.request.urlopen(req, timeout=TIMEOUT, context=CTX) as r:
