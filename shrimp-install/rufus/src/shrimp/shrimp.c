@@ -1,12 +1,15 @@
 /*
  * Shrimp Install: przebieg przygotowania nośnika i most do interfejsu.
  *
- *   start → pobranie ISO (fetch.c) → wybór nośnika i analiza ISO w Rufusie → START w Rufusie
- *         → kopia plików i shrimp.json (transfer.c) → gotowe → BootNext i restart (boot.c)
+ *   start → pobranie ISO (fetch.c) → wybór nośnika i analiza ISO w Rufusie
+ *         → kopia zawartości nośnika w Windows ze sprawdzeniem sum (usbbackup.c) → START w Rufusie
+ *         → zawartość nośnika do shrimp-backup/, kopia plików i shrimp.json (transfer.c) → gotowe
+ *         → BootNext i restart (boot.c)
  *
  * Argumenty: --demo (dane z makiety), --source PLIK.iso (bez pobierania), --manifest URL,
  * --collect PLIK.json (tylko zebranie danych z Windows, bez okna), --rufus (zwykły Rufus),
- * --screen NAZWA i --theme light|dark (podgląd ekranów z makiety).
+ * --screen NAZWA i --theme light|dark (podgląd ekranów z makiety),
+ * --backup-test ŹRÓDŁO CEL KOPIA (test kopii zawartości nośnika na katalogach, bez okna).
  *
  * Copyright © 2026 Shrimp. GPLv3.
  */
@@ -34,7 +37,7 @@ BOOL ShrimpBitLockerOn = FALSE;
 static BOOL opt_demo = FALSE;
 static char opt_collect[MAX_PATH], opt_screen[32], opt_theme[16], opt_lang[64];
 
-static enum { ST_IDLE, ST_FETCH, ST_SCAN, ST_FORMAT, ST_COPY, ST_DONE, ST_FAILED } state = ST_IDLE;
+static enum { ST_IDLE, ST_FETCH, ST_SCAN, ST_BACKUP, ST_FORMAT, ST_COPY, ST_DONE, ST_FAILED } state = ST_IDLE;
 static DWORD plan_device;
 static int cancel_id = 0;
 static volatile LONG fail_sent = 0;
@@ -63,6 +66,8 @@ void ShrimpInit(void)
 			WideCharToMultiByte(CP_UTF8, 0, argv[++i], -1, opt_screen, sizeof(opt_screen), NULL, NULL);
 		else if (v != NULL && wcscmp(a, L"--lang") == 0)
 			WideCharToMultiByte(CP_UTF8, 0, argv[++i], -1, opt_lang, sizeof(opt_lang), NULL, NULL);
+		else if (i + 3 < argc && wcscmp(a, L"--backup-test") == 0)
+			ExitProcess(ShrimpUsbBackupTest(argv[i + 1], argv[i + 2], argv[i + 3]));
 		else if (v != NULL && wcscmp(a, L"--theme") == 0)
 			WideCharToMultiByte(CP_UTF8, 0, argv[++i], -1, opt_theme, sizeof(opt_theme), NULL, NULL);
 	}
@@ -409,7 +414,7 @@ static void finish_cancel(void)
 
 static void cancel(int id)
 {
-	if (state != ST_FETCH && state != ST_SCAN && state != ST_FORMAT && state != ST_COPY) {
+	if (state != ST_FETCH && state != ST_SCAN && state != ST_BACKUP && state != ST_FORMAT && state != ST_COPY) {
 		state = ST_IDLE;
 		reply(id, "null");
 		return;
@@ -556,6 +561,25 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 			ShrimpFail(2, "write", "imageBad");
 			break;
 		}
+		/* Najpierw zawartość nośnika: bez sprawdzonej kopii nic nie zostanie sformatowane. */
+		state = ST_BACKUP;
+		ShrimpSpeed(0, TRUE);
+		if (CreateThread(NULL, 0, ShrimpUsbBackupThread, (LPVOID)(uintptr_t)plan_device, 0, NULL) == NULL) {
+			state = ST_FAILED;
+			ShrimpFail(2, "copy", "backupRead");
+		}
+		break;
+
+	case WM_SHRIMP_BACKED_UP:
+		if (ShrimpCancel) {
+			finish_cancel();
+			break;
+		}
+		if (!wParam) {
+			state = ST_FAILED;
+			ShrimpFail(2, "copy", "backupRead");   /* zwykle już zgłoszone dokładniej */
+			break;
+		}
 		/* Nośnik jak dla Shrimp: GPT, UEFI, FAT32 (Setup dopisuje pliki z Windows). */
 		select_data(hPartitionScheme, IDC_PARTITION_TYPE, PARTITION_STYLE_GPT);
 		select_data(hTargetSystem, IDC_TARGET_SYSTEM, TT_UEFI);
@@ -563,8 +587,8 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 			select_data(hFileSystem, IDC_FILE_SYSTEM, FS_FAT32);
 		else
 			uprintf("Shrimp: UWAGA: obraz ma plik > 4 GB, Rufus wybierze inny system plików");
+		ShrimpUsbBackupMarkFormatted();
 		state = ST_FORMAT;
-		ShrimpSpeed(0, TRUE);
 		SendMessage(hMainDialog, WM_COMMAND, IDC_START, 0);
 		break;
 
@@ -616,7 +640,7 @@ void ShrimpDispatch(const char* msg)
 
 BOOL ShrimpCanClose(void)
 {
-	return state != ST_FETCH && state != ST_SCAN && state != ST_FORMAT && state != ST_COPY;
+	return state != ST_FETCH && state != ST_SCAN && state != ST_BACKUP && state != ST_FORMAT && state != ST_COPY;
 }
 
 /* ---------- punkty zaczepienia w Rufusie ---------- */
@@ -660,8 +684,9 @@ void ShrimpOnProgress(int pos, int max)
 	if (!shrimp_mode || state != ST_FORMAT || max <= 0)
 		return;
 	size = ShrimpManifest.size ? ShrimpManifest.size : SHRIMP_ISO_ESTIMATE;
-	uint64_t done = size * (uint64_t)pos / (uint64_t)max;
-	ShrimpProgress(2, done, size, ShrimpSpeed(done, FALSE));
+	/* Pasek fazy 2 obejmuje też kopię zawartości nośnika (odczyt i sprawdzenie: 2 × bajty). */
+	uint64_t done = 2 * ShrimpUsbBackupBytes + size * (uint64_t)pos / (uint64_t)max;
+	ShrimpProgress(2, done, size + 2 * ShrimpUsbBackupBytes, ShrimpSpeed(done, FALSE));
 }
 
 void ShrimpOnFormatDone(DWORD error_status)
