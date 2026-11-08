@@ -19,7 +19,7 @@ Sklep z aplikacjami Shrimp: Flathub i aplikacje internetowe. GTK4 + libadwaita +
 
 ## Czego brakuje
 
-- **Na nośniku ISO**: program nie jest jeszcze budowany do obrazu. Trzeba go zbudować w chroocie Leap jak Setup (`tools/build-setup.sh`, z `pkgconfig(gtk4)`, `pkgconfig(libadwaita-1)`, `pkgconfig(flatpak)`) i zainstalować `install.sh` do `kiwi/root`. Menu Shrimp już woła najpierw `org.shrimp.Apps.desktop`, potem GNOME Software.
+- **Na nośniku ISO**: `tools/build-setup.sh` buduje program w chroocie Leap i instaluje go do obrazu, a post-install Setup kopiuje go do zainstalowanego systemu. Menu Shrimp otwiera go jako „Oprogramowanie”.
 - **Ikona programu**: na razie `system-software-install` z motywu; własnej ikony w paczce nie ma.
 - **Tłumaczenia**: interfejs tylko po polsku (format `i18n/` do podpięcia).
 - **Strona pomocy**: temat `apps` w `site/help.json`; dopóki `base` jest puste, przycisk i pozycja „Pomoc” są nieaktywne.

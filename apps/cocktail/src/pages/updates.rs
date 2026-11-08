@@ -80,22 +80,22 @@ impl Updates {
             State::Ok => {
                 self.icon.set_icon_name(Some("object-select-symbolic"));
                 self.icon.add_css_class("success");
-                self.title.set_text("System jest aktualny");
+                self.title.set_text(crate::i18n::tr("updates.uptodate"));
                 self.sub.set_text(&self.os);
-                self.button.set_label("Sprawdź aktualizacje");
+                self.button.set_label(crate::i18n::tr("updates.check"));
             }
             State::Available(n) => {
                 self.icon.set_icon_name(Some("software-update-available-symbolic"));
-                self.title.set_text("Dostępne aktualizacje");
-                self.sub.set_text(&format!("{n} {}", zypper::plural(*n, "pakiet", "pakiety", "pakietów")));
-                self.button.set_label("Zainstaluj aktualizacje");
+                self.title.set_text(crate::i18n::tr("updates.available"));
+                self.sub.set_text(&crate::i18n::trn("updates.packages", *n as u64, &[]));
+                self.button.set_label(crate::i18n::tr("updates.install"));
             }
             State::Done => {
                 self.icon.set_icon_name(Some("object-select-symbolic"));
                 self.icon.add_css_class("success");
-                self.title.set_text("Aktualizacje zainstalowane");
-                self.sub.set_text("Uruchom ponownie, aby zakończyć");
-                self.button.set_label("Uruchom ponownie");
+                self.title.set_text(crate::i18n::tr("updates.installed"));
+                self.sub.set_text(crate::i18n::tr("updates.restart-to-finish"));
+                self.button.set_label(crate::i18n::tr("button.restart"));
             }
         }
         *self.state.borrow_mut() = s;
@@ -106,7 +106,7 @@ impl Updates {
         self.button.set_sensitive(false);
         match state {
             State::Ok => {
-                self.button.set_label("Sprawdzanie…");
+                self.button.set_label(crate::i18n::tr("state.checking"));
                 let r = app::helper("cocktail-query", &["refresh"]).await;
                 if r.cancelled() {
                     self.show(State::Ok);
@@ -114,23 +114,23 @@ impl Updates {
                 }
                 if !r.ok() {
                     self.show(State::Ok);
-                    app.alert("Nie udało się sprawdzić aktualizacji", &app::tail(&r)).await;
+                    app.alert(crate::i18n::tr("updates.check-failed"), &app::tail(&r)).await;
                     return;
                 }
                 match list_updates().await {
                     Ok(u) if !u.is_empty() => self.show(State::Available(u.len())),
                     Ok(_) => {
                         self.show(State::Ok);
-                        app.toast("Brak nowych aktualizacji");
+                        app.toast(crate::i18n::tr("toast.no-updates"));
                     }
                     Err(e) => {
                         self.show(State::Ok);
-                        app.alert("Nie udało się sprawdzić aktualizacji", &e).await;
+                        app.alert(crate::i18n::tr("updates.check-failed"), &e).await;
                     }
                 }
             }
             State::Available(n) => {
-                self.button.set_label("Instalowanie…");
+                self.button.set_label(crate::i18n::tr("state.installing"));
                 if app.change(Op::Update, Vec::new(), "system").await {
                     if app.banner.is_revealed() {
                         self.show(State::Done);
@@ -142,7 +142,7 @@ impl Updates {
                 }
             }
             State::Done => {
-                self.button.set_label("Uruchamianie…");
+                self.button.set_label(crate::i18n::tr("state.restarting"));
                 app::reboot();
             }
         }

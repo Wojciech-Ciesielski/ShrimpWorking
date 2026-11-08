@@ -2,14 +2,16 @@ name: Cocktail
 
 on:
   push:
-    paths: ["apps/cocktail/**", ".github/workflows/cocktail.yml"]
+    paths: ["apps/cocktail/**", "apps/shrimp-i18n/**", "i18n/cocktail/**", "i18n/langs.ts", ".github/workflows/cocktail.yml"]
   pull_request:
-    paths: ["apps/cocktail/**", ".github/workflows/cocktail.yml"]
+    paths: ["apps/cocktail/**", "apps/shrimp-i18n/**", "i18n/cocktail/**", "i18n/langs.ts", ".github/workflows/cocktail.yml"]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-24.04
+    # Zrzuty ekranu po polsku (LANGUAGE czyta i18n Shrimp i Web Apps)
+    env: { LANGUAGE: pl }
     defaults: { run: { working-directory: apps/cocktail } }
     steps:
       - uses: actions/checkout@v4

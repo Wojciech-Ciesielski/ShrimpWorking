@@ -34,6 +34,10 @@ software:
     - dosfstools
     - exfatprogs
     - ntfsprogs
+    # Steam z Flathub (com.valvesoftware.Steam): reguły udev dla kontrolerów i GameMode
+    # (te same pakiety są w kiwi/config.kiwi dla sesji live)
+    - steam-devices
+    - gamemode
     # Pakiet Shrimp z tym Setup, motywami i skryptem wyglądu (repozytorium Shrimp: do ustalenia
     # razem z budową ISO; dopóki go nie ma, ISO wgrywa pliki do obrazu docelowego w post-install.sh).
     # - shrimp-setup

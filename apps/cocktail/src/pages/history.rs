@@ -25,7 +25,7 @@ impl History {
         let content = gtk::Box::new(gtk::Orientation::Vertical, 0);
         let tree = Tree::new();
         let none = super::no_results();
-        let status = super::note("Wczytywanie…");
+        let status = super::note(crate::i18n::tr("state.loading"));
         content.append(&status);
         content.append(&tree.list);
         content.append(&none);
@@ -63,12 +63,12 @@ impl History {
     fn render(&self, text: Option<&str>) {
         self.tree.clear();
         let Some(text) = text else {
-            self.status.set_text("Nie udało się odczytać historii.");
+            self.status.set_text(crate::i18n::tr("history.error"));
             self.status.set_visible(true);
             return;
         };
         let entries = history::parse(text);
-        self.status.set_text("Historia jest pusta.");
+        self.status.set_text(crate::i18n::tr("history.empty"));
         self.status.set_visible(entries.is_empty());
         let now = glib::DateTime::now_local().ok();
         let today = now.map(|d| history::days(d.year() as i64, d.month() as i64, d.day_of_month() as i64)).unwrap_or(0);
@@ -78,12 +78,12 @@ impl History {
             let idx = match group {
                 Some((name, idx)) if name == g => idx,
                 _ => {
-                    let idx = self.tree.group(None, "document-open-recent-symbolic", g, g != "Wcześniej");
+                    let idx = self.tree.group(None, "document-open-recent-symbolic", crate::i18n::tr(g), g != "history.earlier");
                     group = Some((g, idx));
                     idx
                 }
             };
-            let when = if g == "Dziś" || g == "Wczoraj" { e.time.clone() } else { format!("{} {}", e.date, e.time) };
+            let when = if g == "history.today" || g == "history.yesterday" { e.time.clone() } else { format!("{} {}", e.date, e.time) };
             self.tree.leaf(Some(idx), None, &e.title(), Some(&when), None);
         }
         self.tree.refresh();

@@ -44,7 +44,15 @@ interface AStatus {
   tasks?: { id: number; name: string; scope: string }[];
   progresses: { scope: string; index: number; size: number; step: string }[];
 }
-interface AIssue { scope: string; class: string; description: string }
+interface AIssue { scope: string; class: string; description: string; details?: string }
+
+/** Problemy Agamy, które blokują instalację. Repozytorium aktualizacji (…/update/…) bez metadanych
+ *  (np. Leap tuż po wydaniu albo lustro w trakcie synchronizacji) nie blokuje: system instaluje się
+ *  z repozytorium dystrybucji, a aktualizacje przyjdą później przez Cocktail. Test w QEMU: Agama
+ *  kończy instalację mimo tego problemu, a Setup wcześniej się na nim zatrzymywał. */
+export function blockingIssues(issues: AIssue[]): AIssue[] {
+  return issues.filter((i) => !(i.scope === "software" && i.class === "loadSource" && /\/update\//.test(i.details || i.description)));
+}
 
 /** Dyski z systemu Agamy → dyski Setup. Czysta funkcja (testy w agama.test.ts). */
 export function disksFromSystem(sys: ASystem): Disk[] {
@@ -164,7 +172,7 @@ export class AgamaBackend implements InstallBackend {
   async check(plan: InstallPlan) {
     await call("PUT", "/api/config", configFromPlan(plan));
     await this.settle();
-    const issues = await get<AIssue[]>("/api/issues");
+    const issues = blockingIssues(await get<AIssue[]>("/api/issues"));
     const storage = issues.filter((i) => i.scope === "storage");
     if (storage.length) throw new InstallError("space", storage.map((i) => i.description).join("; "));
     if (issues.length) throw new InstallError("install", issues.map((i) => i.description).join("; "));
