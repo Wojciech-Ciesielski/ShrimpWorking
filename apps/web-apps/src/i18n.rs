@@ -4,7 +4,7 @@ use std::collections::HashMap;
 use std::sync::OnceLock;
 
 const KEYS: &str = include_str!("../../../i18n/webapps/_keys.tsv");
-const LANGS: &[(&str, &str)] = &[("pl", include_str!("../../../i18n/webapps/pl.txt"))];
+include!(concat!(env!("OUT_DIR"), "/langs.rs"));
 
 /// Język z LANGUAGE / LC_ALL / LC_MESSAGES / LANG, np. „pl”.
 pub fn lang() -> String {
@@ -24,9 +24,64 @@ pub fn lang() -> String {
     .clone()
 }
 
+/// Nasz znacznik tłumaczenia (jak w i18n/langs.ts) dla locale z środowiska, np. „pt_BR.UTF-8” → „pt-br”,
+/// „sr_RS@latin” → „sr-latn”, „zh_TW” → „zh-hant”. Bez dopasowania: „en”.
+pub fn tag_for(locale: &str) -> String {
+    let base = locale.split('.').next().unwrap_or("");
+    let (main, modifier) = match base.split_once('@') {
+        Some((m, r)) => (m, Some(r)),
+        None => (base, None),
+    };
+    let main = main.replace('-', "_");
+    let has = |t: &str| LANGS.iter().any(|(l, _)| *l == t) || t == "en";
+    let mut tries: Vec<String> = vec![];
+    if let Some(m) = modifier {
+        tries.push(format!("{main}@{m}"));
+    }
+    tries.push(main.clone());
+    for t in &tries {
+        if let Some((_, tag)) = LOCALES.iter().find(|(l, _)| l.eq_ignore_ascii_case(t)) {
+            return tag.to_string();
+        }
+    }
+    let lower = main.to_lowercase().replace('_', "-");
+    let lang_only = lower.split('-').next().unwrap_or("").to_string();
+    let mut cands = vec![lower.clone()];
+    if let Some(m) = modifier {
+        cands.insert(0, format!("{lower}-{}", m.to_lowercase()));
+    }
+    cands.push(lang_only);
+    for c in cands {
+        if has(&c) {
+            return c;
+        }
+        if let Some((_, tag)) = ALIASES.iter().find(|(a, _)| *a == c) {
+            return tag.to_string();
+        }
+    }
+    "en".into()
+}
+
+fn locale_env() -> String {
+    for var in ["LANGUAGE", "LC_ALL", "LC_MESSAGES", "LANG"] {
+        if let Ok(v) = std::env::var(var) {
+            let first = v.split(':').next().unwrap_or("");
+            let tag = first.split('.').next().unwrap_or("");
+            if !tag.is_empty() && tag != "C" && tag != "POSIX" {
+                return first.to_string();
+            }
+        }
+    }
+    String::new()
+}
+
 fn table() -> &'static HashMap<String, String> {
     static T: OnceLock<HashMap<String, String>> = OnceLock::new();
-    T.get_or_init(|| build(&lang()))
+    T.get_or_init(|| build(&tag_for(&locale_env())))
+}
+
+fn text_of(tag: &str) -> Option<&'static str> {
+    LANGS.iter().find(|(t, _)| *t == tag).map(|(_, txt)| *txt)
 }
 
 fn build(lang: &str) -> HashMap<String, String> {
@@ -39,7 +94,9 @@ fn build(lang: &str) -> HashMap<String, String> {
     }
     let mut out: HashMap<String, String> =
         by_id.values().map(|(k, en)| (k.to_string(), en.to_string())).collect();
-    if let Some((_, txt)) = LANGS.iter().find(|(t, _)| *t == lang) {
+    // Najpierw język zapasowy tekstów (np. keczua → hiszpański), potem sam język.
+    let fallback = TEXT_FALLBACK.iter().find(|(t, _)| *t == lang).map(|(_, f)| *f).filter(|f| *f != "en");
+    for txt in [fallback.and_then(text_of), text_of(lang)].into_iter().flatten() {
         for line in txt.lines() {
             if let Some((id, tr)) = line.split_once('\t') {
                 if let Some((key, _)) = by_id.get(id) {
@@ -73,6 +130,12 @@ mod tests {
         assert_eq!(build("pl")["button.create"], "Utwórz");
         assert_eq!(build("en")["button.create"], "Create");
         assert_eq!(build("xx")["toast.created"], "{name} was added to your apps");
+        assert_eq!(tag_for("pt_BR.UTF-8"), "pt-br");
+        assert_eq!(tag_for("pl_PL.UTF-8"), "pl");
+        assert_eq!(tag_for("sr_RS@latin"), "sr-latn");
+        assert_eq!(tag_for("zh_TW.UTF-8"), "zh-hant");
+        assert_eq!(tag_for("C"), "en");
+        assert_eq!(tag_for("xx_XX"), "en");
         // Każdy id z pl.txt ma klucz.
         let ids: Vec<&str> = KEYS.lines().filter(|l| !l.starts_with('#')).filter_map(|l| l.split('\t').next()).collect();
         for (_, txt) in LANGS {
