@@ -1,5 +1,5 @@
 #!/bin/sh
-# Shrimp LinU(x): bramka dla nouveau (modprobe.d: install nouveau /usr/libexec/shrimp-gpu-gate).
+# Shrimp Linu(x): bramka dla nouveau (modprobe.d: install nouveau /usr/libexec/shrimp-gpu-gate).
 # Karta NVIDIA od Turinga (identyfikator PCI >= 0x1e00) i zainstalowany oficjalny sterownik:
 # nouveau się nie ładuje, kartę obsługuje nvidia. Starsze karty: zwykłe ładowanie nouveau.
 # Parametr jądra shrimp.nouveau=1 zawsze ładuje nouveau (awaryjnie, gdy nvidia zawiedzie).

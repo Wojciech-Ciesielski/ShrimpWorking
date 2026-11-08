@@ -1,5 +1,5 @@
 #!/bin/bash
-# LinU(x) 2/3: obraz i dźwięk działają od razu. Wszystko idzie przez PipeWire
+# Linu(x) 2/3: obraz i dźwięk działają od razu. Wszystko idzie przez PipeWire
 # (pipewire-pulseaudio i pipewire-alsa przejmują PulseAudio i ALSA), GStreamer dostaje
 # wtyczkę PipeWire i kodeki z repozytoriów Leap, H.264 przez openh264 od Cisco.
 # Aplikacje z Flathub mają własne kodeki (org.freedesktop.Platform.codecs-extra).
