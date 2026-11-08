@@ -2,7 +2,7 @@
 import type { I18n } from "../../../i18n/core";
 import type { Backend, Device, Failure, Folder, FolderKey, Info, Picked, Progress } from "./backend/types";
 import { helpUrl } from "../../../site/help";
-import { deviceLabel, dur, fmtGB, fmtSize, hostMessage, phaseFrac, phaseText, remaining, space } from "./logic";
+import { deviceLabel, dur, fmtGB, fmtSize, hostMessage, minLabel, phaseFrac, phaseText, remaining, space } from "./logic";
 
 const $ = <T extends HTMLElement = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector(s) as T;
 const $$ = <T extends HTMLElement = HTMLElement>(s: string, r: ParentNode = document) => Array.from(r.querySelectorAll(s)) as T[];
@@ -78,7 +78,7 @@ export class App {
     cb.disabled = !any;
     val.className = "cbv";
     note.textContent = "";
-    const min = fmtGB(this.L, this.info.minSize);
+    const min = minLabel(this.L, this.info.minSize);
     $("#mediaSub").textContent = this.t("media.sub", { size: min });
     if (d) val.textContent = deviceLabel(this.L, d);
     else if (any) {
@@ -188,8 +188,17 @@ export class App {
       const el = $("#ph" + n);
       const st = this.failed?.phase === n ? "fail" : n < at ? "done" : n === at ? "active" : "wait";
       el.className = "row phase " + st;
-      $(".st", el).innerHTML = `<svg class="i lg"><use href="${STI[st]}"/></svg>`;
-      $("#b" + n).style.width = phaseFrac(n, this.cur, this.finished) * 100 + "%";
+      // Ikona tylko przy zmianie stanu (postęp przychodzi kilka razy na sekundę, a kółko w trakcie się kręci).
+      const ic = $(".st", el);
+      if (ic.dataset.st !== st) {
+        ic.dataset.st = st;
+        ic.innerHTML = st === "active" ? `<span class="spin" aria-hidden="true"></span>` : `<svg class="i lg"><use href="${STI[st]}"/></svg>`;
+      }
+      // Bez znanego postępu (łączenie, analiza obrazu, formatowanie) pasek przesuwa się w miejscu zamiast stać na 0%.
+      const c = this.cur;
+      const busy = st === "active" && (c === null ? n === 1 : c.phase === n && (c.step === "prepare" || !c.total));
+      $("#b" + n).parentElement!.classList.toggle("ind", busy);
+      $("#b" + n).style.width = busy ? "" : phaseFrac(n, this.cur, this.finished) * 100 + "%";
       $<HTMLElement>(".pb-wrap", el).style.display = st === "fail" ? "none" : "";
       $("#n" + n).textContent = st === "fail" ? this.t(`fail.${this.failed!.kind}.t`) : phaseText(this.L, n, this.cur, this.sizes(), this.finished);
     }
