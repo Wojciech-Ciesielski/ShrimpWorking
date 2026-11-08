@@ -1,6 +1,8 @@
 Leap 16.1 (https://download.opensuse.org/distribution/leap/16.1/repo/oss/x86_64)
 gnome_basic: 0 packages; gnome+immutable_base: 0
 === visible desktop applications (package, desktop file, name)
+gnome-control-center	org.gnome.Settings.desktop	Settings
+seahorse	org.gnome.seahorse.Application.desktop	Passwords and Keys
 === availability
 steam-devices: available
 steam: missing

@@ -1,6 +1,2530 @@
 Loading repository data...
 Reading installed packages...
-'pattern' not found in package names. Trying capabilities.
-No provider of 'pattern' found.
-'-t' not found in package names. Trying capabilities.
-No provider of '-t' found.
+Resolving package dependencies...
+
+The following 638 NEW packages are going to be installed:
+  Leap_immutable-release Mesa Mesa-dri Mesa-libEGL1 Mesa-libGL1 Mesa-vulkan-device-select ModemManager NetworkManager NetworkManager-bluetooth NetworkManager-branding-openSUSE NetworkManager-wwan aaa_base accountsservice adobe-sourcecodepro-fonts adwaita-fonts adwaita-icon-theme alts at-spi2-core audit audit-rules bash bash-sh bc boost-license1_86_0 branding-openSUSE btrfsmaintenance btrfsprogs btrfsprogs-udev-rules bubblewrap busybox ca-certificates ca-certificates-mozilla chrony chrony-pool-openSUSE compat-usrmerge-tools coreutils coreutils-systemd cpio cracklib cracklib-dict-full crypto-policies cups-config dbus-1 dbus-1-common dbus-1-daemon dbus-1-tools dbus-broker dbus-broker-block-restart dconf device-mapper diffutils distribution-logos-openSUSE-Leap dmidecode dosfstools dracut dracut-transactional-update elfutils ethtool file file-magic filesystem fillup findutils fontconfig gawk gcr3-data gcr3-prompter gdk-pixbuf-loader-rsvg gdk-pixbuf-query-loaders gdm gdm-branding-openSUSE gdm-schema gdm-systemd gdmflexiserver geoclue2 geocode-glib gio-branding-openSUSE girepository-1_0 gjs glib-networking glib2-tools glibc glibc-locale-base glycin-loaders gnome-control-center gnome-session gnome-session-core gnome-session-wayland gnome-settings-daemon gnome-shell gnome-themes-accessibility gnome-user-share gpg2 grep gsettings-backend-dconf gsettings-desktop-schemas gstreamer gstreamer-plugin-pipewire gstreamer-plugins-base gtk3-data gtk3-schema gtk3-tools gtk4-schema gtk4-tools gweather4-data gzip hicolor-icon-theme hostname hwdata ibus ibus-dict-emoji iproute2 iso-codes kbd kdump kexec-tools kmod krb5 lastlog2 less libFLAC12 libICE6 libLLVM21 libSM6 libSPIRV-Tools-2026_1 libX11-6 libX11-data libX11-xcb1 libXau6 libXcomposite1 libXcursor1 libXdamage1 libXdmcp6 libXext6 libXfixes3 libXfont2-2 libXft2 libXi6 libXinerama1 libXrandr2 libXrender1 libXtst6 libXv1 libXxf86vm1 libaccountsservice0 libacl1 libadwaita-1-0 libalternatives1 libappstream5 libarchive13 libasm1 libasound2 libassuan9 libatk-1_0-0 libatk-bridge-2_0-0 libatspi0 libattr1 libaudit1 libaugeas0 libauparse0 libavahi-client3 libavahi-common3 libavahi-glib1 libavc1394-0 libblkid1 libbluetooth3 libboost_filesystem1_86_0 libboost_thread1_86_0 libbpf1 libbrotlicommon1 libbrotlidec1 libbrotlienc1 libbtrfs0 libbtrfsutil1 libbz2-1 libcairo-gobject2 libcairo-script-interpreter2 libcairo2 libcamera-base0_5 libcamera0_5 libcanberra-gtk3-0 libcanberra0 libcap-ng0 libcap2 libcbor0_11 libcloudproviders0 libcolord-gtk4-1 libcolord2 libcom_err2 libconfig++11 libcrack2 libcrypt1 libcryptsetup12 libcups2 libcurl4 libdatrie1 libdav1d7 libdbus-1-3 libdbusmenu-glib4 libdbusmenu-gtk3-4 libdconf1 libdecor libdecor-0-0 libdevmapper-event1_03 libdevmapper1_03 libdisplay-info2 libdrm2 libdrm_amdgpu1 libdrm_intel1 libduktape207 libdw1 libebur128-1 libeconf0 libedit0 libefivar1 libei1 libelf1 libepoxy0 libevdev2 libexpat1 libext2fs2 libfa1 libfdisk1 libfdk-aac2 libffado2 libffi8 libfftw3-3 libfido2-1 libfontconfig1 libfontenc1 libfreebl3 libfreetype6 libfribidi0 libgbm1 libgcc_s1 libgck-1-0 libgck-2-2 libgcr-3-1 libgcr-4-4 libgcrypt20 libgdbm6 libgdbm_compat4 libgdk_pixbuf-2_0-0 libgdm1 libgeocode-glib-2-0 libgio-2_0-0 libgirepository-1_0-1 libgirepository-2_0-0 libgjs0 libglib-2_0-0 libglibmm-2_4-1 libglvnd libgmodule-2_0-0 libgmp10 libgnome-autoar-0-0 libgnome-bluetooth-3_0-13 libgnome-bluetooth-ui-3_0-13 libgnome-desktop-3-20 libgnome-desktop-3_0-common libgnome-desktop-4-2 libgnutls30 libgoa-1_0-0 libgoa-backend-1_0-2 libgobject-2_0-0 libgpg-error0 libgpgme11 libgraphene-1_0-0 libgraphite2-3 libgsound0 libgstallocators-1_0-0 libgstapp-1_0-0 libgstaudio-1_0-0 libgstgl-1_0-0 libgstpbutils-1_0-0 libgstplay-1_0-0 libgstplayer-1_0-0 libgstreamer-1_0-0 libgstriff-1_0-0 libgsttag-1_0-0 libgstvideo-1_0-0 libgtk-3-0 libgtk-4-1 libgtop-2_0-11 libgudev-1_0-0 libgweather-4-0 libhandy-1-0 libharfbuzz-gobject0 libharfbuzz-subset0 libharfbuzz0 libheif1 libhidapi-hidraw0 libhogweed6 libhwy1 libibus-1_0-5 libicu77 libicu77-ledata libidn2-0 libiec61883-0 libinput10 libjansson4 libjbig2 libjitterentropy3 libjpeg8 libjson-c5 libjson-glib-1_0-0 libjxl0_11 libkbdfile1 libkeymap1 libkeyutils1 libkfont0 libkmod2 libksba8 liblastlog2-2 liblc3-1 liblcms2-2 libldac2 libldap-2 libldap-data libldb2 libleancrypto1 liblilv-0-0 liblmdb-0_9_30 libltdl7 liblua5_4-5 liblz1 liblz4-1 liblzma5 liblzo2-2 libmagic1 libmalcontent-0-0 libmbim-glib4 libmm-glib0 libmnl0 libmount1 libmozjs-128-0 libmpdec4 libmpfr6 libmtdev1 libmysofa1 libncurses6 libndp0 libnettle8 libnghttp2-14 libngtcp2-16 libngtcp2_crypto_gnutls8 libnl-config libnl3-200 libnm0 libnma-glib-schema libnma-gtk4-0 libnotify4 libnpth0 libnss_usrfiles2 libogg0 libopenssl3 libopus0 liborc-0_4-0 libp11-kit0 libpango-1_0-0 libpci3 libpciaccess0 libpcre2-8-0 libpipewire-0_3-0 libpixman-1-0 libpkgconf5 libpng16-16 libpolkit-agent-1-0 libpolkit-gobject-1-0 libpopt0 libproc2-1 libproxy1 libpsl5 libpulse-mainloop-glib0 libpulse0 libpwquality1 libpxbackend-1_0 libpython3_13-1_0 libqmi-glib5 libqrtr-glib0 libraw1394-11 libreadline8 librest-1_0-0 librsvg-2-2 libsasl2-3 libsbc1 libseccomp2 libsecret-1-0 libselinux1 libsemanage-conf libsemanage2 libsepol2 libserd-0-0 libsharpyuv0 libsigc-2_0-0 libsmartcols1 libsnapper7 libsnappy1 libsndfile1 libsoftokn3 libsolv-tools-base libsord-0-0 libsoup-3_0-0 libspandsp3 libsqlite3-0 libsratom-0-0 libssh-config libssh4 libstartup-notification-1-0 libstdc++6 libstemmer1d libsubid5 libsystemd0 libtalloc2 libtasn1-6 libtdb1 libtevent0 libthai-data libthai0 libtheoradec1 libtheoraenc1 libtiff6 libtirpc-netconfig libtirpc3 libtracker-sparql-3_0-0 libtss2-esys0 libtss2-fapi-common libtss2-fapi1 libtss2-mu0 libtss2-rc0 libtss2-sys1 libtss2-tcti-device0 libtss2-tctildr0 libtukit8 libudev1 libudisks2-0 libunistring5 libunwind8 libupower-glib3 libusb-1_0-0 libuuid1 libverto1 libvorbis0 libvorbisenc2 libvorbisfile3 libvulkan1 libvulkan_lvp libwacom-data libwacom9 libwayland-client0 libwayland-cursor0 libwayland-egl1 libwayland-server0 libwebrtc-audio-processing-1-3 libwrap0 libwtmpdb0 libxcb-dri3-0 libxcb-glx0 libxcb-present0 libxcb-randr0 libxcb-render0 libxcb-res0 libxcb-shm0 libxcb-sync1 libxcb-util1 libxcb-xfixes0 libxcb-xkb1 libxcb1 libxcvt0 libxkbcommon-x11-0 libxkbcommon0 libxkbfile1 libxkbregistry0 libxml++-3_0-1 libxml2-2 libxmlb2 libxshmfence1 libxtables12 libxxhash0 libyaml-0-2 libyaml-cpp0_8 libz1 libzck1 libzix-0-0 libzstd1 libzypp login_defs logrotate lsof makedumpfile malcontent mandoc-bin microos-tools mobile-broadband-provider-info mozilla-nspr mozilla-nss mutter ncurses-utils netcfg openSUSE-build-key openssh openssh-clients openssh-common openssh-server p11-kit p11-kit-nss-trust p11-kit-tools pam pam-config pam-extra pam_pwquality patterns-base-base patterns-base-basesystem patterns-base-immutable_base patterns-base-minimal_base patterns-glibc-hwcaps-x86_64_v3 patterns-gnome-gnome patterns-gnome-gnome_basic patterns-gnome-gnome_basis pciutils perl perl-base permctl permissions permissions-config pigz pinentry pipewire-modules-0_3 pipewire-spa-plugins-0_2 pkexec pkgconf pkgconf-m4 pkgconf-pkg-config policycoreutils polkit procps psmisc python3-base python313-base python313-dbus-python python313-gobject python313-gobject-Gdk python313-gobject-cairo python313-pycairo read-only-root-fs rebootmgr rollback-helper rpm rpm-config-SUSE rsync samba-ad-dc-libs samba-client-libs samba-libs seahorse sed selinux-autorelabel selinux-tools shadow shadow-pw-mgmt shared-mime-info snapper sudo suse-module-tools suseconnect-ng system-group-audit system-group-hardware system-group-kvm system-user-lp system-user-nobody system-user-root system-user-srvGeoClue system-user-tss systemd systemd-default-settings systemd-default-settings-branding-openSUSE systemd-presets-branding-MicroOS systemd-presets-common-SUSE systemd-rpm-macros sysuser-shadow tecla-keyboard-layout-viewer terminfo-base thin-provisioning-tools timezone tpm2-0-tss tpm2.0-tools transactional-update transactional-update-up-as-default transactional-update-zypp-config tukit tukit-snapper-plugin typelib-1_0-AccountsService-1_0 typelib-1_0-Adw-1 typelib-1_0-Atk-1_0 typelib-1_0-Atspi-2_0 typelib-1_0-GLib-2_0 typelib-1_0-GModule-2_0 typelib-1_0-GObject-2_0 typelib-1_0-GWeather-4_0 typelib-1_0-Gck-2 typelib-1_0-Gcr-4 typelib-1_0-GdkPixbuf-2_0 typelib-1_0-Gdm-1_0 typelib-1_0-Geoclue-2_0 typelib-1_0-Gio-2_0 typelib-1_0-GjsPrivate-1_0 typelib-1_0-GnomeBG-4_0 typelib-1_0-GnomeBluetooth-3_0 typelib-1_0-GnomeDesktop-4_0 typelib-1_0-Graphene-1_0 typelib-1_0-Gst-1_0 typelib-1_0-Gtk-3_0 typelib-1_0-Gtk-4_0 typelib-1_0-HarfBuzz-0_0 typelib-1_0-IBus-1_0 typelib-1_0-Malcontent-0 typelib-1_0-NM-1_0 typelib-1_0-NMA4-1_0 typelib-1_0-Pango-1_0 typelib-1_0-Polkit-1_0 typelib-1_0-Rsvg-2_0 typelib-1_0-Soup-3_0 typelib-1_0-UpowerGlib-1_0 udev update-bootloader util-linux util-linux-systemd vim vim-data-common wpa_supplicant wtmpdb xkbcomp xkeyboard-config xprop xwayland xxd xz zstd zypp-boot-plugin zypper
+
+The following 8 NEW patterns are going to be installed:
+  base basesystem gnome gnome_basic gnome_basis immutable_base minimal_base x86_64_v3
+
+The following NEW product is going to be installed:
+  "openSUSE Leap 16.1"
+
+638 new packages to install.
+
+Package download size:   299.3 MiB
+
+Package install size change:
+              |     985.6 MiB  required by packages that will be installed
+   985.6 MiB  |  -      0 B    released by packages that will be removed
+
+Backend:  classic_rpmtrans
+Continue? [y/n/v/...? shows all options] (y): y
+
+Checking for file conflicts: [...done]
+Warning: 638 packages had to be excluded from file conflicts check because they are not yet downloaded.
+
+    Note: Checking for file conflicts requires not installed packages to be downloaded in advance in
+    order to access their file lists. See option '--download-in-advance / --dry-run --download-only'
+    in the zypper manual page for details.
+
+Retrieving: boost-license1_86_0-1.86.0-160100.2.1.noarch (leap) (1/638),  77.8 KiB    
+Retrieving: boost-license1_86_0-1.86.0-160100.2.1.noarch.rpm [.done]
+(  1/638) Installing: boost-license1_86_0-1.86.0-160100.2.1.noarch [..done]
+Retrieving: branding-openSUSE-16.1.20260917-lp161.1.1.x86_64 (leap) (2/638),  24.1 KiB    
+Retrieving: branding-openSUSE-16.1.20260917-lp161.1.1.x86_64.rpm [.done]
+(  2/638) Installing: branding-openSUSE-16.1.20260917-lp161.1.1.x86_64 [..done]
+Retrieving: btrfsprogs-udev-rules-6.14-160100.2.2.noarch (leap) (3/638), 109.3 KiB    
+Retrieving: btrfsprogs-udev-rules-6.14-160100.2.2.noarch.rpm [.done]
+(  3/638) Installing: btrfsprogs-udev-rules-6.14-160100.2.2.noarch [..done]
+Retrieving: compat-usrmerge-tools-84.87-160100.2.2.x86_64 (leap) (4/638), 280.8 KiB    
+Retrieving: compat-usrmerge-tools-84.87-160100.2.2.x86_64.rpm [.done]
+(  4/638) Installing: compat-usrmerge-tools-84.87-160100.2.2.x86_64 [..done]
+Retrieving: cracklib-dict-full-2.8.12-160100.2.1.x86_64 (leap) (5/638),   3.2 MiB    
+Retrieving: cracklib-dict-full-2.8.12-160100.2.1.x86_64.rpm [.done]
+(  5/638) Installing: cracklib-dict-full-2.8.12-160100.2.1.x86_64 [..done]
+Retrieving: crypto-policies-20250714.cd6043a-160100.2.1.noarch (leap) (6/638),  83.4 KiB    
+Retrieving: crypto-policies-20250714.cd6043a-160100.2.1.noarch.rpm [.done]
+(  6/638) Installing: crypto-policies-20250714.cd6043a-160100.2.1.noarch [..done]
+Retrieving: dbus-broker-block-restart-36-160100.2.1.noarch (leap) (7/638),  19.7 KiB    
+Retrieving: dbus-broker-block-restart-36-160100.2.1.noarch.rpm [.done]
+(  7/638) Installing: dbus-broker-block-restart-36-160100.2.1.noarch [..done]
+Retrieving: distribution-logos-openSUSE-Leap-20240424-lp161.2.1.noarch (leap) (8/638),  28.0 KiB    
+Retrieving: distribution-logos-openSUSE-Leap-20240424-lp161.2.1.noarch.rpm [.done]
+(  8/638) Installing: distribution-logos-openSUSE-Leap-20240424-lp161.2.1.noarch [..done]
+Retrieving: file-magic-5.46-160100.2.1.noarch (leap) (9/638), 806.4 KiB    
+Retrieving: file-magic-5.46-160100.2.1.noarch.rpm [.done]
+(  9/638) Installing: file-magic-5.46-160100.2.1.noarch [..done]
+Retrieving: gcr3-data-3.41.2-160100.2.1.noarch (leap) (10/638),  81.7 KiB    
+Retrieving: gcr3-data-3.41.2-160100.2.1.noarch.rpm [.done]
+( 10/638) Installing: gcr3-data-3.41.2-160100.2.1.noarch [..done]
+Retrieving: gdm-schema-48.0-160100.2.1.noarch (leap) (11/638), 170.9 KiB    
+Retrieving: gdm-schema-48.0-160100.2.1.noarch.rpm [.done]
+( 11/638) Installing: gdm-schema-48.0-160100.2.1.noarch [..done]
+Retrieving: geocode-glib-3.26.4-160100.2.1.x86_64 (leap) (12/638),  23.7 KiB    
+Retrieving: geocode-glib-3.26.4-160100.2.1.x86_64.rpm [.done]
+( 12/638) Installing: geocode-glib-3.26.4-160100.2.1.x86_64 [..done]
+Retrieving: gtk3-data-3.24.52-160100.2.1.noarch (leap) (13/638), 225.7 KiB    
+Retrieving: gtk3-data-3.24.52-160100.2.1.noarch.rpm [.done]
+( 13/638) Installing: gtk3-data-3.24.52-160100.2.1.noarch [..done]
+Retrieving: gtk3-schema-3.24.52-160100.2.1.noarch (leap) (14/638), 225.3 KiB    
+Retrieving: gtk3-schema-3.24.52-160100.2.1.noarch.rpm [.done]
+( 14/638) Installing: gtk3-schema-3.24.52-160100.2.1.noarch [..done]
+Retrieving: gtk4-schema-4.18.6-160100.2.1.noarch (leap) (15/638), 134.9 KiB    
+Retrieving: gtk4-schema-4.18.6-160100.2.1.noarch.rpm [.done]
+( 15/638) Installing: gtk4-schema-4.18.6-160100.2.1.noarch [..done]
+Retrieving: hicolor-icon-theme-0.18-160100.2.1.noarch (leap) (16/638),  78.7 KiB    
+Retrieving: hicolor-icon-theme-0.18-160100.2.1.noarch.rpm [.done]
+( 16/638) Installing: hicolor-icon-theme-0.18-160100.2.1.noarch [..done]
+Retrieving: ibus-dict-emoji-1.5.33-160100.2.1.noarch (leap) (17/638),   7.3 MiB    
+Retrieving: ibus-dict-emoji-1.5.33-160100.2.1.noarch.rpm [.done]
+( 17/638) Installing: ibus-dict-emoji-1.5.33-160100.2.1.noarch [...done]
+Retrieving: iso-codes-4.16.0-160100.2.1.noarch (leap) (18/638),   3.1 MiB    
+Retrieving: iso-codes-4.16.0-160100.2.1.noarch.rpm [.done]
+( 18/638) Installing: iso-codes-4.16.0-160100.2.1.noarch [...done]
+Retrieving: libX11-data-1.8.12-160100.3.1.noarch (leap) (19/638), 169.2 KiB    
+Retrieving: libX11-data-1.8.12-160100.3.1.noarch.rpm [.done]
+( 19/638) Installing: libX11-data-1.8.12-160100.3.1.noarch [..done]
+Retrieving: libicu77-ledata-77.1-160100.2.1.noarch (leap) (20/638),   8.6 MiB    
+Retrieving: libicu77-ledata-77.1-160100.2.1.noarch.rpm [..done (7.4 MiB/s)]
+( 20/638) Installing: libicu77-ledata-77.1-160100.2.1.noarch [...done]
+Retrieving: libldap-data-2.6.13+57-160100.2.2.noarch (leap) (21/638),  14.5 KiB    
+Retrieving: libldap-data-2.6.13+57-160100.2.2.noarch.rpm [.done]
+( 21/638) Installing: libldap-data-2.6.13+57-160100.2.2.noarch [..done]
+Retrieving: libnl-config-3.11.0-160100.2.1.noarch (leap) (22/638),  18.6 KiB    
+Retrieving: libnl-config-3.11.0-160100.2.1.noarch.rpm [.done]
+( 22/638) Installing: libnl-config-3.11.0-160100.2.1.noarch [..done]
+Retrieving: libnma-glib-schema-1.10.6-160100.2.1.noarch (leap) (23/638),  12.2 KiB    
+Retrieving: libnma-glib-schema-1.10.6-160100.2.1.noarch.rpm [.done]
+( 23/638) Installing: libnma-glib-schema-1.10.6-160100.2.1.noarch [..done]
+Retrieving: libsemanage-conf-3.11-160100.2.1.x86_64 (leap) (24/638),  24.0 KiB    
+Retrieving: libsemanage-conf-3.11-160100.2.1.x86_64.rpm [.done]
+( 24/638) Installing: libsemanage-conf-3.11-160100.2.1.x86_64 [..done]
+Retrieving: libthai-data-0.1.29-160100.2.1.x86_64 (leap) (25/638), 158.7 KiB    
+Retrieving: libthai-data-0.1.29-160100.2.1.x86_64.rpm [.done]
+( 25/638) Installing: libthai-data-0.1.29-160100.2.1.x86_64 [..done]
+Retrieving: libtirpc-netconfig-1.3.6-160100.2.1.x86_64 (leap) (26/638),  31.2 KiB    
+Retrieving: libtirpc-netconfig-1.3.6-160100.2.1.x86_64.rpm [.done]
+( 26/638) Installing: libtirpc-netconfig-1.3.6-160100.2.1.x86_64 [..done]
+Retrieving: libwacom-data-2.18.0-160100.2.1.x86_64 (leap) (27/638), 231.1 KiB    
+Retrieving: libwacom-data-2.18.0-160100.2.1.x86_64.rpm [.done]
+( 27/638) Installing: libwacom-data-2.18.0-160100.2.1.x86_64 [..done]
+Retrieving: pkgconf-m4-2.2.0-160100.2.1.noarch (leap) (28/638),  20.9 KiB    
+Retrieving: pkgconf-m4-2.2.0-160100.2.1.noarch.rpm [.done]
+( 28/638) Installing: pkgconf-m4-2.2.0-160100.2.1.noarch [..done]
+Retrieving: system-user-root-20190513-160100.2.1.noarch (leap) (29/638),   8.2 KiB    
+Retrieving: system-user-root-20190513-160100.2.1.noarch.rpm [.done]
+( 29/638) Installing: system-user-root-20190513-160100.2.1.noarch [..done]
+Retrieving: vim-data-common-9.2.0957-160100.1.1.noarch (leap) (30/638),   1.1 MiB    
+Retrieving: vim-data-common-9.2.0957-160100.1.1.noarch.rpm [.done]
+( 30/638) Installing: vim-data-common-9.2.0957-160100.1.1.noarch [..done]
+Retrieving: Leap_immutable-release-16.1-lp161.12.1.x86_64 (leap) (31/638),   1.4 MiB    
+Retrieving: Leap_immutable-release-16.1-lp161.12.1.x86_64.rpm [.done]
+( 31/638) Installing: Leap_immutable-release-16.1-lp161.12.1.x86_64 [..done]
+Retrieving: filesystem-84.87-160100.2.1.x86_64 (leap) (32/638), 101.0 KiB    
+Retrieving: filesystem-84.87-160100.2.1.x86_64.rpm [.done]
+( 32/638) Installing: filesystem-84.87-160100.2.1.x86_64 [..done]
+Retrieving: glibc-2.40-160100.3.1.x86_64 (leap) (33/638),   2.2 MiB    
+Retrieving: glibc-2.40-160100.3.1.x86_64.rpm [.done]
+( 33/638) Installing: glibc-2.40-160100.3.1.x86_64 [..done]
+Retrieving: xxd-9.2.0957-160100.1.1.x86_64 (leap) (34/638), 1006.4 KiB    
+Retrieving: xxd-9.2.0957-160100.1.1.x86_64.rpm [.done]
+( 34/638) Installing: xxd-9.2.0957-160100.1.1.x86_64 [..done]
+Retrieving: timezone-2026c-160100.3.1.x86_64 (leap) (35/638), 544.7 KiB    
+Retrieving: timezone-2026c-160100.3.1.x86_64.rpm [.done]
+( 35/638) Installing: timezone-2026c-160100.3.1.x86_64 [...done]
+Retrieving: terminfo-base-6.5.20250531-160100.2.1.x86_64 (leap) (36/638), 457.5 KiB    
+Retrieving: terminfo-base-6.5.20250531-160100.2.1.x86_64.rpm [.done]
+( 36/638) Installing: terminfo-base-6.5.20250531-160100.2.1.x86_64 [..done]
+Retrieving: libncurses6-6.5.20250531-160100.2.1.x86_64 (leap) (37/638), 678.8 KiB    
+Retrieving: libncurses6-6.5.20250531-160100.2.1.x86_64.rpm [.done]
+( 37/638) Installing: libncurses6-6.5.20250531-160100.2.1.x86_64 [..done]
+Retrieving: ncurses-utils-6.5.20250531-160100.2.1.x86_64 (leap) (38/638), 488.1 KiB    
+Retrieving: ncurses-utils-6.5.20250531-160100.2.1.x86_64.rpm [.done]
+( 38/638) Installing: ncurses-utils-6.5.20250531-160100.2.1.x86_64 [..done]
+Retrieving: patterns-glibc-hwcaps-x86_64_v3-20230201-160100.2.1.x86_64 (leap) (39/638),   7.7 KiB    
+Retrieving: patterns-glibc-hwcaps-x86_64_v3-20230201-160100.2.1.x86_64.rpm [.done]
+( 39/638) Installing: patterns-glibc-hwcaps-x86_64_v3-20230201-160100.2.1.x86_64 [..done]
+Retrieving: mozilla-nspr-4.39-160100.1.1.x86_64 (leap) (40/638), 138.7 KiB    
+Retrieving: mozilla-nspr-4.39-160100.1.1.x86_64.rpm [.done]
+( 40/638) Installing: mozilla-nspr-4.39-160100.1.1.x86_64 [..done]
+Retrieving: libzstd1-1.5.7-160100.2.1.x86_64 (leap) (41/638), 326.8 KiB    
+Retrieving: libzstd1-1.5.7-160100.2.1.x86_64.rpm [.done]
+( 41/638) Installing: libzstd1-1.5.7-160100.2.1.x86_64 [..done]
+Retrieving: libzix-0-0-0.6.2-160100.2.1.x86_64 (leap) (42/638),  30.9 KiB    
+Retrieving: libzix-0-0-0.6.2-160100.2.1.x86_64.rpm [.done]
+( 42/638) Installing: libzix-0-0-0.6.2-160100.2.1.x86_64 [..done]
+Retrieving: libz1-1.2.13-160100.2.1.x86_64 (leap) (43/638),  81.1 KiB    
+Retrieving: libz1-1.2.13-160100.2.1.x86_64.rpm [.done]
+( 43/638) Installing: libz1-1.2.13-160100.2.1.x86_64 [..done]
+Retrieving: libyaml-0-2-0.2.5-160100.2.1.x86_64 (leap) (44/638),  57.4 KiB    
+Retrieving: libyaml-0-2-0.2.5-160100.2.1.x86_64.rpm [.done]
+( 44/638) Installing: libyaml-0-2-0.2.5-160100.2.1.x86_64 [..done]
+Retrieving: libxxhash0-0.8.3-160100.2.1.x86_64 (leap) (45/638),  24.5 KiB    
+Retrieving: libxxhash0-0.8.3-160100.2.1.x86_64.rpm [.done]
+( 45/638) Installing: libxxhash0-0.8.3-160100.2.1.x86_64 [..done]
+Retrieving: libxtables12-1.8.11-160100.2.1.x86_64 (leap) (46/638),  59.0 KiB    
+Retrieving: libxtables12-1.8.11-160100.2.1.x86_64.rpm [.done]
+( 46/638) Installing: libxtables12-1.8.11-160100.2.1.x86_64 [..done]
+Retrieving: libxshmfence1-1.3.2-160100.2.1.x86_64 (leap) (47/638),  12.0 KiB    
+Retrieving: libxshmfence1-1.3.2-160100.2.1.x86_64.rpm [.done]
+( 47/638) Installing: libxshmfence1-1.3.2-160100.2.1.x86_64 [..done]
+Retrieving: libxcvt0-0.1.3-160100.2.1.x86_64 (leap) (48/638),  10.5 KiB    
+Retrieving: libxcvt0-0.1.3-160100.2.1.x86_64.rpm [.done]
+( 48/638) Installing: libxcvt0-0.1.3-160100.2.1.x86_64 [..done]
+Retrieving: libwrap0-7.6-160100.2.1.x86_64 (leap) (49/638),  30.6 KiB    
+Retrieving: libwrap0-7.6-160100.2.1.x86_64.rpm [.done]
+( 49/638) Installing: libwrap0-7.6-160100.2.1.x86_64 [..done]
+Retrieving: libwayland-egl1-1.24.0-160100.2.1.x86_64 (leap) (50/638),  24.2 KiB    
+Retrieving: libwayland-egl1-1.24.0-160100.2.1.x86_64.rpm [.done]
+( 50/638) Installing: libwayland-egl1-1.24.0-160100.2.1.x86_64 [..done]
+Retrieving: libvulkan1-1.4.341-160100.2.1.x86_64 (leap) (51/638), 166.3 KiB    
+Retrieving: libvulkan1-1.4.341-160100.2.1.x86_64.rpm [.done]
+( 51/638) Installing: libvulkan1-1.4.341-160100.2.1.x86_64 [..done]
+Retrieving: libverto1-0.3.2-160100.2.1.x86_64 (leap) (52/638),  19.3 KiB    
+Retrieving: libverto1-0.3.2-160100.2.1.x86_64.rpm [.done]
+( 52/638) Installing: libverto1-0.3.2-160100.2.1.x86_64 [..done]
+Retrieving: libuuid1-2.42.1-160100.3.1.x86_64 (leap) (53/638), 196.3 KiB    
+Retrieving: libuuid1-2.42.1-160100.3.1.x86_64.rpm [.done]
+( 53/638) Installing: libuuid1-2.42.1-160100.3.1.x86_64 [..done]
+Retrieving: libunistring5-1.3-160100.2.1.x86_64 (leap) (54/638), 596.5 KiB    
+Retrieving: libunistring5-1.3-160100.2.1.x86_64.rpm [.done]
+( 54/638) Installing: libunistring5-1.3-160100.2.1.x86_64 [..done]
+Retrieving: libtss2-tctildr0-4.1.0-160100.2.1.x86_64 (leap) (55/638),  46.9 KiB    
+Retrieving: libtss2-tctildr0-4.1.0-160100.2.1.x86_64.rpm [.done]
+( 55/638) Installing: libtss2-tctildr0-4.1.0-160100.2.1.x86_64 [..done]
+Retrieving: libtss2-rc0-4.1.0-160100.2.1.x86_64 (leap) (56/638),  45.5 KiB    
+Retrieving: libtss2-rc0-4.1.0-160100.2.1.x86_64.rpm [.done]
+( 56/638) Installing: libtss2-rc0-4.1.0-160100.2.1.x86_64 [..done]
+Retrieving: libtss2-mu0-4.1.0-160100.2.1.x86_64 (leap) (57/638),  92.6 KiB    
+Retrieving: libtss2-mu0-4.1.0-160100.2.1.x86_64.rpm [.done]
+( 57/638) Installing: libtss2-mu0-4.1.0-160100.2.1.x86_64 [..done]
+Retrieving: libtheoradec1-1.1.1-160100.2.1.x86_64 (leap) (58/638),  58.7 KiB    
+Retrieving: libtheoradec1-1.1.1-160100.2.1.x86_64.rpm [.done]
+( 58/638) Installing: libtheoradec1-1.1.1-160100.2.1.x86_64 [..done]
+Retrieving: libtdb1-1.4.14-160100.2.1.x86_64 (leap) (59/638),  59.2 KiB    
+Retrieving: libtdb1-1.4.14-160100.2.1.x86_64.rpm [.done]
+( 59/638) Installing: libtdb1-1.4.14-160100.2.1.x86_64 [..done]
+Retrieving: libtasn1-6-4.21.0-160100.2.1.x86_64 (leap) (60/638),  70.4 KiB    
+Retrieving: libtasn1-6-4.21.0-160100.2.1.x86_64.rpm [.done]
+( 60/638) Installing: libtasn1-6-4.21.0-160100.2.1.x86_64 [..done]
+Retrieving: libtalloc2-2.4.3-160100.2.1.x86_64 (leap) (61/638),  35.9 KiB    
+Retrieving: libtalloc2-2.4.3-160100.2.1.x86_64.rpm [.done]
+( 61/638) Installing: libtalloc2-2.4.3-160100.2.1.x86_64 [..done]
+Retrieving: libstemmer1d-2.2.0-160100.2.1.x86_64 (leap) (62/638), 154.3 KiB    
+Retrieving: libstemmer1d-2.2.0-160100.2.1.x86_64.rpm [.done]
+( 62/638) Installing: libstemmer1d-2.2.0-160100.2.1.x86_64 [..done]
+Retrieving: libsqlite3-0-3.53.2-160100.2.1.x86_64 (leap) (63/638), 906.3 KiB    
+Retrieving: libsqlite3-0-3.53.2-160100.2.1.x86_64.rpm [.done]
+( 63/638) Installing: libsqlite3-0-3.53.2-160100.2.1.x86_64 [..done]
+Retrieving: libsmartcols1-2.42.1-160100.3.1.x86_64 (leap) (64/638), 244.0 KiB    
+Retrieving: libsmartcols1-2.42.1-160100.3.1.x86_64.rpm [.done]
+( 64/638) Installing: libsmartcols1-2.42.1-160100.3.1.x86_64 [..done]
+Retrieving: libsharpyuv0-1.5.0-160100.2.1.x86_64 (leap) (65/638),  31.6 KiB    
+Retrieving: libsharpyuv0-1.5.0-160100.2.1.x86_64.rpm [.done]
+( 65/638) Installing: libsharpyuv0-1.5.0-160100.2.1.x86_64 [..done]
+Retrieving: libserd-0-0-0.32.4-160100.2.1.x86_64 (leap) (66/638),  60.5 KiB    
+Retrieving: libserd-0-0-0.32.4-160100.2.1.x86_64.rpm [.done]
+( 66/638) Installing: libserd-0-0-0.32.4-160100.2.1.x86_64 [..done]
+Retrieving: libsepol2-3.11-160100.2.1.x86_64 (leap) (67/638), 331.8 KiB    
+Retrieving: libsepol2-3.11-160100.2.1.x86_64.rpm [.done]
+( 67/638) Installing: libsepol2-3.11-160100.2.1.x86_64 [..done]
+Retrieving: libseccomp2-2.6.0-160100.3.1.x86_64 (leap) (68/638),  74.0 KiB    
+Retrieving: libseccomp2-2.6.0-160100.3.1.x86_64.rpm [.done]
+( 68/638) Installing: libseccomp2-2.6.0-160100.3.1.x86_64 [..done]
+Retrieving: libsbc1-1.5-160100.2.1.x86_64 (leap) (69/638),  37.8 KiB    
+Retrieving: libsbc1-1.5-160100.2.1.x86_64.rpm [.done]
+( 69/638) Installing: libsbc1-1.5-160100.2.1.x86_64 [..done]
+Retrieving: libsasl2-3-2.1.28-160100.2.1.x86_64 (leap) (70/638),  57.5 KiB    
+Retrieving: libsasl2-3-2.1.28-160100.2.1.x86_64.rpm [.done]
+( 70/638) Installing: libsasl2-3-2.1.28-160100.2.1.x86_64 [..done]
+Retrieving: libraw1394-11-2.1.2-160100.2.1.x86_64 (leap) (71/638),  33.4 KiB    
+Retrieving: libraw1394-11-2.1.2-160100.2.1.x86_64.rpm [.done]
+( 71/638) Installing: libraw1394-11-2.1.2-160100.2.1.x86_64 [..done]
+Retrieving: libpopt0-1.19-160100.2.1.x86_64 (leap) (72/638),  36.5 KiB    
+Retrieving: libpopt0-1.19-160100.2.1.x86_64.rpm [.done]
+( 72/638) Installing: libpopt0-1.19-160100.2.1.x86_64 [..done]
+Retrieving: libpkgconf5-2.2.0-160100.2.1.x86_64 (leap) (73/638),  42.1 KiB    
+Retrieving: libpkgconf5-2.2.0-160100.2.1.x86_64.rpm [.done]
+( 73/638) Installing: libpkgconf5-2.2.0-160100.2.1.x86_64 [..done]
+Retrieving: libpixman-1-0-0.46.4-160100.2.1.x86_64 (leap) (74/638), 299.0 KiB    
+Retrieving: libpixman-1-0-0.46.4-160100.2.1.x86_64.rpm [.done]
+( 74/638) Installing: libpixman-1-0-0.46.4-160100.2.1.x86_64 [..done]
+Retrieving: libpcre2-8-0-10.45-160100.3.1.x86_64 (leap) (75/638), 394.5 KiB    
+Retrieving: libpcre2-8-0-10.45-160100.3.1.x86_64.rpm [.done]
+( 75/638) Installing: libpcre2-8-0-10.45-160100.3.1.x86_64 [..done]
+Retrieving: liborc-0_4-0-0.4.41-160100.2.1.x86_64 (leap) (76/638), 223.5 KiB    
+Retrieving: liborc-0_4-0-0.4.41-160100.2.1.x86_64.rpm [.done]
+( 76/638) Installing: liborc-0_4-0-0.4.41-160100.2.1.x86_64 [..done]
+Retrieving: libopus0-1.5.2-160100.2.1.x86_64 (leap) (77/638), 229.3 KiB    
+Retrieving: libopus0-1.5.2-160100.2.1.x86_64.rpm [.done]
+( 77/638) Installing: libopus0-1.5.2-160100.2.1.x86_64 [..done]
+Retrieving: libogg0-1.3.5-160100.2.1.x86_64 (leap) (78/638),  35.5 KiB    
+Retrieving: libogg0-1.3.5-160100.2.1.x86_64.rpm [.done]
+( 78/638) Installing: libogg0-1.3.5-160100.2.1.x86_64 [..done]
+Retrieving: libnss_usrfiles2-2.27.1-160100.2.1.x86_64 (leap) (79/638),  27.7 KiB    
+Retrieving: libnss_usrfiles2-2.27.1-160100.2.1.x86_64.rpm [.done]
+( 79/638) Installing: libnss_usrfiles2-2.27.1-160100.2.1.x86_64 [..done]
+Retrieving: libnpth0-1.8-160100.2.1.x86_64 (leap) (80/638),  24.9 KiB    
+Retrieving: libnpth0-1.8-160100.2.1.x86_64.rpm [.done]
+( 80/638) Installing: libnpth0-1.8-160100.2.1.x86_64 [..done]
+Retrieving: libnl3-200-3.11.0-160100.2.1.x86_64 (leap) (81/638), 346.1 KiB    
+Retrieving: libnl3-200-3.11.0-160100.2.1.x86_64.rpm [.done]
+( 81/638) Installing: libnl3-200-3.11.0-160100.2.1.x86_64 [..done]
+Retrieving: libngtcp2-16-1.22.1-160100.2.1.x86_64 (leap) (82/638), 153.8 KiB    
+Retrieving: libngtcp2-16-1.22.1-160100.2.1.x86_64.rpm [.done]
+( 82/638) Installing: libngtcp2-16-1.22.1-160100.2.1.x86_64 [..done]
+Retrieving: libnghttp2-14-1.68.1-160100.2.1.x86_64 (leap) (83/638), 147.3 KiB    
+Retrieving: libnghttp2-14-1.68.1-160100.2.1.x86_64.rpm [.done]
+( 83/638) Installing: libnghttp2-14-1.68.1-160100.2.1.x86_64 [..done]
+Retrieving: libnettle8-3.10.1-160100.2.1.x86_64 (leap) (84/638), 194.1 KiB    
+Retrieving: libnettle8-3.10.1-160100.2.1.x86_64.rpm [.done]
+( 84/638) Installing: libnettle8-3.10.1-160100.2.1.x86_64 [..done]
+Retrieving: libndp0-1.8-160100.2.1.x86_64 (leap) (85/638),  27.5 KiB    
+Retrieving: libndp0-1.8-160100.2.1.x86_64.rpm [.done]
+( 85/638) Installing: libndp0-1.8-160100.2.1.x86_64 [..done]
+Retrieving: libmtdev1-1.1.6-160100.2.1.x86_64 (leap) (86/638),  18.5 KiB    
+Retrieving: libmtdev1-1.1.6-160100.2.1.x86_64.rpm [.done]
+( 86/638) Installing: libmtdev1-1.1.6-160100.2.1.x86_64 [..done]
+Retrieving: libmpdec4-4.0.1-160100.2.1.x86_64 (leap) (87/638),  85.2 KiB    
+Retrieving: libmpdec4-4.0.1-160100.2.1.x86_64.rpm [.done]
+( 87/638) Installing: libmpdec4-4.0.1-160100.2.1.x86_64 [..done]
+Retrieving: libmnl0-1.0.5-160100.2.1.x86_64 (leap) (88/638),  26.2 KiB    
+Retrieving: libmnl0-1.0.5-160100.2.1.x86_64.rpm [.done]
+( 88/638) Installing: libmnl0-1.0.5-160100.2.1.x86_64 [..done]
+Retrieving: liblzo2-2-2.10-160100.2.1.x86_64 (leap) (89/638),  62.1 KiB    
+Retrieving: liblzo2-2-2.10-160100.2.1.x86_64.rpm [.done]
+( 89/638) Installing: liblzo2-2-2.10-160100.2.1.x86_64 [..done]
+Retrieving: liblzma5-5.8.1-160100.2.1.x86_64 (leap) (90/638), 165.9 KiB    
+Retrieving: liblzma5-5.8.1-160100.2.1.x86_64.rpm [.done]
+( 90/638) Installing: liblzma5-5.8.1-160100.2.1.x86_64 [..done]
+Retrieving: liblz4-1-1.10.0-160100.2.1.x86_64 (leap) (91/638),  79.9 KiB    
+Retrieving: liblz4-1-1.10.0-160100.2.1.x86_64.rpm [.done]
+( 91/638) Installing: liblz4-1-1.10.0-160100.2.1.x86_64 [..done]
+Retrieving: liblz1-1.15-160100.2.1.x86_64 (leap) (92/638),  51.3 KiB    
+Retrieving: liblz1-1.15-160100.2.1.x86_64.rpm [.done]
+( 92/638) Installing: liblz1-1.15-160100.2.1.x86_64 [..done]
+Retrieving: liblua5_4-5-5.4.7-160100.2.1.x86_64 (leap) (93/638), 134.2 KiB    
+Retrieving: liblua5_4-5-5.4.7-160100.2.1.x86_64.rpm [.done]
+( 93/638) Installing: liblua5_4-5-5.4.7-160100.2.1.x86_64 [..done]
+Retrieving: libltdl7-2.4.7-160100.2.1.x86_64 (leap) (94/638),  44.1 KiB    
+Retrieving: libltdl7-2.4.7-160100.2.1.x86_64.rpm [.done]
+( 94/638) Installing: libltdl7-2.4.7-160100.2.1.x86_64 [..done]
+Retrieving: liblmdb-0_9_30-0.9.30-160100.2.1.x86_64 (leap) (95/638),  60.4 KiB    
+Retrieving: liblmdb-0_9_30-0.9.30-160100.2.1.x86_64.rpm [.done]
+( 95/638) Installing: liblmdb-0_9_30-0.9.30-160100.2.1.x86_64 [..done]
+Retrieving: libleancrypto1-1.7.2-160100.3.1.x86_64 (leap) (96/638),   1.2 MiB    
+Retrieving: libleancrypto1-1.7.2-160100.3.1.x86_64.rpm [.done]
+( 96/638) Installing: libleancrypto1-1.7.2-160100.3.1.x86_64 [..done]
+Retrieving: libldac2-2.0.2.3-160100.2.1.x86_64 (leap) (97/638),  37.5 KiB    
+Retrieving: libldac2-2.0.2.3-160100.2.1.x86_64.rpm [.done]
+( 97/638) Installing: libldac2-2.0.2.3-160100.2.1.x86_64 [..done]
+Retrieving: liblcms2-2-2.16-160100.3.1.x86_64 (leap) (98/638), 173.1 KiB    
+Retrieving: liblcms2-2-2.16-160100.3.1.x86_64.rpm [.done]
+( 98/638) Installing: liblcms2-2-2.16-160100.3.1.x86_64 [..done]
+Retrieving: liblc3-1-1.1.1-160100.2.1.x86_64 (leap) (99/638),  99.6 KiB    
+Retrieving: liblc3-1-1.1.1-160100.2.1.x86_64.rpm [.done]
+( 99/638) Installing: liblc3-1-1.1.1-160100.2.1.x86_64 [..done]
+Retrieving: libkeyutils1-1.6.3-160100.2.1.x86_64 (leap) (100/638),  29.8 KiB    
+Retrieving: libkeyutils1-1.6.3-160100.2.1.x86_64.rpm [.done]
+(100/638) Installing: libkeyutils1-1.6.3-160100.2.1.x86_64 [..done]
+Retrieving: libkbdfile1-2.9.0-160100.3.1.x86_64 (leap) (101/638),  62.3 KiB    
+Retrieving: libkbdfile1-2.9.0-160100.3.1.x86_64.rpm [.done]
+(101/638) Installing: libkbdfile1-2.9.0-160100.3.1.x86_64 [..done]
+Retrieving: libjson-c5-0.17-160100.2.1.x86_64 (leap) (102/638),  54.8 KiB    
+Retrieving: libjson-c5-0.17-160100.2.1.x86_64.rpm [.done]
+(102/638) Installing: libjson-c5-0.17-160100.2.1.x86_64 [..done]
+Retrieving: libjpeg8-8.3.2-160100.2.1.x86_64 (leap) (103/638), 307.1 KiB    
+Retrieving: libjpeg8-8.3.2-160100.2.1.x86_64.rpm [.done]
+(103/638) Installing: libjpeg8-8.3.2-160100.2.1.x86_64 [..done]
+Retrieving: libjitterentropy3-3.6.3-160100.2.1.x86_64 (leap) (104/638),  28.9 KiB    
+Retrieving: libjitterentropy3-3.6.3-160100.2.1.x86_64.rpm [.done]
+(104/638) Installing: libjitterentropy3-3.6.3-160100.2.1.x86_64 [..done]
+Retrieving: libjbig2-2.1-160100.2.1.x86_64 (leap) (105/638),  35.4 KiB    
+Retrieving: libjbig2-2.1-160100.2.1.x86_64.rpm [.done]
+(105/638) Installing: libjbig2-2.1-160100.2.1.x86_64 [..done]
+Retrieving: libjansson4-2.14-160100.2.1.x86_64 (leap) (106/638),  38.8 KiB    
+Retrieving: libjansson4-2.14-160100.2.1.x86_64.rpm [.done]
+(106/638) Installing: libjansson4-2.14-160100.2.1.x86_64 [..done]
+Retrieving: libgraphite2-3-1.3.14-160100.2.1.x86_64 (leap) (107/638),  72.0 KiB    
+Retrieving: libgraphite2-3-1.3.14-160100.2.1.x86_64.rpm [.done]
+(107/638) Installing: libgraphite2-3-1.3.14-160100.2.1.x86_64 [..done]
+Retrieving: libgpg-error0-1.58-160100.2.1.x86_64 (leap) (108/638), 325.7 KiB    
+Retrieving: libgpg-error0-1.58-160100.2.1.x86_64.rpm [.done]
+(108/638) Installing: libgpg-error0-1.58-160100.2.1.x86_64 [..done]
+Retrieving: libgmp10-6.3.0-160100.2.1.x86_64 (leap) (109/638), 315.6 KiB    
+Retrieving: libgmp10-6.3.0-160100.2.1.x86_64.rpm [.done]
+(109/638) Installing: libgmp10-6.3.0-160100.2.1.x86_64 [..done]
+Retrieving: libgdbm6-1.24-160100.2.1.x86_64 (leap) (110/638),  59.8 KiB    
+Retrieving: libgdbm6-1.24-160100.2.1.x86_64.rpm [.done]
+(110/638) Installing: libgdbm6-1.24-160100.2.1.x86_64 [..done]
+Retrieving: libgcc_s1-16.2.0+git9497-160100.2.1.x86_64 (leap) (111/638),  88.9 KiB    
+Retrieving: libgcc_s1-16.2.0+git9497-160100.2.1.x86_64.rpm [.done]
+(111/638) Installing: libgcc_s1-16.2.0+git9497-160100.2.1.x86_64 [..done]
+Retrieving: libfribidi0-1.0.15-160100.2.1.x86_64 (leap) (112/638),  42.8 KiB    
+Retrieving: libfribidi0-1.0.15-160100.2.1.x86_64.rpm [.done]
+(112/638) Installing: libfribidi0-1.0.15-160100.2.1.x86_64 [..done]
+Retrieving: libfftw3-3-3.3.10-160100.2.1.x86_64 (leap) (113/638),   1.4 MiB    
+Retrieving: libfftw3-3-3.3.10-160100.2.1.x86_64.rpm [.done]
+(113/638) Installing: libfftw3-3-3.3.10-160100.2.1.x86_64 [..done]
+Retrieving: libffi8-3.4.6-160100.2.1.x86_64 (leap) (114/638),  30.6 KiB    
+Retrieving: libffi8-3.4.6-160100.2.1.x86_64.rpm [.done]
+(114/638) Installing: libffi8-3.4.6-160100.2.1.x86_64 [..done]
+Retrieving: libfdk-aac2-2.0.0-160100.2.1.x86_64 (leap) (115/638), 322.4 KiB    
+Retrieving: libfdk-aac2-2.0.0-160100.2.1.x86_64.rpm [.done]
+(115/638) Installing: libfdk-aac2-2.0.0-160100.2.1.x86_64 [..done]
+Retrieving: libfa1-1.14.1-160100.2.1.x86_64 (leap) (116/638), 102.3 KiB    
+Retrieving: libfa1-1.14.1-160100.2.1.x86_64.rpm [.done]
+(116/638) Installing: libfa1-1.14.1-160100.2.1.x86_64 [..done]
+Retrieving: libexpat1-2.7.4-160100.2.1.x86_64 (leap) (117/638), 122.7 KiB    
+Retrieving: libexpat1-2.7.4-160100.2.1.x86_64.rpm [.done]
+(117/638) Installing: libexpat1-2.7.4-160100.2.1.x86_64 [..done]
+Retrieving: libevdev2-1.13.3-160100.2.1.x86_64 (leap) (118/638),  46.9 KiB    
+Retrieving: libevdev2-1.13.3-160100.2.1.x86_64.rpm [.done]
+(118/638) Installing: libevdev2-1.13.3-160100.2.1.x86_64 [..done]
+Retrieving: libepoxy0-1.5.10-160100.2.1.x86_64 (leap) (119/638), 227.6 KiB    
+Retrieving: libepoxy0-1.5.10-160100.2.1.x86_64.rpm [.done]
+(119/638) Installing: libepoxy0-1.5.10-160100.2.1.x86_64 [..done]
+Retrieving: libefivar1-38-160100.2.1.x86_64 (leap) (120/638), 119.4 KiB    
+Retrieving: libefivar1-38-160100.2.1.x86_64.rpm [.done]
+(120/638) Installing: libefivar1-38-160100.2.1.x86_64 [..done]
+Retrieving: libeconf0-0.7.9-160100.2.1.x86_64 (leap) (121/638),  47.3 KiB    
+Retrieving: libeconf0-0.7.9-160100.2.1.x86_64.rpm [.done]
+(121/638) Installing: libeconf0-0.7.9-160100.2.1.x86_64 [..done]
+Retrieving: libebur128-1-1.2.6-160100.2.1.x86_64 (leap) (122/638),  22.2 KiB    
+Retrieving: libebur128-1-1.2.6-160100.2.1.x86_64.rpm [.done]
+(122/638) Installing: libebur128-1-1.2.6-160100.2.1.x86_64 [..done]
+Retrieving: libduktape207-2.7.0-160100.2.1.x86_64 (leap) (123/638), 144.8 KiB    
+Retrieving: libduktape207-2.7.0-160100.2.1.x86_64.rpm [.done]
+(123/638) Installing: libduktape207-2.7.0-160100.2.1.x86_64 [..done]
+Retrieving: libdrm2-2.4.131-160100.2.1.x86_64 (leap) (124/638), 109.5 KiB    
+Retrieving: libdrm2-2.4.131-160100.2.1.x86_64.rpm [.done]
+(124/638) Installing: libdrm2-2.4.131-160100.2.1.x86_64 [..done]
+Retrieving: libdisplay-info2-0.2.0-160100.2.1.x86_64 (leap) (125/638),  75.4 KiB    
+Retrieving: libdisplay-info2-0.2.0-160100.2.1.x86_64.rpm [.done]
+(125/638) Installing: libdisplay-info2-0.2.0-160100.2.1.x86_64 [..done]
+Retrieving: libdav1d7-1.5.1-160100.2.1.x86_64 (leap) (126/638), 618.2 KiB    
+Retrieving: libdav1d7-1.5.1-160100.2.1.x86_64.rpm [.done]
+(126/638) Installing: libdav1d7-1.5.1-160100.2.1.x86_64 [..done]
+Retrieving: libdatrie1-0.2.13-160100.2.1.x86_64 (leap) (127/638),  50.6 KiB    
+Retrieving: libdatrie1-0.2.13-160100.2.1.x86_64.rpm [.done]
+(127/638) Installing: libdatrie1-0.2.13-160100.2.1.x86_64 [..done]
+Retrieving: libcrypt1-4.4.38-160100.2.1.x86_64 (leap) (128/638), 111.7 KiB    
+Retrieving: libcrypt1-4.4.38-160100.2.1.x86_64.rpm [.done]
+(128/638) Installing: libcrypt1-4.4.38-160100.2.1.x86_64 [..done]
+Retrieving: libcom_err2-1.47.0-160100.2.1.x86_64 (leap) (129/638),  87.2 KiB    
+Retrieving: libcom_err2-1.47.0-160100.2.1.x86_64.rpm [.done]
+(129/638) Installing: libcom_err2-1.47.0-160100.2.1.x86_64 [..done]
+Retrieving: libcbor0_11-0.11.0-160100.2.1.x86_64 (leap) (130/638),  31.7 KiB    
+Retrieving: libcbor0_11-0.11.0-160100.2.1.x86_64.rpm [.done]
+(130/638) Installing: libcbor0_11-0.11.0-160100.2.1.x86_64 [..done]
+Retrieving: libcap2-2.78-160100.2.1.x86_64 (leap) (131/638),  53.2 KiB    
+Retrieving: libcap2-2.78-160100.2.1.x86_64.rpm [.done]
+(131/638) Installing: libcap2-2.78-160100.2.1.x86_64 [..done]
+Retrieving: libcap-ng0-0.8.5-160100.2.1.x86_64 (leap) (132/638),  32.5 KiB    
+Retrieving: libcap-ng0-0.8.5-160100.2.1.x86_64.rpm [.done]
+(132/638) Installing: libcap-ng0-0.8.5-160100.2.1.x86_64 [..done]
+Retrieving: libbz2-1-1.0.8-160100.3.1.x86_64 (leap) (133/638),  52.0 KiB    
+Retrieving: libbz2-1-1.0.8-160100.3.1.x86_64.rpm [.done]
+(133/638) Installing: libbz2-1-1.0.8-160100.3.1.x86_64 [..done]
+Retrieving: libbtrfsutil1-6.14-160100.2.2.x86_64 (leap) (134/638), 121.1 KiB    
+Retrieving: libbtrfsutil1-6.14-160100.2.2.x86_64.rpm [.done]
+(134/638) Installing: libbtrfsutil1-6.14-160100.2.2.x86_64 [..done]
+Retrieving: libbtrfs0-6.14-160100.2.2.x86_64 (leap) (135/638), 118.0 KiB    
+Retrieving: libbtrfs0-6.14-160100.2.2.x86_64.rpm [.done]
+(135/638) Installing: libbtrfs0-6.14-160100.2.2.x86_64 [..done]
+Retrieving: libbrotlicommon1-1.1.0-160100.2.1.x86_64 (leap) (136/638),  69.6 KiB    
+Retrieving: libbrotlicommon1-1.1.0-160100.2.1.x86_64.rpm [.done]
+(136/638) Installing: libbrotlicommon1-1.1.0-160100.2.1.x86_64 [..done]
+Retrieving: libbluetooth3-5.82-160100.2.1.x86_64 (leap) (137/638), 211.2 KiB    
+Retrieving: libbluetooth3-5.82-160100.2.1.x86_64.rpm [.done]
+(137/638) Installing: libbluetooth3-5.82-160100.2.1.x86_64 [..done]
+Retrieving: libavahi-common3-0.8-160100.2.1.x86_64 (leap) (138/638),  72.2 KiB    
+Retrieving: libavahi-common3-0.8-160100.2.1.x86_64.rpm [.done]
+(138/638) Installing: libavahi-common3-0.8-160100.2.1.x86_64 [..done]
+Retrieving: libaudit1-4.0-160100.2.1.x86_64 (leap) (139/638), 104.6 KiB    
+Retrieving: libaudit1-4.0-160100.2.1.x86_64.rpm [.done]
+(139/638) Installing: libaudit1-4.0-160100.2.1.x86_64 [..done]
+Retrieving: libattr1-2.5.2-160100.2.1.x86_64 (leap) (140/638),  36.1 KiB    
+Retrieving: libattr1-2.5.2-160100.2.1.x86_64.rpm [.done]
+(140/638) Installing: libattr1-2.5.2-160100.2.1.x86_64 [..done]
+Retrieving: libasound2-1.2.16.1-160100.3.1.x86_64 (leap) (141/638), 610.6 KiB    
+Retrieving: libasound2-1.2.16.1-160100.3.1.x86_64.rpm [.done]
+(141/638) Installing: libasound2-1.2.16.1-160100.3.1.x86_64 [..done]
+Retrieving: libalternatives1-1.2+30.a5431e9-160100.2.1.x86_64 (leap) (142/638),  19.2 KiB    
+Retrieving: libalternatives1-1.2+30.a5431e9-160100.2.1.x86_64.rpm [.done]
+(142/638) Installing: libalternatives1-1.2+30.a5431e9-160100.2.1.x86_64 [..done]
+Retrieving: libacl1-2.3.2-160100.2.1.x86_64 (leap) (143/638),  43.4 KiB    
+Retrieving: libacl1-2.3.2-160100.2.1.x86_64.rpm [.done]
+(143/638) Installing: libacl1-2.3.2-160100.2.1.x86_64 [..done]
+Retrieving: libXdmcp6-1.1.5-160100.2.1.x86_64 (leap) (144/638),  19.8 KiB    
+Retrieving: libXdmcp6-1.1.5-160100.2.1.x86_64.rpm [.done]
+(144/638) Installing: libXdmcp6-1.1.5-160100.2.1.x86_64 [..done]
+Retrieving: libXau6-1.0.12-160100.2.1.x86_64 (leap) (145/638),  17.0 KiB    
+Retrieving: libXau6-1.0.12-160100.2.1.x86_64.rpm [.done]
+(145/638) Installing: libXau6-1.0.12-160100.2.1.x86_64 [..done]
+Retrieving: libX11-xcb1-1.8.12-160100.3.1.x86_64 (leap) (146/638),  44.5 KiB    
+Retrieving: libX11-xcb1-1.8.12-160100.3.1.x86_64.rpm [.done]
+(146/638) Installing: libX11-xcb1-1.8.12-160100.3.1.x86_64 [..done]
+Retrieving: libICE6-1.1.2-160100.2.1.x86_64 (leap) (147/638),  55.0 KiB    
+Retrieving: libICE6-1.1.2-160100.2.1.x86_64.rpm [.done]
+(147/638) Installing: libICE6-1.1.2-160100.2.1.x86_64 [..done]
+Retrieving: glibc-locale-base-2.40-160100.3.1.x86_64 (leap) (148/638), 631.1 KiB    
+Retrieving: glibc-locale-base-2.40-160100.3.1.x86_64.rpm [.done]
+(148/638) Installing: glibc-locale-base-2.40-160100.3.1.x86_64 [..done]
+Retrieving: fillup-1.42-160100.2.1.x86_64 (leap) (149/638),  26.8 KiB    
+Retrieving: fillup-1.42-160100.2.1.x86_64.rpm [.done]
+(149/638) Installing: fillup-1.42-160100.2.1.x86_64 [..done]
+Retrieving: dosfstools-4.2-160100.2.1.x86_64 (leap) (150/638), 157.3 KiB    
+Retrieving: dosfstools-4.2-160100.2.1.x86_64.rpm [.done]
+(150/638) Installing: dosfstools-4.2-160100.2.1.x86_64 [..done]
+Retrieving: dmidecode-3.7-160100.3.1.x86_64 (leap) (151/638), 110.4 KiB    
+Retrieving: dmidecode-3.7-160100.3.1.x86_64.rpm [.done]
+(151/638) Installing: dmidecode-3.7-160100.3.1.x86_64 [..done]
+Retrieving: diffutils-3.12-160100.2.1.x86_64 (leap) (152/638), 197.9 KiB    
+Retrieving: diffutils-3.12-160100.2.1.x86_64.rpm [.done]
+(152/638) Installing: diffutils-3.12-160100.2.1.x86_64 [..done]
+Retrieving: psmisc-23.7-160100.2.2.x86_64 (leap) (153/638),  96.0 KiB    
+Retrieving: psmisc-23.7-160100.2.2.x86_64.rpm [.done]
+(153/638) Installing: psmisc-23.7-160100.2.2.x86_64 [..done]
+Retrieving: libreadline8-8.2.13-160100.2.1.x86_64 (leap) (154/638), 252.3 KiB    
+Retrieving: libreadline8-8.2.13-160100.2.1.x86_64.rpm [.done]
+(154/638) Installing: libreadline8-8.2.13-160100.2.1.x86_64 [..done]
+Retrieving: libedit0-20210910.3.1-160100.2.1.x86_64 (leap) (155/638), 107.2 KiB    
+Retrieving: libedit0-20210910.3.1-160100.2.1.x86_64.rpm [.done]
+(155/638) Installing: libedit0-20210910.3.1-160100.2.1.x86_64 [..done]
+Retrieving: pigz-2.8-160100.2.1.x86_64 (leap) (156/638),  80.1 KiB    
+Retrieving: pigz-2.8-160100.2.1.x86_64.rpm [.done]
+(156/638) Installing: pigz-2.8-160100.2.1.x86_64 [..done]
+Retrieving: mandoc-bin-1.14.6-160100.2.1.x86_64 (leap) (157/638), 223.9 KiB    
+Retrieving: mandoc-bin-1.14.6-160100.2.1.x86_64.rpm [.done]
+(157/638) Installing: mandoc-bin-1.14.6-160100.2.1.x86_64 [..done]
+Retrieving: libpng16-16-1.6.58-160100.2.1.x86_64 (leap) (158/638), 191.7 KiB    
+Retrieving: libpng16-16-1.6.58-160100.2.1.x86_64.rpm [.done]
+(158/638) Installing: libpng16-16-1.6.58-160100.2.1.x86_64 [..done]
+Retrieving: libpciaccess0-0.18.1-160100.2.1.x86_64 (leap) (159/638),  29.0 KiB    
+Retrieving: libpciaccess0-0.18.1-160100.2.1.x86_64.rpm [.done]
+(159/638) Installing: libpciaccess0-0.18.1-160100.2.1.x86_64 [..done]
+Retrieving: libpci3-3.13.0-160100.2.1.x86_64 (leap) (160/638),  82.3 KiB    
+Retrieving: libpci3-3.13.0-160100.2.1.x86_64.rpm [.done]
+(160/638) Installing: libpci3-3.13.0-160100.2.1.x86_64 [..done]
+Retrieving: libmysofa1-1.3.2-160100.2.1.x86_64 (leap) (161/638),   1.1 MiB    
+Retrieving: libmysofa1-1.3.2-160100.2.1.x86_64.rpm [.done]
+(161/638) Installing: libmysofa1-1.3.2-160100.2.1.x86_64 [..done]
+Retrieving: libfontenc1-1.1.8-160100.2.1.x86_64 (leap) (162/638),  22.1 KiB    
+Retrieving: libfontenc1-1.1.8-160100.2.1.x86_64.rpm [.done]
+(162/638) Installing: libfontenc1-1.1.8-160100.2.1.x86_64 [..done]
+Retrieving: libelf1-0.192-160100.2.1.x86_64 (leap) (163/638),  94.7 KiB    
+Retrieving: libelf1-0.192-160100.2.1.x86_64.rpm [.done]
+(163/638) Installing: libelf1-0.192-160100.2.1.x86_64 [..done]
+Retrieving: libidn2-0-2.3.8-160100.2.1.x86_64 (leap) (164/638),  92.5 KiB    
+Retrieving: libidn2-0-2.3.8-160100.2.1.x86_64.rpm [.done]
+(164/638) Installing: libidn2-0-2.3.8-160100.2.1.x86_64 [..done]
+Retrieving: libtss2-tcti-device0-4.1.0-160100.2.1.x86_64 (leap) (165/638),  47.1 KiB    
+Retrieving: libtss2-tcti-device0-4.1.0-160100.2.1.x86_64.rpm [.done]
+(165/638) Installing: libtss2-tcti-device0-4.1.0-160100.2.1.x86_64 [..done]
+Retrieving: libtss2-sys1-4.1.0-160100.2.1.x86_64 (leap) (166/638),  71.9 KiB    
+Retrieving: libtss2-sys1-4.1.0-160100.2.1.x86_64.rpm [.done]
+(166/638) Installing: libtss2-sys1-4.1.0-160100.2.1.x86_64 [..done]
+Retrieving: libtevent0-0.17.1-160100.2.1.x86_64 (leap) (167/638),  55.1 KiB    
+Retrieving: libtevent0-0.17.1-160100.2.1.x86_64.rpm [.done]
+(167/638) Installing: libtevent0-0.17.1-160100.2.1.x86_64 [..done]
+Retrieving: liblastlog2-2-2.42.1-160100.3.1.x86_64 (leap) (168/638), 187.4 KiB    
+Retrieving: liblastlog2-2-2.42.1-160100.3.1.x86_64.rpm [.done]
+(168/638) Installing: liblastlog2-2-2.42.1-160100.3.1.x86_64 [..done]
+Retrieving: libsord-0-0-0.16.18-160100.2.1.x86_64 (leap) (169/638),  28.9 KiB    
+Retrieving: libsord-0-0-0.16.18-160100.2.1.x86_64.rpm [.done]
+(169/638) Installing: libsord-0-0-0.16.18-160100.2.1.x86_64 [..done]
+Retrieving: libiec61883-0-1.2.0-160100.2.1.x86_64 (leap) (170/638),  39.3 KiB    
+Retrieving: libiec61883-0-1.2.0-160100.2.1.x86_64.rpm [.done]
+(170/638) Installing: libiec61883-0-1.2.0-160100.2.1.x86_64 [..done]
+Retrieving: libavc1394-0-0.5.4-160100.2.1.x86_64 (leap) (171/638),  21.7 KiB    
+Retrieving: libavc1394-0-0.5.4-160100.2.1.x86_64.rpm [.done]
+(171/638) Installing: libavc1394-0-0.5.4-160100.2.1.x86_64 [..done]
+Retrieving: pkgconf-2.2.0-160100.2.1.x86_64 (leap) (172/638),  53.0 KiB    
+Retrieving: pkgconf-2.2.0-160100.2.1.x86_64.rpm [.done]
+(172/638) Installing: pkgconf-2.2.0-160100.2.1.x86_64 [..done]
+Retrieving: libselinux1-3.11-160100.2.1.x86_64 (leap) (173/638), 119.8 KiB    
+Retrieving: libselinux1-3.11-160100.2.1.x86_64.rpm [.done]
+(173/638) Installing: libselinux1-3.11-160100.2.1.x86_64 [..done]
+Retrieving: libglib-2_0-0-2.84.4-160100.3.1.x86_64 (leap) (174/638), 983.3 KiB    
+Retrieving: libglib-2_0-0-2.84.4-160100.3.1.x86_64.rpm [.done]
+(174/638) Installing: libglib-2_0-0-2.84.4-160100.3.1.x86_64 [..done]
+Retrieving: libvorbis0-1.3.7-160100.2.1.x86_64 (leap) (175/638), 112.2 KiB    
+Retrieving: libvorbis0-1.3.7-160100.2.1.x86_64.rpm [.done]
+(175/638) Installing: libvorbis0-1.3.7-160100.2.1.x86_64 [..done]
+Retrieving: libtheoraenc1-1.1.1-160100.2.1.x86_64 (leap) (176/638), 126.4 KiB    
+Retrieving: libtheoraenc1-1.1.1-160100.2.1.x86_64.rpm [.done]
+(176/638) Installing: libtheoraenc1-1.1.1-160100.2.1.x86_64 [..done]
+Retrieving: libFLAC12-1.4.3-160100.2.1.x86_64 (leap) (177/638), 230.6 KiB    
+Retrieving: libFLAC12-1.4.3-160100.2.1.x86_64.rpm [.done]
+(177/638) Installing: libFLAC12-1.4.3-160100.2.1.x86_64 [..done]
+Retrieving: netcfg-11.6-160100.2.1.noarch (leap) (178/638), 195.5 KiB    
+Retrieving: netcfg-11.6-160100.2.1.noarch.rpm [.done]
+(178/638) Installing: netcfg-11.6-160100.2.1.noarch [..done]
+Retrieving: ethtool-6.14-160100.2.1.x86_64 (leap) (179/638), 273.1 KiB    
+Retrieving: ethtool-6.14-160100.2.1.x86_64.rpm [.done]
+(179/638) Installing: ethtool-6.14-160100.2.1.x86_64 [..done]
+Retrieving: libxml2-2-2.13.8-160100.2.1.x86_64 (leap) (180/638), 723.9 KiB    
+Retrieving: libxml2-2-2.13.8-160100.2.1.x86_64.rpm [.done]
+(180/638) Installing: libxml2-2-2.13.8-160100.2.1.x86_64 [..done]
+Retrieving: libunwind8-1.8.1-160100.2.1.x86_64 (leap) (181/638),  72.0 KiB    
+Retrieving: libunwind8-1.8.1-160100.2.1.x86_64.rpm [.done]
+(181/638) Installing: libunwind8-1.8.1-160100.2.1.x86_64 [..done]
+Retrieving: libkfont0-2.9.0-160100.3.1.x86_64 (leap) (182/638),  77.2 KiB    
+Retrieving: libkfont0-2.9.0-160100.3.1.x86_64.rpm [.done]
+(182/638) Installing: libkfont0-2.9.0-160100.3.1.x86_64 [..done]
+Retrieving: libkeymap1-2.9.0-160100.3.1.x86_64 (leap) (183/638), 107.5 KiB    
+Retrieving: libkeymap1-2.9.0-160100.3.1.x86_64.rpm [.done]
+(183/638) Installing: libkeymap1-2.9.0-160100.3.1.x86_64 [..done]
+Retrieving: libfreebl3-3.125-160100.1.1.x86_64 (leap) (184/638), 611.4 KiB    
+Retrieving: libfreebl3-3.125-160100.1.1.x86_64.rpm [.done]
+(184/638) Installing: libfreebl3-3.125-160100.1.1.x86_64 [..done]
+Retrieving: libksba8-1.6.7-160100.2.1.x86_64 (leap) (185/638), 163.3 KiB    
+Retrieving: libksba8-1.6.7-160100.2.1.x86_64.rpm [.done]
+(185/638) Installing: libksba8-1.6.7-160100.2.1.x86_64 [..done]
+Retrieving: libgcrypt20-1.12.1-160100.2.3.x86_64 (leap) (186/638), 922.2 KiB    
+Retrieving: libgcrypt20-1.12.1-160100.2.3.x86_64.rpm [.done]
+(186/638) Installing: libgcrypt20-1.12.1-160100.2.3.x86_64 [..done]
+Retrieving: libassuan9-3.0.2-160100.2.1.x86_64 (leap) (187/638),  97.0 KiB    
+Retrieving: libassuan9-3.0.2-160100.2.1.x86_64.rpm [.done]
+(187/638) Installing: libassuan9-3.0.2-160100.2.1.x86_64 [..done]
+Retrieving: libmpfr6-4.2.1-160100.2.1.x86_64 (leap) (188/638), 346.1 KiB    
+Retrieving: libmpfr6-4.2.1-160100.2.1.x86_64.rpm [.done]
+(188/638) Installing: libmpfr6-4.2.1-160100.2.1.x86_64 [..done]
+Retrieving: libhogweed6-3.10.1-160100.2.1.x86_64 (leap) (189/638), 236.8 KiB    
+Retrieving: libhogweed6-3.10.1-160100.2.1.x86_64.rpm [.done]
+(189/638) Installing: libhogweed6-3.10.1-160100.2.1.x86_64 [..done]
+Retrieving: libgdbm_compat4-1.24-160100.2.1.x86_64 (leap) (190/638),  34.5 KiB    
+Retrieving: libgdbm_compat4-1.24-160100.2.1.x86_64.rpm [.done]
+(190/638) Installing: libgdbm_compat4-1.24-160100.2.1.x86_64 [..done]
+Retrieving: libstdc++6-16.2.0+git9497-160100.2.1.x86_64 (leap) (191/638), 836.2 KiB    
+Retrieving: libstdc++6-16.2.0+git9497-160100.2.1.x86_64.rpm [.done]
+(191/638) Installing: libstdc++6-16.2.0+git9497-160100.2.1.x86_64 [..done]
+Retrieving: libwayland-server0-1.24.0-160100.2.1.x86_64 (leap) (192/638),  54.3 KiB    
+Retrieving: libwayland-server0-1.24.0-160100.2.1.x86_64.rpm [.done]
+(192/638) Installing: libwayland-server0-1.24.0-160100.2.1.x86_64 [..done]
+Retrieving: libwayland-client0-1.24.0-160100.2.1.x86_64 (leap) (193/638),  47.8 KiB    
+Retrieving: libwayland-client0-1.24.0-160100.2.1.x86_64.rpm [.done]
+(193/638) Installing: libwayland-client0-1.24.0-160100.2.1.x86_64 [..done]
+Retrieving: libp11-kit0-0.26.2-160100.2.1.x86_64 (leap) (194/638), 486.3 KiB    
+Retrieving: libp11-kit0-0.26.2-160100.2.1.x86_64.rpm [.done]
+(194/638) Installing: libp11-kit0-0.26.2-160100.2.1.x86_64 [..done]
+Retrieving: libblkid1-2.42.1-160100.3.1.x86_64 (leap) (195/638), 286.8 KiB    
+Retrieving: libblkid1-2.42.1-160100.3.1.x86_64.rpm [.done]
+(195/638) Installing: libblkid1-2.42.1-160100.3.1.x86_64 [..done]
+Retrieving: libgbm1-26.0.7-160100.2.1.x86_64 (leap) (196/638), 273.4 KiB    
+Retrieving: libgbm1-26.0.7-160100.2.1.x86_64.rpm [.done]
+(196/638) Installing: libgbm1-26.0.7-160100.2.1.x86_64 [..done]
+Retrieving: libdrm_amdgpu1-2.4.131-160100.2.1.x86_64 (leap) (197/638),  96.4 KiB    
+Retrieving: libdrm_amdgpu1-2.4.131-160100.2.1.x86_64.rpm [.done]
+(197/638) Installing: libdrm_amdgpu1-2.4.131-160100.2.1.x86_64 [..done]
+Retrieving: libthai0-0.1.29-160100.2.1.x86_64 (leap) (198/638),  28.1 KiB    
+Retrieving: libthai0-0.1.29-160100.2.1.x86_64.rpm [.done]
+(198/638) Installing: libthai0-0.1.29-160100.2.1.x86_64 [..done]
+Retrieving: perl-base-5.42.1-160100.2.1.x86_64 (leap) (199/638),   1.7 MiB    
+Retrieving: perl-base-5.42.1-160100.2.1.x86_64.rpm [.done]
+(199/638) Installing: perl-base-5.42.1-160100.2.1.x86_64 [..done]
+Retrieving: libext2fs2-1.47.0-160100.2.1.x86_64 (leap) (200/638), 271.9 KiB    
+Retrieving: libext2fs2-1.47.0-160100.2.1.x86_64.rpm [.done]
+(200/638) Installing: libext2fs2-1.47.0-160100.2.1.x86_64 [..done]
+Retrieving: libudev1-257.13-160100.3.5.x86_64 (leap) (201/638), 588.1 KiB    
+Retrieving: libudev1-257.13-160100.3.5.x86_64.rpm [.done]
+(201/638) Installing: libudev1-257.13-160100.3.5.x86_64 [..done]
+Retrieving: libsystemd0-257.13-160100.3.5.x86_64 (leap) (202/638), 901.4 KiB    
+Retrieving: libsystemd0-257.13-160100.3.5.x86_64.rpm [.done]
+(202/638) Installing: libsystemd0-257.13-160100.3.5.x86_64 [..done]
+Retrieving: libmagic1-5.46-160100.2.1.x86_64 (leap) (203/638), 131.6 KiB    
+Retrieving: libmagic1-5.46-160100.2.1.x86_64.rpm [.done]
+(203/638) Installing: libmagic1-5.46-160100.2.1.x86_64 [..done]
+Retrieving: libbrotlienc1-1.1.0-160100.2.1.x86_64 (leap) (204/638), 263.6 KiB    
+Retrieving: libbrotlienc1-1.1.0-160100.2.1.x86_64.rpm [.done]
+(204/638) Installing: libbrotlienc1-1.1.0-160100.2.1.x86_64 [..done]
+Retrieving: libbrotlidec1-1.1.0-160100.2.1.x86_64 (leap) (205/638),  32.9 KiB    
+Retrieving: libbrotlidec1-1.1.0-160100.2.1.x86_64.rpm [.done]
+(205/638) Installing: libbrotlidec1-1.1.0-160100.2.1.x86_64 [..done]
+Retrieving: libauparse0-4.0-160100.2.1.x86_64 (leap) (206/638), 121.7 KiB    
+Retrieving: libauparse0-4.0-160100.2.1.x86_64.rpm [.done]
+(206/638) Installing: libauparse0-4.0-160100.2.1.x86_64 [..done]
+Retrieving: alts-1.2+30.a5431e9-160100.2.1.x86_64 (leap) (207/638),  22.4 KiB    
+Retrieving: alts-1.2+30.a5431e9-160100.2.1.x86_64.rpm [.done]
+(207/638) Installing: alts-1.2+30.a5431e9-160100.2.1.x86_64 [..done]
+Retrieving: permctl-1699_20260518-160100.2.1.x86_64 (leap) (208/638), 443.5 KiB    
+Retrieving: permctl-1699_20260518-160100.2.1.x86_64.rpm [.done]
+(208/638) Installing: permctl-1699_20260518-160100.2.1.x86_64 [..done]
+Retrieving: libxcb1-1.17.0-160100.2.1.x86_64 (leap) (209/638),  64.1 KiB    
+Retrieving: libxcb1-1.17.0-160100.2.1.x86_64.rpm [.done]
+(209/638) Installing: libxcb1-1.17.0-160100.2.1.x86_64 [..done]
+Retrieving: libSM6-1.2.6-160100.2.1.x86_64 (leap) (210/638),  26.0 KiB    
+Retrieving: libSM6-1.2.6-160100.2.1.x86_64.rpm [.done]
+(210/638) Installing: libSM6-1.2.6-160100.2.1.x86_64 [..done]
+Retrieving: bash-5.2.37-160100.2.1.x86_64 (leap) (211/638), 718.7 KiB    
+Retrieving: bash-5.2.37-160100.2.1.x86_64.rpm [.done]
+(211/638) Installing: bash-5.2.37-160100.2.1.x86_64 [..done]
+Retrieving: bash-sh-5.2.37-160100.2.1.noarch (leap) (212/638), 123.4 KiB    
+Retrieving: bash-sh-5.2.37-160100.2.1.noarch.rpm [.done]
+(212/638) Installing: bash-sh-5.2.37-160100.2.1.noarch [..done]
+Retrieving: libdrm_intel1-2.4.131-160100.2.1.x86_64 (leap) (213/638), 134.8 KiB    
+Retrieving: libdrm_intel1-2.4.131-160100.2.1.x86_64.rpm [.done]
+(213/638) Installing: libdrm_intel1-2.4.131-160100.2.1.x86_64 [..done]
+Retrieving: libdw1-0.192-160100.2.1.x86_64 (leap) (214/638), 271.8 KiB    
+Retrieving: libdw1-0.192-160100.2.1.x86_64.rpm [.done]
+(214/638) Installing: libdw1-0.192-160100.2.1.x86_64 [..done]
+Retrieving: libbpf1-1.6.3-160100.2.1.x86_64 (leap) (215/638), 215.4 KiB    
+Retrieving: libbpf1-1.6.3-160100.2.1.x86_64.rpm [.done]
+(215/638) Installing: libbpf1-1.6.3-160100.2.1.x86_64 [..done]
+Retrieving: libpsl5-0.21.5-160100.2.1.x86_64 (leap) (216/638),  66.0 KiB    
+Retrieving: libpsl5-0.21.5-160100.2.1.x86_64.rpm [.done]
+(216/638) Installing: libpsl5-0.21.5-160100.2.1.x86_64 [..done]
+Retrieving: libldb2-4.23.12+git.499.6d6fa2d183-160100.1.5.x86_64 (leap) (217/638), 632.4 KiB    
+Retrieving: libldb2-4.23.12+git.499.6d6fa2d183-160100.1.5.x86_64.rpm [.done]
+(217/638) Installing: libldb2-4.23.12+git.499.6d6fa2d183-160100.1.5.x86_64 [..done]
+Retrieving: libsratom-0-0-0.6.14-160100.2.1.x86_64 (leap) (218/638),  25.5 KiB    
+Retrieving: libsratom-0-0-0.6.14-160100.2.1.x86_64.rpm [.done]
+(218/638) Installing: libsratom-0-0-0.6.14-160100.2.1.x86_64 [..done]
+Retrieving: sed-4.9-160100.2.1.x86_64 (leap) (219/638), 158.5 KiB    
+Retrieving: sed-4.9-160100.2.1.x86_64.rpm [.done]
+(219/638) Installing: sed-4.9-160100.2.1.x86_64 [..done]
+Retrieving: libsubid5-4.19.4-160100.2.1.x86_64 (leap) (220/638),  69.7 KiB    
+Retrieving: libsubid5-4.19.4-160100.2.1.x86_64.rpm [.done]
+(220/638) Installing: libsubid5-4.19.4-160100.2.1.x86_64 [..done]
+Retrieving: libsemanage2-3.11-160100.2.1.x86_64 (leap) (221/638), 115.1 KiB    
+Retrieving: libsemanage2-3.11-160100.2.1.x86_64.rpm [.done]
+(221/638) Installing: libsemanage2-3.11-160100.2.1.x86_64 [..done]
+Retrieving: findutils-4.10.0-160100.2.1.x86_64 (leap) (222/638), 310.9 KiB    
+Retrieving: findutils-4.10.0-160100.2.1.x86_64.rpm [.done]
+(222/638) Installing: findutils-4.10.0-160100.2.1.x86_64 [..done]
+Retrieving: busybox-1.37.0-160100.3.1.x86_64 (leap) (223/638), 712.5 KiB    
+Retrieving: busybox-1.37.0-160100.3.1.x86_64.rpm [.done]
+(223/638) Installing: busybox-1.37.0-160100.3.1.x86_64 [..done]
+Retrieving: bubblewrap-0.11.2-160100.2.1.x86_64 (leap) (224/638),  77.5 KiB    
+Retrieving: bubblewrap-0.11.2-160100.2.1.x86_64.rpm [.done]
+(224/638) Installing: bubblewrap-0.11.2-160100.2.1.x86_64 [..done]
+Retrieving: libgobject-2_0-0-2.84.4-160100.3.1.x86_64 (leap) (225/638), 450.4 KiB    
+Retrieving: libgobject-2_0-0-2.84.4-160100.3.1.x86_64.rpm [.done]
+(225/638) Installing: libgobject-2_0-0-2.84.4-160100.3.1.x86_64 [..done]
+Retrieving: libgmodule-2_0-0-2.84.4-160100.3.1.x86_64 (leap) (226/638), 319.3 KiB    
+Retrieving: libgmodule-2_0-0-2.84.4-160100.3.1.x86_64.rpm [.done]
+(226/638) Installing: libgmodule-2_0-0-2.84.4-160100.3.1.x86_64 [..done]
+Retrieving: libavahi-glib1-0.8-160100.2.1.x86_64 (leap) (227/638),  57.0 KiB    
+Retrieving: libavahi-glib1-0.8-160100.2.1.x86_64.rpm [.done]
+(227/638) Installing: libavahi-glib1-0.8-160100.2.1.x86_64 [..done]
+Retrieving: libvorbisfile3-1.3.7-160100.2.1.x86_64 (leap) (228/638),  35.0 KiB    
+Retrieving: libvorbisfile3-1.3.7-160100.2.1.x86_64.rpm [.done]
+(228/638) Installing: libvorbisfile3-1.3.7-160100.2.1.x86_64 [..done]
+Retrieving: libvorbisenc2-1.3.7-160100.2.1.x86_64 (leap) (229/638),  95.4 KiB    
+Retrieving: libvorbisenc2-1.3.7-160100.2.1.x86_64.rpm [.done]
+(229/638) Installing: libvorbisenc2-1.3.7-160100.2.1.x86_64 [..done]
+Retrieving: libxkbregistry0-1.8.0-160100.2.1.x86_64 (leap) (230/638),  36.2 KiB    
+Retrieving: libxkbregistry0-1.8.0-160100.2.1.x86_64.rpm [.done]
+(230/638) Installing: libxkbregistry0-1.8.0-160100.2.1.x86_64 [..done]
+Retrieving: libaugeas0-1.14.1-160100.2.1.x86_64 (leap) (231/638), 203.4 KiB    
+Retrieving: libaugeas0-1.14.1-160100.2.1.x86_64.rpm [.done]
+(231/638) Installing: libaugeas0-1.14.1-160100.2.1.x86_64 [..done]
+Retrieving: libyaml-cpp0_8-0.8.0-160100.2.1.x86_64 (leap) (232/638), 113.5 KiB    
+Retrieving: libyaml-cpp0_8-0.8.0-160100.2.1.x86_64.rpm [.done]
+(232/638) Installing: libyaml-cpp0_8-0.8.0-160100.2.1.x86_64 [..done]
+Retrieving: libwebrtc-audio-processing-1-3-1.3-160100.2.1.x86_64 (leap) (233/638), 415.7 KiB    
+Retrieving: libwebrtc-audio-processing-1-3-1.3-160100.2.1.x86_64.rpm [.done]
+(233/638) Installing: libwebrtc-audio-processing-1-3-1.3-160100.2.1.x86_64 [..done]
+Retrieving: libtiff6-4.7.2-160100.2.1.x86_64 (leap) (234/638), 295.1 KiB    
+Retrieving: libtiff6-4.7.2-160100.2.1.x86_64.rpm [.done]
+(234/638) Installing: libtiff6-4.7.2-160100.2.1.x86_64 [..done]
+Retrieving: libsnappy1-1.1.10-160100.2.1.x86_64 (leap) (235/638),  29.8 KiB    
+Retrieving: libsnappy1-1.1.10-160100.2.1.x86_64.rpm [.done]
+(235/638) Installing: libsnappy1-1.1.10-160100.2.1.x86_64 [..done]
+Retrieving: libsigc-2_0-0-2.12.1-160100.2.1.x86_64 (leap) (236/638),  62.5 KiB    
+Retrieving: libsigc-2_0-0-2.12.1-160100.2.1.x86_64.rpm [.done]
+(236/638) Installing: libsigc-2_0-0-2.12.1-160100.2.1.x86_64 [..done]
+Retrieving: libicu77-77.1-160100.2.1.x86_64 (leap) (237/638),   2.1 MiB    
+Retrieving: libicu77-77.1-160100.2.1.x86_64.rpm [.done]
+(237/638) Installing: libicu77-77.1-160100.2.1.x86_64 [..done]
+Retrieving: libhwy1-1.2.0-160100.2.1.x86_64 (leap) (238/638), 545.3 KiB    
+Retrieving: libhwy1-1.2.0-160100.2.1.x86_64.rpm [.done]
+(238/638) Installing: libhwy1-1.2.0-160100.2.1.x86_64 [..done]
+Retrieving: libconfig++11-1.7.3-160100.2.1.x86_64 (leap) (239/638),  60.2 KiB    
+Retrieving: libconfig++11-1.7.3-160100.2.1.x86_64.rpm [.done]
+(239/638) Installing: libconfig++11-1.7.3-160100.2.1.x86_64 [..done]
+Retrieving: libboost_thread1_86_0-1.86.0-160100.2.1.x86_64 (leap) (240/638), 111.9 KiB    
+Retrieving: libboost_thread1_86_0-1.86.0-160100.2.1.x86_64.rpm [.done]
+(240/638) Installing: libboost_thread1_86_0-1.86.0-160100.2.1.x86_64 [..done]
+Retrieving: libboost_filesystem1_86_0-1.86.0-160100.2.1.x86_64 (leap) (241/638), 126.4 KiB    
+Retrieving: libboost_filesystem1_86_0-1.86.0-160100.2.1.x86_64.rpm [.done]
+(241/638) Installing: libboost_filesystem1_86_0-1.86.0-160100.2.1.x86_64 [..done]
+Retrieving: libSPIRV-Tools-2026_1-2026.1-160100.2.1.x86_64 (leap) (242/638),   1.6 MiB    
+Retrieving: libSPIRV-Tools-2026_1-2026.1-160100.2.1.x86_64.rpm [.done]
+(242/638) Installing: libSPIRV-Tools-2026_1-2026.1-160100.2.1.x86_64 [..done]
+Retrieving: libLLVM21-21.1.8-160100.2.1.x86_64 (leap) (243/638),  30.3 MiB    
+Retrieving: libLLVM21-21.1.8-160100.2.1.x86_64.rpm [...done (22.0 MiB/s)]
+(243/638) Installing: libLLVM21-21.1.8-160100.2.1.x86_64 [.....done]
+Retrieving: libwayland-cursor0-1.24.0-160100.2.1.x86_64 (leap) (244/638),  30.8 KiB    
+Retrieving: libwayland-cursor0-1.24.0-160100.2.1.x86_64.rpm [.done]
+(244/638) Installing: libwayland-cursor0-1.24.0-160100.2.1.x86_64 [..done]
+Retrieving: p11-kit-tools-0.26.2-160100.2.1.x86_64 (leap) (245/638), 160.8 KiB    
+Retrieving: p11-kit-tools-0.26.2-160100.2.1.x86_64.rpm [.done]
+(245/638) Installing: p11-kit-tools-0.26.2-160100.2.1.x86_64 [..done]
+Retrieving: p11-kit-0.26.2-160100.2.1.x86_64 (leap) (246/638), 245.4 KiB    
+Retrieving: p11-kit-0.26.2-160100.2.1.x86_64.rpm [.done]
+(246/638) Installing: p11-kit-0.26.2-160100.2.1.x86_64 [..done]
+Retrieving: libgnutls30-3.8.10-160100.2.8.x86_64 (leap) (247/638),   1.1 MiB    
+Retrieving: libgnutls30-3.8.10-160100.2.8.x86_64.rpm [.done]
+(247/638) Installing: libgnutls30-3.8.10-160100.2.8.x86_64 [..done]
+Retrieving: libmount1-2.42.1-160100.3.1.x86_64 (leap) (248/638), 321.1 KiB    
+Retrieving: libmount1-2.42.1-160100.3.1.x86_64.rpm [.done]
+(248/638) Installing: libmount1-2.42.1-160100.3.1.x86_64 [..done]
+Retrieving: libfdisk1-2.42.1-160100.3.1.x86_64 (leap) (249/638), 319.8 KiB    
+Retrieving: libfdisk1-2.42.1-160100.3.1.x86_64.rpm [.done]
+(249/638) Installing: libfdisk1-2.42.1-160100.3.1.x86_64 [..done]
+Retrieving: perl-5.42.1-160100.2.1.x86_64 (leap) (250/638),   8.3 MiB    
+Retrieving: perl-5.42.1-160100.2.1.x86_64.rpm [..done (3.4 MiB/s)]
+(250/638) Installing: perl-5.42.1-160100.2.1.x86_64 [......done]
+Retrieving: libusb-1_0-0-1.0.28-160100.3.1.x86_64 (leap) (251/638),  84.5 KiB    
+Retrieving: libusb-1_0-0-1.0.28-160100.3.1.x86_64.rpm [.done]
+(251/638) Installing: libusb-1_0-0-1.0.28-160100.3.1.x86_64 [..done]
+Retrieving: libhidapi-hidraw0-0.14.0-160100.2.1.x86_64 (leap) (252/638),  31.7 KiB    
+Retrieving: libhidapi-hidraw0-0.14.0-160100.2.1.x86_64.rpm [.done]
+(252/638) Installing: libhidapi-hidraw0-0.14.0-160100.2.1.x86_64 [..done]
+Retrieving: libwtmpdb0-0.74.0+git20250509.272b109-160100.2.1.x86_64 (leap) (253/638),  26.1 KiB    
+Retrieving: libwtmpdb0-0.74.0+git20250509.272b109-160100.2.1.x86_64.rpm [.done]
+(253/638) Installing: libwtmpdb0-0.74.0+git20250509.272b109-160100.2.1.x86_64 [..done]
+Retrieving: libproc2-1-4.0.5-160100.2.1.x86_64 (leap) (254/638), 125.6 KiB    
+Retrieving: libproc2-1-4.0.5-160100.2.1.x86_64.rpm [.done]
+(254/638) Installing: libproc2-1-4.0.5-160100.2.1.x86_64 [..done]
+Retrieving: libei1-1.5.0-160100.2.1.x86_64 (leap) (255/638),  89.5 KiB    
+Retrieving: libei1-1.5.0-160100.2.1.x86_64.rpm [.done]
+(255/638) Installing: libei1-1.5.0-160100.2.1.x86_64 [..done]
+Retrieving: file-5.46-160100.2.1.x86_64 (leap) (256/638),  96.9 KiB    
+Retrieving: file-5.46-160100.2.1.x86_64.rpm [.done]
+(256/638) Installing: file-5.46-160100.2.1.x86_64 [..done]
+Retrieving: libheif1-1.23.5-160100.1.1.x86_64 (leap) (257/638), 701.2 KiB    
+Retrieving: libheif1-1.23.5-160100.1.1.x86_64.rpm [.done]
+(257/638) Installing: libheif1-1.23.5-160100.1.1.x86_64 [..done]
+Retrieving: libfreetype6-2.14.3-160100.2.1.x86_64 (leap) (258/638), 602.4 KiB    
+Retrieving: libfreetype6-2.14.3-160100.2.1.x86_64.rpm [.done]
+(258/638) Installing: libfreetype6-2.14.3-160100.2.1.x86_64 [..done]
+Retrieving: libxcb-xkb1-1.17.0-160100.2.1.x86_64 (leap) (259/638),  50.3 KiB    
+Retrieving: libxcb-xkb1-1.17.0-160100.2.1.x86_64.rpm [.done]
+(259/638) Installing: libxcb-xkb1-1.17.0-160100.2.1.x86_64 [..done]
+Retrieving: libxcb-xfixes0-1.17.0-160100.2.1.x86_64 (leap) (260/638),  28.8 KiB    
+Retrieving: libxcb-xfixes0-1.17.0-160100.2.1.x86_64.rpm [.done]
+(260/638) Installing: libxcb-xfixes0-1.17.0-160100.2.1.x86_64 [..done]
+Retrieving: libxcb-util1-0.4.1-160100.2.1.x86_64 (leap) (261/638),  16.0 KiB    
+Retrieving: libxcb-util1-0.4.1-160100.2.1.x86_64.rpm [.done]
+(261/638) Installing: libxcb-util1-0.4.1-160100.2.1.x86_64 [..done]
+Retrieving: libxcb-sync1-1.17.0-160100.2.1.x86_64 (leap) (262/638),  28.1 KiB    
+Retrieving: libxcb-sync1-1.17.0-160100.2.1.x86_64.rpm [.done]
+(262/638) Installing: libxcb-sync1-1.17.0-160100.2.1.x86_64 [..done]
+Retrieving: libxcb-shm0-1.17.0-160100.2.1.x86_64 (leap) (263/638),  24.8 KiB    
+Retrieving: libxcb-shm0-1.17.0-160100.2.1.x86_64.rpm [.done]
+(263/638) Installing: libxcb-shm0-1.17.0-160100.2.1.x86_64 [..done]
+Retrieving: libxcb-res0-1.17.0-160100.2.1.x86_64 (leap) (264/638),  25.4 KiB    
+Retrieving: libxcb-res0-1.17.0-160100.2.1.x86_64.rpm [.done]
+(264/638) Installing: libxcb-res0-1.17.0-160100.2.1.x86_64 [..done]
+Retrieving: libxcb-render0-1.17.0-160100.2.1.x86_64 (leap) (265/638),  34.7 KiB    
+Retrieving: libxcb-render0-1.17.0-160100.2.1.x86_64.rpm [.done]
+(265/638) Installing: libxcb-render0-1.17.0-160100.2.1.x86_64 [..done]
+Retrieving: libxcb-randr0-1.17.0-160100.2.1.x86_64 (leap) (266/638),  36.4 KiB    
+Retrieving: libxcb-randr0-1.17.0-160100.2.1.x86_64.rpm [.done]
+(266/638) Installing: libxcb-randr0-1.17.0-160100.2.1.x86_64 [..done]
+Retrieving: libxcb-present0-1.17.0-160100.2.1.x86_64 (leap) (267/638),  24.9 KiB    
+Retrieving: libxcb-present0-1.17.0-160100.2.1.x86_64.rpm [.done]
+(267/638) Installing: libxcb-present0-1.17.0-160100.2.1.x86_64 [..done]
+Retrieving: libxcb-glx0-1.17.0-160100.2.1.x86_64 (leap) (268/638),  42.5 KiB    
+Retrieving: libxcb-glx0-1.17.0-160100.2.1.x86_64.rpm [.done]
+(268/638) Installing: libxcb-glx0-1.17.0-160100.2.1.x86_64 [..done]
+Retrieving: libxcb-dri3-0-1.17.0-160100.2.1.x86_64 (leap) (269/638),  26.2 KiB    
+Retrieving: libxcb-dri3-0-1.17.0-160100.2.1.x86_64.rpm [.done]
+(269/638) Installing: libxcb-dri3-0-1.17.0-160100.2.1.x86_64 [..done]
+Retrieving: libX11-6-1.8.12-160100.3.1.x86_64 (leap) (270/638), 670.7 KiB    
+Retrieving: libX11-6-1.8.12-160100.3.1.x86_64.rpm [.done]
+(270/638) Installing: libX11-6-1.8.12-160100.3.1.x86_64 [..done]
+Retrieving: zstd-1.5.7-160100.2.1.x86_64 (leap) (271/638), 482.5 KiB    
+Retrieving: zstd-1.5.7-160100.2.1.x86_64.rpm [.done]
+(271/638) Installing: zstd-1.5.7-160100.2.1.x86_64 [..done]
+Retrieving: xz-5.8.1-160100.2.1.x86_64 (leap) (272/638), 210.7 KiB    
+Retrieving: xz-5.8.1-160100.2.1.x86_64.rpm [.done]
+(272/638) Installing: xz-5.8.1-160100.2.1.x86_64 [..done]
+Retrieving: systemd-default-settings-branding-openSUSE-0.10-160100.2.1.noarch (leap) (273/638),   9.5 KiB    
+Retrieving: systemd-default-settings-branding-openSUSE-0.10-160100.2.1.noarch.rpm [.done]
+(273/638) Installing: systemd-default-settings-branding-openSUSE-0.10-160100.2.1.noarch [..done]
+Retrieving: systemd-default-settings-0.10-160100.2.1.noarch (leap) (274/638),  11.5 KiB    
+Retrieving: systemd-default-settings-0.10-160100.2.1.noarch.rpm [.done]
+(274/638) Installing: systemd-default-settings-0.10-160100.2.1.noarch [..done]
+Retrieving: shared-mime-info-2.4-160100.2.1.x86_64 (leap) (275/638), 347.6 KiB    
+Retrieving: shared-mime-info-2.4-160100.2.1.x86_64.rpm [.done]
+(275/638) Installing: shared-mime-info-2.4-160100.2.1.x86_64 [..done]
+Retrieving: selinux-tools-3.11-160100.2.1.x86_64 (leap) (276/638), 121.9 KiB    
+Retrieving: selinux-tools-3.11-160100.2.1.x86_64.rpm [.done]
+(276/638) Installing: selinux-tools-3.11-160100.2.1.x86_64 [..done]
+Retrieving: rebootmgr-3.3+git20250512.b6e4e84-160100.2.1.x86_64 (leap) (277/638),  63.0 KiB    
+Retrieving: rebootmgr-3.3+git20250512.b6e4e84-160100.2.1.x86_64.rpm [..done (63.0 KiB/s)]
+(277/638) Installing: rebootmgr-3.3+git20250512.b6e4e84-160100.2.1.x86_64 [..done]
+Retrieving: pkgconf-pkg-config-2.2.0-160100.2.1.x86_64 (leap) (278/638),  16.3 KiB    
+Retrieving: pkgconf-pkg-config-2.2.0-160100.2.1.x86_64.rpm [.done]
+(278/638) Installing: pkgconf-pkg-config-2.2.0-160100.2.1.x86_64 [..done]
+Retrieving: pinentry-1.3.2-160100.2.1.x86_64 (leap) (279/638), 126.0 KiB    
+Retrieving: pinentry-1.3.2-160100.2.1.x86_64.rpm [.done]
+(279/638) Installing: pinentry-1.3.2-160100.2.1.x86_64 [..done]
+Retrieving: openSUSE-build-key-1.0-lp161.4.1.x86_64 (leap) (280/638),  52.7 KiB    
+Retrieving: openSUSE-build-key-1.0-lp161.4.1.x86_64.rpm [.done]
+(280/638) Installing: openSUSE-build-key-1.0-lp161.4.1.x86_64 [..done]
+Retrieving: login_defs-4.19.4-160100.2.1.noarch (leap) (281/638),  68.9 KiB    
+Retrieving: login_defs-4.19.4-160100.2.1.noarch.rpm [.done]
+(281/638) Installing: login_defs-4.19.4-160100.2.1.noarch [..done]
+Retrieving: libssh-config-0.11.5-160100.3.1.noarch (leap) (282/638),  42.5 KiB    
+Retrieving: libssh-config-0.11.5-160100.3.1.noarch.rpm [.done]
+(282/638) Installing: libssh-config-0.11.5-160100.3.1.noarch [..done]
+Retrieving: libdevmapper1_03-2.03.38_1.02.212-160100.2.1.x86_64 (leap) (283/638), 286.7 KiB    
+Retrieving: libdevmapper1_03-2.03.38_1.02.212-160100.2.1.x86_64.rpm [.done]
+(283/638) Installing: libdevmapper1_03-2.03.38_1.02.212-160100.2.1.x86_64 [..done]
+Retrieving: hostname-3.23-160100.2.1.x86_64 (leap) (284/638),  25.6 KiB    
+Retrieving: hostname-3.23-160100.2.1.x86_64.rpm [.done]
+(284/638) Installing: hostname-3.23-160100.2.1.x86_64 [..done]
+Retrieving: gzip-1.14-160100.2.1.x86_64 (leap) (285/638), 173.7 KiB    
+Retrieving: gzip-1.14-160100.2.1.x86_64.rpm [.done]
+(285/638) Installing: gzip-1.14-160100.2.1.x86_64 [..done]
+Retrieving: grep-3.11-160100.2.1.x86_64 (leap) (286/638), 347.7 KiB    
+Retrieving: grep-3.11-160100.2.1.x86_64.rpm [.done]
+(286/638) Installing: grep-3.11-160100.2.1.x86_64 [..done]
+Retrieving: gnome-themes-accessibility-3.28-160100.2.1.noarch (leap) (287/638),   2.7 MiB    
+Retrieving: gnome-themes-accessibility-3.28-160100.2.1.noarch.rpm [.done]
+(287/638) Installing: gnome-themes-accessibility-3.28-160100.2.1.noarch [.....done]
+Retrieving: gawk-5.3.2-160100.2.1.x86_64 (leap) (288/638),   1.7 MiB    
+Retrieving: gawk-5.3.2-160100.2.1.x86_64.rpm [.done]
+(288/638) Installing: gawk-5.3.2-160100.2.1.x86_64 [..done]
+Retrieving: cracklib-2.9.11-160100.2.1.x86_64 (leap) (289/638),  73.9 KiB    
+Retrieving: cracklib-2.9.11-160100.2.1.x86_64.rpm [.done]
+(289/638) Installing: cracklib-2.9.11-160100.2.1.x86_64 [..done]
+Retrieving: libcrack2-2.9.11-160100.2.1.x86_64 (leap) (290/638),  30.5 KiB    
+Retrieving: libcrack2-2.9.11-160100.2.1.x86_64.rpm [.done]
+(290/638) Installing: libcrack2-2.9.11-160100.2.1.x86_64 [..done]
+Retrieving: cpio-2.15-160100.4.1.x86_64 (leap) (291/638), 136.0 KiB    
+Retrieving: cpio-2.15-160100.4.1.x86_64.rpm [.done]
+(291/638) Installing: cpio-2.15-160100.4.1.x86_64 [..done]
+Retrieving: coreutils-9.6-160100.3.1.x86_64 (leap) (292/638),   1.2 MiB    
+Retrieving: coreutils-9.6-160100.3.1.x86_64.rpm [.done]
+(292/638) Installing: coreutils-9.6-160100.3.1.x86_64 [..done]
+Retrieving: bc-1.07.1-160100.2.1.x86_64 (leap) (293/638), 115.7 KiB    
+Retrieving: bc-1.07.1-160100.2.1.x86_64.rpm [.done]
+(293/638) Installing: bc-1.07.1-160100.2.1.x86_64 [..done]
+Retrieving: libcamera-base0_5-0.5.1-160100.2.1.x86_64 (leap) (294/638),  75.2 KiB    
+Retrieving: libcamera-base0_5-0.5.1-160100.2.1.x86_64.rpm [.done]
+(294/638) Installing: libcamera-base0_5-0.5.1-160100.2.1.x86_64 [..done]
+Retrieving: libasm1-0.192-160100.2.1.x86_64 (leap) (295/638),  61.7 KiB    
+Retrieving: libasm1-0.192-160100.2.1.x86_64.rpm [.done]
+(295/638) Installing: libasm1-0.192-160100.2.1.x86_64 [..done]
+Retrieving: iproute2-6.12-160100.2.1.x86_64 (leap) (296/638),   1.2 MiB    
+Retrieving: iproute2-6.12-160100.2.1.x86_64.rpm [.done]
+(296/638) Installing: iproute2-6.12-160100.2.1.x86_64 [..done]
+Retrieving: liblilv-0-0-0.24.24-160100.2.1.x86_64 (leap) (297/638),  56.6 KiB    
+Retrieving: liblilv-0-0-0.24.24-160100.2.1.x86_64.rpm [.done]
+(297/638) Installing: liblilv-0-0-0.24.24-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-GLib-2_0-2.84.4-160100.3.1.x86_64 (leap) (298/638), 365.4 KiB    
+Retrieving: typelib-1_0-GLib-2_0-2.84.4-160100.3.1.x86_64.rpm [.done]
+(298/638) Installing: typelib-1_0-GLib-2_0-2.84.4-160100.3.1.x86_64 [..done]
+Retrieving: libgudev-1_0-0-238-160100.2.1.x86_64 (leap) (299/638),  31.7 KiB    
+Retrieving: libgudev-1_0-0-238-160100.2.1.x86_64.rpm [.done]
+(299/638) Installing: libgudev-1_0-0-238-160100.2.1.x86_64 [..done]
+Retrieving: libgtop-2_0-11-2.41.3+4-160100.2.1.x86_64 (leap) (300/638),  66.3 KiB    
+Retrieving: libgtop-2_0-11-2.41.3+4-160100.2.1.x86_64.rpm [.done]
+(300/638) Installing: libgtop-2_0-11-2.41.3+4-160100.2.1.x86_64 [..done]
+Retrieving: libgraphene-1_0-0-1.10.8-160100.2.1.x86_64 (leap) (301/638),  57.8 KiB    
+Retrieving: libgraphene-1_0-0-1.10.8-160100.2.1.x86_64.rpm [.done]
+(301/638) Installing: libgraphene-1_0-0-1.10.8-160100.2.1.x86_64 [..done]
+Retrieving: libatk-1_0-0-2.58.7-160100.2.1.x86_64 (leap) (302/638), 109.3 KiB    
+Retrieving: libatk-1_0-0-2.58.7-160100.2.1.x86_64.rpm [.done]
+(302/638) Installing: libatk-1_0-0-2.58.7-160100.2.1.x86_64 [..done]
+Retrieving: libgirepository-2_0-0-2.84.4-160100.3.1.x86_64 (leap) (303/638), 395.9 KiB    
+Retrieving: libgirepository-2_0-0-2.84.4-160100.3.1.x86_64.rpm [.done]
+(303/638) Installing: libgirepository-2_0-0-2.84.4-160100.3.1.x86_64 [..done]
+Retrieving: girepository-1_0-1.84.0-160100.2.1.x86_64 (leap) (304/638), 110.6 KiB    
+Retrieving: girepository-1_0-1.84.0-160100.2.1.x86_64.rpm [.done]
+(304/638) Installing: girepository-1_0-1.84.0-160100.2.1.x86_64 [..done]
+Retrieving: libgirepository-1_0-1-1.84.0-160100.2.1.x86_64 (leap) (305/638), 129.8 KiB    
+Retrieving: libgirepository-1_0-1-1.84.0-160100.2.1.x86_64.rpm [.done]
+(305/638) Installing: libgirepository-1_0-1-1.84.0-160100.2.1.x86_64 [..done]
+Retrieving: libsndfile1-1.2.2-160100.2.1.x86_64 (leap) (306/638), 211.9 KiB    
+Retrieving: libsndfile1-1.2.2-160100.2.1.x86_64.rpm [.done]
+(306/638) Installing: libsndfile1-1.2.2-160100.2.1.x86_64 [..done]
+Retrieving: libspandsp3-3.0.0+g57-160100.2.1.x86_64 (leap) (307/638), 372.6 KiB    
+Retrieving: libspandsp3-3.0.0+g57-160100.2.1.x86_64.rpm [.done]
+(307/638) Installing: libspandsp3-3.0.0+g57-160100.2.1.x86_64 [..done]
+Retrieving: makedumpfile-1.7.7-160100.2.1.x86_64 (leap) (308/638), 331.2 KiB    
+Retrieving: makedumpfile-1.7.7-160100.2.1.x86_64.rpm [.done]
+(308/638) Installing: makedumpfile-1.7.7-160100.2.1.x86_64 [..done]
+Retrieving: libglibmm-2_4-1-2.66.6-160100.2.1.x86_64 (leap) (309/638), 314.1 KiB    
+Retrieving: libglibmm-2_4-1-2.66.6-160100.2.1.x86_64.rpm [.done]
+(309/638) Installing: libglibmm-2_4-1-2.66.6-160100.2.1.x86_64 [..done]
+Retrieving: libmozjs-128-0-128.14.0-160100.3.1.x86_64 (leap) (310/638),   6.6 MiB    
+Retrieving: libmozjs-128-0-128.14.0-160100.3.1.x86_64.rpm [.done]
+(310/638) Installing: libmozjs-128-0-128.14.0-160100.3.1.x86_64 [..done]
+Retrieving: libjxl0_11-0.11.2-160100.3.1.x86_64 (leap) (311/638), 956.0 KiB    
+Retrieving: libjxl0_11-0.11.2-160100.3.1.x86_64.rpm [.done]
+(311/638) Installing: libjxl0_11-0.11.2-160100.3.1.x86_64 [..done]
+Retrieving: p11-kit-nss-trust-0.26.2-160100.2.1.x86_64 (leap) (312/638),  31.3 KiB    
+Retrieving: p11-kit-nss-trust-0.26.2-160100.2.1.x86_64.rpm [.done]
+(312/638) Installing: p11-kit-nss-trust-0.26.2-160100.2.1.x86_64 [..done]
+Retrieving: libngtcp2_crypto_gnutls8-1.22.1-160100.2.1.x86_64 (leap) (313/638),  42.8 KiB    
+Retrieving: libngtcp2_crypto_gnutls8-1.22.1-160100.2.1.x86_64.rpm [.done]
+(313/638) Installing: libngtcp2_crypto_gnutls8-1.22.1-160100.2.1.x86_64 [..done]
+Retrieving: vim-9.2.0957-160100.1.1.x86_64 (leap) (314/638),   3.3 MiB    
+Retrieving: vim-9.2.0957-160100.1.1.x86_64.rpm [.done]
+(314/638) Installing: vim-9.2.0957-160100.1.1.x86_64 [..done]
+Retrieving: procps-4.0.5-160100.2.1.x86_64 (leap) (315/638), 363.7 KiB    
+Retrieving: procps-4.0.5-160100.2.1.x86_64.rpm [.done]
+(315/638) Installing: procps-4.0.5-160100.2.1.x86_64 [..done]
+Retrieving: less-668-160100.2.1.x86_64 (leap) (316/638), 214.1 KiB    
+Retrieving: less-668-160100.2.1.x86_64.rpm [.done]
+(316/638) Installing: less-668-160100.2.1.x86_64 [..done]
+Retrieving: libharfbuzz0-12.3.1-160100.2.1.x86_64 (leap) (317/638), 595.5 KiB    
+Retrieving: libharfbuzz0-12.3.1-160100.2.1.x86_64.rpm [.done]
+(317/638) Installing: libharfbuzz0-12.3.1-160100.2.1.x86_64 [..done]
+Retrieving: libfontconfig1-2.16.0-160100.2.1.x86_64 (leap) (318/638), 199.5 KiB    
+Retrieving: libfontconfig1-2.16.0-160100.2.1.x86_64.rpm [.done]
+(318/638) Installing: libfontconfig1-2.16.0-160100.2.1.x86_64 [..done]
+Retrieving: fontconfig-2.16.0-160100.2.1.x86_64 (leap) (319/638), 137.5 KiB    
+Retrieving: fontconfig-2.16.0-160100.2.1.x86_64.rpm [.done]
+(319/638) Installing: fontconfig-2.16.0-160100.2.1.x86_64 [..done]
+Retrieving: libXfont2-2-2.0.7-160100.2.1.x86_64 (leap) (320/638), 118.7 KiB    
+Retrieving: libXfont2-2-2.0.7-160100.2.1.x86_64.rpm [.done]
+(320/638) Installing: libXfont2-2-2.0.7-160100.2.1.x86_64 [..done]
+Retrieving: libstartup-notification-1-0-0.12-160100.2.1.x86_64 (leap) (321/638),  36.8 KiB    
+Retrieving: libstartup-notification-1-0-0.12-160100.2.1.x86_64.rpm [.done]
+(321/638) Installing: libstartup-notification-1-0-0.12-160100.2.1.x86_64 [..done]
+Retrieving: Mesa-vulkan-device-select-26.0.7-160100.2.2.x86_64 (leap) (322/638), 307.5 KiB    
+Retrieving: Mesa-vulkan-device-select-26.0.7-160100.2.2.x86_64.rpm [.done]
+(322/638) Installing: Mesa-vulkan-device-select-26.0.7-160100.2.2.x86_64 [..done]
+Retrieving: xprop-1.2.8-160100.2.1.x86_64 (leap) (323/638),  49.8 KiB    
+Retrieving: xprop-1.2.8-160100.2.1.x86_64.rpm [.done]
+(323/638) Installing: xprop-1.2.8-160100.2.1.x86_64 [..done]
+Retrieving: libXrender1-0.9.12-160100.3.1.x86_64 (leap) (324/638),  28.3 KiB    
+Retrieving: libXrender1-0.9.12-160100.3.1.x86_64.rpm [.done]
+(324/638) Installing: libXrender1-0.9.12-160100.3.1.x86_64 [..done]
+Retrieving: libXfixes3-6.0.2-160100.2.1.x86_64 (leap) (325/638),  20.1 KiB    
+Retrieving: libXfixes3-6.0.2-160100.2.1.x86_64.rpm [.done]
+(325/638) Installing: libXfixes3-6.0.2-160100.2.1.x86_64 [..done]
+Retrieving: libXext6-1.3.6-160100.2.1.x86_64 (leap) (326/638),  37.2 KiB    
+Retrieving: libXext6-1.3.6-160100.2.1.x86_64.rpm [.done]
+(326/638) Installing: libXext6-1.3.6-160100.2.1.x86_64 [..done]
+Retrieving: libXdamage1-1.1.6-160100.2.1.x86_64 (leap) (327/638),  12.1 KiB    
+Retrieving: libXdamage1-1.1.6-160100.2.1.x86_64.rpm [.done]
+(327/638) Installing: libXdamage1-1.1.6-160100.2.1.x86_64 [..done]
+Retrieving: libXcomposite1-0.4.6-160100.2.1.x86_64 (leap) (328/638),  12.3 KiB    
+Retrieving: libXcomposite1-0.4.6-160100.2.1.x86_64.rpm [.done]
+(328/638) Installing: libXcomposite1-0.4.6-160100.2.1.x86_64 [..done]
+Retrieving: mobile-broadband-provider-info-20240407-160100.2.1.noarch (leap) (329/638),  79.5 KiB    
+Retrieving: mobile-broadband-provider-info-20240407-160100.2.1.noarch.rpm [.done]
+(329/638) Installing: mobile-broadband-provider-info-20240407-160100.2.1.noarch [..done]
+Retrieving: gpg2-2.5.5-160100.2.1.x86_64 (leap) (330/638),   2.6 MiB    
+Retrieving: gpg2-2.5.5-160100.2.1.x86_64.rpm [.done]
+(330/638) Installing: gpg2-2.5.5-160100.2.1.x86_64 [..done]
+Retrieving: patterns-base-minimal_base-20241218+leap-lp161.8.3.x86_64 (leap) (331/638), 140.1 KiB    
+Retrieving: patterns-base-minimal_base-20241218+leap-lp161.8.3.x86_64.rpm [.done]
+(331/638) Installing: patterns-base-minimal_base-20241218+leap-lp161.8.3.x86_64 [..done]
+Retrieving: libdevmapper-event1_03-2.03.38_1.02.212-160100.2.1.x86_64 (leap) (332/638), 145.8 KiB    
+Retrieving: libdevmapper-event1_03-2.03.38_1.02.212-160100.2.1.x86_64.rpm [.done]
+(332/638) Installing: libdevmapper-event1_03-2.03.38_1.02.212-160100.2.1.x86_64 [..done]
+Retrieving: libpwquality1-1.4.5-160100.2.1.x86_64 (leap) (333/638),  39.4 KiB    
+Retrieving: libpwquality1-1.4.5-160100.2.1.x86_64.rpm [.done]
+(333/638) Installing: libpwquality1-1.4.5-160100.2.1.x86_64 [..done]
+Retrieving: xkeyboard-config-2.47-160100.2.1.noarch (leap) (334/638), 468.9 KiB    
+Retrieving: xkeyboard-config-2.47-160100.2.1.noarch.rpm [.done]
+(334/638) Installing: xkeyboard-config-2.47-160100.2.1.noarch [..done]
+Retrieving: thin-provisioning-tools-1.1.0-160100.2.2.x86_64 (leap) (335/638),   1.1 MiB    
+Retrieving: thin-provisioning-tools-1.1.0-160100.2.2.x86_64.rpm [.done]
+(335/638) Installing: thin-provisioning-tools-1.1.0-160100.2.2.x86_64 [..done]
+Retrieving: systemd-rpm-macros-26-160100.2.1.noarch (leap) (336/638),  29.3 KiB    
+Retrieving: systemd-rpm-macros-26-160100.2.1.noarch.rpm [.done]
+(336/638) Installing: systemd-rpm-macros-26-160100.2.1.noarch [..done]
+Retrieving: systemd-presets-common-SUSE-15-160100.2.1.noarch (leap) (337/638),  27.4 KiB    
+Retrieving: systemd-presets-common-SUSE-15-160100.2.1.noarch.rpm [.done]
+(337/638) Installing: systemd-presets-common-SUSE-15-160100.2.1.noarch [..done]
+Retrieving: rpm-config-SUSE-20250328-160100.2.1.noarch (leap) (338/638),  31.8 KiB    
+Retrieving: rpm-config-SUSE-20250328-160100.2.1.noarch.rpm [.done]
+(338/638) Installing: rpm-config-SUSE-20250328-160100.2.1.noarch [..done]
+Retrieving: rpm-4.20.1-160100.3.2.x86_64 (leap) (339/638),   1.0 MiB    
+Retrieving: rpm-4.20.1-160100.3.2.x86_64.rpm [.done]
+(339/638) Installing: rpm-4.20.1-160100.3.2.x86_64 [...
+Updating /etc/sysconfig/services ...
+done]
+Retrieving: permissions-config-1699_20260518-160100.2.1.noarch (leap) (340/638),  67.8 KiB    
+Retrieving: permissions-config-1699_20260518-160100.2.1.noarch.rpm [.done]
+(340/638) Installing: permissions-config-1699_20260518-160100.2.1.noarch [..
+Updating /etc/sysconfig/security ...
+Checking permissions and ownerships - using the permissions files
+	/usr/share/permissions/permissions
+	/usr/share/permissions/permissions.easy
+	/etc/permissions.local
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+ERROR: not all operations were successful.
+done]
+Retrieving: hwdata-0.406-160100.2.1.noarch (leap) (341/638),   1.7 MiB    
+Retrieving: hwdata-0.406-160100.2.1.noarch.rpm [.done]
+(341/638) Installing: hwdata-0.406-160100.2.1.noarch [..done]
+Retrieving: coreutils-systemd-9.6-160100.3.1.x86_64 (leap) (342/638), 338.0 KiB    
+Retrieving: coreutils-systemd-9.6-160100.3.1.x86_64.rpm [.done]
+(342/638) Installing: coreutils-systemd-9.6-160100.3.1.x86_64 [..done]
+Retrieving: ca-certificates-2+git20260203.5937e9f-160100.2.1.noarch (leap) (343/638),  28.0 KiB    
+Retrieving: ca-certificates-2+git20260203.5937e9f-160100.2.1.noarch.rpm [.done]
+(343/638) Installing: ca-certificates-2+git20260203.5937e9f-160100.2.1.noarch [..done]
+Retrieving: ca-certificates-mozilla-2.92-160100.1.1.noarch (leap) (344/638), 251.3 KiB    
+Retrieving: ca-certificates-mozilla-2.92-160100.1.1.noarch.rpm [.done]
+(344/638) Installing: ca-certificates-mozilla-2.92-160100.1.1.noarch [..
+/sbin/update-ca-certificates: line 112: /dev/fd/63: No such file or directory
+done]
+Retrieving: libcamera0_5-0.5.1-160100.2.1.x86_64 (leap) (345/638), 550.8 KiB    
+Retrieving: libcamera0_5-0.5.1-160100.2.1.x86_64.rpm [.done]
+(345/638) Installing: libcamera0_5-0.5.1-160100.2.1.x86_64 [..done]
+Retrieving: elfutils-0.192-160100.2.1.x86_64 (leap) (346/638), 555.7 KiB    
+Retrieving: elfutils-0.192-160100.2.1.x86_64.rpm [.done]
+(346/638) Installing: elfutils-0.192-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-GObject-2_0-2.84.4-160100.3.1.x86_64 (leap) (347/638), 321.0 KiB    
+Retrieving: typelib-1_0-GObject-2_0-2.84.4-160100.3.1.x86_64.rpm [.done]
+(347/638) Installing: typelib-1_0-GObject-2_0-2.84.4-160100.3.1.x86_64 [..done]
+Retrieving: typelib-1_0-GModule-2_0-2.84.4-160100.3.1.x86_64 (leap) (348/638), 305.6 KiB    
+Retrieving: typelib-1_0-GModule-2_0-2.84.4-160100.3.1.x86_64.rpm [.done]
+(348/638) Installing: typelib-1_0-GModule-2_0-2.84.4-160100.3.1.x86_64 [..done]
+Retrieving: libwacom9-2.18.0-160100.2.1.x86_64 (leap) (349/638),  61.6 KiB    
+Retrieving: libwacom9-2.18.0-160100.2.1.x86_64.rpm [.done]
+(349/638) Installing: libwacom9-2.18.0-160100.2.1.x86_64 [..done]
+Retrieving: libxml++-3_0-1-3.2.5-160100.2.1.x86_64 (leap) (350/638), 116.3 KiB    
+Retrieving: libxml++-3_0-1-3.2.5-160100.2.1.x86_64.rpm [.done]
+(350/638) Installing: libxml++-3_0-1-3.2.5-160100.2.1.x86_64 [..done]
+Retrieving: mozilla-nss-3.125-160100.1.1.x86_64 (leap) (351/638), 955.2 KiB    
+Retrieving: mozilla-nss-3.125-160100.1.1.x86_64.rpm [.done]
+(351/638) Installing: mozilla-nss-3.125-160100.1.1.x86_64 [..done]
+Retrieving: libsoftokn3-3.125-160100.1.1.x86_64 (leap) (352/638), 422.4 KiB    
+Retrieving: libsoftokn3-3.125-160100.1.1.x86_64.rpm [.done]
+(352/638) Installing: libsoftokn3-3.125-160100.1.1.x86_64 [..done]
+Retrieving: libharfbuzz-subset0-12.3.1-160100.2.1.x86_64 (leap) (353/638), 520.9 KiB    
+Retrieving: libharfbuzz-subset0-12.3.1-160100.2.1.x86_64.rpm [.done]
+(353/638) Installing: libharfbuzz-subset0-12.3.1-160100.2.1.x86_64 [..done]
+Retrieving: libharfbuzz-gobject0-12.3.1-160100.2.1.x86_64 (leap) (354/638), 114.8 KiB    
+Retrieving: libharfbuzz-gobject0-12.3.1-160100.2.1.x86_64.rpm [.done]
+(354/638) Installing: libharfbuzz-gobject0-12.3.1-160100.2.1.x86_64 [..done]
+Retrieving: libvulkan_lvp-26.0.7-160100.2.2.x86_64 (leap) (355/638),   2.4 MiB    
+Retrieving: libvulkan_lvp-26.0.7-160100.2.2.x86_64.rpm [.done]
+(355/638) Installing: libvulkan_lvp-26.0.7-160100.2.2.x86_64 [..done]
+Retrieving: libXft2-2.3.8-160100.2.1.x86_64 (leap) (356/638),  51.8 KiB    
+Retrieving: libXft2-2.3.8-160100.2.1.x86_64.rpm [.done]
+(356/638) Installing: libXft2-2.3.8-160100.2.1.x86_64 [..done]
+Retrieving: libXcursor1-1.2.3-160100.2.1.x86_64 (leap) (357/638),  30.1 KiB    
+Retrieving: libXcursor1-1.2.3-160100.2.1.x86_64.rpm [.done]
+(357/638) Installing: libXcursor1-1.2.3-160100.2.1.x86_64 [..done]
+Retrieving: libcairo2-1.18.4-160100.2.1.x86_64 (leap) (358/638), 604.4 KiB    
+Retrieving: libcairo2-1.18.4-160100.2.1.x86_64.rpm [.done]
+(358/638) Installing: libcairo2-1.18.4-160100.2.1.x86_64 [..done]
+Retrieving: libXxf86vm1-1.1.6-160100.2.1.x86_64 (leap) (359/638),  17.0 KiB    
+Retrieving: libXxf86vm1-1.1.6-160100.2.1.x86_64.rpm [.done]
+(359/638) Installing: libXxf86vm1-1.1.6-160100.2.1.x86_64 [..done]
+Retrieving: libXv1-1.0.12-160100.2.1.x86_64 (leap) (360/638),  18.6 KiB    
+Retrieving: libXv1-1.0.12-160100.2.1.x86_64.rpm [.done]
+(360/638) Installing: libXv1-1.0.12-160100.2.1.x86_64 [..done]
+Retrieving: libXtst6-1.2.5-160100.2.1.x86_64 (leap) (361/638),  18.0 KiB    
+Retrieving: libXtst6-1.2.5-160100.2.1.x86_64.rpm [.done]
+(361/638) Installing: libXtst6-1.2.5-160100.2.1.x86_64 [..done]
+Retrieving: libXrandr2-1.5.4-160100.2.1.x86_64 (leap) (362/638),  26.1 KiB    
+Retrieving: libXrandr2-1.5.4-160100.2.1.x86_64.rpm [.done]
+(362/638) Installing: libXrandr2-1.5.4-160100.2.1.x86_64 [..done]
+Retrieving: libXinerama1-1.1.5-160100.2.1.x86_64 (leap) (363/638),  11.3 KiB    
+Retrieving: libXinerama1-1.1.5-160100.2.1.x86_64.rpm [.done]
+(363/638) Installing: libXinerama1-1.1.5-160100.2.1.x86_64 [..done]
+Retrieving: libXi6-1.8.2-160100.2.1.x86_64 (leap) (364/638),  42.8 KiB    
+Retrieving: libXi6-1.8.2-160100.2.1.x86_64.rpm [.done]
+(364/638) Installing: libXi6-1.8.2-160100.2.1.x86_64 [..done]
+Retrieving: libgpgme11-1.24.3-160100.2.1.x86_64 (leap) (365/638), 203.7 KiB    
+Retrieving: libgpgme11-1.24.3-160100.2.1.x86_64.rpm [.done]
+(365/638) Installing: libgpgme11-1.24.3-160100.2.1.x86_64 [..done]
+Retrieving: libxkbfile1-1.1.2-160100.2.1.x86_64 (leap) (366/638),  77.0 KiB    
+Retrieving: libxkbfile1-1.1.2-160100.2.1.x86_64.rpm [.done]
+(366/638) Installing: libxkbfile1-1.1.2-160100.2.1.x86_64 [..done]
+Retrieving: libxkbcommon0-1.8.0-160100.2.1.x86_64 (leap) (367/638), 151.2 KiB    
+Retrieving: libxkbcommon0-1.8.0-160100.2.1.x86_64.rpm [.done]
+(367/638) Installing: libxkbcommon0-1.8.0-160100.2.1.x86_64 [..done]
+Retrieving: device-mapper-2.03.38_1.02.212-160100.2.1.x86_64 (leap) (368/638), 255.2 KiB    
+Retrieving: device-mapper-2.03.38_1.02.212-160100.2.1.x86_64.rpm [.done]
+(368/638) Installing: device-mapper-2.03.38_1.02.212-160100.2.1.x86_64 [..done]
+Retrieving: systemd-presets-branding-MicroOS-20230214-lp161.1.1.noarch (leap) (369/638),  15.4 KiB    
+Retrieving: systemd-presets-branding-MicroOS-20230214-lp161.1.1.noarch.rpm [.done]
+(369/638) Installing: systemd-presets-branding-MicroOS-20230214-lp161.1.1.noarch [..done]
+Retrieving: libsolv-tools-base-0.7.40-160100.1.1.x86_64 (leap) (370/638), 243.6 KiB    
+Retrieving: libsolv-tools-base-0.7.40-160100.1.1.x86_64.rpm [.done]
+(370/638) Installing: libsolv-tools-base-0.7.40-160100.1.1.x86_64 [..done]
+Retrieving: permissions-1699_20260518-160100.2.1.x86_64 (leap) (371/638),  55.1 KiB    
+Retrieving: permissions-1699_20260518-160100.2.1.x86_64.rpm [.done]
+(371/638) Installing: permissions-1699_20260518-160100.2.1.x86_64 [..done]
+Retrieving: libopenssl3-3.5.0-160100.3.2.x86_64 (leap) (372/638),   2.4 MiB    
+Retrieving: libopenssl3-3.5.0-160100.3.2.x86_64.rpm [.done]
+(372/638) Installing: libopenssl3-3.5.0-160100.3.2.x86_64 [..done]
+Retrieving: typelib-1_0-Graphene-1_0-1.10.8-160100.2.1.x86_64 (leap) (373/638),  26.3 KiB    
+Retrieving: typelib-1_0-Graphene-1_0-1.10.8-160100.2.1.x86_64.rpm [.done]
+(373/638) Installing: typelib-1_0-Graphene-1_0-1.10.8-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-Atk-1_0-2.58.7-160100.2.1.x86_64 (leap) (374/638),  83.4 KiB    
+Retrieving: typelib-1_0-Atk-1_0-2.58.7-160100.2.1.x86_64.rpm [.done]
+(374/638) Installing: typelib-1_0-Atk-1_0-2.58.7-160100.2.1.x86_64 [..done]
+Retrieving: libinput10-1.30.4-160100.2.1.x86_64 (leap) (375/638), 247.2 KiB    
+Retrieving: libinput10-1.30.4-160100.2.1.x86_64.rpm [.done]
+(375/638) Installing: libinput10-1.30.4-160100.2.1.x86_64 [..done]
+Retrieving: libffado2-2.4.9-160100.2.1.x86_64 (leap) (376/638), 832.1 KiB    
+Retrieving: libffado2-2.4.9-160100.2.1.x86_64.rpm [.done]
+(376/638) Installing: libffado2-2.4.9-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-HarfBuzz-0_0-12.3.1-160100.2.1.x86_64 (leap) (377/638), 125.8 KiB    
+Retrieving: typelib-1_0-HarfBuzz-0_0-12.3.1-160100.2.1.x86_64.rpm [.done]
+(377/638) Installing: typelib-1_0-HarfBuzz-0_0-12.3.1-160100.2.1.x86_64 [..done]
+Retrieving: libcairo-script-interpreter2-1.18.4-160100.2.1.x86_64 (leap) (378/638), 114.2 KiB    
+Retrieving: libcairo-script-interpreter2-1.18.4-160100.2.1.x86_64.rpm [.done]
+(378/638) Installing: libcairo-script-interpreter2-1.18.4-160100.2.1.x86_64 [..done]
+Retrieving: libcairo-gobject2-1.18.4-160100.2.1.x86_64 (leap) (379/638),  73.6 KiB    
+Retrieving: libcairo-gobject2-1.18.4-160100.2.1.x86_64.rpm [.done]
+(379/638) Installing: libcairo-gobject2-1.18.4-160100.2.1.x86_64 [..done]
+Retrieving: Mesa-26.0.7-160100.2.1.x86_64 (leap) (380/638), 271.8 KiB    
+Retrieving: Mesa-26.0.7-160100.2.1.x86_64.rpm [.done]
+(380/638) Installing: Mesa-26.0.7-160100.2.1.x86_64 [..done]
+Retrieving: Mesa-dri-26.0.7-160100.2.2.x86_64 (leap) (381/638),  10.7 MiB    
+Retrieving: Mesa-dri-26.0.7-160100.2.2.x86_64.rpm [..done (6.0 MiB/s)]
+(381/638) Installing: Mesa-dri-26.0.7-160100.2.2.x86_64 [...done]
+Retrieving: libglvnd-1.7.0-160100.2.1.x86_64 (leap) (382/638), 253.8 KiB    
+Retrieving: libglvnd-1.7.0-160100.2.1.x86_64.rpm [.done]
+(382/638) Installing: libglvnd-1.7.0-160100.2.1.x86_64 [..done]
+Retrieving: Mesa-libEGL1-26.0.7-160100.2.1.x86_64 (leap) (383/638), 408.6 KiB    
+Retrieving: Mesa-libEGL1-26.0.7-160100.2.1.x86_64.rpm [.done]
+(383/638) Installing: Mesa-libEGL1-26.0.7-160100.2.1.x86_64 [..done]
+Retrieving: xkbcomp-1.4.7-160100.2.1.x86_64 (leap) (384/638), 128.8 KiB    
+Retrieving: xkbcomp-1.4.7-160100.2.1.x86_64.rpm [.done]
+(384/638) Installing: xkbcomp-1.4.7-160100.2.1.x86_64 [..done]
+Retrieving: libxkbcommon-x11-0-1.8.0-160100.2.1.x86_64 (leap) (385/638),  38.7 KiB    
+Retrieving: libxkbcommon-x11-0-1.8.0-160100.2.1.x86_64.rpm [.done]
+(385/638) Installing: libxkbcommon-x11-0-1.8.0-160100.2.1.x86_64 [..done]
+Retrieving: pam-1.7.2+git12-160100.2.1.x86_64 (leap) (386/638), 373.1 KiB    
+Retrieving: pam-1.7.2+git12-160100.2.1.x86_64.rpm [.done]
+(386/638) Installing: pam-1.7.2+git12-160100.2.1.x86_64 [..
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+ERROR: not all operations were successful.
+done]
+Retrieving: python313-base-3.13.13-160100.2.1.x86_64 (leap) (387/638),   9.2 MiB    
+Retrieving: python313-base-3.13.13-160100.2.1.x86_64.rpm [..done (3.5 MiB/s)]
+(387/638) Installing: python313-base-3.13.13-160100.2.1.x86_64 [....done]
+Retrieving: python3-base-3.13.13-160100.2.1.x86_64 (leap) (388/638),  11.9 KiB    
+Retrieving: python3-base-3.13.13-160100.2.1.x86_64.rpm [.done]
+(388/638) Installing: python3-base-3.13.13-160100.2.1.x86_64 [..done]
+Retrieving: openssh-common-10.3p1-160100.2.4.x86_64 (leap) (389/638), 598.6 KiB    
+Retrieving: openssh-common-10.3p1-160100.2.4.x86_64.rpm [.done]
+(389/638) Installing: openssh-common-10.3p1-160100.2.4.x86_64 [..done]
+Retrieving: libzck1-1.5.1-160100.2.1.x86_64 (leap) (390/638),  50.5 KiB    
+Retrieving: libzck1-1.5.1-160100.2.1.x86_64.rpm [.done]
+(390/638) Installing: libzck1-1.5.1-160100.2.1.x86_64 [..done]
+Retrieving: libtss2-esys0-4.1.0-160100.2.1.x86_64 (leap) (391/638), 182.1 KiB    
+Retrieving: libtss2-esys0-4.1.0-160100.2.1.x86_64.rpm [.done]
+(391/638) Installing: libtss2-esys0-4.1.0-160100.2.1.x86_64 [..done]
+Retrieving: libldap-2-2.6.13+57-160100.2.2.x86_64 (leap) (392/638), 180.2 KiB    
+Retrieving: libldap-2-2.6.13+57-160100.2.2.x86_64.rpm [.done]
+(392/638) Installing: libldap-2-2.6.13+57-160100.2.2.x86_64 [..done]
+Retrieving: libkmod2-34.2-160100.2.1.x86_64 (leap) (393/638),  74.1 KiB    
+Retrieving: libkmod2-34.2-160100.2.1.x86_64.rpm [.done]
+(393/638) Installing: libkmod2-34.2-160100.2.1.x86_64 [..done]
+Retrieving: libfido2-1-1.15.0-160100.2.1.x86_64 (leap) (394/638),  99.6 KiB    
+Retrieving: libfido2-1-1.15.0-160100.2.1.x86_64.rpm [.done]
+(394/638) Installing: libfido2-1-1.15.0-160100.2.1.x86_64 [..done]
+Retrieving: libcryptsetup12-2.8.4-160100.2.1.x86_64 (leap) (395/638), 360.2 KiB    
+Retrieving: libcryptsetup12-2.8.4-160100.2.1.x86_64.rpm [.done]
+(395/638) Installing: libcryptsetup12-2.8.4-160100.2.1.x86_64 [..done]
+Retrieving: libarchive13-3.8.7-160100.2.1.x86_64 (leap) (396/638), 405.6 KiB    
+Retrieving: libarchive13-3.8.7-160100.2.1.x86_64.rpm [.done]
+(396/638) Installing: libarchive13-3.8.7-160100.2.1.x86_64 [..done]
+Retrieving: krb5-1.22.2-160100.2.1.x86_64 (leap) (397/638), 759.4 KiB    
+Retrieving: krb5-1.22.2-160100.2.1.x86_64.rpm [.done]
+(397/638) Installing: krb5-1.22.2-160100.2.1.x86_64 [..done]
+Retrieving: Mesa-libGL1-26.0.7-160100.2.1.x86_64 (leap) (398/638), 398.4 KiB    
+Retrieving: Mesa-libGL1-26.0.7-160100.2.1.x86_64.rpm [.done]
+(398/638) Installing: Mesa-libGL1-26.0.7-160100.2.1.x86_64 [..done]
+Retrieving: util-linux-2.42.1-160100.3.1.x86_64 (leap) (399/638),   1.6 MiB    
+Retrieving: util-linux-2.42.1-160100.3.1.x86_64.rpm [.done]
+(399/638) Installing: util-linux-2.42.1-160100.3.1.x86_64 [..
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+ERROR: not all operations were successful.
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+ERROR: not all operations were successful.
+done]
+Retrieving: shadow-pw-mgmt-4.19.4-160100.2.1.x86_64 (leap) (400/638), 155.8 KiB    
+Retrieving: shadow-pw-mgmt-4.19.4-160100.2.1.x86_64.rpm [.done]
+(400/638) Installing: shadow-pw-mgmt-4.19.4-160100.2.1.x86_64 [..
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+ERROR: not all operations were successful.
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+ERROR: not all operations were successful.
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+ERROR: not all operations were successful.
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+ERROR: not all operations were successful.
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+/usr/bin/newgidmap: should be root:root 0755 "cap_setgid=ep". (missing capabilities)
+ERROR: not all operations were successful.
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+/usr/bin/newuidmap: should be root:root 0755 "cap_setuid=ep". (missing capabilities)
+ERROR: not all operations were successful.
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+ERROR: not all operations were successful.
+done]
+Retrieving: shadow-4.19.4-160100.2.1.x86_64 (leap) (401/638), 669.5 KiB    
+Retrieving: shadow-4.19.4-160100.2.1.x86_64.rpm [.done]
+(401/638) Installing: shadow-4.19.4-160100.2.1.x86_64 [..
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+ERROR: not all operations were successful.
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+ERROR: not all operations were successful.
+done]
+Retrieving: pam-extra-1.7.2+git12-160100.2.3.x86_64 (leap) (402/638),  85.7 KiB    
+Retrieving: pam-extra-1.7.2+git12-160100.2.3.x86_64.rpm [.done]
+(402/638) Installing: pam-extra-1.7.2+git12-160100.2.3.x86_64 [..done]
+Retrieving: kbd-2.9.0-160100.3.1.x86_64 (leap) (403/638),   2.2 MiB    
+Retrieving: kbd-2.9.0-160100.3.1.x86_64.rpm [.done]
+(403/638) Installing: kbd-2.9.0-160100.3.1.x86_64 [...
+Updating /etc/sysconfig/console ...
+Updating /etc/sysconfig/keyboard ...
+done]
+Retrieving: libpython3_13-1_0-3.13.13-160100.2.1.x86_64 (leap) (404/638),   2.1 MiB    
+Retrieving: libpython3_13-1_0-3.13.13-160100.2.1.x86_64.rpm [.done]
+(404/638) Installing: libpython3_13-1_0-3.13.13-160100.2.1.x86_64 [..done]
+Retrieving: sudo-1.9.17p1-160100.2.1.x86_64 (leap) (405/638),   2.1 MiB    
+Retrieving: sudo-1.9.17p1-160100.2.1.x86_64.rpm [.done]
+(405/638) Installing: sudo-1.9.17p1-160100.2.1.x86_64 [..
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+ERROR: not all operations were successful.
+done]
+Retrieving: pciutils-3.13.0-160100.2.1.x86_64 (leap) (406/638), 137.1 KiB    
+Retrieving: pciutils-3.13.0-160100.2.1.x86_64.rpm [.done]
+(406/638) Installing: pciutils-3.13.0-160100.2.1.x86_64 [..done]
+Retrieving: openssh-clients-10.3p1-160100.2.4.x86_64 (leap) (407/638),   1.0 MiB    
+Retrieving: openssh-clients-10.3p1-160100.2.4.x86_64.rpm [.done]
+(407/638) Installing: openssh-clients-10.3p1-160100.2.4.x86_64 [..done]
+Retrieving: libtirpc3-1.3.6-160100.2.1.x86_64 (leap) (408/638), 112.2 KiB    
+Retrieving: libtirpc3-1.3.6-160100.2.1.x86_64.rpm [.done]
+(408/638) Installing: libtirpc3-1.3.6-160100.2.1.x86_64 [..done]
+Retrieving: libssh4-0.11.5-160100.3.1.x86_64 (leap) (409/638), 250.0 KiB    
+Retrieving: libssh4-0.11.5-160100.3.1.x86_64.rpm [.done]
+(409/638) Installing: libssh4-0.11.5-160100.3.1.x86_64 [..done]
+Retrieving: update-bootloader-1.28-160100.2.1.x86_64 (leap) (410/638),  98.7 KiB    
+Retrieving: update-bootloader-1.28-160100.2.1.x86_64.rpm [.done]
+(410/638) Installing: update-bootloader-1.28-160100.2.1.x86_64 [..done]
+Retrieving: policycoreutils-3.11-160100.2.1.x86_64 (leap) (411/638), 123.1 KiB    
+Retrieving: policycoreutils-3.11-160100.2.1.x86_64.rpm [.done]
+(411/638) Installing: policycoreutils-3.11-160100.2.1.x86_64 [..done]
+Retrieving: libsnapper7-0.12.1-160100.2.1.x86_64 (leap) (412/638), 354.1 KiB    
+Retrieving: libsnapper7-0.12.1-160100.2.1.x86_64.rpm [.done]
+(412/638) Installing: libsnapper7-0.12.1-160100.2.1.x86_64 [..
+Updating /etc/sysconfig/snapper ...
+done]
+Retrieving: sysuser-shadow-3.3-160100.2.1.noarch (leap) (413/638),  14.5 KiB    
+Retrieving: sysuser-shadow-3.3-160100.2.1.noarch.rpm [.done]
+(413/638) Installing: sysuser-shadow-3.3-160100.2.1.noarch [..done]
+Retrieving: pam-config-2.13+git.20250715-160100.2.1.x86_64 (leap) (414/638), 158.8 KiB    
+Retrieving: pam-config-2.13+git.20250715-160100.2.1.x86_64.rpm [.done]
+(414/638) Installing: pam-config-2.13+git.20250715-160100.2.1.x86_64 [..
+ERROR: module /lib64/security/pam_pwquality.so is not installed.
+*** write_config (account, /etc/pam.d/common-account-pc, ...)
+**** write config for pam_access.so (account, disabled)
+**** write config for pam_systemd_home.so (account, disabled)
+**** write config for pam_himmelblau.so (account, disabled)
+**** write config for pam_unix2.so (account, disabled)
+**** write config for pam_unix.so (account, enabled)
+**** write config for pam_krb5.so (account, disabled)
+**** write config for pam_localuser.so (account, disabled)
+**** write config for pam_sss.so (account, disabled)
+**** write config for pam_ldap.so (account, disabled)
+**** write config for pam_nam.so (account, disabled)
+**** write config for pam_winbind.so (account, disabled)
+**** write config for pam_time.so (account, disabled)
+**** write config for pam_kanidm.so (account, disabled)
+*** write_config (auth, /etc/pam.d/common-auth-pc, ...)
+**** write config for pam_faildelay.so (auth, disabled)
+**** write config for pam_group.so (auth, disabled)
+**** write config for pam_pkcs11.so (auth, disabled)
+**** write config for pam_fp.so (auth, disabled)
+**** write config for pam_fprint.so (auth, disabled)
+**** write config for pam_fprintd.so (auth, disabled)
+**** write config for pam_thinkfinger.so (auth, disabled)
+**** write config for pam_himmelblau.so (auth, disabled)
+**** write config for pam_gnome_keyring.so (auth, disabled)
+**** write config for pam_kwallet5.so (auth, disabled)
+**** write config for pam_systemd_home.so (auth, disabled)
+**** write config for pam_ssh.so (auth, disabled)
+**** write config for pam_ecryptfs.so (auth, disabled)
+**** write config for pam_fscrypt.so (auth, disabled)
+**** write config for pam_unix2.so (auth, disabled)
+**** write config for pam_unix.so (auth, enabled)
+**** write config for pam_krb5.so (auth, disabled)
+**** write config for pam_sss.so (auth, disabled)
+**** write config for pam_ldap.so (auth, disabled)
+**** write config for pam_nam.so (auth, disabled)
+**** write config for pam_winbind.so (auth, disabled)
+**** write config for pam_kanidm.so (auth, disabled)
+*** write_config (password, /etc/pam.d/common-password-pc, ...)
+**** write config for pam_himmelblau.so (password, disabled)
+**** write config for pam_winbind.so (password, disabled)
+**** write config for pam_pwcheck.so (password, disabled)
+**** write config for pam_passwdqc.so (password, disabled)
+**** write config for pam_pwquality.so (password, disabled)
+**** write config for pam_cracklib.so (password, disabled)
+**** write config for pam_pwhistory.so (password, disabled)
+**** write config for pam_gnome_keyring.so (password, disabled)
+**** write config for pam_kwallet5.so (password, disabled)
+**** write config for pam_ecryptfs.so (password, disabled)
+**** write config for pam_systemd_home.so (password, disabled)
+**** write config for pam_unix2.so (password, disabled)
+**** write config for pam_unix.so (password, enabled)
+**** write config for pam_fscrypt.so (password, disabled)
+**** write config for pam_make.so (password, disabled)
+**** write config for pam_exec.so (password, disabled)
+**** write config for pam_krb5.so (password, disabled)
+**** write config for pam_sss.so (password, disabled)
+**** write config for pam_ldap.so (password, disabled)
+**** write config for pam_nam.so (password, disabled)
+*** write_config (session, /etc/pam.d/common-session-pc, ...)
+**** write config for pam_selinux.so (session, disabled)
+**** write config for pam_limits.so (session, enabled)
+**** write config for pam_ecryptfs.so (session, disabled)
+**** write config for pam_fscrypt.so (session, disabled)
+**** write config for pam_mkhomedir.so (session, disabled)
+**** write config for pam_systemd_home.so (session, disabled)
+**** write config for pam_systemd.so (session, disabled)
+**** write config for pam_unix2.so (session, disabled)
+**** write config for pam_unix.so (session, enabled)
+**** write config for pam_apparmor.so (session, disabled)
+**** write config for pam_krb5.so (session, disabled)
+**** write config for pam_sss.so (session, disabled)
+**** write config for pam_ldap.so (session, disabled)
+**** write config for pam_winbind.so (session, disabled)
+**** write config for pam_nam.so (session, disabled)
+**** write config for pam_umask.so (session, enabled)
+**** write config for pam_ssh.so (session, disabled)
+**** write config for pam_selinux.so (session, disabled)
+**** write config for pam_gnome_keyring.so (session, disabled)
+**** write config for pam_kwallet5.so (session, disabled)
+**** write config for pam_exec.so (session, disabled)
+**** write config for pam_mktemp.so (session, disabled)
+**** write config for pam_himmelblau.so (session, disabled)
+**** write config for pam_kanidm.so (session, disabled)
+**** write config for pam_env.so (session, enabled)
+*** write_config (session, /etc/pam.d/common-session-nonlogin-pc, ...)
+**** write config for pam_ecryptfs.so (session, disabled)
+**** write config for pam_fscrypt.so (session, disabled)
+**** write config for pam_selinux.so (session, disabled)
+**** write config for pam_mkhomedir.so (session, disabled)
+**** write config for pam_systemd_home.so (session, disabled)
+**** write config for pam_limits.so (session, enabled)
+**** write config for pam_unix2.so (session, disabled)
+**** write config for pam_unix.so (session, enabled)
+**** write config for pam_apparmor.so (session, disabled)
+**** write config for pam_krb5.so (session, disabled)
+**** write config for pam_sss.so (session, disabled)
+**** write config for pam_ldap.so (session, disabled)
+**** write config for pam_winbind.so (session, disabled)
+**** write config for pam_nam.so (session, disabled)
+**** write config for pam_umask.so (session, enabled)
+**** write config for pam_ssh.so (session, disabled)
+**** write config for pam_selinux.so (session, disabled)
+**** write config for pam_gnome_keyring.so (session, disabled)
+**** write config for pam_kwallet5.so (session, disabled)
+**** write config for pam_exec.so (session, disabled)
+**** write config for pam_mktemp.so (session, disabled)
+**** write config for pam_env.so (session, enabled)
+*** write_config (account, /etc/pam.d/postlogin-account-pc, ...)
+*** write_config (auth, /etc/pam.d/postlogin-auth-pc, ...)
+*** write_config (password, /etc/pam.d/postlogin-password-pc, ...)
+*** write_config (session, /etc/pam.d/postlogin-session-pc, ...)
+**** write config for pam_wtmpdb.so (session, disabled)
+**** write config for pam_lastlog2.so (session, disabled)
+done]
+Retrieving: pam_pwquality-1.4.5-160100.2.1.x86_64 (leap) (415/638),  21.3 KiB    
+Retrieving: pam_pwquality-1.4.5-160100.2.1.x86_64.rpm [.done]
+(415/638) Installing: pam_pwquality-1.4.5-160100.2.1.x86_64 [..done]
+Retrieving: python313-pycairo-1.26.1-160100.2.1.x86_64 (leap) (416/638), 175.2 KiB    
+Retrieving: python313-pycairo-1.26.1-160100.2.1.x86_64.rpm [.done]
+(416/638) Installing: python313-pycairo-1.26.1-160100.2.1.x86_64 [..done]
+Retrieving: lsof-4.99.4-160100.2.1.x86_64 (leap) (417/638), 337.2 KiB    
+Retrieving: lsof-4.99.4-160100.2.1.x86_64.rpm [.done]
+(417/638) Installing: lsof-4.99.4-160100.2.1.x86_64 [..done]
+Retrieving: libcurl4-8.21.0-160100.2.1.x86_64 (leap) (418/638), 722.4 KiB    
+Retrieving: libcurl4-8.21.0-160100.2.1.x86_64.rpm [.done]
+(418/638) Installing: libcurl4-8.21.0-160100.2.1.x86_64 [..done]
+Retrieving: system-user-tss-20170617-160100.2.1.noarch (leap) (419/638),  12.6 KiB    
+Retrieving: system-user-tss-20170617-160100.2.1.noarch.rpm [.done]
+(419/638) Installing: system-user-tss-20170617-160100.2.1.noarch [..
+/usr/sbin/useradd -r -c TSS daemon -d /var/lib/tpm -U -u 98 tss -s /usr/sbin/nologin
+done]
+Retrieving: system-user-srvGeoClue-2.8.1-160100.2.1.noarch (leap) (420/638),  39.0 KiB    
+Retrieving: system-user-srvGeoClue-2.8.1-160100.2.1.noarch.rpm [.done]
+(420/638) Installing: system-user-srvGeoClue-2.8.1-160100.2.1.noarch [..
+/usr/sbin/useradd -r -c User for GeoClue D-Bus service -d /var/lib/srvGeoClue -U srvGeoClue -s /usr/sbin/nologin
+done]
+Retrieving: system-user-nobody-20170617-160100.2.1.noarch (leap) (421/638),  12.7 KiB    
+Retrieving: system-user-nobody-20170617-160100.2.1.noarch.rpm [.done]
+(421/638) Installing: system-user-nobody-20170617-160100.2.1.noarch [..
+/usr/sbin/groupadd -r -g 65533 nogroup
+/usr/sbin/groupadd -r -g 65534 nobody
+/usr/sbin/useradd -r -c nobody -d /var/lib/nobody -g nobody -u 65534 nobody -s /usr/sbin/nologin
+useradd warning: nobody's uid 65534 is greater than SYS_UID_MAX 499
+done]
+Retrieving: system-user-lp-20170617-160100.2.1.noarch (leap) (422/638),  12.6 KiB    
+Retrieving: system-user-lp-20170617-160100.2.1.noarch.rpm [.done]
+(422/638) Installing: system-user-lp-20170617-160100.2.1.noarch [..
+/usr/sbin/useradd -r -c Printing daemon -d /var/spool/lpd -U lp -s /usr/sbin/nologin
+done]
+Retrieving: system-group-kvm-20170617-160100.2.1.noarch (leap) (423/638),  12.4 KiB    
+Retrieving: system-group-kvm-20170617-160100.2.1.noarch.rpm [.done]
+(423/638) Installing: system-group-kvm-20170617-160100.2.1.noarch [..
+/usr/sbin/groupadd -r -g 36 kvm
+done]
+Retrieving: system-group-hardware-20170617-160100.2.1.noarch (leap) (424/638),  13.1 KiB    
+Retrieving: system-group-hardware-20170617-160100.2.1.noarch.rpm [.done]
+(424/638) Installing: system-group-hardware-20170617-160100.2.1.noarch [..
+/usr/sbin/groupadd -r kmem
+/usr/sbin/groupadd -r lock
+/usr/sbin/groupadd -r -g 5 tty
+/usr/sbin/groupadd -r utmp
+/usr/sbin/groupadd -r audio
+/usr/sbin/groupadd -r cdrom
+/usr/sbin/groupadd -r clock
+/usr/sbin/groupadd -r dialout
+/usr/sbin/groupadd -r disk
+/usr/sbin/groupadd -r input
+/usr/sbin/groupadd -r render
+/usr/sbin/groupadd -r sgx
+/usr/sbin/groupadd -r tape
+/usr/sbin/groupadd -r video
+done]
+Retrieving: system-group-audit-4.0-160100.2.1.noarch (leap) (425/638),  34.4 KiB    
+Retrieving: system-group-audit-4.0-160100.2.1.noarch.rpm [.done]
+(425/638) Installing: system-group-audit-4.0-160100.2.1.noarch [..
+/usr/sbin/groupadd -r audit
+done]
+Retrieving: dbus-1-common-1.14.10-160100.2.1.noarch (leap) (426/638), 135.7 KiB    
+Retrieving: dbus-1-common-1.14.10-160100.2.1.noarch.rpm [.done]
+(426/638) Installing: dbus-1-common-1.14.10-160100.2.1.noarch [..
+/usr/sbin/useradd -r -c User for D-Bus -d /run/dbus -U messagebus -s /usr/sbin/nologin
+done]
+Retrieving: wtmpdb-0.74.0+git20250509.272b109-160100.2.1.x86_64 (leap) (427/638),  47.8 KiB    
+Retrieving: wtmpdb-0.74.0+git20250509.272b109-160100.2.1.x86_64.rpm [.done]
+(427/638) Installing: wtmpdb-0.74.0+git20250509.272b109-160100.2.1.x86_64 [..done]
+Retrieving: lastlog2-2.42.1-160100.3.1.x86_64 (leap) (428/638), 195.6 KiB    
+Retrieving: lastlog2-2.42.1-160100.3.1.x86_64.rpm [.done]
+(428/638) Installing: lastlog2-2.42.1-160100.3.1.x86_64 [..done]
+Retrieving: tpm2-0-tss-4.1.0-160100.2.1.x86_64 (leap) (429/638), 331.4 KiB    
+Retrieving: tpm2-0-tss-4.1.0-160100.2.1.x86_64.rpm [.done]
+(429/638) Installing: tpm2-0-tss-4.1.0-160100.2.1.x86_64 [..
+/var/tmp/rpm-tmp.FN5NbL: line 1: /usr/bin/udevadm: No such file or directory
+done]
+Retrieving: libtss2-fapi-common-4.1.0-160100.2.1.x86_64 (leap) (430/638),  39.0 KiB    
+Retrieving: libtss2-fapi-common-4.1.0-160100.2.1.x86_64.rpm [.done]
+(430/638) Installing: libtss2-fapi-common-4.1.0-160100.2.1.x86_64 [..done]
+Retrieving: cups-config-2.4.19-160100.3.1.x86_64 (leap) (431/638), 446.7 KiB    
+Retrieving: cups-config-2.4.19-160100.3.1.x86_64.rpm [.done]
+(431/638) Installing: cups-config-2.4.19-160100.3.1.x86_64 [..done]
+Retrieving: libdbus-1-3-1.14.10-160100.2.1.x86_64 (leap) (432/638), 256.2 KiB    
+Retrieving: libdbus-1-3-1.14.10-160100.2.1.x86_64.rpm [.done]
+(432/638) Installing: libdbus-1-3-1.14.10-160100.2.1.x86_64 [..done]
+Retrieving: libtss2-fapi1-4.1.0-160100.2.1.x86_64 (leap) (433/638), 379.7 KiB    
+Retrieving: libtss2-fapi1-4.1.0-160100.2.1.x86_64.rpm [.done]
+(433/638) Installing: libtss2-fapi1-4.1.0-160100.2.1.x86_64 [..done]
+Retrieving: libpulse0-17.0-160100.2.1.x86_64 (leap) (434/638), 355.0 KiB    
+Retrieving: libpulse0-17.0-160100.2.1.x86_64.rpm [.done]
+(434/638) Installing: libpulse0-17.0-160100.2.1.x86_64 [..done]
+Retrieving: libavahi-client3-0.8-160100.2.1.x86_64 (leap) (435/638),  75.5 KiB    
+Retrieving: libavahi-client3-0.8-160100.2.1.x86_64.rpm [.done]
+(435/638) Installing: libavahi-client3-0.8-160100.2.1.x86_64 [..done]
+Retrieving: dbus-1-tools-1.14.10-160100.2.1.x86_64 (leap) (436/638), 157.8 KiB    
+Retrieving: dbus-1-tools-1.14.10-160100.2.1.x86_64.rpm [.done]
+(436/638) Installing: dbus-1-tools-1.14.10-160100.2.1.x86_64 [..done]
+Retrieving: dbus-1-daemon-1.14.10-160100.2.1.x86_64 (leap) (437/638), 244.9 KiB    
+Retrieving: dbus-1-daemon-1.14.10-160100.2.1.x86_64.rpm [.done]
+(437/638) Installing: dbus-1-daemon-1.14.10-160100.2.1.x86_64 [..done]
+Retrieving: tpm2.0-tools-5.7-160100.2.1.x86_64 (leap) (438/638), 852.3 KiB    
+Retrieving: tpm2.0-tools-5.7-160100.2.1.x86_64.rpm [.done]
+(438/638) Installing: tpm2.0-tools-5.7-160100.2.1.x86_64 [..done]
+Retrieving: libpulse-mainloop-glib0-17.0-160100.2.1.x86_64 (leap) (439/638),  76.2 KiB    
+Retrieving: libpulse-mainloop-glib0-17.0-160100.2.1.x86_64.rpm [.done]
+(439/638) Installing: libpulse-mainloop-glib0-17.0-160100.2.1.x86_64 [..done]
+Retrieving: libcanberra0-0.30+2-160100.2.1.x86_64 (leap) (440/638),  73.1 KiB    
+Retrieving: libcanberra0-0.30+2-160100.2.1.x86_64.rpm [.done]
+(440/638) Installing: libcanberra0-0.30+2-160100.2.1.x86_64 [..done]
+Retrieving: samba-client-libs-4.23.12+git.499.6d6fa2d183-160100.1.5.x86_64 (leap) (441/638),   5.6 MiB    
+Retrieving: samba-client-libs-4.23.12+git.499.6d6fa2d183-160100.1.5.x86_64.rpm [..done (906.2 KiB/s)]
+(441/638) Installing: samba-client-libs-4.23.12+git.499.6d6fa2d183-160100.1.5.x86_64 [..done]
+Retrieving: samba-ad-dc-libs-4.23.12+git.499.6d6fa2d183-160100.1.5.x86_64 (leap) (442/638),   1.1 MiB    
+Retrieving: samba-ad-dc-libs-4.23.12+git.499.6d6fa2d183-160100.1.5.x86_64.rpm [.done]
+(442/638) Installing: samba-ad-dc-libs-4.23.12+git.499.6d6fa2d183-160100.1.5.x86_64 [..done]
+Retrieving: samba-libs-4.23.12+git.499.6d6fa2d183-160100.1.5.x86_64 (leap) (443/638), 712.0 KiB    
+Retrieving: samba-libs-4.23.12+git.499.6d6fa2d183-160100.1.5.x86_64.rpm [.done]
+(443/638) Installing: samba-libs-4.23.12+git.499.6d6fa2d183-160100.1.5.x86_64 [..done]
+Retrieving: libcups2-2.4.19-160100.3.1.x86_64 (leap) (444/638), 463.4 KiB    
+Retrieving: libcups2-2.4.19-160100.3.1.x86_64.rpm [.done]
+(444/638) Installing: libcups2-2.4.19-160100.3.1.x86_64 [..done]
+Retrieving: logrotate-3.22.0-160100.2.1.x86_64 (leap) (445/638), 100.4 KiB    
+Retrieving: logrotate-3.22.0-160100.2.1.x86_64.rpm [.done]
+(445/638) Installing: logrotate-3.22.0-160100.2.1.x86_64 [..done]
+Retrieving: aaa_base-84.87+git20260610.3b5a868c-160100.2.1.x86_64 (leap) (446/638), 320.9 KiB    
+Retrieving: aaa_base-84.87+git20260610.3b5a868c-160100.2.1.x86_64.rpm [.done]
+(446/638) Installing: aaa_base-84.87+git20260610.3b5a868c-160100.2.1.x86_64 [..
+Updating /etc/sysconfig/proxy ...
+done]
+Retrieving: systemd-257.13-160100.3.5.x86_64 (leap) (447/638),   4.7 MiB    
+Retrieving: systemd-257.13-160100.3.5.x86_64.rpm [.done]
+(447/638) Installing: systemd-257.13-160100.3.5.x86_64 [...done]
+Retrieving: dbus-broker-36-160100.2.1.x86_64 (leap) (448/638), 159.1 KiB    
+Retrieving: dbus-broker-36-160100.2.1.x86_64.rpm [.done]
+(448/638) Installing: dbus-broker-36-160100.2.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/system/dbus.service' -> '/usr/lib/systemd/system/dbus-broker.service'.
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/user/dbus.service' -> '/usr/lib/systemd/user/dbus-broker.service'.
+done]
+Retrieving: dbus-1-1.14.10-160100.2.1.x86_64 (leap) (449/638), 214.1 KiB    
+Retrieving: dbus-1-1.14.10-160100.2.1.x86_64.rpm [.done]
+(449/638) Installing: dbus-1-1.14.10-160100.2.1.x86_64 [..
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+ERROR: not all operations were successful.
+done]
+Retrieving: gio-branding-openSUSE-42.1-lp161.2.2.noarch (leap) (450/638),  30.5 KiB    
+Retrieving: gio-branding-openSUSE-42.1-lp161.2.2.noarch.rpm [.done]
+(450/638) Installing: gio-branding-openSUSE-42.1-lp161.2.2.noarch [..done]
+Retrieving: libgio-2_0-0-2.84.4-160100.3.1.x86_64 (leap) (451/638), 964.4 KiB    
+Retrieving: libgio-2_0-0-2.84.4-160100.3.1.x86_64.rpm [.done]
+(451/638) Installing: libgio-2_0-0-2.84.4-160100.3.1.x86_64 [..done]
+Retrieving: glib2-tools-2.84.4-160100.3.1.x86_64 (leap) (452/638), 424.8 KiB    
+Retrieving: glib2-tools-2.84.4-160100.3.1.x86_64.rpm [.done]
+(452/638) Installing: glib2-tools-2.84.4-160100.3.1.x86_64 [..done]
+Retrieving: typelib-1_0-Gio-2_0-2.84.4-160100.3.1.x86_64 (leap) (453/638), 393.2 KiB    
+Retrieving: typelib-1_0-Gio-2_0-2.84.4-160100.3.1.x86_64.rpm [.done]
+(453/638) Installing: typelib-1_0-Gio-2_0-2.84.4-160100.3.1.x86_64 [..done]
+Retrieving: pipewire-spa-plugins-0_2-1.6.8-160100.2.1.x86_64 (leap) (454/638),   2.0 MiB    
+Retrieving: pipewire-spa-plugins-0_2-1.6.8-160100.2.1.x86_64.rpm [.done]
+(454/638) Installing: pipewire-spa-plugins-0_2-1.6.8-160100.2.1.x86_64 [..done]
+Retrieving: libxmlb2-0.3.21-160100.2.1.x86_64 (leap) (455/638),  86.5 KiB    
+Retrieving: libxmlb2-0.3.21-160100.2.1.x86_64.rpm [.done]
+(455/638) Installing: libxmlb2-0.3.21-160100.2.1.x86_64 [..done]
+Retrieving: libupower-glib3-1.91.1-160100.2.1.x86_64 (leap) (456/638),  84.0 KiB    
+Retrieving: libupower-glib3-1.91.1-160100.2.1.x86_64.rpm [.done]
+(456/638) Installing: libupower-glib3-1.91.1-160100.2.1.x86_64 [..done]
+Retrieving: libudisks2-0-2.11.1-160100.3.1.x86_64 (leap) (457/638), 234.1 KiB    
+Retrieving: libudisks2-0-2.11.1-160100.3.1.x86_64.rpm [.done]
+(457/638) Installing: libudisks2-0-2.11.1-160100.3.1.x86_64 [..done]
+Retrieving: libsecret-1-0-0.21.7-160100.2.1.x86_64 (leap) (458/638), 144.7 KiB    
+Retrieving: libsecret-1-0-0.21.7-160100.2.1.x86_64.rpm [.done]
+(458/638) Installing: libsecret-1-0-0.21.7-160100.2.1.x86_64 [..done]
+Retrieving: libqrtr-glib0-1.2.2-160100.2.1.x86_64 (leap) (459/638),  19.9 KiB    
+Retrieving: libqrtr-glib0-1.2.2-160100.2.1.x86_64.rpm [.done]
+(459/638) Installing: libqrtr-glib0-1.2.2-160100.2.1.x86_64 [..done]
+Retrieving: libpxbackend-1_0-0.5.9-160100.2.1.x86_64 (leap) (460/638),  53.1 KiB    
+Retrieving: libpxbackend-1_0-0.5.9-160100.2.1.x86_64.rpm [.done]
+(460/638) Installing: libpxbackend-1_0-0.5.9-160100.2.1.x86_64 [..done]
+Retrieving: libpolkit-gobject-1-0-127-160100.2.1.x86_64 (leap) (461/638),  76.4 KiB    
+Retrieving: libpolkit-gobject-1-0-127-160100.2.1.x86_64.rpm [.done]
+(461/638) Installing: libpolkit-gobject-1-0-127-160100.2.1.x86_64 [..done]
+Retrieving: libpolkit-agent-1-0-127-160100.2.1.x86_64 (leap) (462/638),  52.0 KiB    
+Retrieving: libpolkit-agent-1-0-127-160100.2.1.x86_64.rpm [.done]
+(462/638) Installing: libpolkit-agent-1-0-127-160100.2.1.x86_64 [..done]
+Retrieving: polkit-127-160100.2.1.x86_64 (leap) (463/638), 168.8 KiB    
+Retrieving: polkit-127-160100.2.1.x86_64.rpm [.done]
+(463/638) Installing: polkit-127-160100.2.1.x86_64 [..
+/usr/sbin/useradd -r -c User for polkitd -d / -U polkitd -s /usr/sbin/nologin
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+ERROR: not all operations were successful.
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+done]
+Retrieving: libpango-1_0-0-1.56.4-160100.2.1.x86_64 (leap) (464/638), 356.7 KiB    
+Retrieving: libpango-1_0-0-1.56.4-160100.2.1.x86_64.rpm [.done]
+(464/638) Installing: libpango-1_0-0-1.56.4-160100.2.1.x86_64 [..done]
+Retrieving: libnm0-1.54.3-160100.3.1.x86_64 (leap) (465/638), 679.0 KiB    
+Retrieving: libnm0-1.54.3-160100.3.1.x86_64.rpm [.done]
+(465/638) Installing: libnm0-1.54.3-160100.3.1.x86_64 [..done]
+Retrieving: libmm-glib0-1.22.0-160100.2.1.x86_64 (leap) (466/638), 326.0 KiB    
+Retrieving: libmm-glib0-1.22.0-160100.2.1.x86_64.rpm [.done]
+(466/638) Installing: libmm-glib0-1.22.0-160100.2.1.x86_64 [..done]
+Retrieving: libmbim-glib4-1.34.0-160100.2.1.x86_64 (leap) (467/638), 261.7 KiB    
+Retrieving: libmbim-glib4-1.34.0-160100.2.1.x86_64.rpm [.done]
+(467/638) Installing: libmbim-glib4-1.34.0-160100.2.1.x86_64 [..done]
+Retrieving: libjson-glib-1_0-0-1.10.6-160100.2.1.x86_64 (leap) (468/638),  79.2 KiB    
+Retrieving: libjson-glib-1_0-0-1.10.6-160100.2.1.x86_64.rpm [.done]
+(468/638) Installing: libjson-glib-1_0-0-1.10.6-160100.2.1.x86_64 [..done]
+Retrieving: libibus-1_0-5-1.5.33-160100.2.1.x86_64 (leap) (469/638), 220.1 KiB    
+Retrieving: libibus-1_0-5-1.5.33-160100.2.1.x86_64.rpm [.done]
+(469/638) Installing: libibus-1_0-5-1.5.33-160100.2.1.x86_64 [..done]
+Retrieving: libgstreamer-1_0-0-1.28.5-160100.2.2.x86_64 (leap) (470/638), 1013.0 KiB    
+Retrieving: libgstreamer-1_0-0-1.28.5-160100.2.2.x86_64.rpm [.done]
+(470/638) Installing: libgstreamer-1_0-0-1.28.5-160100.2.2.x86_64 [..done]
+Retrieving: gstreamer-1.28.5-160100.2.2.x86_64 (leap) (471/638), 613.1 KiB    
+Retrieving: gstreamer-1.28.5-160100.2.2.x86_64.rpm [.done]
+(471/638) Installing: gstreamer-1.28.5-160100.2.2.x86_64 [..
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+/usr/libexec/gstreamer-1.0/gst-ptp-helper: should be root:root 0755 "cap_net_bind_service=ep". (missing capabilities)
+ERROR: not all operations were successful.
+done]
+Retrieving: libgsound0-1.0.3-160100.2.1.x86_64 (leap) (472/638),  23.1 KiB    
+Retrieving: libgsound0-1.0.3-160100.2.1.x86_64.rpm [.done]
+(472/638) Installing: libgsound0-1.0.3-160100.2.1.x86_64 [..done]
+Retrieving: libgoa-1_0-0-3.58.0-160100.2.1.x86_64 (leap) (473/638), 118.8 KiB    
+Retrieving: libgoa-1_0-0-3.58.0-160100.2.1.x86_64.rpm [.done]
+(473/638) Installing: libgoa-1_0-0-3.58.0-160100.2.1.x86_64 [..done]
+Retrieving: libgnome-autoar-0-0-0.4.5-160100.2.1.x86_64 (leap) (474/638),  47.9 KiB    
+Retrieving: libgnome-autoar-0-0-0.4.5-160100.2.1.x86_64.rpm [.done]
+(474/638) Installing: libgnome-autoar-0-0-0.4.5-160100.2.1.x86_64 [..done]
+Retrieving: libgck-2-2-4.4.0.1-160100.2.1.x86_64 (leap) (475/638), 112.5 KiB    
+Retrieving: libgck-2-2-4.4.0.1-160100.2.1.x86_64.rpm [.done]
+(475/638) Installing: libgck-2-2-4.4.0.1-160100.2.1.x86_64 [..done]
+Retrieving: libgck-1-0-3.41.2-160100.2.1.x86_64 (leap) (476/638), 110.1 KiB    
+Retrieving: libgck-1-0-3.41.2-160100.2.1.x86_64.rpm [.done]
+(476/638) Installing: libgck-1-0-3.41.2-160100.2.1.x86_64 [..done]
+Retrieving: libdbusmenu-glib4-16.04.0-160100.2.1.x86_64 (leap) (477/638),  69.1 KiB    
+Retrieving: libdbusmenu-glib4-16.04.0-160100.2.1.x86_64.rpm [.done]
+(477/638) Installing: libdbusmenu-glib4-16.04.0-160100.2.1.x86_64 [..done]
+Retrieving: libcolord2-1.4.8-160100.2.1.x86_64 (leap) (478/638), 203.5 KiB    
+Retrieving: libcolord2-1.4.8-160100.2.1.x86_64.rpm [.done]
+(478/638) Installing: libcolord2-1.4.8-160100.2.1.x86_64 [..done]
+Retrieving: libcloudproviders0-0.3.6-160100.2.1.x86_64 (leap) (479/638),  40.6 KiB    
+Retrieving: libcloudproviders0-0.3.6-160100.2.1.x86_64.rpm [.done]
+(479/638) Installing: libcloudproviders0-0.3.6-160100.2.1.x86_64 [..done]
+Retrieving: libatspi0-2.58.7-160100.2.1.x86_64 (leap) (480/638), 142.9 KiB    
+Retrieving: libatspi0-2.58.7-160100.2.1.x86_64.rpm [.done]
+(480/638) Installing: libatspi0-2.58.7-160100.2.1.x86_64 [..done]
+Retrieving: gnome-user-share-48.1-bp161.1.8.x86_64 (leap) (481/638), 230.5 KiB    
+Retrieving: gnome-user-share-48.1-bp161.1.8.x86_64.rpm [.done]
+(481/638) Installing: gnome-user-share-48.1-bp161.1.8.x86_64 [..done]
+Retrieving: gdk-pixbuf-query-loaders-2.42.12-160100.2.1.x86_64 (leap) (482/638),  49.1 KiB    
+Retrieving: gdk-pixbuf-query-loaders-2.42.12-160100.2.1.x86_64.rpm [.done]
+(482/638) Installing: gdk-pixbuf-query-loaders-2.42.12-160100.2.1.x86_64 [..done]
+Retrieving: dconf-0.40.0-160100.2.1.x86_64 (leap) (483/638), 101.8 KiB    
+Retrieving: dconf-0.40.0-160100.2.1.x86_64.rpm [.done]
+(483/638) Installing: dconf-0.40.0-160100.2.1.x86_64 [..done]
+Retrieving: libdconf1-0.40.0-160100.2.1.x86_64 (leap) (484/638),  57.8 KiB    
+Retrieving: libdconf1-0.40.0-160100.2.1.x86_64.rpm [.done]
+(484/638) Installing: libdconf1-0.40.0-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-Malcontent-0-0.12.0-160100.2.1.x86_64 (leap) (485/638),  13.9 KiB    
+Retrieving: typelib-1_0-Malcontent-0-0.12.0-160100.2.1.x86_64.rpm [.done]
+(485/638) Installing: typelib-1_0-Malcontent-0-0.12.0-160100.2.1.x86_64 [..done]
+Retrieving: libmalcontent-0-0-0.12.0-160100.2.1.x86_64 (leap) (486/638),  30.1 KiB    
+Retrieving: libmalcontent-0-0-0.12.0-160100.2.1.x86_64.rpm [.done]
+(486/638) Installing: libmalcontent-0-0-0.12.0-160100.2.1.x86_64 [..done]
+Retrieving: malcontent-0.12.0-160100.2.1.x86_64 (leap) (487/638),  47.8 KiB    
+Retrieving: malcontent-0.12.0-160100.2.1.x86_64.rpm [.done]
+(487/638) Installing: malcontent-0.12.0-160100.2.1.x86_64 [..done]
+Retrieving: python313-gobject-3.52.3-160100.2.1.x86_64 (leap) (488/638), 401.9 KiB    
+Retrieving: python313-gobject-3.52.3-160100.2.1.x86_64.rpm [.done]
+(488/638) Installing: python313-gobject-3.52.3-160100.2.1.x86_64 [..done]
+Retrieving: libgjs0-1.84.2-160100.3.1.x86_64 (leap) (489/638), 543.5 KiB    
+Retrieving: libgjs0-1.84.2-160100.3.1.x86_64.rpm [.done]
+(489/638) Installing: libgjs0-1.84.2-160100.3.1.x86_64 [..done]
+Retrieving: typelib-1_0-GjsPrivate-1_0-1.84.2-160100.3.1.x86_64 (leap) (490/638), 107.3 KiB    
+Retrieving: typelib-1_0-GjsPrivate-1_0-1.84.2-160100.3.1.x86_64.rpm [.done]
+(490/638) Installing: typelib-1_0-GjsPrivate-1_0-1.84.2-160100.3.1.x86_64 [..done]
+Retrieving: libpipewire-0_3-0-1.6.8-160100.2.1.x86_64 (leap) (491/638), 683.3 KiB    
+Retrieving: libpipewire-0_3-0-1.6.8-160100.2.1.x86_64.rpm [.done]
+(491/638) Installing: libpipewire-0_3-0-1.6.8-160100.2.1.x86_64 [..done]
+Retrieving: pipewire-modules-0_3-1.6.8-160100.2.1.x86_64 (leap) (492/638),   1.1 MiB    
+Retrieving: pipewire-modules-0_3-1.6.8-160100.2.1.x86_64.rpm [.done]
+(492/638) Installing: pipewire-modules-0_3-1.6.8-160100.2.1.x86_64 [..done]
+Retrieving: libappstream5-1.0.5-160100.2.1.x86_64 (leap) (493/638), 318.6 KiB    
+Retrieving: libappstream5-1.0.5-160100.2.1.x86_64.rpm [.done]
+(493/638) Installing: libappstream5-1.0.5-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-UpowerGlib-1_0-1.91.1-160100.2.1.x86_64 (leap) (494/638),  49.8 KiB    
+Retrieving: typelib-1_0-UpowerGlib-1_0-1.91.1-160100.2.1.x86_64.rpm [.done]
+(494/638) Installing: typelib-1_0-UpowerGlib-1_0-1.91.1-160100.2.1.x86_64 [..done]
+Retrieving: libgnome-bluetooth-3_0-13-47.1-160100.2.1.x86_64 (leap) (495/638),  94.7 KiB    
+Retrieving: libgnome-bluetooth-3_0-13-47.1-160100.2.1.x86_64.rpm [.done]
+(495/638) Installing: libgnome-bluetooth-3_0-13-47.1-160100.2.1.x86_64 [..done]
+Retrieving: libproxy1-0.5.9-160100.2.1.x86_64 (leap) (496/638),  38.5 KiB    
+Retrieving: libproxy1-0.5.9-160100.2.1.x86_64.rpm [.done]
+(496/638) Installing: libproxy1-0.5.9-160100.2.1.x86_64 [..done]
+Retrieving: util-linux-systemd-2.42.1-160100.3.1.x86_64 (leap) (497/638), 326.7 KiB    
+Retrieving: util-linux-systemd-2.42.1-160100.3.1.x86_64.rpm [.done]
+(497/638) Installing: util-linux-systemd-2.42.1-160100.3.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/system/timers.target.wants/fstrim.timer' -> '/usr/lib/systemd/system/fstrim.timer'.
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+done]
+Retrieving: typelib-1_0-Pango-1_0-1.56.4-160100.2.1.x86_64 (leap) (498/638), 106.5 KiB    
+Retrieving: typelib-1_0-Pango-1_0-1.56.4-160100.2.1.x86_64.rpm [.done]
+(498/638) Installing: typelib-1_0-Pango-1_0-1.56.4-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-NM-1_0-1.54.3-160100.3.1.x86_64 (leap) (499/638), 294.1 KiB    
+Retrieving: typelib-1_0-NM-1_0-1.54.3-160100.3.1.x86_64.rpm [.done]
+(499/638) Installing: typelib-1_0-NM-1_0-1.54.3-160100.3.1.x86_64 [..done]
+Retrieving: libqmi-glib5-1.34.0-160100.2.1.x86_64 (leap) (500/638), 900.7 KiB    
+Retrieving: libqmi-glib5-1.34.0-160100.2.1.x86_64.rpm [.done]
+(500/638) Installing: libqmi-glib5-1.34.0-160100.2.1.x86_64 [..done]
+Retrieving: libtracker-sparql-3_0-0-3.9.2-160100.2.1.x86_64 (leap) (501/638), 303.7 KiB    
+Retrieving: libtracker-sparql-3_0-0-3.9.2-160100.2.1.x86_64.rpm [.done]
+(501/638) Installing: libtracker-sparql-3_0-0-3.9.2-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-IBus-1_0-1.5.33-160100.2.1.x86_64 (leap) (502/638), 132.4 KiB    
+Retrieving: typelib-1_0-IBus-1_0-1.5.33-160100.2.1.x86_64.rpm [.done]
+(502/638) Installing: typelib-1_0-IBus-1_0-1.5.33-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-Gst-1_0-1.28.5-160100.2.2.x86_64 (leap) (503/638), 276.6 KiB    
+Retrieving: typelib-1_0-Gst-1_0-1.28.5-160100.2.2.x86_64.rpm [.done]
+(503/638) Installing: typelib-1_0-Gst-1_0-1.28.5-160100.2.2.x86_64 [..done]
+Retrieving: libgsttag-1_0-0-1.28.5-160100.2.1.x86_64 (leap) (504/638), 249.5 KiB    
+Retrieving: libgsttag-1_0-0-1.28.5-160100.2.1.x86_64.rpm [.done]
+(504/638) Installing: libgsttag-1_0-0-1.28.5-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-Gck-2-4.4.0.1-160100.2.1.x86_64 (leap) (505/638),  37.6 KiB    
+Retrieving: typelib-1_0-Gck-2-4.4.0.1-160100.2.1.x86_64.rpm [.done]
+(505/638) Installing: typelib-1_0-Gck-2-4.4.0.1-160100.2.1.x86_64 [..done]
+Retrieving: libgcr-4-4-4.4.0.1-160100.2.1.x86_64 (leap) (506/638), 240.4 KiB    
+Retrieving: libgcr-4-4-4.4.0.1-160100.2.1.x86_64.rpm [.done]
+(506/638) Installing: libgcr-4-4-4.4.0.1-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-Atspi-2_0-2.58.7-160100.2.1.x86_64 (leap) (507/638),  80.8 KiB    
+Retrieving: typelib-1_0-Atspi-2_0-2.58.7-160100.2.1.x86_64.rpm [.done]
+(507/638) Installing: typelib-1_0-Atspi-2_0-2.58.7-160100.2.1.x86_64 [..done]
+Retrieving: libatk-bridge-2_0-0-2.58.7-160100.2.1.x86_64 (leap) (508/638), 127.5 KiB    
+Retrieving: libatk-bridge-2_0-0-2.58.7-160100.2.1.x86_64.rpm [.done]
+(508/638) Installing: libatk-bridge-2_0-0-2.58.7-160100.2.1.x86_64 [..done]
+Retrieving: libgdk_pixbuf-2_0-0-2.42.12-160100.2.1.x86_64 (leap) (509/638), 188.2 KiB    
+Retrieving: libgdk_pixbuf-2_0-0-2.42.12-160100.2.1.x86_64.rpm [.done]
+(509/638) Installing: libgdk_pixbuf-2_0-0-2.42.12-160100.2.1.x86_64 [..done]
+Retrieving: gsettings-backend-dconf-0.40.0-160100.2.1.x86_64 (leap) (510/638),  54.4 KiB    
+Retrieving: gsettings-backend-dconf-0.40.0-160100.2.1.x86_64.rpm [.done]
+(510/638) Installing: gsettings-backend-dconf-0.40.0-160100.2.1.x86_64 [..done]
+Retrieving: python313-gobject-cairo-3.52.3-160100.2.1.x86_64 (leap) (511/638), 100.7 KiB    
+Retrieving: python313-gobject-cairo-3.52.3-160100.2.1.x86_64.rpm [.done]
+(511/638) Installing: python313-gobject-cairo-3.52.3-160100.2.1.x86_64 [..done]
+Retrieving: python313-dbus-python-1.3.2-160100.2.1.x86_64 (leap) (512/638), 163.2 KiB    
+Retrieving: python313-dbus-python-1.3.2-160100.2.1.x86_64.rpm [.done]
+(512/638) Installing: python313-dbus-python-1.3.2-160100.2.1.x86_64 [..done]
+Retrieving: gjs-1.84.2-160100.3.1.x86_64 (leap) (513/638), 162.1 KiB    
+Retrieving: gjs-1.84.2-160100.3.1.x86_64.rpm [.done]
+(513/638) Installing: gjs-1.84.2-160100.3.1.x86_64 [..done]
+Retrieving: typelib-1_0-GnomeBluetooth-3_0-47.1-160100.2.1.x86_64 (leap) (514/638),  54.9 KiB    
+Retrieving: typelib-1_0-GnomeBluetooth-3_0-47.1-160100.2.1.x86_64.rpm [.done]
+(514/638) Installing: typelib-1_0-GnomeBluetooth-3_0-47.1-160100.2.1.x86_64 [..done]
+Retrieving: suse-module-tools-16.1.6-160100.2.1.x86_64 (leap) (515/638),  72.5 KiB    
+Retrieving: suse-module-tools-16.1.6-160100.2.1.x86_64.rpm [.done]
+(515/638) Installing: suse-module-tools-16.1.6-160100.2.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+done]
+Retrieving: kmod-34.2-160100.2.1.x86_64 (leap) (516/638), 128.9 KiB    
+Retrieving: kmod-34.2-160100.2.1.x86_64.rpm [.done]
+(516/638) Installing: kmod-34.2-160100.2.1.x86_64 [..done]
+Retrieving: udev-257.13-160100.3.5.x86_64 (leap) (517/638),   2.4 MiB    
+Retrieving: udev-257.13-160100.3.5.x86_64.rpm [.done]
+(517/638) Installing: udev-257.13-160100.3.5.x86_64 [...
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/system/sysinit.target.wants/systemd-pstore.service' -> '/usr/lib/systemd/system/systemd-pstore.service'.
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+done]
+Retrieving: dracut-059+suse.737.g3b2043e31-160100.1.5.x86_64 (leap) (518/638), 813.4 KiB    
+Retrieving: dracut-059+suse.737.g3b2043e31-160100.1.5.x86_64.rpm [.done]
+(518/638) Installing: dracut-059+suse.737.g3b2043e31-160100.1.5.x86_64 [..done]
+Retrieving: selinux-autorelabel-4.0+git24-160100.2.1.x86_64 (leap) (519/638),  33.6 KiB    
+Retrieving: selinux-autorelabel-4.0+git24-160100.2.1.x86_64.rpm [.done]
+(519/638) Installing: selinux-autorelabel-4.0+git24-160100.2.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+done]
+Retrieving: libgstaudio-1_0-0-1.28.5-160100.2.1.x86_64 (leap) (520/638), 347.9 KiB    
+Retrieving: libgstaudio-1_0-0-1.28.5-160100.2.1.x86_64.rpm [.done]
+(520/638) Installing: libgstaudio-1_0-0-1.28.5-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-Gcr-4-4.4.0.1-160100.2.1.x86_64 (leap) (521/638),  40.7 KiB    
+Retrieving: typelib-1_0-Gcr-4-4.4.0.1-160100.2.1.x86_64.rpm [.done]
+(521/638) Installing: typelib-1_0-Gcr-4-4.4.0.1-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-GdkPixbuf-2_0-2.42.12-160100.2.1.x86_64 (leap) (522/638),  48.7 KiB    
+Retrieving: typelib-1_0-GdkPixbuf-2_0-2.42.12-160100.2.1.x86_64.rpm [.done]
+(522/638) Installing: typelib-1_0-GdkPixbuf-2_0-2.42.12-160100.2.1.x86_64 [..done]
+Retrieving: librsvg-2-2-2.60.2-160100.2.2.x86_64 (leap) (523/638),   2.0 MiB    
+Retrieving: librsvg-2-2-2.60.2-160100.2.2.x86_64.rpm [.done]
+(523/638) Installing: librsvg-2-2-2.60.2-160100.2.2.x86_64 [..done]
+Retrieving: libnotify4-0.8.4-160100.2.1.x86_64 (leap) (524/638),  44.1 KiB    
+Retrieving: libnotify4-0.8.4-160100.2.1.x86_64.rpm [.done]
+(524/638) Installing: libnotify4-0.8.4-160100.2.1.x86_64 [..done]
+Retrieving: wpa_supplicant-2.11-160100.2.1.x86_64 (leap) (525/638),   1.9 MiB    
+Retrieving: wpa_supplicant-2.11-160100.2.1.x86_64.rpm [.done]
+(525/638) Installing: wpa_supplicant-2.11-160100.2.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+done]
+Retrieving: typelib-1_0-Polkit-1_0-127-160100.2.1.x86_64 (leap) (526/638),  42.7 KiB    
+Retrieving: typelib-1_0-Polkit-1_0-127-160100.2.1.x86_64.rpm [.done]
+(526/638) Installing: typelib-1_0-Polkit-1_0-127-160100.2.1.x86_64 [..done]
+Retrieving: snapper-0.12.1-160100.2.1.x86_64 (leap) (527/638), 497.9 KiB    
+Retrieving: snapper-0.12.1-160100.2.1.x86_64.rpm [.done]
+(527/638) Installing: snapper-0.12.1-160100.2.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/system/timers.target.wants/snapper-cleanup.timer' -> '/usr/lib/systemd/system/snapper-cleanup.timer'.
+Created symlink '/etc/systemd/system/timers.target.wants/snapper-timeline.timer' -> '/usr/lib/systemd/system/snapper-timeline.timer'.
+done]
+Retrieving: rsync-3.4.1-160100.2.1.x86_64 (leap) (528/638), 544.6 KiB    
+Retrieving: rsync-3.4.1-160100.2.1.x86_64.rpm [.done]
+(528/638) Installing: rsync-3.4.1-160100.2.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+done]
+Retrieving: pkexec-127-160100.2.1.x86_64 (leap) (529/638),  49.0 KiB    
+Retrieving: pkexec-127-160100.2.1.x86_64.rpm [.done]
+(529/638) Installing: pkexec-127-160100.2.1.x86_64 [..
+ERROR: /proc is not available - unable to fix policy violations. Will continue in warn-only mode.
+ERROR: not all operations were successful.
+done]
+Retrieving: libzypp-17.38.16-160100.1.1.x86_64 (leap) (530/638),   3.0 MiB    
+Retrieving: libzypp-17.38.16-160100.1.1.x86_64.rpm [.done]
+(530/638) Installing: libzypp-17.38.16-160100.1.1.x86_64 [..done]
+Retrieving: chrony-pool-openSUSE-4.8-160100.3.1.noarch (leap) (531/638),  39.1 KiB    
+Retrieving: chrony-pool-openSUSE-4.8-160100.3.1.noarch.rpm [.done]
+(531/638) Installing: chrony-pool-openSUSE-4.8-160100.3.1.noarch [..done]
+Retrieving: chrony-4.8-160100.3.1.x86_64 (leap) (532/638), 349.3 KiB    
+Retrieving: chrony-4.8-160100.3.1.x86_64.rpm [.done]
+(532/638) Installing: chrony-4.8-160100.3.1.x86_64 [..
+/usr/sbin/useradd -r -c Chrony Daemon -d /var/lib/chrony -U chrony -s /usr/sbin/nologin
+Updating /etc/sysconfig/chronyd ...
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/system/multi-user.target.wants/chronyd.service' -> '/usr/lib/systemd/system/chronyd.service'.
+done]
+Retrieving: audit-rules-4.0-160100.2.1.x86_64 (leap) (533/638),  82.8 KiB    
+Retrieving: audit-rules-4.0-160100.2.1.x86_64.rpm [.done]
+(533/638) Installing: audit-rules-4.0-160100.2.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/system/multi-user.target.wants/audit-rules.service' -> '/usr/lib/systemd/system/audit-rules.service'.
+done]
+Retrieving: audit-4.0-160100.2.1.x86_64 (leap) (534/638), 209.1 KiB    
+Retrieving: audit-4.0-160100.2.1.x86_64.rpm [.done]
+(534/638) Installing: audit-4.0-160100.2.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/system/multi-user.target.wants/auditd.service' -> '/usr/lib/systemd/system/auditd.service'.
+done]
+Retrieving: at-spi2-core-2.58.7-160100.2.1.x86_64 (leap) (535/638), 119.7 KiB    
+Retrieving: at-spi2-core-2.58.7-160100.2.1.x86_64.rpm [.done]
+(535/638) Installing: at-spi2-core-2.58.7-160100.2.1.x86_64 [..done]
+Retrieving: adwaita-fonts-48.2-160100.2.1.noarch (leap) (536/638),   2.1 MiB    
+Retrieving: adwaita-fonts-48.2-160100.2.1.noarch.rpm [.done]
+(536/638) Installing: adwaita-fonts-48.2-160100.2.1.noarch [..done]
+Retrieving: adobe-sourcecodepro-fonts-2.038-160100.2.1.noarch (leap) (537/638), 814.8 KiB    
+Retrieving: adobe-sourcecodepro-fonts-2.038-160100.2.1.noarch.rpm [.done]
+(537/638) Installing: adobe-sourcecodepro-fonts-2.038-160100.2.1.noarch [..done]
+Retrieving: accountsservice-23.13.9-160100.2.1.x86_64 (leap) (538/638), 108.8 KiB    
+Retrieving: accountsservice-23.13.9-160100.2.1.x86_64.rpm [.done]
+(538/638) Installing: accountsservice-23.13.9-160100.2.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+done]
+Retrieving: ModemManager-1.22.0-160100.2.1.x86_64 (leap) (539/638),   1.1 MiB    
+Retrieving: ModemManager-1.22.0-160100.2.1.x86_64.rpm [.done]
+(539/638) Installing: ModemManager-1.22.0-160100.2.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/system/dbus-org.freedesktop.ModemManager1.service' -> '/usr/lib/systemd/system/ModemManager.service'.
+Created symlink '/etc/systemd/system/multi-user.target.wants/ModemManager.service' -> '/usr/lib/systemd/system/ModemManager.service'.
+done]
+Retrieving: kexec-tools-2.0.32+git15.g677dd2f-160100.2.1.x86_64 (leap) (540/638), 161.9 KiB    
+Retrieving: kexec-tools-2.0.32+git15.g677dd2f-160100.2.1.x86_64.rpm [.done]
+(540/638) Installing: kexec-tools-2.0.32+git15.g677dd2f-160100.2.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+done]
+Retrieving: libgstallocators-1_0-0-1.28.5-160100.2.1.x86_64 (leap) (541/638), 164.9 KiB    
+Retrieving: libgstallocators-1_0-0-1.28.5-160100.2.1.x86_64.rpm [.done]
+(541/638) Installing: libgstallocators-1_0-0-1.28.5-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-Rsvg-2_0-2.60.2-160100.2.2.x86_64 (leap) (542/638), 106.6 KiB    
+Retrieving: typelib-1_0-Rsvg-2_0-2.60.2-160100.2.2.x86_64.rpm [.done]
+(542/638) Installing: typelib-1_0-Rsvg-2_0-2.60.2-160100.2.2.x86_64 [..done]
+Retrieving: glycin-loaders-1.2.4-160100.2.2.x86_64 (leap) (543/638),   2.1 MiB    
+Retrieving: glycin-loaders-1.2.4-160100.2.2.x86_64.rpm [.done]
+(543/638) Installing: glycin-loaders-1.2.4-160100.2.2.x86_64 [..done]
+Retrieving: gdk-pixbuf-loader-rsvg-2.60.2-160100.2.2.x86_64 (leap) (544/638), 270.8 KiB    
+Retrieving: gdk-pixbuf-loader-rsvg-2.60.2-160100.2.2.x86_64.rpm [.done]
+(544/638) Installing: gdk-pixbuf-loader-rsvg-2.60.2-160100.2.2.x86_64 [..done]
+Retrieving: NetworkManager-branding-openSUSE-42.1-lp161.1.2.noarch (leap) (545/638),  16.0 KiB    
+Retrieving: NetworkManager-branding-openSUSE-42.1-lp161.1.2.noarch.rpm [.done]
+(545/638) Installing: NetworkManager-branding-openSUSE-42.1-lp161.1.2.noarch [..done]
+Retrieving: NetworkManager-1.54.3-160100.3.1.x86_64 (leap) (546/638),   2.4 MiB    
+Retrieving: NetworkManager-1.54.3-160100.3.1.x86_64.rpm [.done]
+(546/638) Installing: NetworkManager-1.54.3-160100.3.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+done]
+Retrieving: zypper-1.14.101-160100.1.1.x86_64 (leap) (547/638),   1.7 MiB    
+Retrieving: zypper-1.14.101-160100.1.1.x86_64.rpm [.done]
+(547/638) Installing: zypper-1.14.101-160100.1.1.x86_64 [..done]
+Retrieving: zypp-boot-plugin-0.0.11-160100.2.1.x86_64 (leap) (548/638), 117.7 KiB    
+Retrieving: zypp-boot-plugin-0.0.11-160100.2.1.x86_64.rpm [.done]
+(548/638) Installing: zypp-boot-plugin-0.0.11-160100.2.1.x86_64 [..done]
+Retrieving: btrfsprogs-6.14-160100.2.2.x86_64 (leap) (549/638),   1.3 MiB    
+Retrieving: btrfsprogs-6.14-160100.2.2.x86_64.rpm [.done]
+(549/638) Installing: btrfsprogs-6.14-160100.2.2.x86_64 [..done]
+Retrieving: btrfsmaintenance-0.5-160100.2.1.noarch (leap) (550/638),  38.7 KiB    
+Retrieving: btrfsmaintenance-0.5-160100.2.1.noarch.rpm [.done]
+(550/638) Installing: btrfsmaintenance-0.5-160100.2.1.noarch [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/system/multi-user.target.wants/btrfsmaintenance-refresh.path' -> '/usr/lib/systemd/system/btrfsmaintenance-refresh.path'.
+Created symlink '/etc/systemd/system/timers.target.wants/btrfs-balance.timer' -> '/usr/lib/systemd/system/btrfs-balance.timer'.
+Created symlink '/etc/systemd/system/timers.target.wants/btrfs-defrag.timer' -> '/usr/lib/systemd/system/btrfs-defrag.timer'.
+Created symlink '/etc/systemd/system/timers.target.wants/btrfs-scrub.timer' -> '/usr/lib/systemd/system/btrfs-scrub.timer'.
+Created symlink '/etc/systemd/system/timers.target.wants/btrfs-trim.timer' -> '/usr/lib/systemd/system/btrfs-trim.timer'.
+Updating /etc/sysconfig/btrfsmaintenance ...
+done]
+Retrieving: openssh-server-10.3p1-160100.2.4.x86_64 (leap) (551/638), 888.3 KiB    
+Retrieving: openssh-server-10.3p1-160100.2.4.x86_64.rpm [.done]
+(551/638) Installing: openssh-server-10.3p1-160100.2.4.x86_64 [..
+/usr/sbin/useradd -r -c SSH daemon -d /var/lib/sshd -U sshd -s /usr/sbin/nologin
+.
+Updating /etc/sysconfig/ssh ...
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/system/multi-user.target.wants/sshd.service' -> '/usr/lib/systemd/system/sshd.service'.
+done]
+Retrieving: gsettings-desktop-schemas-48.0-160100.2.1.x86_64 (leap) (552/638),  87.5 KiB    
+Retrieving: gsettings-desktop-schemas-48.0-160100.2.1.x86_64.rpm [.done]
+(552/638) Installing: gsettings-desktop-schemas-48.0-160100.2.1.x86_64 [..done]
+Retrieving: libaccountsservice0-23.13.9-160100.2.1.x86_64 (leap) (553/638),  85.6 KiB    
+Retrieving: libaccountsservice0-23.13.9-160100.2.1.x86_64.rpm [.done]
+(553/638) Installing: libaccountsservice0-23.13.9-160100.2.1.x86_64 [..done]
+Retrieving: kdump-2.1.10-160100.1.1.x86_64 (leap) (554/638), 145.5 KiB    
+Retrieving: kdump-2.1.10-160100.1.1.x86_64.rpm [.done]
+(554/638) Installing: kdump-2.1.10-160100.1.1.x86_64 [..
+Updating /etc/sysconfig/kdump ...
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+done]
+Retrieving: libgstvideo-1_0-0-1.28.5-160100.2.1.x86_64 (leap) (555/638), 435.3 KiB    
+Retrieving: libgstvideo-1_0-0-1.28.5-160100.2.1.x86_64.rpm [.done]
+(555/638) Installing: libgstvideo-1_0-0-1.28.5-160100.2.1.x86_64 [..done]
+Retrieving: libgstgl-1_0-0-1.28.5-160100.2.1.x86_64 (leap) (556/638), 368.2 KiB    
+Retrieving: libgstgl-1_0-0-1.28.5-160100.2.1.x86_64.rpm [.done]
+(556/638) Installing: libgstgl-1_0-0-1.28.5-160100.2.1.x86_64 [..done]
+Retrieving: gtk3-tools-3.24.52-160100.2.1.x86_64 (leap) (557/638),   1.6 MiB    
+Retrieving: gtk3-tools-3.24.52-160100.2.1.x86_64.rpm [.done]
+(557/638) Installing: gtk3-tools-3.24.52-160100.2.1.x86_64 [..done]
+Retrieving: libgtk-3-0-3.24.52-160100.2.1.x86_64 (leap) (558/638),   3.1 MiB    
+Retrieving: libgtk-3-0-3.24.52-160100.2.1.x86_64.rpm [.done]
+(558/638) Installing: libgtk-3-0-3.24.52-160100.2.1.x86_64 [..done]
+Retrieving: NetworkManager-wwan-1.54.3-160100.3.1.x86_64 (leap) (559/638), 249.4 KiB    
+Retrieving: NetworkManager-wwan-1.54.3-160100.3.1.x86_64.rpm [.done]
+(559/638) Installing: NetworkManager-wwan-1.54.3-160100.3.1.x86_64 [..done]
+Retrieving: suseconnect-ng-1.23.0-160100.2.2.x86_64 (leap) (560/638),   9.5 MiB    
+Retrieving: suseconnect-ng-1.23.0-160100.2.2.x86_64.rpm [..done (4.4 MiB/s)]
+(560/638) Installing: suseconnect-ng-1.23.0-160100.2.2.x86_64 [...
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+done]
+Retrieving: read-only-root-fs-1.0+git20260311.ea26e1b-160100.2.1.noarch (leap) (561/638),  24.3 KiB    
+Retrieving: read-only-root-fs-1.0+git20260311.ea26e1b-160100.2.1.noarch.rpm [.done]
+(561/638) Installing: read-only-root-fs-1.0+git20260311.ea26e1b-160100.2.1.noarch [..
+findmnt: can't read /proc/mounts: No such file or directory
+findmnt: can't read /proc/mounts: No such file or directory
+done]
+Retrieving: libtukit8-6.1.1-160100.2.1.x86_64 (leap) (562/638), 198.0 KiB    
+Retrieving: libtukit8-6.1.1-160100.2.1.x86_64.rpm [.done]
+(562/638) Installing: libtukit8-6.1.1-160100.2.1.x86_64 [..done]
+Retrieving: openssh-10.3p1-160100.2.4.x86_64 (leap) (563/638), 308.1 KiB    
+Retrieving: openssh-10.3p1-160100.2.4.x86_64.rpm [.done]
+(563/638) Installing: openssh-10.3p1-160100.2.4.x86_64 [..done]
+Retrieving: glib-networking-2.80.1-160100.2.1.x86_64 (leap) (564/638), 125.2 KiB    
+Retrieving: glib-networking-2.80.1-160100.2.1.x86_64.rpm [.done]
+(564/638) Installing: glib-networking-2.80.1-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-AccountsService-1_0-23.13.9-160100.2.1.x86_64 (leap) (565/638),  36.3 KiB    
+Retrieving: typelib-1_0-AccountsService-1_0-23.13.9-160100.2.1.x86_64.rpm [.done]
+(565/638) Installing: typelib-1_0-AccountsService-1_0-23.13.9-160100.2.1.x86_64 [..done]
+Retrieving: libgstpbutils-1_0-0-1.28.5-160100.2.1.x86_64 (leap) (566/638), 248.2 KiB    
+Retrieving: libgstpbutils-1_0-0-1.28.5-160100.2.1.x86_64.rpm [.done]
+(566/638) Installing: libgstpbutils-1_0-0-1.28.5-160100.2.1.x86_64 [..done]
+Retrieving: gstreamer-plugins-base-1.28.5-160100.2.1.x86_64 (leap) (567/638),   1.1 MiB    
+Retrieving: gstreamer-plugins-base-1.28.5-160100.2.1.x86_64.rpm [.done]
+(567/638) Installing: gstreamer-plugins-base-1.28.5-160100.2.1.x86_64 [..done]
+Retrieving: libgstapp-1_0-0-1.28.5-160100.2.1.x86_64 (leap) (568/638), 184.7 KiB    
+Retrieving: libgstapp-1_0-0-1.28.5-160100.2.1.x86_64.rpm [.done]
+(568/638) Installing: libgstapp-1_0-0-1.28.5-160100.2.1.x86_64 [..done]
+Retrieving: NetworkManager-bluetooth-1.54.3-160100.3.1.x86_64 (leap) (569/638), 243.6 KiB    
+Retrieving: NetworkManager-bluetooth-1.54.3-160100.3.1.x86_64.rpm [.done]
+(569/638) Installing: NetworkManager-bluetooth-1.54.3-160100.3.1.x86_64 [..done]
+Retrieving: rollback-helper-1.0+git20260114.38e2a69-160100.2.1.noarch (leap) (570/638),  19.6 KiB    
+Retrieving: rollback-helper-1.0+git20260114.38e2a69-160100.2.1.noarch.rpm [.done]
+(570/638) Installing: rollback-helper-1.0+git20260114.38e2a69-160100.2.1.noarch [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+done]
+Retrieving: microos-tools-4.0+git24-160100.2.1.x86_64 (leap) (571/638),  25.8 KiB    
+Retrieving: microos-tools-4.0+git24-160100.2.1.x86_64.rpm [.done]
+(571/638) Installing: microos-tools-4.0+git24-160100.2.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/system/default.target.wants/import-pubring-from-rpmdb.path' -> '/usr/lib/systemd/system/import-pubring-from-rpmdb.path'.
+Created symlink '/etc/systemd/system/default.target.wants/import-pubring-from-rpmdb.service' -> '/usr/lib/systemd/system/import-pubring-from-rpmdb.service'.
+done]
+Retrieving: tukit-6.1.1-160100.2.1.x86_64 (leap) (572/638), 104.3 KiB    
+Retrieving: tukit-6.1.1-160100.2.1.x86_64.rpm [.done]
+(572/638) Installing: tukit-6.1.1-160100.2.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/system/multi-user.target.wants/create-dirs-from-rpmdb.service' -> '/usr/lib/systemd/system/create-dirs-from-rpmdb.service'.
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/system/soft-reboot.target.requires/prepare-nextroot-for-softreboot.service' -> '/usr/lib/systemd/system/prepare-nextroot-for-softreboot.service'.
+done]
+Retrieving: libsoup-3_0-0-3.6.6-160100.3.1.x86_64 (leap) (573/638), 413.5 KiB    
+Retrieving: libsoup-3_0-0-3.6.6-160100.3.1.x86_64.rpm [.done]
+(573/638) Installing: libsoup-3_0-0-3.6.6-160100.3.1.x86_64 [..done]
+Retrieving: libgstriff-1_0-0-1.28.5-160100.2.1.x86_64 (leap) (574/638), 176.3 KiB    
+Retrieving: libgstriff-1_0-0-1.28.5-160100.2.1.x86_64.rpm [.done]
+(574/638) Installing: libgstriff-1_0-0-1.28.5-160100.2.1.x86_64 [..done]
+Retrieving: patterns-base-base-20241218+leap-lp161.8.3.x86_64 (leap) (575/638), 142.8 KiB    
+Retrieving: patterns-base-base-20241218+leap-lp161.8.3.x86_64.rpm [.done]
+(575/638) Installing: patterns-base-base-20241218+leap-lp161.8.3.x86_64 [..done]
+Retrieving: tukit-snapper-plugin-6.1.1-160100.2.1.noarch (leap) (576/638),  62.7 KiB    
+Retrieving: tukit-snapper-plugin-6.1.1-160100.2.1.noarch.rpm [.done]
+(576/638) Installing: tukit-snapper-plugin-6.1.1-160100.2.1.noarch [..done]
+Retrieving: dracut-transactional-update-6.1.1-160100.2.1.x86_64 (leap) (577/638),  92.1 KiB    
+Retrieving: dracut-transactional-update-6.1.1-160100.2.1.x86_64.rpm [.done]
+(577/638) Installing: dracut-transactional-update-6.1.1-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-Soup-3_0-3.6.6-160100.3.1.x86_64 (leap) (578/638), 160.4 KiB    
+Retrieving: typelib-1_0-Soup-3_0-3.6.6-160100.3.1.x86_64.rpm [.done]
+(578/638) Installing: typelib-1_0-Soup-3_0-3.6.6-160100.3.1.x86_64 [..done]
+Retrieving: librest-1_0-0-0.9.1-160100.2.1.x86_64 (leap) (579/638),  67.1 KiB    
+Retrieving: librest-1_0-0-0.9.1-160100.2.1.x86_64.rpm [.done]
+(579/638) Installing: librest-1_0-0-0.9.1-160100.2.1.x86_64 [..done]
+Retrieving: libgeocode-glib-2-0-3.26.4-160100.2.1.x86_64 (leap) (580/638),  61.9 KiB    
+Retrieving: libgeocode-glib-2-0-3.26.4-160100.2.1.x86_64.rpm [.done]
+(580/638) Installing: libgeocode-glib-2-0-3.26.4-160100.2.1.x86_64 [..done]
+Retrieving: geoclue2-2.8.1-160100.2.1.x86_64 (leap) (581/638), 208.0 KiB    
+Retrieving: geoclue2-2.8.1-160100.2.1.x86_64.rpm [.done]
+(581/638) Installing: geoclue2-2.8.1-160100.2.1.x86_64 [..done]
+Retrieving: libgstplay-1_0-0-1.28.5-160100.2.1.x86_64 (leap) (582/638), 239.2 KiB    
+Retrieving: libgstplay-1_0-0-1.28.5-160100.2.1.x86_64.rpm [.done]
+(582/638) Installing: libgstplay-1_0-0-1.28.5-160100.2.1.x86_64 [..done]
+Retrieving: gstreamer-plugin-pipewire-1.6.8-160100.2.1.x86_64 (leap) (583/638), 457.0 KiB    
+Retrieving: gstreamer-plugin-pipewire-1.6.8-160100.2.1.x86_64.rpm [.done]
+(583/638) Installing: gstreamer-plugin-pipewire-1.6.8-160100.2.1.x86_64 [..done]
+Retrieving: patterns-base-basesystem-20241218+leap-lp161.8.3.x86_64 (leap) (584/638), 139.9 KiB    
+Retrieving: patterns-base-basesystem-20241218+leap-lp161.8.3.x86_64.rpm [.done]
+(584/638) Installing: patterns-base-basesystem-20241218+leap-lp161.8.3.x86_64 [..done]
+Retrieving: transactional-update-up-as-default-6.1.1-160100.2.1.noarch (leap) (585/638),  54.0 KiB    
+Retrieving: transactional-update-up-as-default-6.1.1-160100.2.1.noarch.rpm [.done]
+(585/638) Installing: transactional-update-up-as-default-6.1.1-160100.2.1.noarch [..done]
+Retrieving: transactional-update-6.1.1-160100.2.1.x86_64 (leap) (586/638),  87.4 KiB    
+Retrieving: transactional-update-6.1.1-160100.2.1.x86_64.rpm [.done]
+(586/638) Installing: transactional-update-6.1.1-160100.2.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/system/timers.target.wants/transactional-update.timer' -> '/usr/lib/systemd/system/transactional-update.timer'.
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+done]
+Retrieving: libgweather-4-0-4.4.4-160100.2.1.x86_64 (leap) (587/638),  78.8 KiB    
+Retrieving: libgweather-4-0-4.4.4-160100.2.1.x86_64.rpm [.done]
+(587/638) Installing: libgweather-4-0-4.4.4-160100.2.1.x86_64 [..done]
+Retrieving: gweather4-data-4.4.4-160100.2.1.x86_64 (leap) (588/638), 442.6 KiB    
+Retrieving: gweather4-data-4.4.4-160100.2.1.x86_64.rpm [.done]
+(588/638) Installing: gweather4-data-4.4.4-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-Geoclue-2_0-2.8.1-160100.2.1.x86_64 (leap) (589/638),  42.5 KiB    
+Retrieving: typelib-1_0-Geoclue-2_0-2.8.1-160100.2.1.x86_64.rpm [.done]
+(589/638) Installing: typelib-1_0-Geoclue-2_0-2.8.1-160100.2.1.x86_64 [..done]
+Retrieving: libgstplayer-1_0-0-1.28.5-160100.2.1.x86_64 (leap) (590/638), 211.6 KiB    
+Retrieving: libgstplayer-1_0-0-1.28.5-160100.2.1.x86_64.rpm [.done]
+(590/638) Installing: libgstplayer-1_0-0-1.28.5-160100.2.1.x86_64 [..done]
+Retrieving: transactional-update-zypp-config-6.1.1-160100.2.1.noarch (leap) (591/638),  53.9 KiB    
+Retrieving: transactional-update-zypp-config-6.1.1-160100.2.1.noarch.rpm [.done]
+(591/638) Installing: transactional-update-zypp-config-6.1.1-160100.2.1.noarch [..done]
+Retrieving: typelib-1_0-GWeather-4_0-4.4.4-160100.2.1.x86_64 (leap) (592/638),  15.5 KiB    
+Retrieving: typelib-1_0-GWeather-4_0-4.4.4-160100.2.1.x86_64.rpm [.done]
+(592/638) Installing: typelib-1_0-GWeather-4_0-4.4.4-160100.2.1.x86_64 [..done]
+Retrieving: gtk4-tools-4.18.6-160100.2.1.x86_64 (leap) (593/638),   1.6 MiB    
+Retrieving: gtk4-tools-4.18.6-160100.2.1.x86_64.rpm [.done]
+(593/638) Installing: gtk4-tools-4.18.6-160100.2.1.x86_64 [..done]
+Retrieving: adwaita-icon-theme-48.1-160100.1.1.noarch (leap) (594/638), 681.4 KiB    
+Retrieving: adwaita-icon-theme-48.1-160100.1.1.noarch.rpm [.done]
+(594/638) Installing: adwaita-icon-theme-48.1-160100.1.1.noarch [...done]
+Retrieving: libgtk-4-1-4.18.6-160100.2.1.x86_64 (leap) (595/638),   3.3 MiB    
+Retrieving: libgtk-4-1-4.18.6-160100.2.1.x86_64.rpm [.done]
+(595/638) Installing: libgtk-4-1-4.18.6-160100.2.1.x86_64 [..done]
+Retrieving: patterns-base-immutable_base-20241218+leap-lp161.8.3.x86_64 (leap) (596/638), 140.6 KiB    
+Retrieving: patterns-base-immutable_base-20241218+leap-lp161.8.3.x86_64.rpm [.done]
+(596/638) Installing: patterns-base-immutable_base-20241218+leap-lp161.8.3.x86_64 [..done]
+Retrieving: libhandy-1-0-1.8.3-160100.2.1.x86_64 (leap) (597/638), 238.7 KiB    
+Retrieving: libhandy-1-0-1.8.3-160100.2.1.x86_64.rpm [.done]
+(597/638) Installing: libhandy-1-0-1.8.3-160100.2.1.x86_64 [..done]
+Retrieving: libgnome-desktop-3-20-44.3-160100.2.1.x86_64 (leap) (598/638), 195.0 KiB    
+Retrieving: libgnome-desktop-3-20-44.3-160100.2.1.x86_64.rpm [.done]
+(598/638) Installing: libgnome-desktop-3-20-44.3-160100.2.1.x86_64 [..done]
+Retrieving: libgnome-desktop-3_0-common-44.3-160100.2.1.x86_64 (leap) (599/638), 111.4 KiB    
+Retrieving: libgnome-desktop-3_0-common-44.3-160100.2.1.x86_64.rpm [.done]
+(599/638) Installing: libgnome-desktop-3_0-common-44.3-160100.2.1.x86_64 [..done]
+Retrieving: libdecor-0-0-0.2.2-160100.2.1.x86_64 (leap) (600/638),  20.8 KiB    
+Retrieving: libdecor-0-0-0.2.2-160100.2.1.x86_64.rpm [.done]
+(600/638) Installing: libdecor-0-0-0.2.2-160100.2.1.x86_64 [..done]
+Retrieving: libdecor-0.2.2-160100.2.1.x86_64 (leap) (601/638),  43.9 KiB    
+Retrieving: libdecor-0.2.2-160100.2.1.x86_64.rpm [.done]
+(601/638) Installing: libdecor-0.2.2-160100.2.1.x86_64 [..done]
+Retrieving: libdbusmenu-gtk3-4-16.04.0-160100.2.1.x86_64 (leap) (602/638),  55.5 KiB    
+Retrieving: libdbusmenu-gtk3-4-16.04.0-160100.2.1.x86_64.rpm [.done]
+(602/638) Installing: libdbusmenu-gtk3-4-16.04.0-160100.2.1.x86_64 [..done]
+Retrieving: libcanberra-gtk3-0-0.30+2-160100.2.1.x86_64 (leap) (603/638),  27.1 KiB    
+Retrieving: libcanberra-gtk3-0-0.30+2-160100.2.1.x86_64.rpm [.done]
+(603/638) Installing: libcanberra-gtk3-0-0.30+2-160100.2.1.x86_64 [..done]
+Retrieving: gcr3-prompter-3.41.2-160100.2.1.x86_64 (leap) (604/638),  33.6 KiB    
+Retrieving: gcr3-prompter-3.41.2-160100.2.1.x86_64.rpm [.done]
+(604/638) Installing: gcr3-prompter-3.41.2-160100.2.1.x86_64 [..done]
+Retrieving: libgcr-3-1-3.41.2-160100.2.1.x86_64 (leap) (605/638), 329.5 KiB    
+Retrieving: libgcr-3-1-3.41.2-160100.2.1.x86_64.rpm [.done]
+(605/638) Installing: libgcr-3-1-3.41.2-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-Gtk-4_0-4.18.6-160100.2.1.x86_64 (leap) (606/638), 337.2 KiB    
+Retrieving: typelib-1_0-Gtk-4_0-4.18.6-160100.2.1.x86_64.rpm [.done]
+(606/638) Installing: typelib-1_0-Gtk-4_0-4.18.6-160100.2.1.x86_64 [..done]
+Retrieving: libnma-gtk4-0-1.10.6-160100.2.1.x86_64 (leap) (607/638), 101.5 KiB    
+Retrieving: libnma-gtk4-0-1.10.6-160100.2.1.x86_64.rpm [.done]
+(607/638) Installing: libnma-gtk4-0-1.10.6-160100.2.1.x86_64 [..done]
+Retrieving: libcolord-gtk4-1-0.3.0-160100.2.1.x86_64 (leap) (608/638),  32.7 KiB    
+Retrieving: libcolord-gtk4-1-0.3.0-160100.2.1.x86_64.rpm [.done]
+(608/638) Installing: libcolord-gtk4-1-0.3.0-160100.2.1.x86_64 [..done]
+Retrieving: libadwaita-1-0-1.7.5-160100.2.1.x86_64 (leap) (609/638), 508.4 KiB    
+Retrieving: libadwaita-1-0-1.7.5-160100.2.1.x86_64.rpm [.done]
+(609/638) Installing: libadwaita-1-0-1.7.5-160100.2.1.x86_64 [..done]
+Retrieving: libgnome-desktop-4-2-44.3-160100.2.1.x86_64 (leap) (610/638), 163.0 KiB    
+Retrieving: libgnome-desktop-4-2-44.3-160100.2.1.x86_64.rpm [.done]
+(610/638) Installing: libgnome-desktop-4-2-44.3-160100.2.1.x86_64 [..done]
+Retrieving: gnome-session-core-48.0-160100.2.1.x86_64 (leap) (611/638), 248.3 KiB    
+Retrieving: gnome-session-core-48.0-160100.2.1.x86_64.rpm [.done]
+(611/638) Installing: gnome-session-core-48.0-160100.2.1.x86_64 [..done]
+Retrieving: xwayland-24.1.9-160100.2.2.x86_64 (leap) (612/638), 980.0 KiB    
+Retrieving: xwayland-24.1.9-160100.2.2.x86_64.rpm [.done]
+(612/638) Installing: xwayland-24.1.9-160100.2.2.x86_64 [..done]
+Retrieving: gnome-settings-daemon-48.1-160100.2.1.x86_64 (leap) (613/638), 531.9 KiB    
+Retrieving: gnome-settings-daemon-48.1-160100.2.1.x86_64.rpm [.done]
+(613/638) Installing: gnome-settings-daemon-48.1-160100.2.1.x86_64 [..done]
+Retrieving: seahorse-47.0.1+6-160100.2.1.x86_64 (leap) (614/638), 479.0 KiB    
+Retrieving: seahorse-47.0.1+6-160100.2.1.x86_64.rpm [.done]
+(614/638) Installing: seahorse-47.0.1+6-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-Gtk-3_0-3.24.52-160100.2.1.x86_64 (leap) (615/638), 439.4 KiB    
+Retrieving: typelib-1_0-Gtk-3_0-3.24.52-160100.2.1.x86_64.rpm [.done]
+(615/638) Installing: typelib-1_0-Gtk-3_0-3.24.52-160100.2.1.x86_64 [..done]
+Retrieving: python313-gobject-Gdk-3.52.3-160100.2.1.x86_64 (leap) (616/638), 150.4 KiB    
+Retrieving: python313-gobject-Gdk-3.52.3-160100.2.1.x86_64.rpm [.done]
+(616/638) Installing: python313-gobject-Gdk-3.52.3-160100.2.1.x86_64 [..done]
+Retrieving: tecla-keyboard-layout-viewer-48.0.2-160100.2.1.x86_64 (leap) (617/638),  39.4 KiB    
+Retrieving: tecla-keyboard-layout-viewer-48.0.2-160100.2.1.x86_64.rpm [.done]
+(617/638) Installing: tecla-keyboard-layout-viewer-48.0.2-160100.2.1.x86_64 [..done]
+Retrieving: libgoa-backend-1_0-2-3.58.0-160100.2.1.x86_64 (leap) (618/638), 170.9 KiB    
+Retrieving: libgoa-backend-1_0-2-3.58.0-160100.2.1.x86_64.rpm [.done]
+(618/638) Installing: libgoa-backend-1_0-2-3.58.0-160100.2.1.x86_64 [..done]
+Retrieving: libgnome-bluetooth-ui-3_0-13-47.1-160100.2.1.x86_64 (leap) (619/638), 116.8 KiB    
+Retrieving: libgnome-bluetooth-ui-3_0-13-47.1-160100.2.1.x86_64.rpm [.done]
+(619/638) Installing: libgnome-bluetooth-ui-3_0-13-47.1-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-GnomeDesktop-4_0-44.3-160100.2.1.x86_64 (leap) (620/638),  82.6 KiB    
+Retrieving: typelib-1_0-GnomeDesktop-4_0-44.3-160100.2.1.x86_64.rpm [.done]
+(620/638) Installing: typelib-1_0-GnomeDesktop-4_0-44.3-160100.2.1.x86_64 [..done]
+Retrieving: mutter-48.8-160100.2.1.x86_64 (leap) (621/638),   1.9 MiB    
+Retrieving: mutter-48.8-160100.2.1.x86_64.rpm [.done]
+(621/638) Installing: mutter-48.8-160100.2.1.x86_64 [..done]
+Retrieving: gnome-session-wayland-48.0-160100.2.1.x86_64 (leap) (622/638), 121.5 KiB    
+Retrieving: gnome-session-wayland-48.0-160100.2.1.x86_64.rpm [.done]
+(622/638) Installing: gnome-session-wayland-48.0-160100.2.1.x86_64 [..done]
+Retrieving: gnome-session-48.0-160100.2.1.x86_64 (leap) (623/638), 120.5 KiB    
+Retrieving: gnome-session-48.0-160100.2.1.x86_64.rpm [.done]
+(623/638) Installing: gnome-session-48.0-160100.2.1.x86_64 [..done]
+Retrieving: gdmflexiserver-48.0-160100.2.1.noarch (leap) (624/638), 170.3 KiB    
+Retrieving: gdmflexiserver-48.0-160100.2.1.noarch.rpm [.done]
+(624/638) Installing: gdmflexiserver-48.0-160100.2.1.noarch [..done]
+Retrieving: typelib-1_0-NMA4-1_0-1.10.6-160100.2.1.x86_64 (leap) (625/638),  16.5 KiB    
+Retrieving: typelib-1_0-NMA4-1_0-1.10.6-160100.2.1.x86_64.rpm [.done]
+(625/638) Installing: typelib-1_0-NMA4-1_0-1.10.6-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-Adw-1-1.7.5-160100.2.1.x86_64 (leap) (626/638),  92.7 KiB    
+Retrieving: typelib-1_0-Adw-1-1.7.5-160100.2.1.x86_64.rpm [.done]
+(626/638) Installing: typelib-1_0-Adw-1-1.7.5-160100.2.1.x86_64 [..done]
+Retrieving: ibus-1.5.33-160100.2.1.x86_64 (leap) (627/638), 819.9 KiB    
+Retrieving: ibus-1.5.33-160100.2.1.x86_64.rpm [.done]
+(627/638) Installing: ibus-1.5.33-160100.2.1.x86_64 [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+done]
+Retrieving: gnome-control-center-48.7-160100.2.1.x86_64 (leap) (628/638),   2.5 MiB    
+Retrieving: gnome-control-center-48.7-160100.2.1.x86_64.rpm [.done]
+(628/638) Installing: gnome-control-center-48.7-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-GnomeBG-4_0-44.3-160100.2.1.x86_64 (leap) (629/638),  81.5 KiB    
+Retrieving: typelib-1_0-GnomeBG-4_0-44.3-160100.2.1.x86_64.rpm [.done]
+(629/638) Installing: typelib-1_0-GnomeBG-4_0-44.3-160100.2.1.x86_64 [..done]
+Retrieving: libgdm1-48.0-160100.2.1.x86_64 (leap) (630/638), 220.5 KiB    
+Retrieving: libgdm1-48.0-160100.2.1.x86_64.rpm [.done]
+(630/638) Installing: libgdm1-48.0-160100.2.1.x86_64 [..done]
+Retrieving: typelib-1_0-Gdm-1_0-48.0-160100.2.1.x86_64 (leap) (631/638), 178.9 KiB    
+Retrieving: typelib-1_0-Gdm-1_0-48.0-160100.2.1.x86_64.rpm [.done]
+(631/638) Installing: typelib-1_0-Gdm-1_0-48.0-160100.2.1.x86_64 [..done]
+Retrieving: gnome-shell-48.8-160100.2.1.x86_64 (leap) (632/638),   1.4 MiB    
+Retrieving: gnome-shell-48.8-160100.2.1.x86_64.rpm [.done]
+(632/638) Installing: gnome-shell-48.8-160100.2.1.x86_64 [..done]
+Retrieving: gdm-systemd-48.0-160100.2.1.noarch (leap) (633/638), 173.0 KiB    
+Retrieving: gdm-systemd-48.0-160100.2.1.noarch.rpm [.done]
+(633/638) Installing: gdm-systemd-48.0-160100.2.1.noarch [..
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/system/display-manager.service' -> '/usr/lib/systemd/system/gdm.service'.
+done]
+Retrieving: gdm-branding-openSUSE-15.1-lp161.1.1.noarch (leap) (634/638),  10.4 KiB    
+Retrieving: gdm-branding-openSUSE-15.1-lp161.1.1.noarch.rpm [.done]
+(634/638) Installing: gdm-branding-openSUSE-15.1-lp161.1.1.noarch [..done]
+Retrieving: gdm-48.0-160100.2.1.x86_64 (leap) (635/638), 413.3 KiB    
+Retrieving: gdm-48.0-160100.2.1.x86_64.rpm [.done]
+(635/638) Installing: gdm-48.0-160100.2.1.x86_64 [..
+/usr/sbin/useradd -r -c Gnome Display Manager daemon -d /var/lib/gdm -U gdm -s /usr/sbin/nologin
+/usr/sbin/usermod -a -G video gdm
+done]
+Retrieving: patterns-gnome-gnome_basis-20250310+leap-lp161.4.1.x86_64 (leap) (636/638),  25.7 KiB    
+Retrieving: patterns-gnome-gnome_basis-20250310+leap-lp161.4.1.x86_64.rpm [.done]
+(636/638) Installing: patterns-gnome-gnome_basis-20250310+leap-lp161.4.1.x86_64 [..done]
+Retrieving: patterns-gnome-gnome_basic-20250310+leap-lp161.4.1.x86_64 (leap) (637/638),  26.6 KiB    
+Retrieving: patterns-gnome-gnome_basic-20250310+leap-lp161.4.1.x86_64.rpm [.done]
+(637/638) Installing: patterns-gnome-gnome_basic-20250310+leap-lp161.4.1.x86_64 [..done]
+Retrieving: patterns-gnome-gnome-20250310+leap-lp161.4.1.x86_64 (leap) (638/638),  25.2 KiB    
+Retrieving: patterns-gnome-gnome-20250310+leap-lp161.4.1.x86_64.rpm [.done]
+(638/638) Installing: patterns-gnome-gnome-20250310+leap-lp161.4.1.x86_64 [..done]
+Running post-transaction scripts [..
+%posttrans(systemd-presets-common-SUSE-15-160100.2.1.noarch) script output:
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/system/default.target.wants/wtmpdb-update-boot.service' -> '/usr/lib/systemd/system/wtmpdb-update-boot.service'.
+Created symlink '/etc/systemd/system/multi-user.target.wants/rebootmgr.service' -> '/usr/lib/systemd/system/rebootmgr.service'.
+Created symlink '/etc/systemd/system/default.target.wants/soft-reboot-cleanup.service' -> '/usr/lib/systemd/system/soft-reboot-cleanup.service'.
+Created symlink '/etc/systemd/system/sockets.target.wants/systemd-sysext.socket' -> '/usr/lib/systemd/system/systemd-sysext.socket'.
+Created symlink '/etc/systemd/system/default.target.wants/ca-certificates.path' -> '/usr/lib/systemd/system/ca-certificates.path'.
+Created symlink '/etc/systemd/system/multi-user.target.wants/remote-fs.target' -> '/usr/lib/systemd/system/remote-fs.target'.
+Created symlink '/etc/systemd/system/sockets.target.wants/dm-event.socket' -> '/usr/lib/systemd/system/dm-event.socket'.
+Created symlink '/etc/systemd/system/sockets.target.wants/wtmpdbd.socket' -> '/usr/lib/systemd/system/wtmpdbd.socket'.
+Created symlink '/etc/systemd/system/timers.target.wants/wtmpdb-rotate.timer' -> '/usr/lib/systemd/system/wtmpdb-rotate.timer'.
+Created symlink '/etc/systemd/system/getty.target.wants/getty@tty1.service' -> '/usr/lib/systemd/system/getty@.service'.
+Created symlink '/etc/systemd/system/multi-user.target.wants/kbdsettings.service' -> '/usr/lib/systemd/system/kbdsettings.service'.
+Created symlink '/etc/systemd/system/default.target.wants/lastlog2-import.service' -> '/usr/lib/systemd/system/lastlog2-import.service'.
+Created symlink '/etc/systemd/system/sockets.target.wants/polkit-agent-helper.socket' -> '/usr/lib/systemd/system/polkit-agent-helper.socket'.
+Created symlink '/etc/systemd/system/timers.target.wants/logrotate.timer' -> '/usr/lib/systemd/system/logrotate.timer'.
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+Created symlink '/etc/systemd/user/timers.target.wants/systemd-tmpfiles-clean.timer' -> '/usr/lib/systemd/user/systemd-tmpfiles-clean.timer'.
+Created symlink '/etc/systemd/user/basic.target.wants/systemd-tmpfiles-setup.service' -> '/usr/lib/systemd/user/systemd-tmpfiles-setup.service'.
+%posttrans(ca-certificates-2+git20260203.5937e9f-160100.2.1.noarch) script output:
+/sbin/update-ca-certificates: line 112: /dev/fd/63: No such file or directory
+%posttrans(ca-certificates-mozilla-2.92-160100.1.1.noarch) script output:
+/sbin/update-ca-certificates: line 112: /dev/fd/63: No such file or directory
+.
+%posttrans(pam-config-2.13+git.20250715-160100.2.1.x86_64) script output:
+*** load_config (common-account-pc, account, ...)
+**** Trying /etc/pam.d/common-account-pc...
+*** Using config file /etc/pam.d/common-account-pc
+**** [account, required, pam_unix.so, try_first_pass ]
+**** def_parse_config [pam_unix.so] (account): 'try_first_pass '
+*** load_config (common-auth-pc, auth, ...)
+**** Trying /etc/pam.d/common-auth-pc...
+*** Using config file /etc/pam.d/common-auth-pc
+**** [auth, required, pam_unix.so, try_first_pass ]
+**** def_parse_config [pam_unix.so] (auth): 'try_first_pass '
+*** load_config (common-password-pc, password, ...)
+**** Trying /etc/pam.d/common-password-pc...
+*** Using config file /etc/pam.d/common-password-pc
+**** [password, requisite, pam_pwquality.so, ]
+**** def_parse_config [pam_pwquality.so] (password): ''
+**** [password, required, pam_unix.so, nullok shadow try_first_pass ]
+**** def_parse_config [pam_unix.so] (password): 'nullok shadow try_first_pass '
+*** load_config (common-session-pc, session, ...)
+**** Trying /etc/pam.d/common-session-pc...
+*** Using config file /etc/pam.d/common-session-pc
+**** [session, required, pam_limits.so, ]
+**** def_parse_config [pam_limits.so] (session): ''
+**** [session, optional, pam_systemd.so, ]
+**** parse_config_pam_systemd.so (session): ''
+**** [session, required, pam_unix.so, try_first_pass ]
+**** def_parse_config [pam_unix.so] (session): 'try_first_pass '
+**** [session, optional, pam_umask.so, ]
+**** def_parse_config [pam_umask.so] (session): ''
+**** [session, optional, pam_env.so, ]
+**** def_parse_config [pam_env.so] (session): ''
+*** load_config (common-session-nonlogin-pc, session, ...)
+**** Trying /etc/pam.d/common-session-nonlogin-pc...
+*** Using config file /etc/pam.d/common-session-nonlogin-pc
+**** [session, required, pam_limits.so, ]
+**** def_parse_config [pam_limits.so] (session): ''
+**** [session, required, pam_unix.so, try_first_pass ]
+**** def_parse_config [pam_unix.so] (session): 'try_first_pass '
+**** [session, optional, pam_umask.so, ]
+**** def_parse_config [pam_umask.so] (session): ''
+**** [session, optional, pam_env.so, ]
+**** def_parse_config [pam_env.so] (session): ''
+*** load_config (postlogin-account-pc, account, ...)
+**** Trying /etc/pam.d/postlogin-account-pc...
+*** Using config file /etc/pam.d/postlogin-account-pc
+*** load_config (postlogin-auth-pc, auth, ...)
+**** Trying /etc/pam.d/postlogin-auth-pc...
+*** Using config file /etc/pam.d/postlogin-auth-pc
+*** load_config (postlogin-password-pc, password, ...)
+**** Trying /etc/pam.d/postlogin-password-pc...
+*** Using config file /etc/pam.d/postlogin-password-pc
+*** load_config (postlogin-session-pc, session, ...)
+**** Trying /etc/pam.d/postlogin-session-pc...
+*** Using config file /etc/pam.d/postlogin-session-pc
+**** [session, optional, pam_wtmpdb.so, skip_if=sshd ]
+**** def_parse_config [pam_wtmpdb.so] (session): 'skip_if=sshd '
+**** [session, optional, pam_lastlog2.so, silent_if=gdm,gdm-password,lxdm,lightdm,mdm,sddm ]
+**** def_parse_config [pam_lastlog2.so] (session): 'silent_if=gdm,gdm-password,lxdm,lightdm,mdm,sddm '
+*** write_config (account, /etc/pam.d/common-account-pc, ...)
+**** write config for pam_access.so (account, disabled)
+**** write config for pam_systemd_home.so (account, disabled)
+**** write config for pam_himmelblau.so (account, disabled)
+**** write config for pam_unix2.so (account, disabled)
+**** write config for pam_unix.so (account, enabled)
+**** write config for pam_krb5.so (account, disabled)
+**** write config for pam_localuser.so (account, disabled)
+**** write config for pam_sss.so (account, disabled)
+**** write config for pam_ldap.so (account, disabled)
+**** write config for pam_nam.so (account, disabled)
+**** write config for pam_winbind.so (account, disabled)
+**** write config for pam_time.so (account, disabled)
+**** write config for pam_kanidm.so (account, disabled)
+*** write_config (auth, /etc/pam.d/common-auth-pc, ...)
+**** write config for pam_faildelay.so (auth, disabled)
+**** write config for pam_group.so (auth, disabled)
+**** write config for pam_pkcs11.so (auth, disabled)
+**** write config for pam_fp.so (auth, disabled)
+**** write config for pam_fprint.so (auth, disabled)
+**** write config for pam_fprintd.so (auth, disabled)
+**** write config for pam_thinkfinger.so (auth, disabled)
+**** write config for pam_himmelblau.so (auth, disabled)
+**** write config for pam_gnome_keyring.so (auth, disabled)
+**** write config for pam_kwallet5.so (auth, disabled)
+**** write config for pam_systemd_home.so (auth, disabled)
+**** write config for pam_ssh.so (auth, disabled)
+**** write config for pam_ecryptfs.so (auth, disabled)
+**** write config for pam_fscrypt.so (auth, disabled)
+**** write config for pam_unix2.so (auth, disabled)
+**** write config for pam_unix.so (auth, enabled)
+**** write config for pam_krb5.so (auth, disabled)
+**** write config for pam_sss.so (auth, disabled)
+**** write config for pam_ldap.so (auth, disabled)
+**** write config for pam_nam.so (auth, disabled)
+**** write config for pam_winbind.so (auth, disabled)
+**** write config for pam_kanidm.so (auth, disabled)
+*** write_config (password, /etc/pam.d/common-password-pc, ...)
+**** write config for pam_himmelblau.so (password, disabled)
+**** write config for pam_winbind.so (password, disabled)
+**** write config for pam_pwcheck.so (password, disabled)
+**** write config for pam_passwdqc.so (password, disabled)
+**** write config for pam_pwquality.so (password, enabled)
+**** write config for pam_cracklib.so (password, disabled)
+**** write config for pam_pwhistory.so (password, disabled)
+**** write config for pam_gnome_keyring.so (password, disabled)
+**** write config for pam_kwallet5.so (password, disabled)
+**** write config for pam_ecryptfs.so (password, disabled)
+**** write config for pam_systemd_home.so (password, disabled)
+**** write config for pam_unix2.so (password, disabled)
+**** write config for pam_unix.so (password, enabled)
+**** write config for pam_fscrypt.so (password, disabled)
+**** write config for pam_make.so (password, disabled)
+**** write config for pam_exec.so (password, disabled)
+**** write config for pam_krb5.so (password, disabled)
+**** write config for pam_sss.so (password, disabled)
+**** write config for pam_ldap.so (password, disabled)
+**** write config for pam_nam.so (password, disabled)
+*** write_config (session, /etc/pam.d/common-session-pc, ...)
+**** write config for pam_selinux.so (session, disabled)
+**** write config for pam_limits.so (session, enabled)
+**** write config for pam_ecryptfs.so (session, disabled)
+**** write config for pam_fscrypt.so (session, disabled)
+**** write config for pam_mkhomedir.so (session, disabled)
+**** write config for pam_systemd_home.so (session, disabled)
+**** write config for pam_systemd.so (session, enabled)
+**** write config for pam_unix2.so (session, disabled)
+**** write config for pam_unix.so (session, enabled)
+**** write config for pam_apparmor.so (session, disabled)
+**** write config for pam_krb5.so (session, disabled)
+**** write config for pam_sss.so (session, disabled)
+**** write config for pam_ldap.so (session, disabled)
+**** write config for pam_winbind.so (session, disabled)
+**** write config for pam_nam.so (session, disabled)
+**** write config for pam_umask.so (session, enabled)
+**** write config for pam_ssh.so (session, disabled)
+**** write config for pam_selinux.so (session, disabled)
+**** write config for pam_gnome_keyring.so (session, disabled)
+**** write config for pam_kwallet5.so (session, disabled)
+**** write config for pam_exec.so (session, disabled)
+**** write config for pam_mktemp.so (session, disabled)
+**** write config for pam_himmelblau.so (session, disabled)
+**** write config for pam_kanidm.so (session, disabled)
+**** write config for pam_env.so (session, enabled)
+*** write_config (session, /etc/pam.d/common-session-nonlogin-pc, ...)
+**** write config for pam_ecryptfs.so (session, disabled)
+**** write config for pam_fscrypt.so (session, disabled)
+**** write config for pam_selinux.so (session, disabled)
+**** write config for pam_mkhomedir.so (session, disabled)
+**** write config for pam_systemd_home.so (session, disabled)
+**** write config for pam_limits.so (session, enabled)
+**** write config for pam_unix2.so (session, disabled)
+**** write config for pam_unix.so (session, enabled)
+**** write config for pam_apparmor.so (session, disabled)
+**** write config for pam_krb5.so (session, disabled)
+**** write config for pam_sss.so (session, disabled)
+**** write config for pam_ldap.so (session, disabled)
+**** write config for pam_winbind.so (session, disabled)
+**** write config for pam_nam.so (session, disabled)
+**** write config for pam_umask.so (session, enabled)
+**** write config for pam_ssh.so (session, disabled)
+**** write config for pam_selinux.so (session, disabled)
+**** write config for pam_gnome_keyring.so (session, disabled)
+**** write config for pam_kwallet5.so (session, disabled)
+**** write config for pam_exec.so (session, disabled)
+**** write config for pam_mktemp.so (session, disabled)
+**** write config for pam_env.so (session, enabled)
+*** write_config (account, /etc/pam.d/postlogin-account-pc, ...)
+*** write_config (auth, /etc/pam.d/postlogin-auth-pc, ...)
+*** write_config (password, /etc/pam.d/postlogin-password-pc, ...)
+*** write_config (session, /etc/pam.d/postlogin-session-pc, ...)
+**** write config for pam_wtmpdb.so (session, enabled)
+**** write config for pam_lastlog2.so (session, enabled)
+..
+%posttrans(gdm-systemd-48.0-160100.2.1.noarch) script output:
+++ systemctl is-enabled display-manager-legacy
+/proc/ is not mounted. This is not a supported mode of operation. Please fix
+your invocation environment to mount /proc/ and /sys/ properly. Proceeding anyway.
+Your mileage may vary.
+..done]
