@@ -168,9 +168,9 @@ impl Worker {
             return Ok(r);
         }
         if self.remote != "flathub" {
-            return Err(format!("brak repozytorium {}", self.remote));
+            return Err(crate::i18n::trf("error.no-remote", &[("remote", &self.remote)]));
         }
-        self.emit(Event::Status("Dodawanie Flathub…".into()));
+        self.emit(Event::Status(crate::i18n::tr("status.adding-flathub").into()));
         let body = crate::net::get_bytes(FLATHUB_REPO_FILE).map_err(|e| e.to_string())?;
         let remote = libflatpak::Remote::from_file("flathub", &glib::Bytes::from_owned(body))
             .map_err(|e| e.to_string())?;
@@ -204,19 +204,19 @@ impl Worker {
         let stale = force || self.appstream_age(&remote).map_or(true, |a| a > APPSTREAM_MAX_AGE);
         let mut net_error = None;
         if stale {
-            self.emit(Event::Status("Pobieranie katalogu…".into()));
+            self.emit(Event::Status(crate::i18n::tr("status.downloading-catalog").into()));
             if let Err(e) = self.inst.update_appstream_full_sync(&self.remote, None, None, gio::Cancellable::NONE) {
                 net_error = Some(e.to_string());
             }
         }
-        match self.appstream_dir(&remote).ok_or_else(|| "brak katalogu".to_string()).and_then(|d| catalog::load_dir(&d, &self.langs)) {
+        match self.appstream_dir(&remote).ok_or_else(|| crate::i18n::tr("error.no-catalog").to_string()).and_then(|d| catalog::load_dir(&d, &self.langs)) {
             Ok(apps) if !apps.is_empty() => {
                 self.emit(Event::Catalog(apps));
                 if let Some(e) = net_error {
                     self.emit(Event::CatalogStale(e));
                 }
             }
-            Ok(_) => self.emit(Event::CatalogFailed(net_error.unwrap_or_else(|| "pusty katalog".into()))),
+            Ok(_) => self.emit(Event::CatalogFailed(net_error.unwrap_or_else(|| crate::i18n::tr("error.empty-catalog").into()))),
             Err(e) => self.emit(Event::CatalogFailed(net_error.unwrap_or(e))),
         }
         self.send_installed();

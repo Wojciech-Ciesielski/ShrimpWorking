@@ -6,6 +6,7 @@ description = "Shrimp Apps: aplikacje z Flathub"
 license = "GPL-3.0-or-later"
 
 [dependencies]
+shrimp-i18n = { path = "../shrimp-i18n" }
 gtk = { package = "gtk4", version = "0.10", features = ["v4_14"] }
 adw = { package = "libadwaita", version = "0.8", features = ["v1_5"] }
 libflatpak = "0.7"

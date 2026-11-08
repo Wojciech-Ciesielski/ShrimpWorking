@@ -208,11 +208,11 @@ impl Store {
 
 pub fn label_for(s: Status) -> String {
     match s {
-        Status::Available => "Pobierz".into(),
-        Status::Installed => "Otwórz".into(),
-        Status::UpdateAvailable => "Zaktualizuj".into(),
-        Status::Queued(_) => "Oczekuje".into(),
-        Status::Busy(OpKind::Uninstall, _) => "Usuwanie".into(),
+        Status::Available => crate::i18n::tr("status.get").into(),
+        Status::Installed => crate::i18n::tr("button.open").into(),
+        Status::UpdateAvailable => crate::i18n::tr("status.update").into(),
+        Status::Queued(_) => crate::i18n::tr("status.queued").into(),
+        Status::Busy(OpKind::Uninstall, _) => crate::i18n::tr("status.removing").into(),
         Status::Busy(_, f) => format!("{} %", (f * 100.0).round() as i32),
     }
 }
