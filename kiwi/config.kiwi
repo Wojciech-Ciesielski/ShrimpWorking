@@ -20,10 +20,10 @@
         <type image="iso" primary="true" flags="overlay"
               hybridpersistent="true" hybridpersistent_filesystem="ext4"
               firmware="uefi" mediacheck="false"
-              kernelcmdline="splash quiet loglevel=3 rd.udev.log_level=3 vt.global_cursor_default=0"
+              kernelcmdline="splash quiet loglevel=3 rd.udev.log_level=3 udev.log_level=3 systemd.show_status=false rd.systemd.show_status=false vt.global_cursor_default=0"
               editbootconfig="edit_boot_config.sh"
               volid="SHRIMP_LIVE" publisher="Shrimp" application_id="Shrimp">
-            <bootloader name="grub2" output_console="gfxterm" input_console="console" video_mode="1920x1080" timeout="5" timeout_style="menu"/>
+            <bootloader name="grub2" output_console="gfxterm" input_console="console" video_mode="1920x1080" timeout="1" timeout_style="hidden"/>
         </type>
     </preferences>
     <users>
@@ -64,6 +64,11 @@
         <package name="plymouth-dracut"/>
         <package name="plymouth-plugin-script"/>
         <package name="plymouth-plugin-label"/>
+        <!-- sound and video: PipeWire only (LinU(x), codecs in config.sh) -->
+        <package name="pipewire"/>
+        <package name="wireplumber"/>
+        <package name="pipewire-pulseaudio"/>
+        <package name="pipewire-alsa"/>
         <!-- GNOME -->
         <namedCollection name="gnome_basic"/>
         <package name="gdm"/>
@@ -84,6 +89,15 @@
         <package name="xdg-desktop-portal-gnome"/>
         <package name="adwaita-icon-theme"/>
         <package name="gjs"/>
+        <!-- Quick Settings (system menu, top right): volume and microphone sliders need the
+             PipeWire stack, the Bluetooth toggle needs bluez, battery and power state need upower.
+             Packages that may be named differently in Leap 16.1 are installed in config.sh. -->
+        <package name="pipewire"/>
+        <package name="pipewire-pulseaudio"/>
+        <package name="pipewire-alsa"/>
+        <package name="wireplumber"/>
+        <package name="bluez"/>
+        <package name="upower"/>
         <!-- Polish translations (lang packages are only recommended, so list them) -->
         <package name="gnome-shell-lang"/>
         <package name="gdm-lang"/>

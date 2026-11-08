@@ -7,7 +7,18 @@ Pracujemy nad distro
 - Budowa: workflow **Build ISO** w GitHub Actions (artefakt `shrimp-live-iso`) albo lokalnie `sudo tools/build-iso.sh 16.1` (Docker/Podman).
 - Użytkownik live: `shrimp`, hasło `shrimp` (logowanie automatyczne).
 - Shrimp Setup jest częścią obrazu: `tools/build-setup.sh` buduje okno w chroocie Leap (te same biblioteki co ISO) i instaluje Setup (`setup/install.sh --live`) do kopii opisu KIWI w `out/desc`; Agama 24 serwuje interfejs na `127.0.0.1:80`, a okno startuje z autostartu sesji live.
+- Menu systemowe: logo Shrimp z lewej strony górnego paska (własne rozszerzenie `shrimp-menu@shrimp` w `kiwi/root/usr/share/gnome-shell/extensions/`, teksty w `lang/` w formacie `i18n/`): O tym komputerze, Ustawienia, Oprogramowanie, Aktualizacje, Monitor systemu, Dyski, Terminal, Rozszerzenia, Uśpij, Uruchom ponownie, Wyłącz, Zablokuj, Wyloguj. Szybkie ustawienia (prawy róg) mają dźwięk (PipeWire), Bluetooth, tryb zasilania i baterię w procentach.
 - Grafiki Plymouth/GRUB są renderowane z makiety `boot.html`: `node tools/render-boot-assets.js <shrimp-handoff> <out>`.
+
+## LinU(x) – Linux is now usable
+
+Modyfikacje Shrimp ponad zwykłego Linuksa, już na nośniku live (`kiwi/root/usr/share/shrimp/linux/`, uruchamia je `kiwi/config.sh`; nazwa także w `os-release` jako `VARIANT`, w `/etc/issue.d` i `/etc/motd.d`):
+
+- **Oficjalny sterownik NVIDIA** (`build/20-nvidia.sh`): otwarte moduły podpisane przez SUSE (Turing i nowsze, działają z Secure Boot) + biblioteki z repozytorium NVIDIA, które zostaje w systemie. Starsze karty zostają przy nouveau: decyduje `/usr/libexec/shrimp-gpu-gate` (awaryjnie parametr jądra `shrimp.nouveau=1`).
+- **Kodeki przez PipeWire** (`config.kiwi` + `build/10-codecs.sh`): PipeWire jako jedyny serwer dźwięku, GStreamer z wtyczką PipeWire i kodekami z Leap, H.264 przez openh264 od Cisco. Bez Packmana.
+- **Wygląd libadwaita dla Qt i Electron** (`build/30-app-style.sh` → `standardize/shrimp-app-style`, patrz niżej).
+
+Brak pakietu lub repozytorium nie przerywa budowy, tylko daje linię `WARNING: LinU(x): …` w logu (`tools/build-iso.sh` ją wypisuje).
 
 ## Setup (instalator i pierwsza konfiguracja)
 
@@ -27,4 +38,16 @@ Fork Rufusa 4.16: pobiera Shrimp, zapisuje nośnik, kopiuje pliki i listę progr
 
 ## Jeden wygląd aplikacji
 
-`standardize/shrimp-app-style` ustawia globalne nadpisania Flatpaka, żeby aplikacje GTK3, Qt i Electron wyglądały i zachowywały się jak GTK4/libadwaita: motyw adw-gtk3 (jasny/ciemny według trybu użytkownika), styl Adwaita dla Qt, okna plików i ustawienia przez portal, Wayland dla Electron. Toolkitu aplikacji nie da się podmienić, więc pasek tytułu Electron zostaje własny. Uruchamia się samo po każdej instalacji aplikacji (`shrimp-app-style.path`) i przy zmianie trybu (`shrimp-app-style-user.service`).
+`standardize/shrimp-app-style` ustawia globalne nadpisania Flatpaka, żeby aplikacje GTK3, Qt i Electron wyglądały i zachowywały się jak GTK4/libadwaita: motyw adw-gtk3 (jasny/ciemny według trybu użytkownika), styl Adwaita i pasek tytułu Adwaita dla Qt (`QT_WAYLAND_DECORATION=adwaita`), okna plików i ustawienia przez portal, Wayland dla Electron. Toolkitu aplikacji nie da się podmienić, więc pasek tytułu Electron zostaje własny. Uruchamia się samo po każdej instalacji aplikacji (`shrimp-app-style.path`) i przy zmianie trybu (`shrimp-app-style-user.service`).
+
+## Shrimp Apps
+
+Sklep z aplikacjami z Flathub (GTK4 + libadwaita + Rust, libflatpak): `apps/shrimp-apps/`. Odkrywaj, kategorie, wyszukiwanie, strona aplikacji, instalacja, aktualizacja i usuwanie. Co działa i czego brakuje: `apps/shrimp-apps/README.md`. Workflow **Shrimp Apps** testuje go na lokalnym repozytorium i na prawdziwym Flathub, zrzuty w `test-results/shrimp-apps/`.
+
+## Cocktail (aktualizacje i pakiety)
+
+`apps/cocktail`: GTK4 + libadwaita w Rust, nakładka na zyppera i `transactional-update` (Aktualizacje, Urządzenia, Pakiety, Historia). Zmiany w systemie przez pkexec (`cocktail-helper`, `cocktail-query`, polkit `org.shrimp.cocktail.*`). Opis, budowa, testy i lista braków: `apps/cocktail/README.md`. Workflow **Cocktail** (artefakt `cocktail-screens`).
+
+## Aplikacje GNOME (GTK4 + libadwaita, Rust)
+
+- **Panko** (`apps/panko`): cofanie zmian w systemie – migawki, porównanie z obecnym stanem, przywracanie plików i systemu, ustawienia migawek. Podgląd bez systemu: `cd apps/panko && cargo run -- --demo`. Stan i braki: `apps/panko/README.md`. Jeszcze nie ma go na ISO.
