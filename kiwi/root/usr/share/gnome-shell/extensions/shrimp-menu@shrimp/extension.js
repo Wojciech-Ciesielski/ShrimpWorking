@@ -1,11 +1,13 @@
 // Shrimp Menu: the Shrimp logo on the left of the top bar opens the system menu
-// (about this computer, settings, software and updates, system tools, sleep, restart,
-// power off, lock, log out). Texts: lang/_keys.tsv + lang/<tag>.txt (same format as i18n/).
+// (about this computer, settings, Shrimp Apps, Cocktail updates, Panko system restore, system tools,
+// sleep, restart, power off, lock, log out). Texts: GNOME's own translations where GNOME has the
+// words, otherwise lang/_keys.tsv + lang/<tag>.txt (same format as i18n/).
 import GObject from 'gi://GObject';
 import GLib from 'gi://GLib';
 import Gio from 'gi://Gio';
 import St from 'gi://St';
 import Shell from 'gi://Shell';
+import Gettext from 'gettext';
 
 import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
@@ -35,7 +37,38 @@ function parseTsv(text, cols) {
     return out;
 }
 
-// Texts for the session language: pl_PL.UTF-8 -> pl-pl, pl; pt_BR -> pt-br, pt. English fallback.
+// Locale name (pl_PL.UTF-8, sr_RS@latin, zh_TW) -> candidate tags of our lang/ files,
+// most specific first (same tags as i18n/langs.ts).
+const MODIFIERS = {latin: 'latn', cyrillic: 'cyrl', valencia: 'valencia'};
+const ALIASES = {
+    'zh-cn': 'zh-hans', 'zh-sg': 'zh-hans', 'zh': 'zh-hans',
+    'zh-tw': 'zh-hant', 'zh-hk': 'zh-hant', 'zh-mo': 'zh-hant',
+    'pt': 'pt-pt', 'no': 'nb', 'sr': 'sr-cyrl',
+};
+
+function candidateTags() {
+    const tags = [];
+    const add = t => {
+        if (t && !tags.includes(t))
+            tags.push(t);
+        if (ALIASES[t] && !tags.includes(ALIASES[t]))
+            tags.push(ALIASES[t]);
+    };
+    for (const name of GLib.get_language_names()) {
+        if (name === 'C' || name === 'POSIX')
+            continue;
+        const mod = (name.match(/@(\w+)/) ?? [])[1];
+        const base = name.replace(/\..*?(?=@|$)/, '').replace(/@.*$/, '').replace(/_/g, '-').toLowerCase();
+        const lang = base.split('-')[0];
+        if (mod && MODIFIERS[mod])
+            add(`${lang}-${MODIFIERS[mod]}`);
+        add(base);
+        add(lang);
+    }
+    return tags;
+}
+
+// Our own texts (lang/), only for what GNOME does not translate itself. English fallback.
 function loadStrings(dir) {
     const strings = {};
     const byId = {};
@@ -43,15 +76,7 @@ function loadStrings(dir) {
         strings[key] = en;
         byId[id] = key;
     }
-    const tags = [];
-    for (const name of GLib.get_language_names()) {
-        if (name === 'C' || name === 'POSIX')
-            continue;
-        const tag = name.replace(/\..*$/, '').replace(/@.*$/, '').replace(/_/g, '-').toLowerCase();
-        if (!tags.includes(tag))
-            tags.push(tag);
-    }
-    for (const tag of tags) {
+    for (const tag of candidateTags()) {
         const text = readText(`${dir}/lang/${tag}.txt`);
         if (text === null)
             continue;
@@ -63,6 +88,9 @@ function loadStrings(dir) {
     }
     return strings;
 }
+
+// The same words GNOME Shell uses in its own power menu, in every language GNOME has.
+const shell = msgid => Gettext.dgettext('gnome-shell', msgid);
 
 function findApp(ids) {
     const appSystem = Shell.AppSystem.get_default();
@@ -88,7 +116,7 @@ class ShrimpMenuButton extends PanelMenu.Button {
         super._init(0.0, 'Shrimp', false);
         this._t = loadStrings(dir);
         this.add_style_class_name('shrimp-menu-button');
-        this.accessible_name = this._t['menu.tooltip'];
+        this.accessible_name = 'Shrimp';
 
         this.add_child(new St.Icon({
             gicon: Gio.ThemedIcon.new_with_default_fallbacks('shrimp-logo-symbolic'),
@@ -103,8 +131,8 @@ class ShrimpMenuButton extends PanelMenu.Button {
         this._build();
     }
 
-    _item(key, callback) {
-        const item = new PopupMenu.PopupMenuItem(this._t[key]);
+    _item(label, callback) {
+        const item = new PopupMenu.PopupMenuItem(label);
         item.connect('activate', () => {
             this.menu.close();
             callback();
@@ -113,10 +141,11 @@ class ShrimpMenuButton extends PanelMenu.Button {
         return item;
     }
 
-    _appItem(key, ids) {
+    // label: our text, or null for the program's own (translated) name.
+    _appItem(label, ids) {
         const app = findApp(ids);
         if (app)
-            this._item(key, () => app.activate());
+            this._item(label ?? app.get_name(), () => app.activate());
         return app;
     }
 
@@ -126,34 +155,43 @@ class ShrimpMenuButton extends PanelMenu.Button {
 
     _build() {
         this.menu.removeAll();
+        const t = this._t;
 
-        this._item('menu.about', () => spawn(['gnome-control-center', 'system', 'about']));
-        this._appItem('menu.settings', ['org.gnome.Settings.desktop', 'gnome-control-center.desktop']);
+        this._item(t['menu.about'], () => spawn(['gnome-control-center', 'system', 'about']));
+        this._appItem(shell('Settings'), ['org.gnome.Settings.desktop', 'gnome-control-center.desktop']);
         this._separator();
 
-        const software = this._appItem('menu.software', ['org.shrimp.Apps.desktop', 'org.gnome.Software.desktop']);
-        if (software)
-            this._item('menu.updates', () => spawn(['gnome-software', '--mode=updates']));
-        this._appItem('menu.monitor', ['org.gnome.SystemMonitor.desktop', 'gnome-system-monitor.desktop']);
-        this._appItem('menu.disks', ['org.gnome.DiskUtility.desktop', 'gnome-disks.desktop']);
-        this._appItem('menu.terminal', ['org.gnome.Console.desktop', 'org.gnome.Terminal.desktop']);
-        this._appItem('menu.extensions', ['org.gnome.Extensions.desktop', 'com.mattjakeman.ExtensionManager.desktop']);
+        // Shrimp's own apps first; GNOME Software only until Shrimp Apps is in the image.
+        // Updates = Cocktail (the whole system: packages, drivers, Flatpaks), never GNOME Software,
+        // which on the read-only system would update Flatpaks only.
+        this._appItem(t['menu.software'], ['org.shrimp.Apps.desktop', 'org.gnome.Software.desktop']);
+        this._appItem(t['menu.updates'], ['org.shrimp.Cocktail.desktop']);
+        this._appItem(t['menu.restore'], ['org.shrimp.Panko.desktop']);
         this._separator();
 
-        this._item('menu.suspend', () => spawn(['systemctl', 'suspend']));
-        this._item('menu.restart', () => spawn(['gnome-session-quit', '--reboot']));
-        this._item('menu.poweroff', () => spawn(['gnome-session-quit', '--power-off']));
+        const tools = [
+            ['org.gnome.SystemMonitor.desktop', 'gnome-system-monitor.desktop'],
+            ['org.gnome.DiskUtility.desktop', 'gnome-disks.desktop'],
+            ['org.gnome.Console.desktop', 'org.gnome.Terminal.desktop'],
+            ['org.gnome.Extensions.desktop', 'com.mattjakeman.ExtensionManager.desktop'],
+        ];
+        if (tools.map(ids => this._appItem(null, ids)).some(Boolean))
+            this._separator();
+
+        this._item(shell('Suspend'), () => spawn(['systemctl', 'suspend']));
+        this._item(shell('Restart…'), () => spawn(['gnome-session-quit', '--reboot']));
+        this._item(shell('Power Off…'), () => spawn(['gnome-session-quit', '--power-off']));
         this._separator();
 
-        this._item('menu.lock', () => spawn(['loginctl', 'lock-session']));
-        this._item('menu.logout', () => spawn(['gnome-session-quit', '--logout']));
+        this._item(Gettext.dpgettext('gnome-shell', 'action', 'Lock Screen'), () => spawn(['loginctl', 'lock-session']));
+        this._item(shell('Log Out…'), () => spawn(['gnome-session-quit', '--logout']));
     }
 });
 
 export default class ShrimpMenuExtension extends Extension {
     enable() {
         this._button = new ShrimpMenuButton(this.path);
-        // Index 0 on the left: before Apps Menu ("Programy"); Activities is hidden by Just Perfection.
+        // Index 0 on the left; Activities is hidden by Just Perfection (the dock has the app grid).
         Main.panel.addToStatusArea(this.uuid, this._button, 0, 'left');
     }
 

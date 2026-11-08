@@ -1,14 +1,4 @@
 1	Over deze computer
-2	Instellingen
 3	Software
 4	Updates
-5	Systeemmonitor
-6	Schijven
-7	Terminal
-8	Uitbreidingen
-9	Pauzestand
-10	Herstarten…
-11	Uitschakelen…
-12	Scherm vergrendelen
-13	Afmelden…
-14	Shrimp-menu
+15	Systeemherstel
