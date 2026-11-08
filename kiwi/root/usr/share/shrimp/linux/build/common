@@ -1,7 +1,7 @@
 # Wspólne dla skryptów build/*.sh (uruchamiane w chroot obrazu przez kiwi/config.sh).
 . /usr/share/shrimp/linux/linux.conf
-warn() { echo "WARNING: LinU(x): $*" >&2; }
-note() { echo "LinU(x): $*" >&2; }
+warn() { echo "WARNING: Linu(x): $*" >&2; }
+note() { echo "Linu(x): $*" >&2; }
 ZYP=(zypper --non-interactive --gpg-auto-import-keys)
 
 # Repozytorium Leap w chroot: KIWI zostawia w obrazie repozytoria z imageinclude="true";
