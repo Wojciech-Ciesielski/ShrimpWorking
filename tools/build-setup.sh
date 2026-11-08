@@ -57,5 +57,20 @@ chroot "$BR" /bin/bash -c "ldd /src/apps/shrimp-apps/target/release/shrimp-apps 
   | xargs -r rpm -qf --qf '%{NAME}\n' 2>/dev/null | sort -u | sed 's/^/  /'" || true
 SHRIMP_APPS_PREBUILT=1 apps/shrimp-apps/install.sh "$DEST"
 
+# 2c. Cocktail (updates: packages, drivers, history) and Panko (snapshots / system restore).
+# Both only need gtk4 + libadwaita, already in the build root; Shrimp Menu opens them
+# ("Aktualizacje" -> org.shrimp.Cocktail, "Panko" -> org.shrimp.Panko).
+for app in cocktail panko; do
+  rm -rf "$BR/src/apps/$app"; cp -a "$ROOT/apps/$app" "$BR/src/apps/$app"; rm -rf "$BR/src/apps/$app/target"
+  chroot "$BR" /bin/bash -euxc "
+    export HOME=/root CARGO_HOME=/root/.cargo RUSTUP_HOME=/root/.rustup
+    cd /src/apps/$app && cargo build --release --locked
+  "
+  mkdir -p "$ROOT/apps/$app/target/release"
+  cp "$BR/src/apps/$app/target/release/$app" "$ROOT/apps/$app/target/release/$app"
+done
+COCKTAIL_PREBUILT=1 apps/cocktail/install.sh "$DEST"
+PANKO_PREBUILT=1 apps/panko/install.sh "$DEST"
+
 # 3. Web UI (platform independent) + install into DESTDIR
 SHRIMP_SETUP_PREBUILT=1 setup/install.sh "$DEST" --live

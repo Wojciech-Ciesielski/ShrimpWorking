@@ -40,6 +40,32 @@ if ! chroot "$T" rpm -q shrimp-apps >/dev/null 2>&1 && [ -x /usr/bin/shrimp-apps
   install -Dm644 /usr/share/shrimp/base-apps.json "$T/usr/share/shrimp/base-apps.json"
 fi
 
+# Cocktail (Aktualizacje) i Panko (migawki, przywracanie) z nośnika, dopóki nie ma ich pakietów.
+if ! chroot "$T" rpm -q cocktail >/dev/null 2>&1 && [ -x /usr/bin/cocktail ]; then
+  log "kopiuję Cocktail z nośnika"
+  install -Dm755 /usr/bin/cocktail "$T/usr/bin/cocktail"
+  install -Dm755 /usr/libexec/cocktail-helper "$T/usr/libexec/cocktail-helper"
+  install -Dm755 /usr/libexec/cocktail-query "$T/usr/libexec/cocktail-query"
+  install -Dm644 /usr/share/polkit-1/actions/org.shrimp.cocktail.policy "$T/usr/share/polkit-1/actions/org.shrimp.cocktail.policy"
+  install -Dm644 /usr/share/applications/org.shrimp.Cocktail.desktop "$T/usr/share/applications/org.shrimp.Cocktail.desktop"
+fi
+if ! chroot "$T" rpm -q panko >/dev/null 2>&1 && [ -x /usr/bin/panko ]; then
+  log "kopiuję Panko z nośnika"
+  install -Dm755 /usr/bin/panko "$T/usr/bin/panko"
+  install -Dm644 /usr/share/applications/org.shrimp.Panko.desktop "$T/usr/share/applications/org.shrimp.Panko.desktop"
+  install -Dm644 /usr/share/polkit-1/actions/org.shrimp.Panko.policy "$T/usr/share/polkit-1/actions/org.shrimp.Panko.policy"
+  install -Dm644 /usr/lib/systemd/system/panko-cleanup.service "$T/usr/lib/systemd/system/panko-cleanup.service"
+  install -Dm644 /usr/lib/systemd/system/panko-cleanup.timer "$T/usr/lib/systemd/system/panko-cleanup.timer"
+  chroot "$T" systemctl enable panko-cleanup.timer || true
+fi
+# Administratorzy (wheel) widzą migawki w Panko bez stanu „Brak dostępu”.
+SNAPCONF=$T/etc/snapper/configs/root
+if [ -f "$SNAPCONF" ]; then
+  sed -i -e 's/^ALLOW_GROUPS=.*/ALLOW_GROUPS="wheel"/' -e 's/^SYNC_ACL=.*/SYNC_ACL="yes"/' "$SNAPCONF"
+  grep -q '^ALLOW_GROUPS=' "$SNAPCONF" || echo 'ALLOW_GROUPS="wheel"' >> "$SNAPCONF"
+  grep -q '^SYNC_ACL=' "$SNAPCONF" || echo 'SYNC_ACL="yes"' >> "$SNAPCONF"
+fi
+
 # Pakiety GNOME zastąpione przez Shrimp Apps, Cocktail i Flatpaki z zestawu podstawowego: usuwamy je teraz,
 # póki system docelowy jest jeszcze zapisywalny, i blokujemy, żeby aktualizacje ich nie przywracały.
 # Firefox i aplikacje GNOME wracają jako Flatpaki ze sklepu Shrimp przy pierwszej konfiguracji.

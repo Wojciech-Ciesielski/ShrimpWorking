@@ -287,6 +287,11 @@ systemctl enable NetworkManager.service
 [ -x /usr/bin/shrimp-setup ] || die "shrimp-setup missing (tools/build-setup.sh did not run)"
 [ -f /etc/xdg/autostart/shrimp-setup-install.desktop ] || die "Setup autostart missing"
 systemctl enable agama.service agama-web-server.service shrimp-setup-token.service
+# Cocktail + Panko (tools/build-setup.sh); Panko's cleanup timer does nothing until
+# /etc/panko/panko.conf exists (the setting is off by default).
+[ -x /usr/bin/cocktail ] || die "cocktail missing (tools/build-setup.sh did not run)"
+[ -x /usr/bin/panko ] || die "panko missing (tools/build-setup.sh did not run)"
+systemctl enable panko-cleanup.timer
 if [ -f /etc/sysconfig/displaymanager ]; then
   sed -i -e 's/^DISPLAYMANAGER=.*/DISPLAYMANAGER="gdm"/' \
          -e 's/^DISPLAYMANAGER_AUTOLOGIN=.*/DISPLAYMANAGER_AUTOLOGIN="shrimp"/' /etc/sysconfig/displaymanager
