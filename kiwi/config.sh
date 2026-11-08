@@ -32,11 +32,11 @@ gtk-update-icon-cache -f /usr/share/icons/hicolor || true
 MW_DIR=/usr/share/icons/MoreWaita
 MW_REF="${MOREWAITA_REF:-}"
 if [ -z "$MW_REF" ]; then
-  MW_REF="$(curl -fsSL https://api.github.com/repos/somepaulo/MoreWaita/releases/latest 2>/dev/null \
-            | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p' | head -n1)"
+  MW_REF="$(curl -fsSL --retry 5 --retry-all-errors --retry-delay 3 https://api.github.com/repos/somepaulo/MoreWaita/releases/latest 2>/dev/null \
+            | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p' | head -n1 || true)"
 fi
 MW_REF="${MW_REF:-main}"
-curl -fsSL -o /tmp/morewaita.zip "https://github.com/somepaulo/MoreWaita/archive/${MW_REF}.zip" \
+curl -fsSL --retry 5 --retry-all-errors --retry-delay 5 -o /tmp/morewaita.zip "https://github.com/somepaulo/MoreWaita/archive/${MW_REF}.zip" \
   || die "MoreWaita ${MW_REF}: download failed"
 rm -rf /tmp/morewaita "$MW_DIR"
 mkdir -p /tmp/morewaita
