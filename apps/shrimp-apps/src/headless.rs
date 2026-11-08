@@ -4,7 +4,7 @@
 //! libflatpak i jego repozytorium) pobiera podstawowy zestaw, a nie osobne wywołania `flatpak`.
 //! Na stdout idzie po jednym obiekcie JSON na linię:
 //!   {"id":"org.gnome.Loupe","percent":42}
-//!   {"id":"org.gnome.Loupe","done":true}            albo  {"id":"…","done":true,"error":"…"}
+//!   {"done":true,"id":"org.gnome.Loupe"}   albo z "error" / "skipped" (klucze alfabetycznie)
 //! Kod wyjścia: 0, gdy wszystkie się udały lub były już zainstalowane; 1, gdy któraś zawiodła;
 //! 2 przy błędnym wywołaniu; 3, gdy nie ma sieci (nic nie pobrano).
 
