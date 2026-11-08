@@ -2,9 +2,9 @@ name: Shrimp Apps
 
 on:
   push:
-    paths: ["apps/shrimp-apps/**", "apps/web-apps/**", "site/help.json", ".github/workflows/shrimp-apps.yml"]
+    paths: ["apps/shrimp-apps/**", "apps/shrimp-i18n/**", "i18n/shrimp-apps/**", "i18n/langs.ts", "apps/web-apps/**", "site/help.json", ".github/workflows/shrimp-apps.yml"]
   pull_request:
-    paths: ["apps/shrimp-apps/**", "apps/web-apps/**", "site/help.json", ".github/workflows/shrimp-apps.yml"]
+    paths: ["apps/shrimp-apps/**", "apps/shrimp-i18n/**", "i18n/shrimp-apps/**", "i18n/langs.ts", "apps/web-apps/**", "site/help.json", ".github/workflows/shrimp-apps.yml"]
   workflow_dispatch:
 
 permissions:

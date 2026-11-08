@@ -44,7 +44,10 @@ chroot "$BR" /bin/bash -c "ldd /src/shell/target/release/shrimp-setup | awk '/=>
 rm -rf "$BR/src/apps"; mkdir -p "$BR/src/apps"
 cp -a "$ROOT/apps/shrimp-apps" "$ROOT/apps/web-apps" "$BR/src/apps/"
 mkdir -p "$BR/src/site" && cp "$ROOT/site/help.json" "$BR/src/site/help.json"
-rm -rf "$BR/src/i18n"; mkdir -p "$BR/src/i18n" && cp -a "$ROOT/i18n/webapps" "$BR/src/i18n/webapps"
+# Teksty: Web Apps i wspólny moduł i18n aplikacji GTK (apps/shrimp-i18n czyta i18n/langs.ts i i18n/<aplikacja>)
+rm -rf "$BR/src/i18n"; mkdir -p "$BR/src/i18n"
+cp -a "$ROOT/i18n/webapps" "$ROOT/i18n/shrimp-apps" "$ROOT/i18n/panko" "$ROOT/i18n/cocktail" "$ROOT/i18n/langs.ts" "$BR/src/i18n/"
+rm -rf "$BR/src/apps/shrimp-i18n"; cp -a "$ROOT/apps/shrimp-i18n" "$BR/src/apps/shrimp-i18n"; rm -rf "$BR/src/apps/shrimp-i18n/target"
 rm -rf "$BR/src/apps/shrimp-apps/target" "$BR/src/apps/web-apps/target"
 chroot "$BR" /bin/bash -euxc '
   export HOME=/root CARGO_HOME=/root/.cargo RUSTUP_HOME=/root/.rustup

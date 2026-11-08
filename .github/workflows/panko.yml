@@ -2,9 +2,9 @@ name: Panko
 
 on:
   push:
-    paths: ["apps/panko/**", "site/help.json", ".github/workflows/panko.yml"]
+    paths: ["apps/panko/**", "apps/shrimp-i18n/**", "i18n/panko/**", "i18n/langs.ts", "site/help.json", ".github/workflows/panko.yml"]
   pull_request:
-    paths: ["apps/panko/**", "site/help.json", ".github/workflows/panko.yml"]
+    paths: ["apps/panko/**", "apps/shrimp-i18n/**", "i18n/panko/**", "i18n/langs.ts", "site/help.json", ".github/workflows/panko.yml"]
   workflow_dispatch:
 
 permissions:

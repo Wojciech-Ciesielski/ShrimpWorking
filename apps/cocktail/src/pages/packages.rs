@@ -31,7 +31,7 @@ impl Packages {
         let content = gtk::Box::new(gtk::Orientation::Vertical, 18);
         let results = Tree::new();
         let results_box = gtk::Box::new(gtk::Orientation::Vertical, 6);
-        let rl = gtk::Label::new(Some("Wyniki wyszukiwania"));
+        let rl = gtk::Label::new(Some(crate::i18n::tr("search.results")));
         rl.add_css_class("heading");
         rl.set_xalign(0.0);
         rl.set_margin_start(10);
@@ -87,13 +87,14 @@ impl Packages {
 
     fn render_catalog(self: &Rc<Self>) {
         self.tree.clear();
-        let root = self.tree.group(None, "package-x-generic-symbolic", "Pakiety systemu", true);
+        let root = self.tree.group(None, "package-x-generic-symbolic", crate::i18n::tr("packages.root"), true);
         for s in catalog::SECTIONS {
-            let g = self.tree.group(Some(root), s.icon, s.title, s.title == "Multimedia");
+            let g = self.tree.group(Some(root), s.icon, crate::i18n::tr(s.title), s.title == "cat.multimedia");
             for item in s.items {
                 let pkgs: Vec<String> = item.packages.iter().map(|p| p.to_string()).collect();
-                let w = self.action(pkgs, item.title);
-                self.tree.leaf(Some(g), Some("package-x-generic-symbolic"), item.title, None, Some(&w));
+                let title = crate::i18n::tr(item.title);
+                let w = self.action(pkgs, title);
+                self.tree.leaf(Some(g), Some("package-x-generic-symbolic"), title, None, Some(&w));
             }
         }
         self.apply_filter();
@@ -122,18 +123,18 @@ impl Packages {
         let pending = pkgs.iter().find_map(|p| self.app.pending.borrow().get(p).copied());
         if let Some(op) = pending {
             let l = gtk::Label::new(Some(match op {
-                Op::Remove => "Usunięte po ponownym uruchomieniu",
-                _ => "Gotowe po ponownym uruchomieniu",
+                Op::Remove => crate::i18n::tr("pending.removed"),
+                _ => crate::i18n::tr("pending.ready"),
             }));
             l.add_css_class("dim-label");
             b.append(&l);
             return b.upcast();
         }
         let mark = gtk::Image::from_icon_name(if installed { "object-select-symbolic" } else { "folder-download-symbolic" });
-        mark.set_tooltip_text(Some(if installed { "Zainstalowano" } else { "Dostępne do pobrania" }));
+        mark.set_tooltip_text(Some(crate::i18n::tr(if installed { "state.installed" } else { "state.available" })));
         mark.add_css_class("dim-label");
         let protected = pkgs.iter().any(|p| zypper::is_protected(p));
-        let btn = gtk::Button::with_label(if installed { "Usuń" } else { "Zainstaluj" });
+        let btn = gtk::Button::with_label(crate::i18n::tr(if installed { "button.remove" } else { "button.install" }));
         btn.add_css_class("flat");
         btn.set_visible(!(installed && protected));
         let (p, label) = (self.clone(), label.to_string());
@@ -143,11 +144,11 @@ impl Packages {
                 let op = if installed { Op::Remove } else { Op::Install };
                 btn.set_sensitive(false);
                 if !installed {
-                    btn.set_label("Instalowanie…");
+                    btn.set_label(crate::i18n::tr("state.installing"));
                 }
                 if !p.app.change(op, pkgs, &label).await {
                     btn.set_sensitive(true);
-                    btn.set_label(if installed { "Usuń" } else { "Zainstaluj" });
+                    btn.set_label(crate::i18n::tr(if installed { "button.remove" } else { "button.install" }));
                 }
             });
         });
