@@ -269,8 +269,19 @@ try:
         _last_hash = None
         qemu = start("installed", False)
         qmp = QMP(QMP_SOCK)
-        wait_shooting(t() + 360, 10, "firstboot")
+        wait_shooting(t() + 300, 10, "firstboot")
         shot("firstboot", keep_duplicates=True)
+        # What the installed system got: files from Windows, Setup state, autostart, journal.
+        run_dialog("kgx")
+        pause(10)
+        type_text("echo shrimp | sudo -S true; { echo ===DIAG; ls -la ~ ~/Dokumenty ~/Documents; "
+                  "sudo ls -la /var/lib/shrimp-setup; sudo cat /var/lib/shrimp-setup/install.json; "
+                  "ls /etc/xdg/autostart /usr/etc/xdg/autostart; cat /etc/gdm/custom.conf; "
+                  "plymouth-set-default-theme; gnome-extensions list --enabled; "
+                  "sudo journalctl -b --no-pager -o short-monotonic | grep -iE 'shrimp|welcome' | tail -n 80; "
+                  "echo ===DIAG-END; } 2>&1 | sudo tee /dev/ttyS0 >/dev/null\n")
+        pause(20)
+        shot("diag", keep_duplicates=True)
         stop()
 except VMGone:
     print(f"[{t():6.1f}s] QEMU exited", flush=True)

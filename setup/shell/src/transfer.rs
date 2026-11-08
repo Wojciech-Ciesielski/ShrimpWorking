@@ -14,7 +14,9 @@ use std::process::Command;
 
 /// Gdzie żywy system ma nośnik (kiwi/dracut) i gdzie GNOME montuje go, jeśli to inny dysk.
 pub fn find_dir() -> Option<PathBuf> {
-    let mut c = vec![PathBuf::from("/run/initramfs/live/shrimp-transfer")];
+    // KIWI montuje nośnik live w /run/overlay/live (sprawdzone w teście instalacji w QEMU);
+    // /run/initramfs/live to ścieżka dracut dmsquash, zostaje na wszelki wypadek.
+    let mut c = vec![PathBuf::from("/run/overlay/live/shrimp-transfer"), PathBuf::from("/run/initramfs/live/shrimp-transfer")];
     if let Ok(users) = fs::read_dir("/run/media") {
         for u in users.flatten() {
             if let Ok(vols) = fs::read_dir(u.path()) {
