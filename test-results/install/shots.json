@@ -1,0 +1,28 @@
+{
+ "agama": "finished",
+ "shots": [
+  "001-0000s-live.png",
+  "002-0015s-live.png",
+  "003-0030s-live.png",
+  "004-0045s-live.png",
+  "005-0075s-live.png",
+  "006-0105s-live.png",
+  "007-0135s-live.png",
+  "008-0165s-live.png",
+  "009-0195s-live.png",
+  "010-0225s-live.png",
+  "011-0240s-setup.png",
+  "012-0328s-terminal.png",
+  "013-0388s-install.png",
+  "014-0448s-install.png",
+  "015-0508s-install.png",
+  "016-0568s-install.png",
+  "017-0628s-install.png",
+  "018-0688s-install-end.png",
+  "019-0688s-firstboot.png",
+  "020-0698s-firstboot.png",
+  "021-0708s-firstboot.png",
+  "022-0989s-firstboot.png",
+  "023-1078s-diag.png"
+ ]
+}

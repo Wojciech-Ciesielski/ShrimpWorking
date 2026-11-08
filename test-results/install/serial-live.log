@@ -1,0 +1,1150 @@
+[2J[001;001H[=3h[2J[001;001H[2J[001;001H[8;042;160t[2J[001;001H[2J[001;001H[8;056;240t[2J[001;001HBdsDxe: loading Boot0002 "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:03.0-3" from PciRoot(0x0)/Pci(0x3,0x0)/USB(0x2,0x0)
+BdsDxe: starting Boot0002 "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:03.0-3" from PciRoot(0x0)/Pci(0x3,0x0)/USB(0x2,0x0)
+[0m[30m[40m[2J[001;001H[0m[37m[40mTARGET                                    SOURCE        FSTYPE      OPTIONS
+/                                         LiveOS_rootfs overlay     rw,relatime,lowerdir=/run/overlay/rootfsbase,upperdir=/run/overlay/overlayfs/rw,workdir=/run/overlay/overlayfs/work,uuid=on
+/dev                                      devtmpfs      devtmpfs    rw,nosuid,size=4096k,nr_inodes=740409,mode=755,inode64
+/dev/shm                                  tmpfs         tmpfs       rw,nosuid,nodev,inode64
+/dev/pts                                  devpts        devpts      rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000
+/sys                                      sysfs         sysfs       rw,nosuid,nodev,noexec,relatime
+/sys/kernel/security                      securityfs    securityfs  rw,nosuid,nodev,noexec,relatime
+/sys/fs/cgroup                            cgroup2       cgroup2     rw,nosuid,nodev,noexec,relatime,nsdelegate,memory_recursiveprot
+/sys/fs/pstore                            pstore        pstore      rw,nosuid,nodev,noexec,relatime
+/sys/firmware/efi/efivars                 efivarfs      efivarfs    rw,nosuid,nodev,noexec,relatime
+/sys/fs/bpf                               bpf           bpf         rw,nosuid,nodev,noexec,relatime,mode=700
+/proc                                     proc          proc        rw,nosuid,nodev,noexec,relatime
+/run                                      tmpfs         tmpfs       rw,nosuid,nodev,size=1212596k,nr_inodes=819200,mode=755,inode64
+/run/overlay                              tmpfs         tmpfs       rw,relatime,size=3031488k,inode64
+/run/overlay/live                         /dev/sda1     vfat        ro,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro
+/run/overlay/squashfs_container           /dev/loop0    squashfs    ro,relatime,errors=continue,threads=single
+/run/overlay/rootfsbase                   /dev/loop1    ext4        ro,relatime
+/sys/fs/selinux                           selinuxfs     selinuxfs   rw,nosuid,noexec,relatime
+/proc/sys/fs/binfmt_misc                  systemd-1     autofs      rw,relatime,fd=31,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=9385
+/dev/mqueue                               mqueue        mqueue      rw,nosuid,nodev,noexec,relatime
+/dev/hugepages                            hugetlbfs     hugetlbfs   rw,nosuid,nodev,relatime,pagesize=2M
+/tmp                                      tmpfs         tmpfs       rw,nosuid,nodev,size=3031488k,nr_inodes=1048576,inode64
+/sys/kernel/tracing                       tracefs       tracefs     rw,nosuid,nodev,noexec,relatime
+/run/credentials/systemd-journald.service tmpfs         tmpfs       ro,nosuid,nodev,noexec,relatime,nosymfollow,size=1024k,nr_inodes=1024,mode=700,inode64,noswap
+/sys/kernel/config                        configfs      configfs    rw,nosuid,nodev,noexec,relatime
+/sys/fs/fuse/connections                  fusectl       fusectl     rw,nosuid,nodev,noexec,relatime
+/run/user/1000                            tmpfs         tmpfs       rw,nosuid,nodev,relatime,size=606296k,nr_inodes=151574,mode=700,uid=1000,gid=100,inode64
+/run/credentials/getty@tty1.service       tmpfs         tmpfs       ro,nosuid,nodev,noexec,relatime,nosymfollow,size=1024k,nr_inodes=1024,mode=700,inode64,noswap
+/run/user/1000/doc                        portal        fuse.portal rw,nosuid,nodev,relatime,user_id=1000,group_id=100
+script: /run/overlay/live/shrimp-test/agama-install.sh
+++ cat /run/shrimp-setup/token
++ T=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY
++ '[' -n eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY ']'
++ U=http://127.0.0.1
++ echo ===AGAMA-START
+===AGAMA-START
++ ls -l /run/overlay/live/shrimp-test /run/initramfs/live /run/initramfs/live/shrimp-transfer
++ head -40
+ls: cannot access '/run/initramfs/live': No such file or directory
+ls: cannot access '/run/initramfs/live/shrimp-transfer': No such file or directory
+/run/overlay/live/shrimp-test:
+total 8
+-rwxr-xr-x 1 root root 2601 lis  9 00:15 agama-install.sh
+-rwxr-xr-x 1 root root  845 lis  9 00:15 config.json
++ lsblk -o NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINTS
+NAME    SIZE TYPE FSTYPE   LABEL       MOUNTPOINTS
+loop0   1,8G loop squashfs             /run/overlay/squashfs_container
+loop1   6,3G loop ext4                 /run/overlay/rootfsbase
+sda       8G disk                      
+└─sda1    8G part vfat     SHRIMP_LIVE /run/overlay/live
+sr0    1024M rom                       
+vda      40G disk                      
++ for p in /api/status /api/issues /api/config /api/system
++ echo '=== GET /api/status'
+=== GET /api/status
++ api http://127.0.0.1/api/status
++ head -c 12000
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
+{"stage":"configuring","tasks":[],"progresses":[]}
+HTTP 200
++ echo
+
++ for p in /api/status /api/issues /api/config /api/system
++ echo '=== GET /api/issues'
+=== GET /api/issues
++ head -c 12000
++ api http://127.0.0.1/api/issues
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/issues
+[{"scope":"users","class":"noAuth","description":"Defining a user, setting the root password or a SSH public key is required"},{"scope":"manager","class":"noProduct","description":"No product has been selected."}]
+HTTP 200
++ echo
+
++ for p in /api/status /api/issues /api/config /api/system
++ echo '=== GET /api/config'
+=== GET /api/config
++ api http://127.0.0.1/api/config
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/config
++ head -c 12000
+{}
+HTTP 200
++ echo
+
++ for p in /api/status /api/issues /api/config /api/system
++ echo '=== GET /api/system'
+=== GET /api/system
++ head -c 12000
++ api http://127.0.0.1/api/system
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/system
+{"products":[{"id":"Shrimp","name":"Shrimp","description":"Shrimp na openSUSE Leap 16.1 z GNOME.","icon":"Shrimp.svg","registration":false,"licenses":["license.opensuse"],"modes":[{"id":"immutable","name":"Shrimp","description":"System niezmienny z migawkami"}]}],"licenses":[],"hardware":{"cpu":"AMD EPYC 9V45 96-Core Processor","memory":6442450944,"model":"QEMU pc-q35-10.2"},"hostname":{"static":"shrimp","hostname":"shrimp"},"l10n":{"locales":[{"id":"bhb_IN.UTF-8","language":"Bhili","territory":"Indie","consolefont":"eurlatgr"},{"id":"aa_DJ.UTF-8","language":"afar","territory":"Dżibuti","consolefont":"eurlatgr"},{"id":"af_ZA.UTF-8","language":"afrikaans","territory":"Republika Południowej Afryki","consolefont":"eurlatgr"},{"id":"sq_AL.UTF-8","language":"albański","territory":"Albania","consolefont":"eurlatgr"},{"id":"en_AU.UTF-8","language":"angielski","territory":"Australia","consolefont":"eurlatgr"},{"id":"en_BW.UTF-8","language":"angielski","territory":"Botswana","consolefont":"eurlatgr"},{"id":"en_DK.UTF-8","language":"angielski","territory":"Dania","consolefont":"eurlatgr"},{"id":"en_PH.UTF-8","language":"angielski","territory":"Filipiny","consolefont":"eurlatgr"},{"id":"en_IE.UTF-8","language":"angielski","territory":"Irlandia","consolefont":"eurlatgr"},{"id":"en_CA.UTF-8","language":"angielski","territory":"Kanada","consolefont":"eurlatgr"},{"id":"en_NZ.UTF-8","language":"angielski","territory":"Nowa Zelandia","consolefont":"eurlatgr"},{"id":"en_ZA.UTF-8","language":"angielski","territory":"Republika Południowej Afryki","consolefont":"eurlatgr"},{"id":"en_HK.UTF-8","language":"angielski","territory":"SRA Hongkong (Chiny)","consolefont":"eurlatgr"},{"id":"en_SC.UTF-8","language":"angielski","territory":"Seszele","consolefont":"eurlatgr"},{"id":"en_SG.UTF-8","language":"angielski","territory":"Singapur","consolefont":"eurlatgr"},{"id":"en_US.UTF-8","language":"angielski","territory":"Stany Zjednoczone","consolefont":"eurlatgr"},{"id":"en_GB.UTF-8","language":"angielski","territory":"Wielka Brytania","consolefont":"eurlatgr"},{"id":"en_ZW.UTF-8","language":"angielski","territory":"Zimbabwe","consolefont":"eurlatgr"},{"id":"ar_DZ.UTF-8","language":"arabski","territory":"Algieria","consolefont":"latarcyrheb-sun16"},{"id":"ar_SA.UTF-8","language":"arabski","territory":"Arabia Saudyjska","consolefont":"latarcyrheb-sun16"},{"id":"ar_BH.UTF-8","language":"arabski","territory":"Bahrajn","consolefont":"latarcyrheb-sun16"},{"id":"ar_EG.UTF-8","language":"arabski","territory":"Egipt","consolefont":"latarcyrheb-sun16"},{"id":"ar_IQ.UTF-8","language":"arabski","territory":"Irak","consolefont":"latarcyrheb-sun16"},{"id":"ar_YE.UTF-8","language":"arabski","territory":"Jemen","consolefont":"latarcyrheb-sun16"},{"id":"ar_JO.UTF-8","language":"arabski","territory":"Jordania","consolefont":"latarcyrheb-sun16"},{"id":"ar_QA.UTF-8","language":"arabski","territory":"Katar","consolefont":"latarcyrheb-sun16"},{"id":"ar_KW.UTF-8","language":"arabski","territory":"Kuwejt","consolefont":"latarcyrheb-sun16"},{"id":"ar_LB.UTF-8","language":"arabski","territory":"Liban","consolefont":"latarcyrheb-sun16"},{"id":"ar_LY.UTF-8","language":"arabski","territory":"Libia","consolefont":"latarcyrheb-sun16"},{"id":"ar_MA.UTF-8","language":"arabski","territory":"Maroko","consolefont":"latarcyrheb-sun16"},{"id":"ar_OM.UTF-8","language":"arabski","territory":"Oman","consolefont":"latarcyrheb-sun16"},{"id":"ar_SD.UTF-8","language":"arabski","territory":"Sudan","consolefont":"latarcyrheb-sun16"},{"id":"ar_SY.UTF-8","language":"arabski","territory":"Syria","consolefont":"latarcyrheb-sun16"},{"id":"ar_TN.UTF-8","language":"arabski","territory":"Tunezja","consolefont":"latarcyrheb-sun16"},{"id":"ar_AE.UTF-8","language":"arabski","territory":"Zjednoczone Emiraty Arabskie","consolefont":"latarcyrheb-sun16"},{"id":"an_ES.UTF-8","language":"aragoński","territory":"Hiszpania","consolefont":"eurlatgr"},{"id":"ast_ES.UTF-8","language":"asturyjski","territory":"Hiszpania","consolefont":"eurlatgr"},{"id":"eu_ES.UTF-8","language":"baskijski","territory":"Hiszpania","consolefont":"eurlatgr"},{"id":"be_BY.UTF-8","language":"białoruski","territory":"Białoruś","consolefont":"latarcyrheb-sun16"},{"id":"bs_BA.UTF-8","language":"bośniacki","territory":"Bośnia i Hercegowina","consolefont":"latarcyrheb-sun16"},{"id":"br_FR.UTF-8","language":"bretoński","territory":"Francja","consolefont":"eurlatgr"},{"id":"bg_BG.UTF-8","language":"bułgarski","territory":"Bułgaria","consolefont":"latarcyrheb-sun16"},{"id":"zh_CN.UTF-8","language":"chiński","territory":"Chiny","consolefont":"eurlatgr"},{"id":"zh_HK.UTF-8","language":"chiński","territory":"SRA Hongkong (Chiny)","consolefont":"eurlatgr"},{"id":"zh_SG.UTF-8","language":"chiński","territory":"Singapur","consolefont":"eurlatgr"},{"id":"zh_TW.UTF-8","language":"chiński","territory":"Tajwan","consolefont":"eurlatgr"},{"id":"hr_HR.UTF-8","language":"chorwacki","territory":"Chorwacja","consolefont":"eurlatgr"},{"id":"cs_CZ.UTF-8","language":"czeski","territory":"Czechy","consolefont":"eurlatgr"},{"id":"da_DK.UTF-8","language":"duński","territory":"Dania","consolefont":"eurlatgr"},{"id":"et_EE.UTF-8","language":"estoński","territory":"Estonia","consolefont":"eurlatgr"},{"id":"fo_FO.UTF-8","language":"farerski","territory":"Wyspy Owcze","consolefont":"eurlatgr"},{"id":"fi_FI.UTF-8","language":"fiński","territory":"Finlandia","consolefont":"eurlatgr"},{"id":"fr_BE.UTF-8","language":"francuski","territory":"Belgia","consolefont":"eurlatgr"},{"id":"fr_FR.UTF-8","language":"francuski","territory":"Francja","consolefont":"eurlatgr"},{"id":"fr_CA.UTF-8","language":"francuski","territory":"Kanada","consolefont":"eurlatgr"},{"id":"fr_LU.UTF-8","language":"francuski","territory":"Luksemburg","consolefont":"eurlatgr"},{"id":"fr_CH.UTF-8","language":"francuski","territory":"Szwajcaria","consolefont":"eurlatgr"},{"id":"gl_ES.UTF-8","language":"galicyjski","territory":"Hiszpania","consolefont":"eurlatgr"},{"id":"lg_UG.UTF-8","language":"ganda","territory":"Uganda","consolefont":"eurlatgr"},{"id":"el_CY.UTF-8","language":"grecki","territory":"Cypr","consolefont":"eurlatgr"},{"id":"el_GR.UTF-8","language":"grecki","territory":"Grecja","consolefont":"eurlatgr"},{"id":"kl_GL.UTF-8","language":"grenlandzki","territory":"Grenlandia","consolefont":"eurlatgr"},{"id":"ka_GE.UTF-8","language":"gruziński","territory":"Gruzja","consolefont":"latarcyrheb-sun16"},{"id":"hsb_DE.UTF-8","language":"górnołużycki","territory":"Niemcy","consolefont":"eurlatgr"},{"id":"he_IL.UTF-8","language":"hebrajski","territory":"Izrael","consolefont":"latarcyrheb-sun16"},{"id":"es_AR.UTF-8","language":"hiszpański","territory":"Argentyna","consolefont":"eurlatgr"},{"id":"es_BO.UTF-8","language":"hiszpański","territory":"Boliwia","consolefont":"eurlatgr"},{"id":"es_CL.UTF-8","language":"hiszpański","territory":"Chile","consolefont":"eurlatgr"},{"id":"es_DO.UTF-8","language":"hiszpański","territory":"Dominikana","consolefont":"eurlatgr"},{"id":"es_EC.UTF-8","language":"hiszpański","territory":"Ekwador","consolefont":"eurlatgr"},{"id":"es_GT.UTF-8","language":"hiszpański","territory":"Gwatemala","consolefont":"eurlatgr"},{"id":"es_ES.UTF-8","language":"hiszpański","territory":"Hiszpania","consolefont":"eurlatgr"},{"id":"es_HN.UTF-8","language":"hiszpański","territory":"Honduras","consolefont":"eurlatgr"},{"id":"es_CO.UTF-8","language":"hiszpański","territory":"Kolumbia","consolefont":"eurlatgr"},{"id":"es_CR.UTF-8","language":"hiszpański","territory":"Kostaryka","consolefont":"eurlatgr"},{"id":"es_MX.UTF-8","language":"hiszpański","territory":"Meksyk","consolefont":"eurlatgr"},{"id":"es_NI.UTF-8","language":"hiszpański","territory":"Nikaragua","consolefont":"eurlatgr"},{"id":"es_PA.UTF-8","language":"hiszpański","territory":"Panama","consolefont":"eurlatgr"},{"id":"es_PY.UTF-8","language":"hiszpański","territory":"Paragwaj","consolefont":"eurlatgr"},{"id":"es_PE.UTF-8","language":"hiszpański","territory":"Peru","consolefont":"eurlatgr"},{"id":"es_PR.UTF-8","language":"hiszpański","territory":"Portoryko","consolefont":"eurlatgr"},{"id":"es_SV.UTF-8","language":"hiszpański","territory":"Salwador","consolefont":"eurlatgr"},{"id":"es_US.UTF-8","language":"hiszpański","territory":"Stany Zjednoczone","consolefont":"eurlatgr"},{"id":"es_UY.UTF-8","language":"hiszpański","territory":"Urugwaj","consolefont":"eurlatgr"},{"id":"es_VE.UTF-8","language":"hiszpański","territory":"Wenezuela","consolefont":"eurlatgr"},{"id":"id_ID.UTF-8","language":"indonezyjski","territory":"Indonezja","consolefont":"eurlatgr"},{"id":"ga_IE.UTF-8","language":"irlandzki","territory":"Irlandia","consolefont":"eurlatgr"},{"id":"is_IS.UTF-8","language":"islandzki","territory":"Islandia","consolefont":"eurlatgr"},{"id":"ja_JP.UTF-8","language":"japoński","territory":"Japonia","consolefont":"eurlatgr"},{"id":"yi_US.UTF-8","language":"jidysz","territory":"Stany Zjednoczone","consolefont":"latarcyrheb-sun16"},{"id":"ca_AD.UTF-8","language":"kataloński","territory":"Andora","consolefont":"eurlatgr"},{"id":"ca_FR.UTF-8","language":"kataloński","territory":"Francja","consolefont":"eurlatgr"},{"id":"ca_ES.UTF-8","language":"kataloński","territory":"Hiszpania","consolefont":"eurlatgr"},{"id":"ca_IT.UTF-8","language":"kataloński","territory":"Włochy","consolefont":"eurlatgr"},{"id":"kk_KZ.UTF-8","language":"kazachski","territory":"Kazachstan","consolefont":"latarcyrheb-sun16"},{"id":"xh_ZA.UTF-8","language":"khosa","territory":"Republika Południowej Afryki","consolefont":"eurlatgr"},{"id":"ko_KR.UTF-8","language":"koreański","territory":"Korea Południowa","consolefont":"eurlatgr"},{"id":"kw_GB.UTF-8","language":"kornijski","territory":"Wielka Brytania","consolefont":"eurlatgr"},{"id":"ku_TR.UTF-8","language":"kurdyjski","territory":"Turcja","consolefont":"latarcyrheb-sun16"},{"id":"lt_LT.UTF-8","language":"litewski","territory":"Litwa","consolefont":"eurlatgr"},{"id":"mk_MK.UTF-8","language":"macedoński","territory":"Macedonia Północna","consolefont":"latarcyrheb-sun16"},{"id":"ms_MY.UTF-8","language":"malajski","territory":"Malezja","consolefont":"eurlatgr"},{"id":"mg_MG.UTF-8","language":"malgaski","territory":"Madagaskar","consolefont":"eurlatgr"},{"id":"mt_MT.UTF-8","language":"maltański","territory":"Malta","consolefont":"eurlatgr"},{"id":"gv_GB.UTF-8","language":"manx","territory":"Wielka Brytania","consolefont":"eurlatgr"},{"id":"mi_NZ.UTF-8","language":"maoryjski","territory":"Nowa Zelandia","consolefont":"eurlatgr"},{"id":"nl_BE.UTF-8","language":"niderlandzki","territory":"Belgia","consolefont":"eurlatgr"},{"id":"nl_NL.UTF-8","language":"niderlandzki","territory":"Holandia","consolefont":"eurlatgr"},{"id":"de_AT.UTF-8","language":"niemiecki","territory":"Austria","consolefont":"eurlatgr"},{"id":"de_BE.UTF-8","language":"niemiecki","territory":"Belgia","consolefont":"eurlatgr"},{"id":"de_LI.UTF-8","language":"niemiecki","territory":"Liechtenstein","consolefont":"eurlatgr"},{"id":"de_LU.UTF-8","language":"niemiecki","territory":"Luksemburg","consolefont":"eurlatgr"},{"id":"de_DE.UTF-8","language":"niemiecki","territory":"Niemcy","consolefont":"eurlatgr"},{"id":"de_CH.UTF-8","language":"niemiecki","territory":"Szwajcaria","consolefont":"eurlatgr"},{"id":"de_IT.UTF-8","language":"niemiecki","territory":"Włochy","consolefont":"eurlatgr"},{"id":"no_NO.UTF-8","language":"norweski","territory":"Norwegia","consolefont":"eurlatgr"},{"id":"nb_NO.UTF-8","language":"norweski (bokmål)","territory":"Norwegia","consolefont":"eurlatgr"},{"id":"nn_NO.UTF-8","language":"norweski (nynorsk)","territory":"Norwegia","consolefont":"eurlatgr"},{"id":"oc_FR.UTF-8","language":"oksytański","territory":"Francja","consolefont":"eurlatgr"},{"id":"om_KE.UTF-8","language":"oromo","territory":"Kenia","consolefont":"eurlatgr"},{"id":"pl_PL.UTF-8","language":"polski","territory":"Polska","consolefont":"eurlatgr"},{"id":"pt_BR.UTF-8","language":"portugals+ echo
+
++ echo '=== config.json'
+=== config.json
++ cat /run/overlay/live/shrimp-test/config.json
+{
+ "product": {
+  "id": "Shrimp",
+  "mode": "immutable"
+ },
+ "l10n": {
+  "locale": "pl_PL.UTF-8",
+  "keymap": "pl",
+  "timezone": "Europe/Warsaw"
+ },
+ "user": {
+  "fullName": "Jan Testowy",
+  "userName": "jan",
+  "password": "shrimp",
+  "hashedPassword": false
+ },
+ "storage": {
+  "drives": [
+   {
+    "search": "/dev/vda",
+    "partitions": [
+     {
+      "search": "*",
+      "delete": true
+     },
+     {
+      "generate": {
+       "partitions": "default"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "files": [
+  {
+   "destination": "/var/lib/shrimp-setup/install.json",
+   "permissions": "0644",
+   "content": "{\"fullName\":\"Jan Testowy\",\"userName\":\"jan\",\"beside\":false}"
+  }
+ ],
+ "scripts": {
+  "post": [
+   {
+    "name": "shrimp-post-install",
+    "chroot": false,
+    "url": "file:///usr/share/shrimp-setup/post-install.sh"
+   }
+  ]
+ }
+}
++ echo '=== PUT /api/config'
+=== PUT /api/config
++ api -X PUT --data @/run/overlay/live/shrimp-test/config.json http://127.0.0.1/api/config
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' -X PUT --data @/run/overlay/live/shrimp-test/config.json http://127.0.0.1/api/config
+
+HTTP 200
+++ seq 240
++ for i in $(seq 240)
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"configuring","tasks":[{"id":12,"name":"bootloader_config","description":"Storing bootloader settings","scope":"bootloader"},{"id":10,"name":"iscsi_config","description":"Configuring iSCSI devices","scope":"iscsi"},{"id":11,"name":"storage_config","description":"Preparing the storage proposal","scope":"storage"},{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[]}
+HTTP 200'
++ echo '{"stage":"configuring","tasks":[{"id":12,"name":"bootloader_config","description":"Storing bootloader settings","scope":"bootloader"},{"id":10,"name":"iscsi_config","description":"Configuring iSCSI devices","scope":"iscsi"},{"id":11,"name":"storage_config","description":"Preparing the storage proposal","scope":"storage"},{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[]}
+HTTP 200'
++ grep -q '"tasks":\[\],"progresses":\[\]'
++ sleep 0.5
++ for i in $(seq 240)
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"configuring","tasks":[{"id":12,"name":"bootloader_config","description":"Storing bootloader settings","scope":"bootloader"},{"id":11,"name":"storage_config","description":"Preparing the storage proposal","scope":"storage"},{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"storage","size":3,"steps":[],"step":"Probing storage devices","index":2}]}
+HTTP 200'
++ grep -q '"tasks":\[\],"progresses":\[\]'
++ echo '{"stage":"configuring","tasks":[{"id":12,"name":"bootloader_config","description":"Storing bootloader settings","scope":"bootloader"},{"id":11,"name":"storage_config","description":"Preparing the storage proposal","scope":"storage"},{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"storage","size":3,"steps":[],"step":"Probing storage devices","index":2}]}
+HTTP 200'
++ sleep 0.5
++ for i in $(seq 240)
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"configuring","tasks":[{"id":12,"name":"bootloader_config","description":"Storing bootloader settings","scope":"bootloader"},{"id":11,"name":"storage_config","description":"Preparing the storage proposal","scope":"storage"},{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"storage","size":3,"steps":[],"step":"Probing storage devices","index":2}]}
+HTTP 200'
++ echo '{"stage":"configuring","tasks":[{"id":12,"name":"bootloader_config","description":"Storing bootloader settings","scope":"bootloader"},{"id":11,"name":"storage_config","description":"Preparing the storage proposal","scope":"storage"},{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"storage","size":3,"steps":[],"step":"Probing storage devices","index":2}]}
+HTTP 200'
++ grep -q '"tasks":\[\],"progresses":\[\]'
++ sleep 0.5
++ for i in $(seq 240)
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ grep -q '"tasks":\[\],"progresses":\[\]'
++ echo '{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ sleep 0.5
++ for i in $(seq 240)
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ echo '{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ grep -q '"tasks":\[\],"progresses":\[\]'
++ sleep 0.5
++ for i in $(seq 240)
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ echo '{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ grep -q '"tasks":\[\],"progresses":\[\]'
++ sleep 0.5
++ for i in $(seq 240)
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ echo '{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ grep -q '"tasks":\[\],"progresses":\[\]'
++ sleep 0.5
++ for i in $(seq 240)
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ echo '{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ grep -q '"tasks":\[\],"progresses":\[\]'
++ sleep 0.5
++ for i in $(seq 240)
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ echo '{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ grep -q '"tasks":\[\],"progresses":\[\]'
++ sleep 0.5
++ for i in $(seq 240)
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ grep -q '"tasks":\[\],"progresses":\[\]'
++ echo '{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ sleep 0.5
++ for i in $(seq 240)
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ echo '{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ grep -q '"tasks":\[\],"progresses":\[\]'
++ sleep 0.5
++ for i in $(seq 240)
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ echo '{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ grep -q '"tasks":\[\],"progresses":\[\]'
++ sleep 0.5
++ for i in $(seq 240)
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ echo '{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Refreshing metadata from the repositories","index":2}]}
+HTTP 200'
++ grep -q '"tasks":\[\],"progresses":\[\]'
++ sleep 0.5
++ for i in $(seq 240)
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Calculating the software proposal","index":3}]}
+HTTP 200'
++ echo '{"stage":"configuring","tasks":[{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[{"scope":"software","size":3,"steps":["Updating the list of repositories","Refreshing metadata from the repositories","Calculating the software proposal"],"step":"Calculating the software proposal","index":3}]}
+HTTP 200'
++ grep -q '"tasks":\[\],"progresses":\[\]'
++ sleep 0.5
++ for i in $(seq 240)
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"configuring","tasks":[],"progresses":[]}
+HTTP 200'
++ echo '{"stage":"configuring","tasks":[],"progresses":[]}
+HTTP 200'
++ grep -q '"tasks":\[\],"progresses":\[\]'
++ break
++ echo 'settled after 7 s'
+settled after 7 s
++ echo '=== status after config'
+=== status after config
++ api http://127.0.0.1/api/status
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
+{"stage":"configuring","tasks":[],"progresses":[]}
+HTTP 200
++ echo '=== issues after config'
+=== issues after config
++ api http://127.0.0.1/api/issues
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/issues
+[]
+HTTP 200
++ echo '=== POST install'
+=== POST install
+++ api -X POST --data '{"install":null}' http://127.0.0.1/api/action
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' -X POST --data '{"install":null}' http://127.0.0.1/api/action
++ r='
+HTTP 200'
++ echo '
+HTTP 200'
+
+HTTP 200
++ stage=unknown
++ case "$r" in
++ n=360
+++ seq 360
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Finished downloading libcamera0_5-0.5.1-160100.2.1.x86_64.rpm","index":361}]}
+HTTP 200'
++ echo '[15s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Finished downloading libcamera0_5-0.5.1-160100.2.1.x86_64.rpm","index":361}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[15s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Finished downloading libcamera0_5-0.5.1-160100.2.1.x86_64.rpm","index":361}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Finished downloading libsord-0-0-0.16.18-160100.2.1.x86_64.rpm","index":1012}]}
+HTTP 200'
++ echo '[30s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Finished downloading libsord-0-0-0.16.18-160100.2.1.x86_64.rpm","index":1012}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[30s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Finished downloading libsord-0-0-0.16.18-160100.2.1.x86_64.rpm","index":1012}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Finished downloading libldap-2-2.6.13+57-160100.2.2.x86_64.rpm","index":1646}]}
+HTTP 200'
++ echo '[45s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Finished downloading libldap-2-2.6.13+57-160100.2.2.x86_64.rpm","index":1646}]}
+HTTP 200'
++ head -c 1500
++ tr -d '\n'
+[45s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Finished downloading libldap-2-2.6.13+57-160100.2.2.x86_64.rpm","index":1646}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Finished downloading xz-5.8.1-160100.2.1.x86_64.rpm","index":2000}]}
+HTTP 200'
++ echo '[60s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Finished downloading xz-5.8.1-160100.2.1.x86_64.rpm","index":2000}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[60s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Finished downloading xz-5.8.1-160100.2.1.x86_64.rpm","index":2000}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing libmpdec4","index":2188}]}
+HTTP 200'
++ echo '[75s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing libmpdec4","index":2188}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[75s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing libmpdec4","index":2188}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing libImath-3_2-30","index":2519}]}
+HTTP 200'
++ echo '[90s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing libImath-3_2-30","index":2519}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[90s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing libImath-3_2-30","index":2519}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing vim-data","index":2818}]}
+HTTP 200'
++ echo '[105s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing vim-data","index":2818}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[105s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing vim-data","index":2818}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing ghostscript","index":3072}]}
+HTTP 200'
++ echo '[120s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing ghostscript","index":3072}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[120s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing ghostscript","index":3072}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing pcsc-lite","index":3310}]}
+HTTP 200'
++ echo '[135s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing pcsc-lite","index":3310}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[135s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing pcsc-lite","index":3310}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing kernel-firmware-mellanox","index":3438}]}
+HTTP 200'
++ echo '[150s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing kernel-firmware-mellanox","index":3438}]}
+HTTP 200'
++ head -c 1500
++ tr -d '\n'
+[150s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing kernel-firmware-mellanox","index":3438}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing kernel-default","index":3538}]}
+HTTP 200'
++ echo '[165s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing kernel-default","index":3538}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[165s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing kernel-default","index":3538}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing kernel-default-extra","index":3562}]}
+HTTP 200'
++ echo '[180s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing kernel-default-extra","index":3562}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[180s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing kernel-default-extra","index":3562}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing snapshot","index":3702}]}
+HTTP 200'
++ echo '[195s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing snapshot","index":3702}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[195s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing snapshot","index":3702}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing libreoffice","index":3795}]}
+HTTP 200'
++ echo '[210s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing libreoffice","index":3795}]}
+HTTP 200'
++ head -c 1500
++ tr -d '\n'
+[210s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing libreoffice","index":3795}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing evince-lang","index":3904}]}
+HTTP 200'
++ echo '[225s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing evince-lang","index":3904}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[225s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing evince-lang","index":3904}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing patterns-gnome-gnome","index":3999}]}
+HTTP 200'
++ echo '[240s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing patterns-gnome-gnome","index":3999}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[240s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4042,"steps":[],"step":"Installing patterns-gnome-gnome","index":3999}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"storage","size":1,"steps":[],"step":"Kończenie instalacji","index":1}]}
+HTTP 200'
++ echo '[255s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"storage","size":1,"steps":[],"step":"Kończenie instalacji","index":1}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[255s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"storage","size":1,"steps":[],"step":"Kończenie instalacji","index":1}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"files","size":1,"steps":["Running user script '\''shrimp-post-install'\''"],"step":"Running user script '\''shrimp-post-install'\''","index":1}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
++ echo '[270s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"files","size":1,"steps":["Running user script '\''shrimp-post-install'\''"],"step":"Running user script '\''shrimp-post-install'\''","index":1}]}
+HTTP 200'
+[270s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"files","size":1,"steps":["Running user script 'shrimp-post-install'"],"step":"Running user script 'shrimp-post-install'","index":1}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"files","size":1,"steps":["Running user script '\''shrimp-post-install'\''"],"step":"Running user script '\''shrimp-post-install'\''","index":1}]}
+HTTP 200'
++ echo '[285s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"files","size":1,"steps":["Running user script '\''shrimp-post-install'\''"],"step":"Running user script '\''shrimp-post-install'\''","index":1}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[285s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"files","size":1,"steps":["Running user script 'shrimp-post-install'"],"step":"Running user script 'shrimp-post-install'","index":1}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"files","size":1,"steps":["Running user script '\''shrimp-post-install'\''"],"step":"Running user script '\''shrimp-post-install'\''","index":1}]}
+HTTP 200'
++ echo '[300s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"files","size":1,"steps":["Running user script '\''shrimp-post-install'\''"],"step":"Running user script '\''shrimp-post-install'\''","index":1}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[300s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"files","size":1,"steps":["Running user script 'shrimp-post-install'"],"step":"Running user script 'shrimp-post-install'","index":1}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"files","size":1,"steps":["Running user script '\''shrimp-post-install'\''"],"step":"Running user script '\''shrimp-post-install'\''","index":1}]}
+HTTP 200'
++ echo '[315s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"files","size":1,"steps":["Running user script '\''shrimp-post-install'\''"],"step":"Running user script '\''shrimp-post-install'\''","index":1}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[315s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"files","size":1,"steps":["Running user script 'shrimp-post-install'"],"step":"Running user script 'shrimp-post-install'","index":1}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"storage","size":1,"steps":[],"step":"Odmontowywanie urządzeń","index":1}]}
+HTTP 200'
++ echo '[330s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"storage","size":1,"steps":[],"step":"Odmontowywanie urządzeń","index":1}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[330s] {"stage":"installing","tasks":[{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"},{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"storage","size":1,"steps":[],"step":"Odmontowywanie urządzeń","index":1}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq $n)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"finished","tasks":[],"progresses":[]}
+HTTP 200'
++ echo '[345s] {"stage":"finished","tasks":[],"progresses":[]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[345s] {"stage":"finished","tasks":[],"progresses":[]}HTTP 200+ echo
+
++ case "$s" in
++ stage=finished
++ break
++ echo '=== issues at end'
+=== issues at end
++ api http://127.0.0.1/api/issues
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNjYxMzYsImNsaWVudF9pZCI6IjU0NjNmYmE3LTg3OWMtNDIyOC1iZTI5LTQwZmRmOTk4ODNlYyJ9.Tg39BrXnYlcft1I4VITIaoM_M9hMMoTI4ThqMwjG7BY' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/issues
+[]
+HTTP 200
++ echo '=== journal'
+=== journal
++ S journalctl -b -u agama -u agama-web-server --no-pager -o short-monotonic
++ grep -v -iE 'pubkey|TmpPath|keyring|Tkey|zypp.tmp|hardlink|database|Pid [0-9]+ |launched'
++ echo shrimp
++ tail -n 400
++ sudo -S -p '' journalctl -b -u agama -u agama-web-server --no-pager -o short-monotonic
+[  560.078692] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-usb-network-20250717-160100.2.1.noarch)
+[  560.081293] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-usb-network-20250717-160100.2.1.noarch)
+[  560.089564] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-ueagle-20251004-160100.2.1.noarch)
+[  560.091796] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-ueagle-20251004-160100.2.1.noarch)
+[  560.099819] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-ti-20250206-160100.2.1.noarch)
+[  560.102131] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-ti-20250206-160100.2.1.noarch)
+[  560.110650] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-sound-20260519-160100.2.1.noarch)
+[  560.110706] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-sound-20260519-160100.2.1.noarch)
+[  560.120893] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-serial-20260327-160100.2.1.noarch)
+[  560.120951] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-serial-20260327-160100.2.1.noarch)
+[  560.130906] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-realtek-20260214-160100.2.1.noarch)
+[  560.130965] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-realtek-20260214-160100.2.1.noarch)
+[  560.141100] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-radeon-20250627-160100.2.1.noarch)
+[  560.143411] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-radeon-20250627-160100.2.1.noarch)
+[  560.151095] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-qlogic-20250926-160100.2.1.noarch)
+[  560.153410] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-qlogic-20250926-160100.2.1.noarch)
+[  560.161082] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-qcom-20260519-160100.2.1.noarch)
+[  560.163331] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-qcom-20260519-160100.2.1.noarch)
+[  560.168079] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-prestera-20250206-160100.2.1.noarch)
+[  560.168129] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-prestera-20250206-160100.2.1.noarch)
+[  560.177716] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-platform-20260514-160100.2.1.noarch)
+[  560.177769] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-platform-20260514-160100.2.1.noarch)
+[  560.187575] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-nvidia-20260408-160100.2.1.noarch)
+[  560.189824] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-nvidia-20260408-160100.2.1.noarch)
+[  560.194766] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-nfp-20250206-160100.2.1.noarch)
+[  560.194817] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-nfp-20250206-160100.2.1.noarch)
+[  560.204267] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-network-20260327-160100.2.1.noarch)
+[  560.204321] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-network-20260327-160100.2.1.noarch)
+[  560.214188] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-mwifiex-20250206-160100.2.1.noarch)
+[  560.214257] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-mwifiex-20250206-160100.2.1.noarch)
+[  560.223927] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-mellanox-20260110-160100.2.1.noarch)
+[  560.223986] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-mellanox-20260110-160100.2.1.noarch)
+[  560.233713] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-mediatek-20260519-160100.2.1.noarch)
+[  560.235928] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-mediatek-20260519-160100.2.1.noarch)
+[  560.243488] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-media-20260414-160100.2.1.noarch)
+[  560.245606] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-media-20260414-160100.2.1.noarch)
+[  560.253231] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-marvell-20250206-160100.2.1.noarch)
+[  560.253290] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-marvell-20250206-160100.2.1.noarch)
+[  560.262893] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-liquidio-20250206-160100.2.1.noarch)
+[  560.265087] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-liquidio-20250206-160100.2.1.noarch)
+[  560.272818] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-iwlwifi-20260331-160100.2.1.noarch)
+[  560.272875] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-iwlwifi-20260331-160100.2.1.noarch)
+[  560.282829] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-intel-20260519-160100.2.1.noarch)
+[  560.282886] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-intel-20260519-160100.2.1.noarch)
+[  560.292718] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-i915-20260514-160100.2.1.noarch)
+[  560.292775] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-i915-20260514-160100.2.1.noarch)
+[  560.302768] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-dpaa2-20250206-160100.2.1.noarch)
+[  560.304907] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-dpaa2-20250206-160100.2.1.noarch)
+[  560.312588] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-chelsio-20250627-160100.2.1.noarch)
+[  560.312644] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-chelsio-20250627-160100.2.1.noarch)
+[  560.322618] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-brcm-20250623-160100.2.1.noarch)
+[  560.322676] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-brcm-20250623-160100.2.1.noarch)
+[  560.332548] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-bnx2-20250627-160100.2.1.noarch)
+[  560.334664] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-bnx2-20250627-160100.2.1.noarch)
+[  560.342296] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-bluetooth-20260505-160100.2.1.noarch)
+[  560.342350] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-bluetooth-20260505-160100.2.1.noarch)
+[  560.352114] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-atheros-20250206-160100.2.1.noarch)
+[  560.352171] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-atheros-20250206-160100.2.1.noarch)
+[  560.361767] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-ath12k-20260421-160100.2.1.noarch)
+[  560.361824] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-ath12k-20260421-160100.2.1.noarch)
+[  560.371487] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-ath11k-20260327-160100.2.1.noarch)
+[  560.371544] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-ath11k-20260327-160100.2.1.noarch)
+[  560.383274] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-ath10k-20260206-160100.2.1.noarch)
+[  560.383332] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-ath10k-20260206-160100.2.1.noarch)
+[  560.390872] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-firmware-amdgpu-20260519-160100.2.1.noarch)
+[  560.390927] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-firmware-amdgpu-20260519-160100.2.1.noarch)
+[  560.400571] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(dracut-transactional-update-6.1.1-160100.2.1.x86_64)
+[  560.400626] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(dracut-transactional-update-6.1.1-160100.2.1.x86_64)
+[  560.410242] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(lvm2-2.03.38-160100.2.1.x86_64)
+[  560.410298] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(lvm2-2.03.38-160100.2.1.x86_64)
+[  560.419853] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(transactional-update-6.1.1-160100.2.1.x86_64)
+[  560.419913] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(transactional-update-6.1.1-160100.2.1.x86_64)
+[  560.437554] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-default-6.12.0-160100.8.1.x86_64)
+[  560.437626] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-default-6.12.0-160100.8.1.x86_64)
+[  560.448634] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(speech-dispatcher-0.12.1-160100.2.1.x86_64)
+[  560.448697] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(speech-dispatcher-0.12.1-160100.2.1.x86_64)
+[  560.455866] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(ovpn-kmp-default-7.1.0.2026070800_k6.12.0_160100.7-160100.2.10.x86_64)
+[  560.455924] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(ovpn-kmp-default-7.1.0.2026070800_k6.12.0_160100.7-160100.2.10.x86_64)
+[  560.474731] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-default-extra-6.12.0-160100.8.1.x86_64)
+[  560.474799] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-default-extra-6.12.0-160100.8.1.x86_64)
+[  560.487799] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(plymouth-22.02.122+94.4bd41a3-160100.2.1.x86_64)
+[  560.490300] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(plymouth-22.02.122+94.4bd41a3-160100.2.1.x86_64)
+[  560.500713] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(grub2-x86_64-efi-2.14-160100.3.3.noarch)
+[  560.500772] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(grub2-x86_64-efi-2.14-160100.3.3.noarch)
+[  560.505599] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(grub2-branding-openSUSE-16.1.20260917-lp161.1.1.noarch)
+[  560.505654] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(grub2-branding-openSUSE-16.1.20260917-lp161.1.1.noarch)
+[  560.518624] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(kernel-default-optional-6.12.0-160100.8.1.x86_64)
+[  560.518685] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(kernel-default-optional-6.12.0-160100.8.1.x86_64)
+[  560.531467] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(cups-2.4.19-160100.3.1.x86_64)
+[  560.531526] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(cups-2.4.19-160100.3.1.x86_64)
+[  560.576674] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(shim-16.1-160100.2.1.x86_64)
+[  560.576738] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(shim-16.1-160100.2.1.x86_64)
+[  560.587688] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(libgnomesu-2.0.10-bp161.1.1.x86_64)
+[  560.590096] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(libgnomesu-2.0.10-bp161.1.1.x86_64)
+[  560.600096] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(libreoffice-l10n-en-26.2.5.1-bp161.1.5.noarch)
+[  560.600154] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(libreoffice-l10n-en-26.2.5.1-bp161.1.5.noarch)
+[  561.984851] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(libreoffice-l10n-pl-26.2.5.1-bp161.1.5.noarch)
+[  561.984917] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(libreoffice-l10n-pl-26.2.5.1-bp161.1.5.noarch)
+[  562.341668] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(ibus-1.5.33-160100.2.1.x86_64)
+[  562.341732] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(ibus-1.5.33-160100.2.1.x86_64)
+[  562.361499] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(gdm-systemd-48.0-160100.2.1.noarch)
+[  562.361557] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(gdm-systemd-48.0-160100.2.1.noarch)
+[  562.371622] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%posttrans(gdm-48.0-160100.2.1.x86_64)
+[  562.374039] shrimp agama-web-server[1675]: Verbose RIPOFF:%posttrans(gdm-48.0-160100.2.1.x86_64)
+[  562.442625] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%transfiletriggerin(man-2.13.1-160100.2.1.x86_64)
+[  562.576340] shrimp agama-web-server[1675]: Verbose RIPOFF:%transfiletriggerin(man-2.13.1-160100.2.1.x86_64)
+[  562.590160] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%transfiletriggerin(systemd-257.13-160100.3.5.x86_64)
+[  562.596472] shrimp agama-web-server[1675]: Verbose RIPOFF:%transfiletriggerin(systemd-257.13-160100.3.5.x86_64)
+[  562.597711] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%transfiletriggerin(systemd-257.13-160100.3.5.x86_64)
+[  562.609630] shrimp agama-web-server[1675]: Verbose RIPOFF:%transfiletriggerin(systemd-257.13-160100.3.5.x86_64)
+[  562.612457] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%transfiletriggerin(systemd-257.13-160100.3.5.x86_64)
+[  562.662126] shrimp agama-web-server[1675]: Verbose RIPOFF:%transfiletriggerin(systemd-257.13-160100.3.5.x86_64)
+[  562.663513] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%transfiletriggerin(systemd-257.13-160100.3.5.x86_64)
+[  562.667673] shrimp agama-web-server[1675]: Verbose RIPOFF:%transfiletriggerin(systemd-257.13-160100.3.5.x86_64)
+[  562.669865] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%transfiletriggerin(systemd-257.13-160100.3.5.x86_64)
+[  562.674771] shrimp agama-web-server[1675]: Verbose RIPOFF:%transfiletriggerin(systemd-257.13-160100.3.5.x86_64)
+[  562.680596] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%transfiletriggerin(systemd-257.13-160100.3.5.x86_64)
+[  562.685282] shrimp agama-web-server[1675]: Verbose RIPOFF:%transfiletriggerin(systemd-257.13-160100.3.5.x86_64)
+[  562.690615] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%transfiletriggerin(systemd-257.13-160100.3.5.x86_64)
+[  562.694363] shrimp agama-web-server[1675]: Verbose RIPOFF:%transfiletriggerin(systemd-257.13-160100.3.5.x86_64)
+[  562.706178] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%transfiletriggerin(udev-257.13-160100.3.5.x86_64)
+[  563.038860] shrimp agama-web-server[1675]: Verbose RIPOFF:%transfiletriggerin(udev-257.13-160100.3.5.x86_64)
+[  563.040048] shrimp agama-web-server[1675]: NonVerbose RIPOFF:%transfiletriggerin(udev-257.13-160100.3.5.x86_64)
+[  563.043470] shrimp agama-web-server[1675]: Verbose RIPOFF:%transfiletriggerin(udev-257.13-160100.3.5.x86_64)
+[  563.133280] shrimp agama-web-server[1675]: {#2009|Running post-transaction scripts} END
+[  563.133304] shrimp agama-web-server[1675]: Looking for new update scripts in (/mnt)/var/adm/update-scripts
+[  563.133353] shrimp agama-web-server[1675]: readdir /mnt/var/adm/update-scripts
+[  563.134283] shrimp agama-web-server[1675]: Looking for new update messages in (/mnt)/var/adm/update-messages
+[  563.134319] shrimp agama-web-server[1675]: readdir /mnt/var/adm/update-messages
+[  563.138645] shrimp agama-web-server[1675]: recursive_rmdir /mnt/var/adm/update-scripts/posttransMSgPNV
+[  563.138887] shrimp agama-web-server[1675]: clean_dir /mnt/var/cache/zypp/packages/agama-0/.preload
+[  563.141718] shrimp agama-web-server[1675]: readdir /mnt/etc/products.d
+[  563.141822] shrimp agama-web-server[1675]: Read cookie: /mnt/var/cache/zypp/solv/@System/cookie{- 0644 0/0 size 76}
+[  563.141878] shrimp agama-web-server[1675]: Read cookie: /mnt/var/cache/zypp/solv/@System/cookie says: uptodate
+[  563.141968] shrimp agama-web-server[1675]: 0x7f763c919a90 curl_easy_cleanup
+[  563.142057] shrimp agama-web-server[1675]: 0x7f763c91c770 curl_easy_cleanup
+[  563.142108] shrimp agama-web-server[1675]: 0x7f763c8fea90 curl_easy_cleanup
+[  563.142160] shrimp agama-web-server[1675]: 0x7f763c902630 curl_easy_cleanup
+[  563.142232] shrimp agama-web-server[1675]: 0x7f763c9065a0 curl_easy_cleanup
+[  563.142324] shrimp agama-web-server[1675]: Releasing all media IDs held by this MediaSetAccess
+[  563.142660] shrimp agama-web-server[1675]: TargetImpl::commit(<pool>, CommitPolicy( DownloadInAdvance syncPoolAfterCommit )) returns: CommitResult  (total 1999, done 1999, error 0, skipped 0, updateMessages 0)
+[  563.142689] shrimp agama-web-server[1675]: Terminate inhibitor lock: pid 4120
+[  563.143287] shrimp agama-web-server[1675]: reloading @System repo to pool
+[  563.145924] shrimp agama-web-server[1675]: readdir /mnt/etc/products.d
+[  563.145990] shrimp agama-web-server[1675]: Read cookie: /mnt/var/cache/zypp/solv/@System/cookie{- 0644 0/0 size 76}
+[  563.146061] shrimp agama-web-server[1675]: Read cookie: /mnt/var/cache/zypp/solv/@System/cookie says: uptodate
+[  563.146083] shrimp agama-web-server[1675]: New cache built: false, force loading: true
+[  563.146100] shrimp agama-web-server[1675]: adding /mnt/var/cache/zypp/solv/@System/solv to pool(@System)
+[  563.168964] shrimp agama-web-server[1675]: _createRepo @System
+[  563.169153] shrimp agama-web-server[1675]: setRepoInfo @System
+[  563.169176] shrimp agama-web-server[1675]: sat::repo(@System){prio -99.0, size 0}
+[  563.169185] shrimp agama-web-server[1675]: adding /mnt/var/cache/zypp/solv/@System/solv to system
+[  563.169218] shrimp agama-web-server[1675]: _addSolv @System
+[  563.209058] shrimp agama-web-server[1675]: repo_add_solv took 39 ms
+[  563.209085] shrimp agama-web-server[1675]: repo size: 2021 solvables
+[  563.209093] shrimp agama-web-server[1675]: repo memory used: 249 K incore, 646 K idarray
+[  563.209107] shrimp agama-web-server[1675]: sat::repo(@System){prio -99.0, size 2021} after adding /mnt/var/cache/zypp/solv/@System/solv
+[  563.209329] shrimp agama-web-server[1675]: readdir /mnt/etc/zypp/needreboot.d
+[  563.209380] shrimp agama-web-server[1675]: Can't read /mnt/etc/zypp/locks{[2-No such file or directory]}
+[  563.209558] shrimp agama-web-server[1675]: pool_createwhatprovides...
+[  563.212543] shrimp agama-web-server[1675]: found 251 file dependencies, 405 installed file dependencies
+[  563.241411] shrimp agama-web-server[1675]: addfileprovides took 32 ms
+[  563.241437] shrimp agama-web-server[1675]: number of solvables: 39543, memory used: 2162 K
+[  563.241443] shrimp agama-web-server[1675]: number of ids: 593758 + 296457
+[  563.241451] shrimp agama-web-server[1675]: string memory used: 2319 K array + 15142 K data,  rel memory used: 3474 K array
+[  563.241457] shrimp agama-web-server[1675]: string hash memory: 8192 K, rel hash memory : 4096 K
+[  563.243219] shrimp agama-web-server[1675]: provide ids: 476405
+[  563.243238] shrimp agama-web-server[1675]: provide space needed: 1200618 + 592914
+[  563.270672] shrimp agama-web-server[1675]: shrunk whatprovidesdata from 1200618 to 131173
+[  563.271533] shrimp agama-web-server[1675]: shrunk whatprovidesauxdata from 1200618 to 722481
+[  563.271556] shrimp agama-web-server[1675]: whatprovides memory used: 3481 K id array, 2828 K data
+[  563.271562] shrimp agama-web-server[1675]: whatprovidesaux memory used: 2319 K id array, 2822 K data
+[  563.271567] shrimp agama-web-server[1675]: createwhatprovides took 30 ms
+[  563.297719] shrimp agama-web-server[1675]: I__s_(39521)product:Leap-16.1-1.x86_64(@System) has buddy I__s_(37524)Leap_immutable-release-16.1-lp161.12.1.x86_64(@System)
+[  563.297757] shrimp agama-web-server[1675]: Re-apply 0 HardLockQueries
+[  563.297762] shrimp agama-web-server[1675]: HardLockQueries match 0 Solvables.
+[  563.300829] shrimp agama-web-server[1675]: Establish...
+[  563.300878] shrimp agama-web-server[1675]: Multiversion install provides:multiversion(kernel): 60 matches
+[  563.300901] shrimp agama-web-server[1675]: solver started
+[  563.300908] shrimp agama-web-server[1675]: dosplitprovides=0, noupdateprovide=0, noinfarchcheck=0
+[  563.300913] shrimp agama-web-server[1675]: allowuninstall=0, allowdowngrade=0, allownamechange=1, allowarchchange=0, allowvendorchange=0
+[  563.300919] shrimp agama-web-server[1675]: dupallowdowngrade=1, dupallownamechange=1, dupallowarchchange=1, dupallowvendorchange=1
+[  563.300924] shrimp agama-web-server[1675]: promoteepoch=0, forbidselfconflicts=0
+[  563.300929] shrimp agama-web-server[1675]: obsoleteusesprovides=0, implicitobsoleteusesprovides=0, obsoleteusescolors=0, implicitobsoleteusescolors=0
+[  563.300932] shrimp agama-web-server[1675]: dontinstallrecommended=0, addalreadyrecommended=0 onlynamespacerecommended=0
+[  563.302487] shrimp agama-web-server[1675]: obsoletes data: 1 entries
+[  563.305880] shrimp agama-web-server[1675]: added 35690 pkg rules for installed solvables
+[  563.306050] shrimp agama-web-server[1675]: added 1308 pkg rules for updaters of installed solvables
+[  563.306069] shrimp agama-web-server[1675]: added 0 pkg rules for packages involved in a job
+[  563.314736] shrimp agama-web-server[1675]: added 32325 pkg rules because of weak dependencies
+[  563.315116] shrimp agama-web-server[1675]: added 78 pkg rules because of linked packages
+[  563.315180] shrimp agama-web-server[1675]: 9249 of 39542 installable solvables considered for solving
+[  563.320546] shrimp agama-web-server[1675]: pruned rules from 69402 to 58660
+[  563.320688] shrimp agama-web-server[1675]:   binary: 21898
+[  563.320707] shrimp agama-web-server[1675]:   normal: 36761, 85711 literals
+[  563.320914] shrimp agama-web-server[1675]: pkg rule memory used: 1374 K
+[  563.320934] shrimp agama-web-server[1675]: pkg rule creation took 18 ms
+[  563.322150] shrimp agama-web-server[1675]: choice rule creation took 0 ms
+[  563.322169] shrimp agama-web-server[1675]: 58659 pkg rules, 2 * 2021 update rules, 0 job rules, 0 infarch rules, 0 dup rules, 0 choice rules, 0 best rules, 0 yumobs rules
+[  563.322174] shrimp agama-web-server[1675]: 0 black rules, 0 recommends rules, 0 repo priority rules
+[  563.322179] shrimp agama-web-server[1675]: overall rule memory used: 1469 K
+[  563.323424] shrimp agama-web-server[1675]: solver statistics: 0 learned rules, 0 unsolvable, 0 minimization steps
+[  563.323450] shrimp agama-web-server[1675]: done solving.
+[  563.323455] shrimp agama-web-server[1675]: 
+[  563.323461] shrimp agama-web-server[1675]: solver took 1 ms
+[  563.323469] shrimp agama-web-server[1675]: final solver statistics: 0 problems, 0 learned rules, 0 unsolvable
+[  563.323475] shrimp agama-web-server[1675]: solver_solve took 23 ms
+[  563.323574] shrimp agama-web-server[1675]: Establish DONE
+[  563.325821] shrimp agama-web-server[1675]: Target loaded: 2021 resolvables
+[  563.326056] shrimp agama-web-server[1675]: Commit (CommitPolicy( DownloadInAdvance syncPoolAfterCommit )) returned: CommitResult  (total 1999, done 1999, error 0, skipped 0, updateMessages 0)
+[  563.367384] shrimp agama-web-server[1675]: libzypp commit ends with true
+[  563.392794] shrimp agama-web-server[1675]: Software install finished. Progress result Ok(
+                                                  (),
+                                              )
+[  563.478143] shrimp agama-web-server[1675]: Task '17' finished
+[  563.478220] shrimp agama-web-server[1675]: Task '18' started
+[  563.478279] shrimp agama-web-server[1675]: Task '19' is waiting for a previous task of the same scope: TaskMetadata { id: 18, name: "configure", description: "Configuring the system", scope: Manager }
+[  563.478296] shrimp agama-web-server[1675]: Task '20' is waiting for a previous task of the same scope: TaskMetadata { id: 19, name: "finish_progress", description: "Finishing installation", scope: Manager }
+[  563.611650] shrimp agama-web-server[1675]: "/usr/bin/systemd-firstboot" "--root" "/mnt" "--force" "--locale" "pl_PL.UTF-8" "--keymap" "pl" "--timezone" "Europe/Warsaw"
+[  563.791118] shrimp agama-web-server[1675]: Output { status: ExitStatus(unix_wait_status(0)), stdout: "", stderr: "/mnt: /etc/locale.conf written.\n/mnt: /etc/vconsole.conf written.\n/mnt: /etc/localtime written\n" }
+[  563.791159] shrimp agama-web-server[1675]: Configuring console font ""eurlatgr""
+[  563.791349] shrimp agama-web-server[1675]: Listing repositories
+[  563.791831] shrimp agama-web-server[1675]: Removing the installation repository agama-0
+[  563.791846] shrimp agama-web-server[1675]: Removing repository: agama-0
+[  563.791907] shrimp agama-web-server[1675]: Going to delete repo agama-0
+[  563.791933] shrimp agama-web-server[1675]: repo file: /run/agama/zypp/etc/zypp/repos.d/agama-0.repo
+[  563.791978] shrimp agama-web-server[1675]: Start parsing /run/agama/zypp/etc/zypp/repos.d/agama-0.repo[g___]
+[  563.791993] shrimp agama-web-server[1675]: {#2011|/run/agama/zypp/etc/zypp/repos.d/agama-0.repo} START
+[  563.792274] shrimp agama-web-server[1675]: Done parsing /run/agama/zypp/etc/zypp/repos.d/agama-0.repo[_eF_]
+[  563.792295] shrimp agama-web-server[1675]: {#2011|/run/agama/zypp/etc/zypp/repos.d/agama-0.repo} END
+[  563.792318] shrimp agama-web-server[1675]: --------------------------------------
+[  563.792322] shrimp agama-web-server[1675]: - alias       : agama-0
+[  563.792330] shrimp agama-web-server[1675]: - enabled     : 1
+[  563.792335] shrimp agama-web-server[1675]: - autorefresh : 0
+[  563.792343] shrimp agama-web-server[1675]: - url         : https://download.opensuse.org/distribution/leap/16.1/repo/oss/$basearch
+[  563.792356] shrimp agama-web-server[1675]: - type        : N/A
+[  563.792362] shrimp agama-web-server[1675]: - priority    : 99
+[  563.792378] shrimp agama-web-server[1675]: - gpgcheck    : D(Y) repoD(Y)* sig? pkgD(Y)*
+[  563.792384] shrimp agama-web-server[1675]: - filePath    :  /run/agama/zypp/etc/zypp/repos.d/agama-0.repo
+[  563.792389] shrimp agama-web-server[1675]: 
+[  563.792425] shrimp agama-web-server[1675]: unlink /run/agama/zypp/etc/zypp/repos.d/agama-0.repo
+[  563.792441] shrimp agama-web-server[1675]: agama-0 successfully deleted.
+[  563.792475] shrimp agama-web-server[1675]: Removing raw metadata cache for agama-0
+[  563.792752] shrimp agama-web-server[1675]: recursive_rmdir /run/agama/zypp/var/cache/zypp/solv/agama-0
+[  563.806731] shrimp agama-web-server[1675]: recursive_rmdir /var/cache/zypp/geoip.d
+[  563.810622] shrimp agama-web-server[1675]: recursive_rmdir /run/agama/zypp/var/cache/zypp/raw/agama-0
+[  563.810694] shrimp agama-web-server[1675]: recursive_rmdir /run/agama/zypp/var/cache/zypp/packages/agama-0
+[  563.810722] shrimp agama-web-server[1675]: agama-0 successfully deleted.
+[  563.810735] shrimp agama-web-server[1675]: installation log file /run/agama/zypp/var/log/zypp/history
+[  563.810836] shrimp agama-web-server[1675]: Listing repositories
+[  563.810862] shrimp agama-web-server[1675]: Skipping the copy of registration files because the system was not registered
+[  563.810866] shrimp agama-web-server[1675]: Listing repositories
+[  563.810969] shrimp agama-web-server[1675]: Copying from /run/agama/zypp/var/cache/zypp/solv/@System/solv to /mnt/var/cache/zypp/solv/@System/solv
+[  563.812219] shrimp agama-web-server[1675]: Copying from /run/agama/zypp/var/cache/zypp/solv/@System/cookie to /mnt/var/cache/zypp/solv/@System/cookie
+[  563.812321] shrimp agama-web-server[1675]: Copying from /run/agama/zypp/var/cache/zypp/solv/@System/solv.idx to /mnt/var/cache/zypp/solv/@System/solv.idx
+[  563.812593] shrimp agama-web-server[1675]: dropping Zypp
+[  563.812587] shrimp agama-web-server[1675]: Dropping libzypp
+[  563.812607] shrimp agama-web-server[1675]: sat::repo(@System){prio -99.0, size 2021} removed from pool
+[  563.812629] shrimp agama-web-server[1675]: _deleteRepo @System
+[  563.812702] shrimp agama-web-server[1675]: Open lockfile /run/agama/zypp/run/zypp.pid
+[  563.812743] shrimp agama-web-server[1675]: Cleaned lock file. (1675)
+[  563.812761] shrimp agama-web-server[1675]: Close lockfile /run/agama/zypp/run/zypp.pid
+[  563.812777] shrimp agama-web-server[1675]: ZYpp is off...
+[  563.870651] shrimp agama-web-server[1675]: Copying certificates to "/mnt"
+[  564.578657] shrimp useradd[24594]: new group: name=jan, GID=1000
+[  564.578756] shrimp useradd[24594]: new user: name=jan, UID=1000, GID=1000, home=/home/jan, shell=/bin/bash, from=none
+[  564.596514] shrimp usermod[24599]: add 'jan' to group 'wheel'
+[  564.606353] shrimp agama-web-server[24604]: BŁĘDNE HASŁO: Hasło jest krótsze niż 8 znaków
+[  564.609915] shrimp chpasswd[24604]: pam_unix(chpasswd:chauthtok): password changed for jan
+[  564.619913] shrimp chfn[24606]: changed user 'jan' information
+[  565.421045] shrimp agama-web-server[1675]: request 4504424261091351: GET /api/status
+[  565.421181] shrimp agama-web-server[1675]: response for 4504424261091351: 200 OK 213.373µs
+[  567.399628] shrimp dracut[25398]: Executing: /usr/bin/dracut --kver=6.12.0-160100.8-default --force
+[  567.667326] shrimp dracut[25398]: Module 'systemd-networkd' will not be installed, because command 'networkctl' could not be found!
+[  567.668449] shrimp dracut[25398]: Module 'systemd-networkd' will not be installed, because command '/usr/lib/systemd/systemd-networkd' could not be found!
+[  567.670461] shrimp dracut[25398]: Module 'systemd-networkd' will not be installed, because command '/usr/lib/systemd/systemd-networkd-wait-online' could not be found!
+[  567.672736] shrimp dracut[25398]: Module 'systemd-pcrphase' will not be installed, because command '/usr/lib/systemd/systemd-pcrextend' could not be found!
+[  567.674921] shrimp dracut[25398]: Module 'systemd-portabled' will not be installed, because command 'portablectl' could not be found!
+[  567.676234] shrimp dracut[25398]: Module 'systemd-portabled' will not be installed, because command '/usr/lib/systemd/systemd-portabled' could not be found!
+[  567.679850] shrimp dracut[25398]: Module 'systemd-resolved' will not be installed, because command 'resolvectl' could not be found!
+[  567.681162] shrimp dracut[25398]: Module 'systemd-resolved' will not be installed, because command '/usr/lib/systemd/systemd-resolved' could not be found!
+[  567.694653] shrimp dracut[25398]: Module 'rngd' will not be installed, because command 'rngd' could not be found!
+[  567.700576] shrimp dracut[25398]: Module 'connman' will not be installed, because command 'connmand' could not be found!
+[  567.701825] shrimp dracut[25398]: Module 'connman' will not be installed, because command 'connmanctl' could not be found!
+[  567.703119] shrimp dracut[25398]: Module 'connman' will not be installed, because command 'connmand-wait-online' could not be found!
+[  567.705687] shrimp dracut[25398]: 35network-legacy: Could not find any command of 'dhclient wicked'!
+[  567.839614] shrimp dracut[25398]: Module 'iscsi' will not be installed, because command 'iscsi-iname' could not be found!
+[  567.840878] shrimp dracut[25398]: Module 'iscsi' will not be installed, because command 'iscsiadm' could not be found!
+[  567.842182] shrimp dracut[25398]: Module 'iscsi' will not be installed, because command 'iscsid' could not be found!
+[  567.854445] shrimp dracut[25398]: Module 'nvmf' will not be installed, because command 'nvme' could not be found!
+[  567.855550] shrimp dracut[25398]: Module 'nvmf' will not be installed, because command 'jq' could not be found!
+[  567.881762] shrimp dracut[25398]: Module 'biosdevname' will not be installed, because command 'biosdevname' could not be found!
+[  567.893955] shrimp dracut[25398]: Module 'memstrack' will not be installed, because command 'memstrack' could not be found!
+[  567.895189] shrimp dracut[25398]: memstrack is not available
+[  567.896379] shrimp dracut[25398]: If you need to use rd.memdebug>=4, please install memstrack and procps-ng
+[  567.900583] shrimp dracut[25398]: Module 'squash' will not be installed, because command 'mksquashfs' could not be found!
+[  567.901890] shrimp dracut[25398]: Module 'squash' will not be installed, because command 'unsquashfs' could not be found!
+[  567.915272] shrimp dracut[25398]: Module 'systemd-pcrphase' will not be installed, because command '/usr/lib/systemd/systemd-pcrextend' could not be found!
+[  567.916794] shrimp dracut[25398]: Module 'systemd-portabled' will not be installed, because command 'portablectl' could not be found!
+[  567.917940] shrimp dracut[25398]: Module 'systemd-portabled' will not be installed, because command '/usr/lib/systemd/systemd-portabled' could not be found!
+[  567.919826] shrimp dracut[25398]: Module 'systemd-resolved' will not be installed, because command 'resolvectl' could not be found!
+[  567.921161] shrimp dracut[25398]: Module 'systemd-resolved' will not be installed, because command '/usr/lib/systemd/systemd-resolved' could not be found!
+[  567.925891] shrimp dracut[25398]: Module 'rngd' will not be installed, because command 'rngd' could not be found!
+[  567.927619] shrimp dracut[25398]: Module 'connman' will not be installed, because command 'connmand' could not be found!
+[  567.928858] shrimp dracut[25398]: Module 'connman' will not be installed, because command 'connmanctl' could not be found!
+[  567.930120] shrimp dracut[25398]: Module 'connman' will not be installed, because command 'connmand-wait-online' could not be found!
+[  567.931994] shrimp dracut[25398]: 35network-legacy: Could not find any command of 'dhclient wicked'!
+[  568.022519] shrimp dracut[25398]: Module 'iscsi' will not be installed, because command 'iscsi-iname' could not be found!
+[  568.023751] shrimp dracut[25398]: Module 'iscsi' will not be installed, because command 'iscsiadm' could not be found!
+[  568.024974] shrimp dracut[25398]: Module 'iscsi' will not be installed, because command 'iscsid' could not be found!
+[  568.037179] shrimp dracut[25398]: Module 'nvmf' will not be installed, because command 'nvme' could not be found!
+[  568.038404] shrimp dracut[25398]: Module 'nvmf' will not be installed, because command 'jq' could not be found!
+[  568.045521] shrimp dracut[25398]: Module 'memstrack' will not be installed, because command 'memstrack' could not be found!
+[  568.046934] shrimp dracut[25398]: memstrack is not available
+[  568.048482] shrimp dracut[25398]: If you need to use rd.memdebug>=4, please install memstrack and procps-ng
+[  568.050467] shrimp dracut[25398]: Module 'squash' will not be installed, because command 'mksquashfs' could not be found!
+[  568.051986] shrimp dracut[25398]: Module 'squash' will not be installed, because command 'unsquashfs' could not be found!
+[  568.129882] shrimp dracut[25398]: *** Including module: systemd ***
+[  568.457129] shrimp dracut[25398]: *** Including module: systemd-initrd ***
+[  568.477426] shrimp dracut[25398]: *** Including module: i18n ***
+[  568.524661] shrimp dracut[25398]: *** Including module: drm ***
+[  568.547709] shrimp dracut[25398]: *** Including module: ostree ***
+[  568.564094] shrimp dracut[25398]: *** Including module: plymouth ***
+[  569.160971] shrimp dracut[25398]: *** Including module: transactional-update ***
+[  569.174425] shrimp dracut[25398]: *** Including module: writable-etc ***
+[  569.186823] shrimp dracut[25398]: *** Including module: btrfs ***
+[  569.236810] shrimp dracut[25398]: *** Including module: kernel-modules ***
+[  570.279798] shrimp dracut[25398]: *** Including module: kernel-modules-extra ***
+[  570.299864] shrimp dracut[25398]: *** Including module: qemu ***
+[  570.315512] shrimp dracut[25398]: *** Including module: rootfs-block ***
+[  570.354210] shrimp dracut[25398]: *** Including module: suse-btrfs ***
+[  570.359111] shrimp dracut[25398]: *** Including module: suse-xfs ***
+[  570.363847] shrimp dracut[25398]: *** Including module: terminfo ***
+[  570.374764] shrimp dracut[25398]: *** Including module: udev-rules ***
+[  570.696937] shrimp dracut[25398]: *** Including module: virtiofs ***
+[  570.709514] shrimp dracut[25398]: *** Including module: dracut-systemd ***
+[  570.824380] shrimp dracut[25398]: *** Including module: usrmount ***
+[  570.826109] shrimp dracut[25398]: *** Including module: base ***
+[  570.909686] shrimp dracut[25398]: *** Including module: fs-lib ***
+[  570.924225] shrimp dracut[25398]: *** Including module: shutdown ***
+[  570.970871] shrimp dracut[25398]: *** Including module: suse ***
+[  571.011178] shrimp dracut[25398]: *** Including module: suse-initrd ***
+[  571.030180] shrimp dracut[25398]: *** Including modules done ***
+[  571.036565] shrimp dracut[25398]: *** Installing kernel module dependencies ***
+[  571.118887] shrimp dracut[25398]: *** Installing kernel module dependencies done ***
+[  571.133953] shrimp dracut[25398]: *** Resolving executable dependencies ***
+[  571.800570] shrimp dracut[25398]: *** Resolving executable dependencies done ***
+[  571.819543] shrimp dracut[25398]: *** Generating early-microcode cpio image ***
+[  571.828826] shrimp dracut[25398]: *** Constructing AuthenticAMD.bin ***
+[  571.846721] shrimp dracut[25398]: *** Store current command line parameters ***
+[  571.849095] shrimp dracut[25398]: Stored kernel commandline:
+[  571.850805] shrimp dracut[25398]:  rd.driver.pre=btrfs
+[  571.852445] shrimp dracut[25398]: rd.driver.pre=overlay
+[  571.854169] shrimp dracut[25398]:  root=UUID=1efe54a7-d69d-4b54-8a00-eaa83743c924 rootfstype=btrfs rootflags=rw,relatime,discard=async,space_cache=v2,subvolid=267,subvol=/@/.snapshots/1/snapshot,subvol=@/.snapshots/1/snapshot
+[  571.876167] shrimp dracut[25398]: *** Stripping files ***
+[  571.892830] shrimp dracut[25398]: *** Stripping files done ***
+[  571.894456] shrimp dracut[25398]: *** Creating image file '/boot/initrd-6.12.0-160100.8-default' ***
+[  572.219969] shrimp dracut[25398]: *** Creating initramfs image file '/boot/initrd-6.12.0-160100.8-default' done ***
+[  572.493529] shrimp agamactl[1909]: [INFO]: storage: Finishing Snapper configuration
+[  572.921883] shrimp agama-web-server[1675]: 1 scripts to run in group post
+[  572.922041] shrimp agama-web-server[1675]: Trying to call next step when there are no more steps. Progress {
+                                                  scope: Files,
+                                                  size: 1,
+                                                  steps: [
+                                                      "Running user script 'shrimp-post-install'",
+                                                  ],
+                                                  step: "Running user script 'shrimp-post-install'",
+                                                  index: 1,
+                                              }
+[  580.434368] shrimp agama-web-server[1675]: request 549755813915: GET /api/status
+[  580.434505] shrimp agama-web-server[1675]: response for 549755813915: 200 OK 166.481µs
+[  595.485574] shrimp agama-web-server[1675]: request 2252349569499163: GET /api/status
+[  595.485712] shrimp agama-web-server[1675]: response for 2252349569499163: 200 OK 165.1µs
+[  610.531479] shrimp agama-web-server[1675]: request 6756224074776599: GET /api/status
+[  610.531668] shrimp agama-web-server[1675]: response for 6756224074776599: 200 OK 217.494µs
+[  625.544770] shrimp agama-web-server[1675]: request 824633720856: GET /api/status
+[  625.544917] shrimp agama-web-server[1675]: response for 824633720856: 200 OK 171.308µs
+[  629.911718] shrimp runuser[35131]: pam_unix(runuser:session): session opened for user jan(uid=1000) by (uid=0)
+[  629.915538] shrimp runuser[35131]: pam_unix(runuser:session): session closed for user jan
+[  630.673878] shrimp agama-web-server[1675]: request 4504149383184411: GET /api/private/download_logs
+[  632.911655] shrimp agama-web-server[1675]: Command journalctl -o json finished with status: 0
+[  635.472424] shrimp agama-web-server[1675]: Command agama-journal finished with status: 0
+[  637.797844] shrimp agama-web-server[1675]: Command agama-zypp-journal finished with status: 0
+[  639.523367] shrimp agama-web-server[1675]: Command rpm -qa finished with status: 0
+[  640.443625] shrimp agama-web-server[1675]: response for 4504149383184411: 200 OK 9.769751298s
+[  640.512726] shrimp agama-web-server[1675]: end of stream
+[  640.589830] shrimp agama-web-server[1675]: request 824633720857: GET /api/status
+[  640.589961] shrimp agama-web-server[1675]: response for 824633720857: 200 OK 172.721µs
+[  641.894036] shrimp agama-web-server[1675]: Task '18' finished
+[  641.894064] shrimp agama-web-server[1675]: Task '19' started
+[  641.894082] shrimp agama-web-server[1675]: Task '20' is waiting for a previous task of the same scope: TaskMetadata { id: 19, name: "finish_progress", description: "Finishing installation", scope: Manager }
+[  641.894089] shrimp agama-web-server[1675]: Task '19' finished
+[  641.894097] shrimp agama-web-server[1675]: Task '20' started
+[  641.894102] shrimp agama-web-server[1675]: Installation completed successfully
+[  641.894108] shrimp agama-web-server[1675]: Finishing the installation process (stop)
+[  641.894115] shrimp agama-web-server[1675]: Task '20' finished
+[  655.632414] shrimp agama-web-server[1675]: request 549755813916: GET /api/status
+[  655.632568] shrimp agama-web-server[1675]: response for 549755813916: 200 OK 177.028µs
+[  655.650371] shrimp agama-web-server[1675]: request 2252624447406105: GET /api/issues
+[  655.650676] shrimp agama-web-server[1675]: response for 2252624447406105: 200 OK 330.71µs
++ echo '=== post-install / target'
+=== post-install / target
++ head -40
++ S ls -la /mnt /mnt/var/lib/shrimp-setup /mnt/usr/bin/shrimp-setup /mnt/home
++ echo shrimp
++ sudo -S -p '' ls -la /mnt /mnt/var/lib/shrimp-setup /mnt/usr/bin/shrimp-setup /mnt/home
+ls: cannot access '/mnt/var/lib/shrimp-setup': No such file or directory
+ls: cannot access '/mnt/usr/bin/shrimp-setup': No such file or directory
+ls: cannot access '/mnt/home': No such file or directory
+/mnt:
+total 4
+dr-xr-xr-x 2 root root 4096 lis  8 23:48 .
+drwxr-xr-x 1 root root  140 lis  9 00:20 ..
++ head
++ S find '/var/log/agama*' /run/agama -maxdepth 2 -name '*post*' -o -maxdepth 2 -name '*script*'
+/run/agama/scripts
+/run/agama/scripts/post
+++ head -20
+++ S find '/var/log/agama*' /run/agama /tmp -maxdepth 3 -path '*scripts*' -type f
++ for f in $(S find /var/log/agama* /run/agama /tmp -maxdepth 3 -path '*scripts*' -type f 2> /dev/null | head -20)
++ echo '--- /run/agama/scripts/post/shrimp-post-install'
+--- /run/agama/scripts/post/shrimp-post-install
++ S tail -n 60 /run/agama/scripts/post/shrimp-post-install
++ echo shrimp
++ sudo -S -p '' tail -n 60 /run/agama/scripts/post/shrimp-post-install
+TAG=$(grub_tag "${SYS_LANG:-en}")
+FW=$(sed -n 's/^set shrimp_fw="\(.*\)"$/\1/p' "/usr/share/grub2/themes/shrimp/lang/$TAG.cfg" 2>/dev/null | head -n1)
+if [ -n "$FW" ] && [ -f "$T/etc/grub.d/30_uefi-firmware" ]; then
+  sed -i "s|UEFI Firmware Settings|$FW|" "$T/etc/grub.d/30_uefi-firmware"
+  log "GRUB: wpis firmware w języku $TAG"
+  GRUB_REGEN=1
+fi
+if [ "$GRUB_REGEN" = 1 ]; then
+  chroot "$T" grub2-mkconfig -o /boot/grub2/grub.cfg >/dev/null 2>&1 || log "grub2-mkconfig nie powiodło się (zmiany GRUB wejdą przy jego następnej aktualizacji)"
+fi
+
+# Pierwsza konfiguracja: znacznik + jednorazowe logowanie automatyczne (zdejmuje je shrimp-setup-apply).
+touch "$STATE/first-boot"
+if [ -f "$T/etc/sysconfig/displaymanager" ]; then
+  sed -i "s/^DISPLAYMANAGER_AUTOLOGIN=.*/DISPLAYMANAGER_AUTOLOGIN=\"$USER_NAME\"/" "$T/etc/sysconfig/displaymanager"
+fi
+mkdir -p "$T/etc/gdm"
+cat > "$T/etc/gdm/custom.conf" <<CONF
+# Shrimp: logowanie automatyczne tylko na pierwszą konfigurację (zdejmuje je shrimp-setup-apply).
+[daemon]
+AutomaticLoginEnable=True
+AutomaticLogin=$USER_NAME
+CONF
+
+# Bez gnome-initial-setup: jego kroki robi Setup Shrimp.
+HOME_DIR=$(chroot "$T" getent passwd "$USER_NAME" | cut -d: -f6)
+OWNER=$(chroot "$T" id -u "$USER_NAME"):$(chroot "$T" id -g "$USER_NAME")
+install -d -o "${OWNER%:*}" -g "${OWNER#*:}" "$T$HOME_DIR/.config"
+touch "$T$HOME_DIR/.config/gnome-initial-setup-done"
+chown "$OWNER" "$T$HOME_DIR/.config/gnome-initial-setup-done"
+
+# Bez okna powitalnego openSUSE (zasłaniało Setup przy pierwszym uruchomieniu, test w QEMU).
+for f in "$T"/usr/etc/xdg/autostart/*welcome*.desktop "$T"/etc/xdg/autostart/*welcome*.desktop; do
+  [ -f "$f" ] || continue
+  n=$(basename "$f")
+  printf '[Desktop Entry]\nType=Application\nName=%s\nHidden=true\n' "${n%.desktop}" > "$T/etc/xdg/autostart/$n"
+  log "ukryto autostart $n"
+done
+
+# Flathub dla całego systemu (instalacja programów w kroku Programy).
+chroot "$T" flatpak remote-add --system --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo || \
+  log "Flathub zostanie dodany przy pierwszej konfiguracji"
+
+# Pliki i lista programów z Shrimp Install (shrimp-transfer/ na nośniku): foldery Windows trafiają do
+# folderów XDG nowego konta w jego języku, pliki podzielone (> 4 GB) są sklejane, shrimp.json idzie do $STATE.
+if /usr/bin/shrimp-setup --restore --root "$T" --user "$USER_NAME"; then :; else
+  log "bez plików z Shrimp Install"
+fi
+
+# Dawna zawartość pendrive'a (shrimp-backup/ na nośniku): sprawdzona kopia na dysku komputera. Przywróci ją
+# pierwsza konfiguracja (formatuje pendrive i wgrywa pliki z powrotem). Brak shrimp-backup to nie błąd.
+/usr/libexec/shrimp-usb-backup stash --root "$T" || log "bez kopii zawartości pendrive'a (kod $?)"
+
+# Jednorazowy wpis UEFI „Shrimp Install” (BootNext z Windows) nie jest już potrzebny.
+if command -v efibootmgr >/dev/null && [ -d /sys/firmware/efi ]; then
+  for B in $(efibootmgr | sed -n 's/^Boot\([0-9A-Fa-f]\{4\}\)[* ]*Shrimp Install\b.*/\1/p'); do
+    efibootmgr -q -b "$B" -B && log "usunięto wpis UEFI Boot$B (Shrimp Install)"
+  done
+fi
+log "gotowe"
++ for f in $(S find /var/log/agama* /run/agama /tmp -maxdepth 3 -path '*scripts*' -type f 2> /dev/null | head -20)
++ echo '--- /run/agama/scripts/post/shrimp-post-install.stdout'
+--- /run/agama/scripts/post/shrimp-post-install.stdout
++ S tail -n 60 /run/agama/scripts/post/shrimp-post-install.stdout
++ echo shrimp
++ sudo -S -p '' tail -n 60 /run/agama/scripts/post/shrimp-post-install.stdout
+shrimp-post-install: kopiuję Setup z nośnika
+shrimp-post-install: usunięto zastąpione pakiety GNOME
+shrimp-post-install: GRUB: ukryte menu, cichy start
+shrimp-post-install: kopiuję wygląd pulpitu Shrimp
+shrimp-post-install: GRUB: wpis firmware w języku pl
+shrimp-post-install: Flathub zostanie dodany przy pierwszej konfiguracji
+shrimp-setup: przywrócono 1 plików (15 B)
+shrimp-post-install: bez kopii zawartości pendrive'a (kod 3)
+shrimp-post-install: gotowe
++ for f in $(S find /var/log/agama* /run/agama /tmp -maxdepth 3 -path '*scripts*' -type f 2> /dev/null | head -20)
++ echo '--- /run/agama/scripts/post/shrimp-post-install.stderr'
+--- /run/agama/scripts/post/shrimp-post-install.stderr
++ S tail -n 60 /run/agama/scripts/post/shrimp-post-install.stderr
++ echo shrimp
++ sudo -S -p '' tail -n 60 /run/agama/scripts/post/shrimp-post-install.stderr
+Created symlink '/etc/systemd/system/multi-user.target.wants/shrimp-app-style.path' → '/usr/lib/systemd/system/shrimp-app-style.path'.
+Created symlink '/etc/systemd/system/multi-user.target.wants/shrimp-nvidia-flatpak.service' → '/usr/lib/systemd/system/shrimp-nvidia-flatpak.service'.
+Created symlink '/etc/systemd/user/graphical-session.target.wants/shrimp-app-style-user.service' → '/usr/lib/systemd/user/shrimp-app-style-user.service'.
+błąd: Nie można wczytać adresu URI https://dl.flathub.org/repo/flathub.flatpakrepo: While fetching https://dl.flathub.org/repo/flathub.flatpakrepo: [6] Could not resolve hostname
+
+shrimp-usb-backup: brak shrimp-backup na nośniku
++ for f in $(S find /var/log/agama* /run/agama /tmp -maxdepth 3 -path '*scripts*' -type f 2> /dev/null | head -20)
++ echo '--- /run/agama/scripts/post/shrimp-post-install.exit'
+--- /run/agama/scripts/post/shrimp-post-install.exit
++ S tail -n 60 /run/agama/scripts/post/shrimp-post-install.exit
++ echo shrimp
++ sudo -S -p '' tail -n 60 /run/agama/scripts/post/shrimp-post-install.exit
+0+ echo '===AGAMA-DONE finished'
+===AGAMA-DONE finished
