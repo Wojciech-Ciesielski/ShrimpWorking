@@ -42,3 +42,7 @@
 102	Sake kunna kwamfutar don kammalawa.
 110	Daga baya
 111	Sake kunnawa
+134	Shrimp Install na buƙatar ɓangaren Microsoft Edge WebView2, amma ba a iya fara shi ba.\n\nSabunta Windows ko shigar da WebView2 Runtime daga Microsoft sannan ka sake gwadawa.
+135	Ba a iya buɗe tagar Shrimp Install (WebView2) ba.
+136	Ba a iya fara ɓangaren WebView2 ba.
+138	Babu fuskar shirin.

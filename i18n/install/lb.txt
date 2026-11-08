@@ -42,3 +42,7 @@
 102	Start de Computer nei fir fäerdeg ze ginn.
 110	Méi spéit
 111	Nei starten
+134	Shrimp Install brauch d’Komponent Microsoft Edge WebView2, mä si konnt net gestart ginn.\n\nAktualiséier Windows oder installéier WebView2 Runtime vu Microsoft a prouf nach eng Kéier.
+135	D’Fënster vu Shrimp Install (WebView2) konnt net opgemaach ginn.
+136	De Komponent WebView2 konnt net gestart ginn.
+138	D’Interface vum Programm feelt.

@@ -42,3 +42,7 @@
 102	ለመጨረስ ኮምፒውተሩን እንደገና ያስጀምሩ።
 110	በኋላ
 111	እንደገና አስጀምር
+134	Shrimp Install የMicrosoft Edge WebView2 ክፍል ያስፈልገዋል፣ ግን ሊጀመር አልቻለም።\n\nWindowsን ያዘምኑ ወይም WebView2 Runtimeን ከMicrosoft ይጫኑና እንደገና ይሞክሩ።
+135	የShrimp Install መስኮትን (WebView2) መክፈት አልተቻለም።
+136	የWebView2 ክፍልን መጀመር አልተቻለም።
+138	የፕሮግራሙ በይነገጽ የለም።

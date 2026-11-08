@@ -42,3 +42,7 @@
 102	Qala kwakhona ikhompyuter ukugqiba.
 110	Kamva
 111	Qala kwakhona
+134	I-Shrimp Install ifuna icandelo le-Microsoft Edge WebView2, kodwa alikwazanga ukuqaliswa.\n\nHlaziya i-Windows okanye ufake i-WebView2 Runtime evela ku-Microsoft uze uzame kwakhona.
+135	Ayikwazanga ukuvula ifestile ye-Shrimp Install (WebView2).
+136	Ayikwazanga ukuqalisa icandelo le-WebView2.
+138	Ujongano lwenkqubo alukho.

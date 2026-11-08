@@ -42,3 +42,7 @@
 102	Malitegharịa kọmputa ka ị mechaa.
 110	Mgbe e mesịrị
 111	Malitegharịa
+134	Shrimp Install chọrọ akụrụngwa Microsoft Edge WebView2, mana enweghị ike ịmalite ya.\n\nMelite Windows ma ọ bụ wụnye WebView2 Runtime site na Microsoft wee nwaa ọzọ.
+135	Enweghị ike imepe windo Shrimp Install (WebView2).
+136	Enweghị ike ịmalite akụrụngwa WebView2.
+138	Ihu mmemme ahụ adịghị.

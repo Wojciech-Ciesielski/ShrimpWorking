@@ -213,8 +213,8 @@ static void copy_tree(copy_ctx* c, const wchar_t* src, const wchar_t* dst)
 }
 
 
-/* Znacznik języka GRUB (i18n/grub, kiwi/.../themes/shrimp/lang/<znacznik>.cfg) z nazwy języka Windows (BCP-47). */
-static void grub_lang_tag(const char* bcp, char* out, size_t n)
+/* Znacznik języka Shrimp (i18n/<przestrzeń>/<znacznik>.txt, też GRUB: i18n/grub, kiwi/.../themes/shrimp/lang/<znacznik>.cfg) z nazwy języka Windows (BCP-47). */
+void ShrimpLangTag(const char* bcp, char* out, size_t n)
 {
 	char b[64], *p, lang[16] = "";
 	size_t i;
@@ -256,7 +256,7 @@ static void write_grub_lang(const char* root)
 		wchar_t* buf = calloc(len, sizeof(wchar_t));
 		if (buf != NULL && GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &n, buf, &len) &&
 			WideCharToMultiByte(CP_UTF8, 0, buf, -1, u, sizeof(u), NULL, NULL) > 0)
-			grub_lang_tag(u, tag, sizeof(tag));
+			ShrimpLangTag(u, tag, sizeof(tag));
 		free(buf);
 	}
 	static_sprintf(path, "%sboot\\grub2\\shrimp-lang.cfg", root);
