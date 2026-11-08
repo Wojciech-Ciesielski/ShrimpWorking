@@ -1,0 +1,108 @@
+name: Test install
+
+# Full Shrimp path in QEMU: a stick made like Shrimp Install makes it (ISO files on FAT32,
+# label SHRIMP_LIVE, shrimp-transfer/shrimp.json with files), Setup on the live session,
+# installation with Agama onto an empty disk (Setup's own configuration from
+# setup/web/scripts/agama-test-config.ts), then the first boot of the installed system.
+# Screenshots and serial logs go to test-results/install/ on the same branch.
+
+on:
+  push:
+    branches: ["claude/**"]
+    paths: ["tools/qemu-install-test.py", "tools/install-test/**", ".github/workflows/test-install.yml"]
+  workflow_dispatch:
+    inputs:
+      build_run_id:
+        description: "Build ISO run id (empty = newest successful of this branch)"
+        default: ""
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download ISO
+        run: |
+          id="${{ github.event.inputs.build_run_id }}"
+          [ -n "$id" ] || id=$(gh run list -R "$GITHUB_REPOSITORY" -w build-iso.yml -s success -b "$GITHUB_REF_NAME" -L 1 --json databaseId -q '.[0].databaseId')
+          [ -n "$id" ] || id=$(gh run list -R "$GITHUB_REPOSITORY" -w build-iso.yml -s success -L 1 --json databaseId -q '.[0].databaseId')
+          echo "Build ISO run: $id"; echo "$id" > build-run-id.txt
+          gh run download "$id" -R "$GITHUB_REPOSITORY" -n shrimp-live-iso -D iso
+          ls -l iso
+
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+
+      - name: Setup's Agama configuration for the test disk
+        working-directory: setup/web
+        run: |
+          npm ci
+          npx --yes tsx scripts/agama-test-config.ts /dev/vda > ../../tools/install-test/config.json
+          cat ../../tools/install-test/config.json
+
+      - name: Make the stick (like Shrimp Install)
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -yq --no-install-recommends qemu-system-x86 qemu-utils ovmf imagemagick dosfstools gdisk
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+          truncate -s 8G usb.img
+          sgdisk -n1:1M:0 -t1:0700 usb.img
+          LOOP=$(sudo losetup -Pf --show usb.img)
+          sudo mkfs.vfat -F 32 -n SHRIMP_LIVE "${LOOP}p1"
+          sudo mkdir -p /mnt/usb /mnt/iso
+          sudo mount "${LOOP}p1" /mnt/usb
+          sudo mount -o loop,ro iso/*.iso /mnt/iso
+          sudo cp -r /mnt/iso/. /mnt/usb/
+          # shrimp-transfer as written by Shrimp Install (schema: shrimp-install/README.md)
+          sudo mkdir -p /mnt/usb/shrimp-transfer/files/documents /mnt/usb/shrimp-test
+          echo "Plik z Windows" | sudo tee /mnt/usb/shrimp-transfer/files/documents/z-windows.txt >/dev/null
+          sudo tee /mnt/usb/shrimp-transfer/shrimp.json >/dev/null <<'JSON'
+          {"version":1,"installer":"test","windows":{"firmware":"uefi","secureBoot":false,"bitlocker":false},
+           "user":{"name":"jan","fullName":"Jan Testowy"},
+           "locale":{"format":"pl-PL","language":"pl-PL","region":"PL","timezone":"Europe/Warsaw","keyboards":["00000415"]},
+           "apps":[{"name":"Mozilla Firefox (x64 pl)","publisher":"Mozilla","version":"132.0"}],"storeApps":[],
+           "files":[{"key":"documents","path":"files/documents","source":"C:\\Users\\jan\\Documents","bytes":15}],
+           "split":[],"skipped":[]}
+          JSON
+          sudo cp tools/install-test/* /mnt/usb/shrimp-test/
+          ls -la /mnt/usb /mnt/usb/shrimp-test
+          sudo umount /mnt/usb /mnt/iso
+          sudo losetup -d "$LOOP"
+
+      - name: Install and first boot
+        run: python3 tools/qemu-install-test.py usb.img out
+
+      - name: Convert screenshots
+        if: always()
+        run: |
+          cd out || exit 0
+          mkdir -p jpg
+          for f in *.png; do [ -e "$f" ] && convert "$f" -quality 85 "jpg/${f%.png}.jpg"; done
+          cp ../build-run-id.txt . || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: install-test
+          path: out
+          retention-days: 14
+
+      - name: Commit results
+        if: always()
+        run: |
+          rm -rf test-results/install && mkdir -p test-results/install
+          cp out/jpg/*.jpg out/serial-*.log out/shots.json out/build-run-id.txt test-results/install/ 2>/dev/null || true
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add test-results/install
+          git commit -m "Install test results (run ${{ github.run_id }}) [skip ci]" || exit 0
+          for i in 1 2 3; do git pull --rebase -q origin "${{ github.ref_name }}" && git push origin HEAD:"${{ github.ref_name }}" && break; sleep 5; done

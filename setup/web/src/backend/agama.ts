@@ -111,6 +111,15 @@ function handoff(plan: InstallPlan) {
   };
 }
 
+/** Pełna konfiguracja instalacji: plan + plik dla pierwszego uruchomienia + skrypt po instalacji.
+ *  Tę samą funkcję wywołuje test instalacji w QEMU (scripts/agama-test-config.ts). */
+export function installConfig(plan: InstallPlan) {
+  return configFromPlan(plan, {
+    files: [handoff(plan)],
+    scripts: { post: [{ name: "shrimp-post-install", chroot: false, url: "file:///usr/share/shrimp-setup/post-install.sh" }] },
+  });
+}
+
 export class AgamaBackend implements InstallBackend {
   private sys: Promise<ASystem> | null = null;
   private system() { return (this.sys ||= get<ASystem>("/api/system")); }
@@ -156,10 +165,7 @@ export class AgamaBackend implements InstallBackend {
   }
 
   async install(plan: InstallPlan, onProgress: (p: Progress) => void) {
-    await call("PUT", "/api/config", configFromPlan(plan, {
-      files: [handoff(plan)],
-      scripts: { post: [{ name: "shrimp-post-install", chroot: false, url: "file:///usr/share/shrimp-setup/post-install.sh" }] },
-    }));
+    await call("PUT", "/api/config", installConfig(plan));
     await this.settle();
     await call("POST", "/api/action", { install: null });
     const t0 = Date.now();
