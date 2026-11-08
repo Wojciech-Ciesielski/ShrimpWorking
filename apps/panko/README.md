@@ -8,7 +8,7 @@ spec: `shrimp-handoff/specs/gnome-apps.md` › Panko.
 | Migawki | Zmiany | Zaawansowane |
 |---|---|---|
 | ![](zrzuty/migawki-jasny.png) | ![](zrzuty/zmiany-jasny.png) | ![](zrzuty/zaawansowane-ciemny.png) |
-| ![](zrzuty/migawki-zaznaczona-ciemny.png) | ![](zrzuty/zmiany-ciemny.png) | ![](zrzuty/brak-dostepu.png) |
+| ![](zrzuty/migawki-zaznaczona-ciemny.png) | ![](zrzuty/zmiany-ciemny.png) | ![](zrzuty/menu.png) |
 
 ## Uruchomienie
 
@@ -44,8 +44,13 @@ uruchamia testy i zapisuje zrzuty obu motywów (artefakt `panko-screens`).
   `create-config`/`delete-config`), czyszczenie (TIMELINE_LIMIT_*, NUMBER_LIMIT,
   EMPTY_PRE_POST_CLEANUP, SPACE_LIMIT w %), dostęp (ALLOW_USERS). Zmiany czekają 0,9 s
   i idą jednym `snapper set-config` (jedno okno hasła).
-- **Menu główne**: migawki cykliczne (TIMELINE_CREATE), „Usuwaj migawki starsze niż N dni”
-  (= TIMELINE_LIMIT_DAILY), O aplikacji Panko.
+- **Menu główne**: migawki cykliczne (TIMELINE_CREATE), „Usuwaj stare migawki” + „Starsze niż N dni”,
+  O aplikacji Panko. Usługa migawek nie ma limitu wieku, więc Panko robi to sam: ustawienie leży
+  w `/etc/panko/panko.conf` (`MAX_AGE_DAYS`, zapis przez `pkexec panko --set-max-age N|off`),
+  a `panko-cleanup.timer` raz dziennie uruchamia `panko --cleanup` jako root. Czyszczenie nigdy nie
+  usuwa najnowszej migawki, pary „przed/po aktualizacji” usuwa razem (i tylko gdy obie są starsze
+  niż limit), a bieżącej, domyślnej i aktywnej migawki nie ruszy usługa migawek. Domyślnie wyłączone.
+  Sprawdzone na prawdziwym snapperd: migawki z datą sprzed 100 i 50 dni znikają, najnowsze zostają.
 - **Wyszukiwanie** na dole paska bocznego filtruje listę otwartej strony;
   „Nic nie pasuje do tego wyszukiwania.”
 - **Stany**: wczytywanie, „Brak dostępu do migawek” z przyciskiem „Zezwól” (dopisuje konto do
@@ -56,8 +61,8 @@ uruchamia testy i zapisuje zrzuty obu motywów (artefakt `panko-screens`).
   Dopóki `base` jest puste, przycisk jest nieaktywny.
 - Polskie znaki w opisach i nazwach plików: kodowanie `\x??` usługi (`src/escape.rs`).
 
-Sprawdzone: `cargo test` (9 testów: nazwy migawek, grupy dni, grupy plików, ustawienia,
-kodowanie, adres pomocy) i test na prawdziwej usłudze `cargo test -- --ignored dbus`
+Sprawdzone: `cargo test` (13 testów: nazwy migawek, grupy dni, grupy plików, ustawienia,
+kodowanie, adres pomocy, wiek migawek) i test na prawdziwej usłudze `cargo test -- --ignored dbus`
 (`PANKO_TEST_CONFIG=<konfiguracja>`): Btrfs w pliku, snapperd, tworzenie z polskim opisem,
 lista, porównanie (zmieniony + dodany plik), usuwanie – jako root i jako zwykłe konto
 z ALLOW_USERS. Okno uruchomione na tej usłudze jako root (lista) i jako konto bez dostępu
@@ -84,8 +89,8 @@ migawki, Panko robi to samo przez pkexec.
 4. **„Migawka przed aktualizacją”** w menu jest zawsze włączona i nieaktywna: na systemie
    niezmiennym transactional-update zawsze robi migawkę i nie ma ustawienia, żeby tego nie robić.
    Do decyzji: zostawić jako informację, ukryć albo powiązać z wtyczką zyppera.
-5. **„Usuwaj migawki starsze niż N dni”** – usługa nie ma limitu wieku, więc to liczba
-   dziennych migawek (TIMELINE_LIMIT_DAILY), ta sama co „Migawki dzienne” w Zaawansowanych.
+5. **Timer czyszczenia trzeba włączyć w obrazie** (`systemctl enable panko-cleanup.timer`,
+   np. w `kiwi/config.sh`). `install.sh` instaluje jednostki, ale ich nie włącza.
 6. **Tylko migawki systemu (/)** na listach Migawki i Zmiany. Migawki /home (po włączeniu
    w Zaawansowanych) są tworzone, ale nie ma jeszcze ich przeglądania (np. przełącznik woluminu).
 7. **Przywracanie plików z /usr** na systemie niezmiennym nie przejdzie (/usr tylko do odczytu);
@@ -102,4 +107,5 @@ migawki, Panko robi to samo przez pkexec.
 - `src/model.rs` – migawki, nazwy, grupy dni, zmiany plików, ustawienia (czyste, z testami)
 - `src/backend.rs` – usługa D-Bus + pkexec; `src/demo.rs` – dane z makiety
 - `src/ui/` – okno (`mod.rs`), strony `snapshots.rs`, `changes.rs`, `advanced.rs`, lista `tree.rs`
-- `data/` – plik .desktop i reguła polkit; `install.sh` – instalacja do DESTDIR
+- `src/retention.rs` – czyszczenie starych migawek (ustawienie, wybór migawek do usunięcia)
+- `data/` – plik .desktop, reguła polkit, jednostki panko-cleanup; `install.sh` – instalacja do DESTDIR
