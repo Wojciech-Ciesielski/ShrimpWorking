@@ -38,7 +38,12 @@ interface ASystem {
   l10n?: { locales?: { id: string }[]; keymaps?: { id: string }[]; timezones?: { id: string }[] };
   storage?: { devices?: ADevice[]; candidateDrives?: number[] };
 }
-interface AStatus { stage: "configuring" | "installing" | "finished" | "failed"; progresses: { scope: string; index: number; size: number; step: string }[] }
+interface AStatus {
+  stage: "configuring" | "installing" | "finished" | "failed";
+  /** Zadania w toku (np. propozycja dysku po PUT /api/config). */
+  tasks?: { id: number; name: string; scope: string }[];
+  progresses: { scope: string; index: number; size: number; step: string }[];
+}
 interface AIssue { scope: string; class: string; description: string }
 
 /** Dyski z systemu Agamy → dyski Setup. Czysta funkcja (testy w agama.test.ts). */
@@ -146,11 +151,12 @@ export class AgamaBackend implements InstallBackend {
     await call("POST", "/api/action", { configureL10n: { keymap } });
   }
 
-  /** Czeka, aż Agama przeliczy propozycję po zmianie konfiguracji. */
+  /** Czeka, aż Agama przeliczy propozycję po zmianie konfiguracji. Agama 24 zaraz po PUT /api/config
+   *  ma puste „progresses”, ale zadania (storage_config, software_config…) dalej są w „tasks”. */
   private async settle() {
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 240; i++) {
       const st = await get<AStatus>("/api/status");
-      if (!st.progresses.length) return;
+      if (!st.progresses.length && !(st.tasks || []).length) return;
       await sleep(500);
     }
   }
