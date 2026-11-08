@@ -131,4 +131,8 @@
 131	Lecteur introuvable. Rebranchez-le.
 132	Le micrologiciel n’a pas accepté l’entrée de démarrage. Démarrez l’ordinateur manuellement depuis le lecteur, via le menu de démarrage.
 133	Le micrologiciel n’a pas accepté le réglage du prochain démarrage. Démarrez l’ordinateur manuellement depuis le lecteur, via le menu de démarrage.
+134	Shrimp Install a besoin du composant Microsoft Edge WebView2, mais il n’a pas pu être lancé.\n\nMettez à jour Windows ou installez WebView2 Runtime depuis le site de Microsoft, puis réessayez.
+135	Impossible d’ouvrir la fenêtre de Shrimp Install (WebView2).
+136	Impossible de lancer le composant WebView2.
 137	Aucun emplacement libre pour l’entrée de démarrage.
+138	L’interface du programme est manquante.

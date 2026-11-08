@@ -12,7 +12,7 @@ mod system;
 mod transfer;
 
 use gtk::prelude::*;
-use gtk::{gio, glib};
+use gtk::glib;
 use std::path::PathBuf;
 use webkit6::prelude::*;
 
@@ -121,9 +121,12 @@ fn main() -> glib::ExitCode {
 
     let app = gtk::Application::builder()
         .application_id("org.shrimp.Setup")
-        .flags(gio::ApplicationFlags::NON_UNIQUE)
         .build();
-    app.connect_activate(move |app| build(app, &url, install, windowed, hint.as_deref()));
+    // Jedno okno: ponowne uruchomienie (skrót „Zainstaluj Shrimp” na nośniku) pokazuje istniejące.
+    app.connect_activate(move |app| match app.active_window() {
+        Some(w) => w.present(),
+        None => build(app, &url, install, windowed, hint.as_deref()),
+    });
     // GTK nie zna naszych argumentów.
     app.run_with_args::<&str>(&[])
 }
