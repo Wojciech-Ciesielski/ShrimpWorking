@@ -284,6 +284,7 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 	case WM_SHRIMP_FORMATTED:
 	case WM_SHRIMP_FETCHED:
 	case WM_SHRIMP_COPIED:
+	case WM_SHRIMP_BACKED_UP:
 		return ShrimpWndMessage(msg, wParam, lParam);
 	case WM_CLOSE:
 		/* Alt+F4 w trakcie przygotowania: interfejs pyta, czy anulować. */

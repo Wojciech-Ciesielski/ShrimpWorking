@@ -669,6 +669,9 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 			select_data(hFileSystem, IDC_FILE_SYSTEM, FS_FAT32);
 		else
 			uprintf("Shrimp: UWAGA: obraz ma plik > 4 GB, Rufus wybierze inny system plików");
+		/* Zawsze szybkie formatowanie, bez testu uszkodzonych bloków (pełne formatowanie 32 GB to kilkadziesiąt minut). */
+		CheckDlgButton(hMainDialog, IDC_QUICK_FORMAT, BST_CHECKED);
+		CheckDlgButton(hMainDialog, IDC_BAD_BLOCKS, BST_UNCHECKED);
 		ShrimpUsbBackupMarkFormatted();
 		uprintf("Shrimp: kopia zawartości nośnika gotowa (%llu B), START w Rufusie", (unsigned long long)ShrimpUsbBackupBytes);
 		state = ST_FORMAT;
@@ -676,8 +679,15 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_SHRIMP_FORMATTED:
-		if (ShrimpCancel || SCODE_CODE((DWORD)wParam) == ERROR_CANCELLED) {
+		if (ShrimpCancel) {
 			finish_cancel();
+			break;
+		}
+		/* Rufus przerwał przed zapisem (np. obraz niezgodny z nośnikiem): bez tego interfejs czekałby bez końca. */
+		if (SCODE_CODE((DWORD)wParam) == ERROR_CANCELLED) {
+			uprintf("Shrimp: Rufus przerwał zapis przed startem: %s", last_error[0] ? last_error : "(bez komunikatu)");
+			state = ST_FAILED;
+			ShrimpFail(2, "write", last_error[0] ? last_error : NULL);
 			break;
 		}
 		if (IS_ERROR((DWORD)wParam)) {
