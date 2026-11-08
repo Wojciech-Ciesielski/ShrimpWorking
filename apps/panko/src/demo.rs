@@ -15,6 +15,7 @@ struct State {
     configs: Vec<Config>,
     snaps: Vec<Snapshot>,
     next: u32,
+    max_age: Option<u32>,
 }
 
 fn config(name: &str, subvolume: &str, extra: &[(&str, &str)]) -> Config {
@@ -140,6 +141,7 @@ impl Demo {
                 configs: vec![config("root", "/", &[])],
                 snaps,
                 next: 10,
+                max_age: None,
             }),
         }
     }
@@ -278,6 +280,15 @@ impl Backend for Demo {
     }
 
     fn reboot(&self) -> Result<()> {
+        Ok(())
+    }
+
+    fn max_age(&self) -> Option<u32> {
+        self.state.lock().unwrap().max_age
+    }
+
+    fn set_max_age(&self, days: Option<u32>) -> Result<()> {
+        self.state.lock().unwrap().max_age = days;
         Ok(())
     }
 
