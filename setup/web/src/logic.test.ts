@@ -8,7 +8,6 @@ import keys from "../../../i18n/setup/_keys.tsv?raw";
 import plTxt from "../../../i18n/setup/pl.txt?raw";
 
 const pl = createI18n(keys, { "pl.txt": plTxt }, ["pl"]);
-const en = createI18n(keys, {}, ["en"]);
 
 describe("konto", () => {
   it("tworzy nazwę użytkownika bez polskich znaków", () => {

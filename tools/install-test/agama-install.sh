@@ -26,9 +26,10 @@ done
 echo "settled after $((i/2)) s"
 echo "=== status after config"; api "$U/api/status"
 echo "=== issues after config"; api "$U/api/issues"
-echo "=== POST install"; api -X POST --data '{"install":null}' "$U/api/action"
+echo "=== POST install"; r=$(api -X POST --data '{"install":null}' "$U/api/action"); echo "$r"
 stage=unknown
-for i in $(seq 360); do   # up to 90 min
+case "$r" in *"HTTP 200"*) n=360;; *) stage=refused; n=0;; esac   # Agama refused: don't wait 90 min
+for i in $(seq $n); do   # up to 90 min
   sleep 15
   s=$(api "$U/api/status")
   echo "[$((i*15))s] $s" | tr -d '\n' | head -c 1500; echo
@@ -41,10 +42,4 @@ echo "=== post-install / target"
 S ls -la /mnt /mnt/var/lib/shrimp-setup /mnt/usr/bin/shrimp-setup /mnt/home 2>&1 | head -40
 S find /var/log/agama* /run/agama -maxdepth 2 -name '*post*' -o -maxdepth 2 -name '*script*' 2>/dev/null | head
 for f in $(S find /var/log/agama* /run/agama /tmp -maxdepth 3 -path '*scripts*' -type f 2>/dev/null | head -20); do echo "--- $f"; S tail -n 60 "$f"; done
-echo "=== repositories"
-for u in https://download.opensuse.org/update/leap/16.1/oss/x86_64 https://download.opensuse.org/update/leap/16.1/oss \
-         https://download.opensuse.org/update/leap/16.1 https://download.opensuse.org/update/leap/16.0/oss/x86_64 \
-         https://download.opensuse.org/update/leap/16.0/oss; do
-  echo "$u $(curl -s -o /dev/null -m 20 -w '%{http_code}' "$u/repodata/repomd.xml")"
-done
 echo "===AGAMA-DONE $stage"

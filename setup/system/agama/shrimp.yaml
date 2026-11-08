@@ -11,7 +11,6 @@ licenses:
 software:
   installation_repositories:
     - url: https://download.opensuse.org/distribution/leap/16.1/repo/oss/$basearch
-    - url: https://download.opensuse.org/update/leap/16.1/oss/$basearch
   installation_labels:
     - label: Leap-DVD-x86_64
       archs: x86_64
