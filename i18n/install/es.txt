@@ -131,4 +131,8 @@
 131	No se encuentra la unidad. Vuelve a conectarla.
 132	El firmware no aceptó la entrada de arranque. Arranca el equipo manualmente desde la unidad, con el menú de arranque.
 133	El firmware no aceptó el ajuste del próximo arranque. Arranca el equipo manualmente desde la unidad, con el menú de arranque.
+134	Shrimp Install necesita el componente Microsoft Edge WebView2, pero no se pudo iniciar.\n\nActualiza Windows o instala WebView2 Runtime desde Microsoft e inténtalo de nuevo.
+135	No se pudo abrir la ventana de Shrimp Install (WebView2).
+136	No se pudo iniciar el componente WebView2.
 137	No hay ningún hueco libre para la entrada de arranque.
+138	Falta la interfaz del programa.

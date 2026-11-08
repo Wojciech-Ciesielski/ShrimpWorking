@@ -1,0 +1,40 @@
+name: GNOME apps inventory
+
+# Lists what the Leap GNOME patterns would install (the installed system uses the
+# "gnome" pattern through Agama, the live ISO only "gnome_basic") and which of those
+# packages are desktop applications, so Shrimp can replace system apps with its own
+# alternatives and Flatpaks. Result: test-results/gnome-apps/ on the same branch.
+
+on:
+  push:
+    branches: [main, "claude/**"]
+    paths: ["tools/gnome-apps-inventory.sh", ".github/workflows/gnome-apps.yml"]
+  workflow_dispatch:
+    inputs:
+      leap_version:
+        description: "openSUSE Leap version"
+        default: "16.1"
+
+permissions:
+  contents: write
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve patterns
+        run: |
+          mkdir -p test-results/gnome-apps
+          sudo docker run --rm -v "$PWD:/work" -w /work docker.io/opensuse/tumbleweed:latest \
+            bash tools/gnome-apps-inventory.sh "${{ github.event.inputs.leap_version || '16.1' }}" test-results/gnome-apps
+          sudo chown -R "$(id -u):$(id -g)" test-results/gnome-apps
+          cat test-results/gnome-apps/summary.txt
+      - name: Commit result
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add test-results/gnome-apps
+          git commit -m "GNOME apps inventory (run ${{ github.run_id }}) [skip ci]" || exit 0
+          for i in 1 2 3; do git pull --rebase -q origin "${{ github.ref_name }}" && git push origin HEAD:"${{ github.ref_name }}" && break; sleep 5; done

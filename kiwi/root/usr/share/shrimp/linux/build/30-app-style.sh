@@ -1,5 +1,5 @@
 #!/bin/bash
-# LinU(x) 3/3: aplikacje Qt, Electron i GTK3 z Flathub w wyglądzie GTK4/libadwaita.
+# Linu(x) 3/3: aplikacje Qt, Electron i GTK3 z Flathub w wyglądzie GTK4/libadwaita.
 # Logika jest w /usr/bin/shrimp-app-style (standardize/ w repo, dołożone przez tools/build-iso.sh):
 # globalne nadpisania flatpak (QT_STYLE_OVERRIDE=Adwaita, dekoracje okien Qt adwaita, portal,
 # Electron na Waylandzie), rozszerzenia z Flathub po instalacji każdej aplikacji.

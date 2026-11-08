@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE policyconfig PUBLIC "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
  "http://www.freedesktop.org/standards/PolicyKit/1/policyconfig.dtd">
-<!-- Panko uruchamia przez pkexec tylko te dwa programy. auth_admin_keep: jedno hasło
+<!-- Panko uruchamia przez pkexec tylko te trzy programy (snapper, transactional-update, własny panko ze zmianą ustawienia). auth_admin_keep: jedno hasło
      na kilka minut, więc kilka zmian ustawień albo kilka woluminów to jedno okno. -->
 <policyconfig>
   <vendor>Shrimp</vendor>
@@ -28,5 +28,17 @@
       <allow_active>auth_admin_keep</allow_active>
     </defaults>
     <annotate key="org.freedesktop.policykit.exec.path">/usr/sbin/transactional-update</annotate>
+  </action>
+  <action id="org.shrimp.panko.settings">
+    <description>Change how long Panko keeps snapshots</description>
+    <description xml:lang="pl">Zmiana czasu przechowywania migawek w Panko</description>
+    <message>Changing Panko settings requires administrator rights.</message>
+    <message xml:lang="pl">Zmiana ustawień Panko wymaga uprawnień administratora.</message>
+    <defaults>
+      <allow_any>no</allow_any>
+      <allow_inactive>no</allow_inactive>
+      <allow_active>auth_admin_keep</allow_active>
+    </defaults>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/bin/panko</annotate>
   </action>
 </policyconfig>

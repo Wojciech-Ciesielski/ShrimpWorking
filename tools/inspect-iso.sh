@@ -34,7 +34,7 @@ for d in "$r"/usr/share/gnome-shell/extensions/*/schemas; do
     echo "local blur-my-shell: overview blur = $(GSETTINGS_SCHEMA_DIR=$d gsettings get org.gnome.shell.extensions.blur-my-shell.overview blur 2>&1 | head -1), panel blur = $(GSETTINGS_SCHEMA_DIR=$d gsettings get org.gnome.shell.extensions.blur-my-shell.panel blur 2>&1 | head -1)";; esac
 done
 echo "=== libraries"; ls -l "$r"/usr/lib64/libz.so* "$r"/lib64/libz.so* 2>&1
-ls "$r"/usr/lib64/girepository-1.0/ | grep -i -E 'gmenu|dbusmenu' || echo "no GMenu/Dbusmenu typelib"
+ls "$r"/usr/share/locale/pl/LC_MESSAGES/ | grep -E '^(gvfs|NetworkManager)\.mo$' || echo "no gvfs/NetworkManager Polish translations"
 ls "$r"/usr/libexec/gvfsd-trash 2>&1
 echo "=== shell theme"
 for c in $(gresource list "$r/usr/share/gnome-shell/gnome-shell-theme.gresource" | grep -E '\.css$|shrimp'); do

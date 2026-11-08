@@ -64,7 +64,7 @@
         <package name="plymouth-dracut"/>
         <package name="plymouth-plugin-script"/>
         <package name="plymouth-plugin-label"/>
-        <!-- sound and video: PipeWire only (LinU(x), codecs in config.sh) -->
+        <!-- sound and video: PipeWire only (Linu(x), codecs in config.sh) -->
         <package name="pipewire"/>
         <package name="wireplumber"/>
         <package name="pipewire-pulseaudio"/>
@@ -78,8 +78,7 @@
         <package name="gnome-shell-extensions-common"/>
         <!-- DING (Desktop Icons) needs the GnomeDesktop 3.0 introspection data -->
         <package name="typelib-1_0-GnomeDesktop-3_0"/>
-        <!-- Apps Menu needs GMenu (gnome-menus); Desktop Icons and Dash to Dock need gvfs for trash:// -->
-        <package name="typelib-1_0-GMenu-3_0"/>
+        <!-- Desktop Icons and Dash to Dock need gvfs for trash:// -->
         <package name="gvfs"/>
         <package name="gvfs-backends"/>
         <package name="nautilus"/>
@@ -111,6 +110,11 @@
              window = GTK4 + WebKitGTK 6 (web processes run in bubblewrap), installer = Agama 24 -->
         <package name="libgtk-4-1"/>
         <package name="libwebkitgtk-6_0-4"/>
+        <!-- Shrimp Apps (store, built by tools/build-setup.sh): libflatpak + libadwaita; Steam needs gamemode and controller rules -->
+        <package name="libflatpak0"/>
+        <package name="libadwaita-1-0"/>
+        <package name="steam-devices"/>
+        <package name="gamemode"/>
         <package name="bubblewrap"/>
         <package name="xdg-dbus-proxy"/>
         <package name="polkit"/>

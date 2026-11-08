@@ -15,11 +15,10 @@ if [ -f /usr/lib/os-release ]; then
   sed -e 's/^NAME=.*/NAME="Shrimp"/' \
       -e 's/^PRETTY_NAME=.*/PRETTY_NAME="Shrimp Beta"/' \
       -e 's/^LOGO=.*/LOGO="shrimp-logo"/' \
-      -e '/^VARIANT=/d' -e '/^VARIANT_ID=/d' \
       /usr/lib/os-release > /etc/os-release
   grep -q '^LOGO=' /etc/os-release || echo 'LOGO="shrimp-logo"' >> /etc/os-release
-  # LinU(x) – "Linux is now usable": Shrimp's layer on top of plain Linux (/usr/share/shrimp/linux)
-  printf '%s\n' 'VARIANT="LinU(x) – Linux is now usable"' 'VARIANT_ID=linu-x' >> /etc/os-release
+  # Linu(x) (Shrimp's layer on top of plain Linux, /usr/share/shrimp/linux) stays out of os-release:
+  # the user does not see the name anywhere in the system.
 fi
 gtk-update-icon-cache -f /usr/share/icons/hicolor || true
 
@@ -32,12 +31,20 @@ gtk-update-icon-cache -f /usr/share/icons/hicolor || true
 MW_DIR=/usr/share/icons/MoreWaita
 MW_REF="${MOREWAITA_REF:-}"
 if [ -z "$MW_REF" ]; then
-  MW_REF="$(curl -fsSL https://api.github.com/repos/somepaulo/MoreWaita/releases/latest 2>/dev/null \
-            | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p' | head -n1)"
+  MW_REF="$(curl -fsSL --retry 5 --retry-all-errors --retry-delay 3 https://api.github.com/repos/somepaulo/MoreWaita/releases/latest 2>/dev/null \
+            | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p' | head -n1 || true)"
 fi
 MW_REF="${MW_REF:-main}"
-curl -fsSL -o /tmp/morewaita.zip "https://github.com/somepaulo/MoreWaita/archive/${MW_REF}.zip" \
-  || die "MoreWaita ${MW_REF}: download failed"
+mw_ok=0
+# github.com/archive gives 503 now and then; codeload.github.com serves the same archive, and the
+# default branch is the last resort when the release tag cannot be fetched at all.
+for url in "https://github.com/somepaulo/MoreWaita/archive/${MW_REF}.zip" \
+           "https://codeload.github.com/somepaulo/MoreWaita/zip/refs/tags/${MW_REF}" \
+           "https://codeload.github.com/somepaulo/MoreWaita/zip/refs/heads/main"; do
+  if curl -fsSL --retry 4 --retry-all-errors --retry-delay 5 -o /tmp/morewaita.zip "$url"; then mw_ok=1; echo "MoreWaita downloaded from $url"; break; fi
+  echo "WARNING: MoreWaita download failed: $url"
+done
+[ "$mw_ok" = 1 ] || die "MoreWaita ${MW_REF}: download failed"
 rm -rf /tmp/morewaita "$MW_DIR"
 mkdir -p /tmp/morewaita
 unzip -q /tmp/morewaita.zip -d /tmp/morewaita
@@ -188,13 +195,13 @@ if [ -n "$OPT_REPO" ]; then
   opt_pkg typelib-1_0-GnomeBluetooth-3_0
   opt_pkg tuned-ppd power-profiles-daemon       # Quick Settings: power mode
   opt_pkg iio-sensor-proxy                      # Quick Settings: auto-rotate (2-in-1 laptops)
-  opt_pkg gnome-software                        # Shrimp menu: Software, Updates (Flathub)
-  opt_pkg gnome-software-plugin-flatpak
   opt_pkg gnome-system-monitor                  # Shrimp menu: System Monitor
   opt_pkg gnome-disk-utility                    # Shrimp menu: Disks
   opt_pkg gnome-extensions                      # Shrimp menu: Extensions
-  opt_pkg baobab                                # Apps Menu › System Tools: disk usage
-  opt_pkg gnome-logs                            # Apps Menu › System Tools: system log
+  opt_pkg baobab                                # app grid: disk usage
+  opt_pkg gnome-logs                            # app grid: system log
+  opt_pkg gvfs-lang                             # translated "Trash" on the desktop (trash:// display name)
+  opt_pkg NetworkManager-lang                   # translated "Wired" in Quick Settings (libnm device names)
   zypper -n removerepo shrimp-build-oss
   zypper -n clean -a
 else
@@ -208,7 +215,7 @@ gtk-update-icon-cache -f /usr/share/icons/hicolor || true
 
 #--------------------------------------
 # GNOME Shell extensions from extensions.gnome.org
-# (Leap 16 does not ship Light Style or Apps Menu in a package,
+# (Leap 16 does not ship Light Style in a package,
 #  so they come from extensions.gnome.org as well)
 #--------------------------------------
 SHELL_MAJOR="$(rpm -q --qf '%{VERSION}' gnome-shell | cut -d. -f1)"
@@ -234,8 +241,7 @@ install_ext() {
   chmod -R a+rX "$EXT/$uuid"
   echo "extension installed: $uuid"
 }
-for uuid in ding@rastersoft.com blur-my-shell@aunetx dash-to-dock@micxgx.gmail.com just-perfection-desktop@just-perfection \
-            apps-menu@gnome-shell-extensions.gcampax.github.com; do
+for uuid in ding@rastersoft.com blur-my-shell@aunetx dash-to-dock@micxgx.gmail.com just-perfection-desktop@just-perfection; do
   [ -d "$EXT/$uuid" ] || install_ext "$uuid" || die "extension $uuid has no release for GNOME $SHELL_MAJOR"
 done
 # Light Style: optional, newer shells follow the light colour scheme on their own
@@ -247,11 +253,11 @@ ls "$EXT"
 glib-compile-schemas /usr/share/glib-2.0/schemas
 
 #--------------------------------------
-# LinU(x): official NVIDIA driver, PipeWire codecs, libadwaita look for Qt/Electron
+# Linu(x): official NVIDIA driver, PipeWire codecs, libadwaita look for Qt/Electron
 # (scripts in /usr/share/shrimp/linux/build, see linux.conf there; failures are WARNING lines)
 #--------------------------------------
 for s in /usr/share/shrimp/linux/build/*.sh; do
-  echo "config.sh: LinU(x) $(basename "$s")"
+  echo "config.sh: Linu(x) $(basename "$s")"
   bash "$s"
 done
 if [ -f /tmp/shrimp-build-oss ]; then
