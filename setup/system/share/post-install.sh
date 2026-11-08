@@ -55,7 +55,7 @@ if [ -f "$T/etc/grub.d/10_linux" ]; then
   GRUB_REGEN=1
 fi
 
-# Pulpit Shrimp jak na nośniku: rozszerzenia (Menu Shrimp, Programy, dok…), ustawienia domyślne
+# Pulpit Shrimp jak na nośniku: rozszerzenia (Menu Shrimp, dok…), ustawienia domyślne
 # (99_shrimp.gschema.override), tapeta i logo. Leap nie ma tych rozszerzeń w pakietach.
 log "kopiuję wygląd pulpitu Shrimp"
 EXT=/usr/share/gnome-shell/extensions
