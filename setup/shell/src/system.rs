@@ -281,7 +281,14 @@ pub fn app_dependencies(id: &str) -> &'static [&'static str] {
     }
 }
 
+const SHRIMP_APPS: &str = "/usr/bin/shrimp-apps";
+
+/// Aplikacje instaluje sklep Shrimp (shrimp-apps --install), a nie bezpośrednio flatpak:
+/// to jego repozytorium i backend pobierają wszystko. Bez sklepu (np. test na obrazie bez niego) działa flatpak.
 pub async fn install_app(id: &str) -> Result<(), CmdError> {
+    if std::path::Path::new(SHRIMP_APPS).exists() {
+        return run(SHRIMP_APPS, &["--install", id]).await.map(|_| ());
+    }
     let _ = run("flatpak", &["remote-add", "--system", "--if-not-exists", "flathub", "https://dl.flathub.org/repo/flathub.flatpakrepo"]).await;
     for dep in app_dependencies(id) {
         if let Err(e) = run("flatpak", &["install", "--system", "--noninteractive", "-y", "flathub", dep]).await {
@@ -326,6 +333,15 @@ pub async fn usb_restore(device: &str) -> Result<(), CmdError> {
 /// Pliki do ~/Pendrive: gdy pendrive nie wróci na miejsce albo użytkownik zrezygnuje.
 pub async fn usb_to_home() -> Result<(), CmdError> {
     run("pkexec", &[USB_HELPER, "to-home"]).await.map(|_| ())
+}
+
+/// Zestaw podstawowy (Firefox i aplikacje GNOME z /usr/share/shrimp/base-apps.json) przez sklep Shrimp.
+/// Brak sklepu albo manifestu nie jest błędem (np. test), pojedyncze nieudane aplikacje też nie.
+pub async fn install_base_apps() -> Result<(), CmdError> {
+    if !std::path::Path::new(SHRIMP_APPS).exists() || !std::path::Path::new("/usr/share/shrimp/base-apps.json").exists() {
+        return Ok(());
+    }
+    run(SHRIMP_APPS, &["--install", "--base"]).await.map(|_| ())
 }
 
 // ---------- zakończenie ----------

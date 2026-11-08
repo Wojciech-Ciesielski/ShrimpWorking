@@ -11,8 +11,11 @@
 #include <windows.h>
 #include <dwmapi.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <wchar.h>
 #include "WebView2.h"
+#include "native_i18n.h"
 #include "shrimp.h"
 #include "shrimp_res.h"
 #include "../rufus.h"
@@ -49,6 +52,29 @@ static const BYTE* resource(int id, DWORD* size)
 	HGLOBAL g = r ? LoadResource(hMainInstance, r) : NULL;
 	*size = r ? SizeofResource(hMainInstance, r) : 0;
 	return g ? LockResource(g) : NULL;
+}
+
+/* Komunikat sprzed startu interfejsu w języku Windows (native_i18n.h z i18n/install), inaczej po angielsku. */
+static const wchar_t* native_tr(int id)
+{
+	static int lang = -1;
+	if (lang < 0) {
+		ULONG n = 0, len = 0;
+		char u[64], tag[32];
+		lang = 0;
+		if (GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &n, NULL, &len) && len > 1) {
+			wchar_t* buf = calloc(len, sizeof(wchar_t));
+			if (buf != NULL && GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &n, buf, &len) &&
+				WideCharToMultiByte(CP_UTF8, 0, buf, -1, u, sizeof(u), NULL, NULL) > 0) {
+				ShrimpLangTag(u, tag, sizeof(tag));
+				for (int i = 0; i < (int)ARRAYSIZE(SHRIMP_NATIVE_TR); i++)
+					if (strcmp(SHRIMP_NATIVE_TR[i].tag, tag) == 0)
+						lang = i;
+			}
+			free(buf);
+		}
+	}
+	return SHRIMP_NATIVE_TR[lang].s[id] ? SHRIMP_NATIVE_TR[lang].s[id] : SHRIMP_NATIVE_TR[0].s[id];
 }
 
 static void fatal(const wchar_t* msg)
@@ -93,8 +119,7 @@ static HRESULT STDMETHODCALLTYPE ICoreWebView2CreateCoreWebView2EnvironmentCompl
 	(void)This;
 	if (FAILED(hr) || result == NULL) {
 		uprintf("Shrimp: WebView2: środowisko 0x%08lX", hr);
-		fatal(L"Shrimp Install potrzebuje składnika Microsoft Edge WebView2, a nie udało się go uruchomić.\n\n"
-			L"Zaktualizuj Windows albo zainstaluj WebView2 Runtime ze strony Microsoft i spróbuj ponownie.");
+		fatal(native_tr(SN_WV2MISSING));
 		return S_OK;
 	}
 	env = result;
@@ -115,7 +140,7 @@ static HRESULT STDMETHODCALLTYPE ICoreWebView2CreateCoreWebView2ControllerComple
 	(void)This;
 	if (FAILED(hr) || result == NULL) {
 		uprintf("Shrimp: WebView2: kontroler 0x%08lX", hr);
-		fatal(L"Nie udało się otworzyć okna Shrimp Install (WebView2).");
+		fatal(native_tr(SN_WINDOWFAIL));
 		return S_OK;
 	}
 	controller = result;
@@ -158,7 +183,7 @@ static HRESULT STDMETHODCALLTYPE ICoreWebView2CreateCoreWebView2ControllerComple
 	html = resource(IDR_SHRIMP_UI, &size);
 	wchar_t* page = html ? utf8_to_w((const char*)html, (int)size) : NULL;
 	if (page == NULL) {
-		fatal(L"Brak interfejsu w programie.");
+		fatal(native_tr(SN_NOUI));
 		return S_OK;
 	}
 	ICoreWebView2_NavigateToString(webview, page);
@@ -369,7 +394,7 @@ BOOL ShrimpWindowCreate(HINSTANCE hInstance, const char* opts_json)
 
 	create_env_t create = load_webview2();
 	if (create == NULL) {
-		fatal(L"Nie udało się uruchomić składnika WebView2.");
+		fatal(native_tr(SN_WV2FAIL));
 		return FALSE;
 	}
 	swprintf(data_dir, ARRAYSIZE(data_dir), L"%s\\WebView2", tmp_dir);
