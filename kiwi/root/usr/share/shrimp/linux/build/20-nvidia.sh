@@ -27,13 +27,29 @@ fi
 "${ZYP[@]}" refresh NVIDIA || { warn "nie można odświeżyć repozytorium NVIDIA"; exit 0; }
 note "repozytorium NVIDIA: $repo"
 
+# Co jest w repozytoriach (do logu budowy, żeby było widać nazwy pakietów, gdy coś nie pasuje).
+note "pakiety NVIDIA w repozytoriach: $("${ZYP[@]}" -q se -t package 'nvidia-open-driver*' 'nvidia-video*' 'nvidia-gl*' 'nvidia-compute-utils*' 'nvidia-driver*' 2>/dev/null | awk -F'|' 'NR>2 {gsub(/ /,"",$2); print $2}' | sort -u | tr '\n' ' ')"
+avail() { "${ZYP[@]}" -q se -x -t package "$1" >/dev/null 2>&1; }
+
 installed=""
 for S in $NVIDIA_OPEN_SERIES; do
+  kmp=""
+  for k in "nvidia-open-driver-$S-signed-kmp-meta" "nvidia-open-driver-$S-signed-kmp-default"; do
+    avail "$k" && { kmp=$k; break; }
+  done
+  [ -n "$kmp" ] || { warn "seria $S: brak podpisanego modułu (nvidia-open-driver-$S-signed-kmp-*)"; continue; }
+  pkgs="$kmp"
+  for p in $(echo "$NVIDIA_OPEN_PACKAGES" | sed "s/@S@/$S/g"); do
+    case "$p" in *kmp*) continue ;; esac
+    if avail "$p"; then pkgs="$pkgs $p"; else warn "seria $S: brak pakietu $p"; fi
+  done
+  note "seria $S: instaluję $pkgs"
   # shellcheck disable=SC2086
-  pkgs=$(echo $NVIDIA_OPEN_PACKAGES | sed "s/@S@/$S/g")
-  # shellcheck disable=SC2086
-  if "${ZYP[@]}" install --no-recommends --auto-agree-with-licenses $pkgs; then installed=$S; break; fi
-  warn "seria $S niedostępna, próbuję następnej"
+  if out=$("${ZYP[@]}" install --no-recommends --auto-agree-with-licenses $pkgs 2>&1); then
+    installed=$S; break
+  fi
+  echo "$out" | tail -25 | sed 's/^/LinU(x): zypper: /' >&2
+  warn "seria $S nie zainstalowała się, próbuję następnej"
 done
 if [ -z "$installed" ]; then
   warn "żadna seria otwartego sterownika NVIDIA ($NVIDIA_OPEN_SERIES) się nie zainstalowała"
