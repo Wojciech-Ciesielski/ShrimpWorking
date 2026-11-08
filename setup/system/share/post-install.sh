@@ -113,6 +113,12 @@ if [ -f "$T/etc/grub.d/10_linux" ]; then
   GRUB_REGEN=1
 fi
 
+# Nazwa Shrimp w os-release (O systemie) zamiast openSUSE, bez adresów openSUSE.
+if [ -x /usr/libexec/shrimp-os-release ]; then
+  /usr/libexec/shrimp-os-release "$T" || log "os-release: nie udało się"
+  install -Dm755 /usr/libexec/shrimp-os-release "$T/usr/libexec/shrimp-os-release"
+fi
+
 # Pulpit Shrimp jak na nośniku: rozszerzenia (Menu Shrimp, dok…), ustawienia domyślne
 # (99_shrimp.gschema.override), tapeta i logo. Leap nie ma tych rozszerzeń w pakietach.
 log "kopiuję wygląd pulpitu Shrimp"
