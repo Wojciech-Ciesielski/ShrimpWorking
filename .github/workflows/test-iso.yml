@@ -37,6 +37,8 @@ jobs:
       - name: Download ISO
         run: |
           id="${{ github.event.inputs.build_run_id }}"
+          # newest successful build of this branch, otherwise of any branch
+          [ -n "$id" ] || id=$(gh run list -R "$GITHUB_REPOSITORY" -w build-iso.yml -s success -b "$GITHUB_REF_NAME" -L 1 --json databaseId -q '.[0].databaseId')
           [ -n "$id" ] || id=$(gh run list -R "$GITHUB_REPOSITORY" -w build-iso.yml -s success -L 1 --json databaseId -q '.[0].databaseId')
           echo "Build ISO run: $id"
           echo "$id" > build-run-id.txt

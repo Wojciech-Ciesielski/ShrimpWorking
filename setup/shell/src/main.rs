@@ -145,6 +145,20 @@ fn build(app: &gtk::Application, url: &str, install: bool, windowed: bool, hint:
     }
     // Bez menu kontekstowego i bez nawigacji poza Setup.
     view.connect_context_menu(|_, _, _| true);
+    // Serwer (Agama albo lokalny) może jeszcze nie słuchać: zamiast strony błędu
+    // ponawiamy ładowanie co 2 s.
+    view.connect_load_failed(|v, _ev, uri, err| {
+        // Przerwane ładowanie (nowa nawigacja, przekierowanie) to nie błąd serwera.
+        if err.matches(webkit6::NetworkError::Cancelled)
+            || err.domain() == <webkit6::PolicyError as glib::error::ErrorDomain>::domain()
+        {
+            return false;
+        }
+        eprintln!("shrimp-setup: {uri}: {err}; ponawiam");
+        let (v, uri) = (v.clone(), uri.to_string());
+        glib::timeout_add_local_once(std::time::Duration::from_secs(2), move || v.load_uri(&uri));
+        true
+    });
     if install {
         // /login ustawia ciasteczko i przekierowuje na „/”; dopiero wtedy otwieramy tryb instalacji.
         view.connect_load_changed(|v, ev| {
