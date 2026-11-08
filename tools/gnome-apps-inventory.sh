@@ -21,13 +21,13 @@ newpkgs() { # package names a dry run would install
   "${Z[@]}" in --dry-run --auto-agree-with-licenses "$@" 2>/dev/null \
     | awk '/NEW package/ {f=1; next} f && /^$/ {f=0} f' | tr ' ' '\n' | sed '/^$/d' | sort -u
 }
-newpkgs -t pattern gnome_basic > "$OUT/pattern-gnome_basic.txt"
-newpkgs -t pattern immutable_base -t pattern gnome > "$OUT/pattern-gnome.txt"
+newpkgs pattern:gnome_basic > "$OUT/pattern-gnome_basic.txt"
+newpkgs pattern:immutable_base pattern:gnome > "$OUT/pattern-gnome.txt"
 comm -13 "$OUT/pattern-gnome_basic.txt" "$OUT/pattern-gnome.txt" > "$OUT/gnome-minus-basic.txt"
 "${Z[@]}" info -t pattern gnome gnome_basic > "$OUT/pattern-info.txt" 2>&1
 
 # Install the full pattern set (like Agama does) and read the visible .desktop files.
-"${Z[@]}" in --auto-agree-with-licenses -t pattern immutable_base -t pattern gnome > "$OUT/install.log" 2>&1 || true
+"${Z[@]}" in --auto-agree-with-licenses pattern:immutable_base pattern:gnome > "$OUT/install.log" 2>&1 || true
 {
   for f in "$R"/usr/share/applications/*.desktop; do
     grep -qiE '^NoDisplay=true' "$f" && continue
