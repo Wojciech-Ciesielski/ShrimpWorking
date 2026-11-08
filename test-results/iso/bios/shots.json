@@ -3,7 +3,11 @@
  "002-0000s-grub-f4.png",
  "003-0025s-grub-menu.png",
  "004-0025s-boot.png",
+<<<<<<< HEAD
  "005-0030s-boot.png",
+=======
+ "005-0029s-boot.png",
+>>>>>>> origin/main
  "006-0031s-boot.png",
  "007-0032s-boot.png",
  "008-0033s-boot.png",
@@ -12,6 +16,7 @@
  "011-0036s-boot.png",
  "012-0037s-boot.png",
  "013-0038s-boot.png",
+<<<<<<< HEAD
  "014-0040s-boot.png",
  "015-0041s-boot.png",
  "016-0055s-boot.png",
@@ -19,4 +24,11 @@
  "018-0070s-boot.png",
  "019-0130s-boot.png",
  "020-0191s-boot.png"
+=======
+ "014-0050s-boot.png",
+ "015-0055s-boot.png",
+ "016-0110s-boot.png",
+ "017-0171s-boot.png",
+ "018-0231s-boot.png"
+>>>>>>> origin/main
 ]
