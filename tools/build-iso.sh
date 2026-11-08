@@ -26,8 +26,14 @@ echo "$REPO/" > out/desc/root/usr/share/shrimp/linux/build/repo.url
 "$ENGINE" run --rm --privileged -v /dev:/dev -v "$PWD:/work" -w /work \
   docker.io/opensuse/tumbleweed:latest bash -euxc "
     zypper -n --gpg-auto-import-keys ref
-    zypper -n in --no-recommends python3-kiwi kiwi-systemdeps-iso-media kiwi-systemdeps-bootloaders kiwi-systemdeps-filesystems binutils findutils gawk sed coreutils \
-      nodejs-default npm-default tar gzip
+    # Tumbleweed mirrors are sometimes mid-sync (404 on single RPMs): retry with a fresh refresh
+    ok=0
+    for i in 1 2 3; do
+      zypper -n in --no-recommends python3-kiwi kiwi-systemdeps-iso-media kiwi-systemdeps-bootloaders kiwi-systemdeps-filesystems binutils findutils gawk sed coreutils \
+        nodejs-default npm-default tar gzip && { ok=1; break; }
+      sleep 60; zypper -n --gpg-auto-import-keys ref -f
+    done
+    [ \$ok = 1 ]
     rm -rf out/build
     # Shrimp Setup (installer + first boot) goes into out/desc/root as well
     tools/build-setup.sh '$REPO' out/desc/root
