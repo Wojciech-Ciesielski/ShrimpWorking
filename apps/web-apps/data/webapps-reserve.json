@@ -14,7 +14,7 @@
   {"id": "le-chat", "name": "Le Chat", "url": "https://chat.mistral.ai/", "category": "internet", "icon": "icons/le-chat.png"},
   {"id": "grok", "name": "Grok", "url": "https://grok.com/", "category": "internet", "icon": "icons/grok.png"},
   {"id": "deepseek", "name": "DeepSeek", "url": "https://chat.deepseek.com/", "category": "internet", "icon": "icons/deepseek.png"},
-  {"id": "revolut", "name": "Revolut", "url": "https://app.revolut.com/", "category": "internet"},
+  {"id": "revolut", "name": "Revolut", "url": "https://app.revolut.com/", "category": "internet", "icon": "icons/revolut.png"},
   {"id": "wise", "name": "Wise", "url": "https://wise.com/", "category": "internet", "icon": "icons/wise.png"},
   {"id": "microsoft-to-do", "name": "Microsoft To Do", "url": "https://to-do.office.com/", "category": "biuro", "icon": "icons/microsoft-to-do.png"},
   {"id": "box", "name": "Box", "url": "https://app.box.com/", "category": "biuro", "icon": "icons/box.png"},
