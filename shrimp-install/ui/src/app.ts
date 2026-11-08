@@ -220,6 +220,7 @@ export class App {
       { device: d.id, folders: this.mode === "auto" ? this.folders.filter((f) => f.on).map((f) => f.key) : [], paths: this.mode === "manual" ? this.picked.map((p) => p.path) : [] },
       {
         progress: (p) => { if (!this.running) return; this.cur = p; this.drawRun(); },
+        image: (size) => { this.info.shrimpSize = size; this.drawRun(); },
         fail: (f) => { this.running = false; this.failed = f; this.drawRun(); },
         done: () => { this.running = false; this.finished = true; this.drawRun(); if (!this.preview) this.go("gotowe"); },
       },

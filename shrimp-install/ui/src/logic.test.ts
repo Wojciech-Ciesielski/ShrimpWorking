@@ -65,6 +65,23 @@ describe("postęp", () => {
   });
 });
 
+describe("kroki w fazach (Beta 2: mylące „pobieranie 1116 MB/s” i „0%” przy zapisie)", () => {
+  const sizes = { shrimp: 1.94 * GiB, files: 0 };
+  it("sprawdzanie pobranego wcześniej obrazu nie udaje pobierania", () => {
+    const p = { phase: 1 as const, done: 0.97 * GiB, total: 1.94 * GiB, speed: 1116 * 1024 ** 2, step: "verify" as const };
+    expect(n(phaseText(pl, 1, p, sizes, false))).toBe("Sprawdzanie pobranego wcześniej obrazu · 50%");
+  });
+  it("przygotowanie i kopia zawartości nośnika mają własny opis", () => {
+    expect(phaseText(pl, 2, { phase: 2, done: 0, total: 0, speed: 0, step: "prepare" }, sizes, false)).toBe("Przygotowanie nośnika…");
+    const b = { phase: 2 as const, done: 1 * GiB, total: 4 * GiB, speed: 50 * 1024 ** 2, step: "backup" as const };
+    expect(n(phaseText(pl, 2, b, sizes, false))).toBe("Kopia zawartości nośnika · 25% · zostało około 1 minuta");
+    expect(remaining(b, sizes)).toBeGreaterThan(sizes.shrimp / (38 * 1024 ** 2));
+  });
+  it("po zakończeniu pobierania podaje prawdziwy rozmiar obrazu", () => {
+    expect(n(phaseText(pl, 1, { phase: 2, done: 0, total: 0, speed: 0 }, sizes, false))).toBe("Pobrano 1,9 GB");
+  });
+});
+
 describe("komunikaty programu", () => {
   it("kody tłumaczy, nieznany tekst zostawia", () => {
     expect(hostMessage(en, "connect")).toBe("Can't connect to the download server.");
