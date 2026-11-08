@@ -36,8 +36,16 @@ if [ -z "$MW_REF" ]; then
             | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p' | head -n1 || true)"
 fi
 MW_REF="${MW_REF:-main}"
-curl -fsSL --retry 5 --retry-all-errors --retry-delay 5 -o /tmp/morewaita.zip "https://github.com/somepaulo/MoreWaita/archive/${MW_REF}.zip" \
-  || die "MoreWaita ${MW_REF}: download failed"
+mw_ok=0
+# github.com/archive gives 503 now and then; codeload.github.com serves the same archive, and the
+# default branch is the last resort when the release tag cannot be fetched at all.
+for url in "https://github.com/somepaulo/MoreWaita/archive/${MW_REF}.zip" \
+           "https://codeload.github.com/somepaulo/MoreWaita/zip/refs/tags/${MW_REF}" \
+           "https://codeload.github.com/somepaulo/MoreWaita/zip/refs/heads/main"; do
+  if curl -fsSL --retry 4 --retry-all-errors --retry-delay 5 -o /tmp/morewaita.zip "$url"; then mw_ok=1; echo "MoreWaita downloaded from $url"; break; fi
+  echo "WARNING: MoreWaita download failed: $url"
+done
+[ "$mw_ok" = 1 ] || die "MoreWaita ${MW_REF}: download failed"
 rm -rf /tmp/morewaita "$MW_DIR"
 mkdir -p /tmp/morewaita
 unzip -q /tmp/morewaita.zip -d /tmp/morewaita
