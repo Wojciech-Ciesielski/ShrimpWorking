@@ -1,0 +1,14 @@
+1	O tym komputerze
+2	Ustawienia
+3	Oprogramowanie
+4	Aktualizacje
+5	Monitor systemu
+6	Dyski
+7	Terminal
+8	Rozszerzenia
+9	Uśpij
+10	Uruchom ponownie…
+11	Wyłącz…
+12	Zablokuj ekran
+13	Wyloguj…
+14	Menu Shrimp
