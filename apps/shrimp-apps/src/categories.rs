@@ -39,14 +39,14 @@ impl Category {
 
     pub fn title(self) -> &'static str {
         match self {
-            Category::Graphics => "Grafika",
-            Category::Video => "Wideo",
-            Category::Music => "Muzyka",
-            Category::Games => "Gry",
-            Category::Office => "Biuro",
-            Category::Internet => "Internet",
-            Category::Development => "Programowanie",
-            Category::Tools => "Narzędzia",
+            Category::Graphics => crate::i18n::tr("category.graphics"),
+            Category::Video => crate::i18n::tr("category.video"),
+            Category::Music => crate::i18n::tr("category.music"),
+            Category::Games => crate::i18n::tr("category.games"),
+            Category::Office => crate::i18n::tr("category.office"),
+            Category::Internet => crate::i18n::tr("category.internet"),
+            Category::Development => crate::i18n::tr("category.development"),
+            Category::Tools => crate::i18n::tr("category.tools"),
         }
     }
 
