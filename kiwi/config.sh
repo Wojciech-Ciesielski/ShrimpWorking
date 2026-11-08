@@ -11,12 +11,7 @@ die() { echo "config.sh: $*" >&2; exit 1; }
 # Branding: os-release (GNOME Settings › O systemie), GRUB name
 #--------------------------------------
 if [ -f /usr/lib/os-release ]; then
-  rm -f /etc/os-release
-  sed -e 's/^NAME=.*/NAME="Shrimp"/' \
-      -e 's/^PRETTY_NAME=.*/PRETTY_NAME="Shrimp Beta"/' \
-      -e 's/^LOGO=.*/LOGO="shrimp-logo"/' \
-      /usr/lib/os-release > /etc/os-release
-  grep -q '^LOGO=' /etc/os-release || echo 'LOGO="shrimp-logo"' >> /etc/os-release
+  /usr/libexec/shrimp-os-release   # nazwa Shrimp, bez adresów openSUSE (ten sam skrypt w post-install)
   # Linu(x) (Shrimp's layer on top of plain Linux, /usr/share/shrimp/linux) stays out of os-release:
   # the user does not see the name anywhere in the system.
 fi
