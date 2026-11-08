@@ -29,7 +29,7 @@ sources=[('xkb', 'pl')]
 button-layout='appmenu:minimize,maximize,close'
 
 [org.gnome.shell]
-enabled-extensions=['shrimp-menu@shrimp', 'ding@rastersoft.com', 'blur-my-shell@aunetx', 'dash-to-dock@micxgx.gmail.com', 'just-perfection-desktop@just-perfection', 'light-style@gnome-shell-extensions.gcampax.github.com', 'apps-menu@gnome-shell-extensions.gcampax.github.com']
+enabled-extensions=['shrimp-menu@shrimp', 'ding@rastersoft.com', 'blur-my-shell@aunetx', 'dash-to-dock@micxgx.gmail.com', 'just-perfection-desktop@just-perfection', 'light-style@gnome-shell-extensions.gcampax.github.com']
 disable-user-extensions=false
 favorite-apps=['org.mozilla.firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.shrimp.Apps.desktop', 'org.gnome.Console.desktop', 'org.gnome.Settings.desktop']
 welcome-dialog-last-shown-version='999'

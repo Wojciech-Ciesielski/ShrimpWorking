@@ -198,8 +198,10 @@ if [ -n "$OPT_REPO" ]; then
   opt_pkg gnome-system-monitor                  # Shrimp menu: System Monitor
   opt_pkg gnome-disk-utility                    # Shrimp menu: Disks
   opt_pkg gnome-extensions                      # Shrimp menu: Extensions
-  opt_pkg baobab                                # Apps Menu › System Tools: disk usage
-  opt_pkg gnome-logs                            # Apps Menu › System Tools: system log
+  opt_pkg baobab                                # app grid: disk usage
+  opt_pkg gnome-logs                            # app grid: system log
+  opt_pkg gvfs-lang                             # translated "Trash" on the desktop (trash:// display name)
+  opt_pkg NetworkManager-lang                   # translated "Wired" in Quick Settings (libnm device names)
   zypper -n removerepo shrimp-build-oss
   zypper -n clean -a
 else
@@ -213,7 +215,7 @@ gtk-update-icon-cache -f /usr/share/icons/hicolor || true
 
 #--------------------------------------
 # GNOME Shell extensions from extensions.gnome.org
-# (Leap 16 does not ship Light Style or Apps Menu in a package,
+# (Leap 16 does not ship Light Style in a package,
 #  so they come from extensions.gnome.org as well)
 #--------------------------------------
 SHELL_MAJOR="$(rpm -q --qf '%{VERSION}' gnome-shell | cut -d. -f1)"
@@ -239,8 +241,7 @@ install_ext() {
   chmod -R a+rX "$EXT/$uuid"
   echo "extension installed: $uuid"
 }
-for uuid in ding@rastersoft.com blur-my-shell@aunetx dash-to-dock@micxgx.gmail.com just-perfection-desktop@just-perfection \
-            apps-menu@gnome-shell-extensions.gcampax.github.com; do
+for uuid in ding@rastersoft.com blur-my-shell@aunetx dash-to-dock@micxgx.gmail.com just-perfection-desktop@just-perfection; do
   [ -d "$EXT/$uuid" ] || install_ext "$uuid" || die "extension $uuid has no release for GNOME $SHELL_MAJOR"
 done
 # Light Style: optional, newer shells follow the light colour scheme on their own
