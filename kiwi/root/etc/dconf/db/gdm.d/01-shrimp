@@ -4,3 +4,4 @@ logo=''
 
 [org/gnome/desktop/interface]
 accent-color='blue'
+icon-theme='MoreWaita'
