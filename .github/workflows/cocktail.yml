@@ -10,6 +10,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-24.04
+    # Zrzuty ekranu po polsku (LANGUAGE czyta i18n Shrimp i Web Apps)
+    env: { LANGUAGE: pl }
     defaults: { run: { working-directory: apps/cocktail } }
     steps:
       - uses: actions/checkout@v4

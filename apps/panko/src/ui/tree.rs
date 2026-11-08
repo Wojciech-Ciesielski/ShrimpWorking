@@ -200,9 +200,9 @@ impl Tree {
                     }
                     w.name.set_label(title);
                     w.root
-                        .update_property(&[gtk::accessible::Property::Label(&format!(
-                            "{} {title}",
-                            if *expanded { "Zwiń" } else { "Rozwiń" }
+                        .update_property(&[gtk::accessible::Property::Label(&crate::i18n::trf(
+                            if *expanded { "tree.collapse" } else { "tree.expand" },
+                            &[("name", title)],
                         ))]);
                 }
                 Row::Snap {
@@ -232,12 +232,10 @@ impl Tree {
                     w.check.set_tooltip_text(if *restorable {
                         None
                     } else {
-                        Some("Plików systemowych z /usr nie da się przywrócić pojedynczo. Użyj „Przywróć system”.")
+                        Some(crate::i18n::tr("changes.usr-readonly"))
                     });
                     w.check
-                        .update_property(&[gtk::accessible::Property::Label(&format!(
-                            "Wybierz {name}"
-                        ))]);
+                        .update_property(&[gtk::accessible::Property::Label(&crate::i18n::trf("tree.select", &[("name", name)]))]);
                     w.icon.set_icon_name(Some("text-x-generic-symbolic"));
                     w.name.set_label(name);
                     w.marker.set_icon_name(Some(marker.icon()));

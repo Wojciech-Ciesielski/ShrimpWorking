@@ -789,6 +789,7 @@ dependencies = [
  "libadwaita",
  "serde",
  "serde_json",
+ "shrimp-i18n",
  "zbus",
 ]
 
@@ -964,6 +965,10 @@ checksum = "9c187e0a369471c550af028cba56d4f4fa2a489ad28151ae95a4d340a2a8b782"
 dependencies = [
  "serde_core",
 ]
+
+[[package]]
+name = "shrimp-i18n"
+version = "0.1.0"
 
 [[package]]
 name = "signal-hook-registry"

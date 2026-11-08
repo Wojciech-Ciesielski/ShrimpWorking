@@ -86,13 +86,13 @@ pub enum Category {
 impl Category {
     pub fn title(&self) -> String {
         match self {
-            Category::AfterUpdate => "Po aktualizacji".into(),
-            Category::BeforeUpdate => "Przed aktualizacją".into(),
-            Category::Timeline => "Cykliczna".into(),
-            Category::BeforeRestore => "Przed przywróceniem".into(),
-            Category::AfterRestore => "Po przywróceniu".into(),
-            Category::Install => "Instalacja systemu".into(),
-            Category::Manual(d) if d.trim().is_empty() => "Migawka ręczna".into(),
+            Category::AfterUpdate => crate::i18n::tr("category.after-update").into(),
+            Category::BeforeUpdate => crate::i18n::tr("category.before-update").into(),
+            Category::Timeline => crate::i18n::tr("category.timeline").into(),
+            Category::BeforeRestore => crate::i18n::tr("category.before-restore").into(),
+            Category::AfterRestore => crate::i18n::tr("category.after-restore").into(),
+            Category::Install => crate::i18n::tr("category.install").into(),
+            Category::Manual(d) if d.trim().is_empty() => crate::i18n::tr("category.manual").into(),
             Category::Manual(d) => d.clone(),
         }
     }
@@ -158,20 +158,20 @@ pub struct LocalTime {
     pub minute: u32,
 }
 
-const WEEKDAYS: [&str; 7] = ["pon.", "wt.", "śr.", "czw.", "pt.", "sob.", "niedz."];
+const WEEKDAYS: [&str; 7] = ["weekday.1", "weekday.2", "weekday.3", "weekday.4", "weekday.5", "weekday.6", "weekday.7"];
 const MONTHS: [&str; 12] = [
-    "Styczeń",
-    "Luty",
-    "Marzec",
-    "Kwiecień",
-    "Maj",
-    "Czerwiec",
-    "Lipiec",
-    "Sierpień",
-    "Wrzesień",
-    "Październik",
-    "Listopad",
-    "Grudzień",
+    "month.1",
+    "month.2",
+    "month.3",
+    "month.4",
+    "month.5",
+    "month.6",
+    "month.7",
+    "month.8",
+    "month.9",
+    "month.10",
+    "month.11",
+    "month.12",
 ];
 
 /// Grupa dni na liście migawek. Kolejność wariantów = kolejność na liście.
@@ -200,11 +200,11 @@ impl DayGroup {
 
     pub fn title(&self) -> String {
         match self {
-            DayGroup::Today => "Dziś".into(),
-            DayGroup::Yesterday => "Wczoraj".into(),
-            DayGroup::LastWeek => "Ostatni tydzień".into(),
+            DayGroup::Today => crate::i18n::tr("day.today").into(),
+            DayGroup::Yesterday => crate::i18n::tr("day.yesterday").into(),
+            DayGroup::LastWeek => crate::i18n::tr("day.week").into(),
             DayGroup::Month(std::cmp::Reverse((y, m))) => {
-                format!("{} {}", MONTHS[(*m as usize).clamp(1, 12) - 1], y)
+                crate::i18n::trf("day.month", &[("month", crate::i18n::tr(MONTHS[(*m as usize).clamp(1, 12) - 1])), ("year", &y.to_string())])
             }
         }
     }
@@ -215,7 +215,7 @@ impl DayGroup {
         match self {
             DayGroup::Today | DayGroup::Yesterday => hm,
             DayGroup::LastWeek => {
-                format!("{} {hm}", WEEKDAYS[(t.weekday as usize).clamp(1, 7) - 1])
+                format!("{} {hm}", crate::i18n::tr(WEEKDAYS[(t.weekday as usize).clamp(1, 7) - 1]))
             }
             DayGroup::Month(_) => format!("{}.{:02} {hm}", t.day, t.month),
         }
@@ -224,8 +224,8 @@ impl DayGroup {
     /// Kiedy, w zdaniu: „dziś 09:21”, „wczoraj 19:42”, „czw. 08:55”.
     pub fn when(&self, t: &LocalTime) -> String {
         match self {
-            DayGroup::Today => format!("dziś {}", self.time_label(t)),
-            DayGroup::Yesterday => format!("wczoraj {}", self.time_label(t)),
+            DayGroup::Today => crate::i18n::trf("day.when-today", &[("time", &self.time_label(t))]),
+            DayGroup::Yesterday => crate::i18n::trf("day.when-yesterday", &[("time", &self.time_label(t))]),
             _ => self.time_label(t),
         }
     }
@@ -255,9 +255,9 @@ impl Marker {
     }
     pub fn label(self) -> &'static str {
         match self {
-            Marker::Added => "Dodany",
-            Marker::Removed => "Usunięty",
-            Marker::Changed => "Zmieniony",
+            Marker::Added => crate::i18n::tr("marker.added"),
+            Marker::Removed => crate::i18n::tr("marker.removed"),
+            Marker::Changed => crate::i18n::tr("marker.changed"),
         }
     }
     pub fn css(self) -> &'static str {
@@ -325,20 +325,20 @@ pub fn group_changes(changes: &[FileChange]) -> Vec<(String, Vec<(String, FileCh
     out
 }
 
-/// Ustawienia przechowywania na stronie Zaawansowane (klucz, nazwa, jednostka).
+/// Ustawienia przechowywania na stronie Zaawansowane (klucz, nazwa jako klucz tłumaczenia).
 pub const LIMITS: [(&str, &str); 6] = [
-    ("TIMELINE_LIMIT_HOURLY", "Migawki godzinowe"),
-    ("TIMELINE_LIMIT_DAILY", "Migawki dzienne"),
-    ("TIMELINE_LIMIT_WEEKLY", "Migawki tygodniowe"),
-    ("TIMELINE_LIMIT_MONTHLY", "Migawki miesięczne"),
-    ("TIMELINE_LIMIT_YEARLY", "Migawki roczne"),
-    ("NUMBER_LIMIT", "Migawki numerowane"),
+    ("TIMELINE_LIMIT_HOURLY", "limit.hourly"),
+    ("TIMELINE_LIMIT_DAILY", "limit.daily"),
+    ("TIMELINE_LIMIT_WEEKLY", "limit.weekly"),
+    ("TIMELINE_LIMIT_MONTHLY", "limit.monthly"),
+    ("TIMELINE_LIMIT_YEARLY", "limit.yearly"),
+    ("NUMBER_LIMIT", "limit.number"),
 ];
 
 /// Nazwa woluminu dla użytkownika.
 pub fn volume_title(c: &Config) -> String {
     match c.subvolume.as_str() {
-        "/" => "/ (system)".into(),
+        "/" => crate::i18n::tr("volume.system").into(),
         s => s.into(),
     }
 }
@@ -390,7 +390,7 @@ mod tests {
         s.userdata.insert("panko".into(), "yes".into());
         assert_eq!(s.category().title(), "Przed zmianą ustawień sieci");
         assert_eq!(s.category().icon(), "camera-photo-symbolic");
-        assert_eq!(Category::Manual(" ".into()).title(), "Migawka ręczna");
+        assert_eq!(Category::Manual(" ".into()).title(), crate::i18n::tr("category.manual"));
     }
 
     fn lt(ts: i64, weekday: u32, hour: u32) -> LocalTime {

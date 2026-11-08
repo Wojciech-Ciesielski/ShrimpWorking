@@ -11,8 +11,8 @@ use crate::model::{volume_title, LIMITS};
 
 /// Woluminy pokazywane zawsze (nazwa konfiguracji, ścieżka, opis dostępności).
 const VOLUMES: [(&str, &str, &str); 2] = [
-    ("root", "/", "Migawki dla systemu"),
-    ("home", "/home", "Migawki dla katalogu domowego"),
+    ("root", "/", "volume.root"),
+    ("home", "/home", "volume.home"),
 ];
 
 struct Group {
@@ -107,11 +107,11 @@ impl Page {
         };
 
         // Woluminy: wiersze dochodzą w refresh_advanced (zależą od konfiguracji).
-        let g_vol = add_group(&list, "drive-harddisk-symbolic", "Woluminy", true);
+        let g_vol = add_group(&list, "drive-harddisk-symbolic", crate::i18n::tr("adv.volumes"), true);
         let volumes = gtk::Box::new(gtk::Orientation::Vertical, 0);
         list.append(&volumes);
 
-        let g_clean = add_group(&list, "user-trash-symbolic", "Czyszczenie", true);
+        let g_clean = add_group(&list, "user-trash-symbolic", crate::i18n::tr("adv.cleanup"), true);
         let mut limit_spins = vec![];
         for (key, name) in LIMITS {
             let icon = if key == "NUMBER_LIMIT" {
@@ -119,6 +119,7 @@ impl Page {
             } else {
                 "document-open-recent-symbolic"
             };
+            let name = crate::i18n::tr(name);
             let row = node(icon, name);
             let (s, b) = spin(999.0, name, None);
             row.append(&b);
@@ -137,13 +138,13 @@ impl Page {
             });
             limit_spins.push((key, s));
         }
-        let row = node("user-trash-symbolic", "Usuwaj puste pary migawek");
-        let empty_pairs = switch("Usuwaj puste pary migawek");
+        let row = node("user-trash-symbolic", crate::i18n::tr("adv.empty-pairs"));
+        let empty_pairs = switch(crate::i18n::tr("adv.empty-pairs"));
         row.append(&empty_pairs);
         list.append(&row);
         items.push(Item {
             widget: row,
-            name: "usuwaj puste pary migawek".into(),
+            name: crate::i18n::tr("adv.empty-pairs").to_lowercase(),
             group: g_clean,
         });
         let w = Rc::downgrade(app);
@@ -156,13 +157,13 @@ impl Page {
                 );
             }
         });
-        let row = node("drive-harddisk-symbolic", "Limit miejsca na dysku");
-        let (space, b) = spin(100.0, "Limit miejsca na dysku", Some("%"));
+        let row = node("drive-harddisk-symbolic", crate::i18n::tr("adv.space"));
+        let (space, b) = spin(100.0, crate::i18n::tr("adv.space"), Some("%"));
         row.append(&b);
         list.append(&row);
         items.push(Item {
             widget: row,
-            name: "limit miejsca na dysku".into(),
+            name: crate::i18n::tr("adv.space").to_lowercase(),
             group: g_clean,
         });
         let w = Rc::downgrade(app);
@@ -173,18 +174,18 @@ impl Page {
             }
         });
 
-        let g_access = add_group(&list, "security-high-symbolic", "Dostęp", false);
-        let row = node("security-high-symbolic", "Użytkownicy z dostępem");
+        let g_access = add_group(&list, "security-high-symbolic", crate::i18n::tr("adv.access"), false);
+        let row = node("security-high-symbolic", crate::i18n::tr("adv.users"));
         let users = gtk::Entry::new();
-        users.set_placeholder_text(Some("Nazwa użytkownika"));
+        users.set_placeholder_text(Some(crate::i18n::tr("adv.username")));
         users.set_width_chars(18);
         users.set_valign(gtk::Align::Center);
-        users.update_property(&[gtk::accessible::Property::Label("Użytkownicy z dostępem")]);
+        users.update_property(&[gtk::accessible::Property::Label(crate::i18n::tr("adv.users"))]);
         row.append(&users);
         list.append(&row);
         items.push(Item {
             widget: row,
-            name: "użytkownicy z dostępem".into(),
+            name: crate::i18n::tr("adv.users").to_lowercase(),
             group: g_access,
         });
         let w = Rc::downgrade(app);
@@ -253,14 +254,14 @@ impl App {
             p.items.borrow_mut().retain(|i| i.group != 0);
             let mut vols: Vec<(String, String, String)> = VOLUMES
                 .iter()
-                .map(|(n, s, l)| (n.to_string(), s.to_string(), l.to_string()))
+                .map(|(n, s, l)| (n.to_string(), s.to_string(), crate::i18n::tr(l).to_string()))
                 .collect();
             for c in &configs {
                 if !vols.iter().any(|v| v.1 == c.subvolume) {
                     vols.push((
                         c.name.clone(),
                         c.subvolume.clone(),
-                        format!("Migawki dla {}", c.subvolume),
+                        crate::i18n::trf("volume.other", &[("path", &c.subvolume)]),
                     ));
                 }
             }
@@ -269,7 +270,7 @@ impl App {
                 let cfg = configs.iter().find(|c| c.subvolume == subvol);
                 let title = cfg.map(volume_title).unwrap_or_else(|| {
                     if subvol == "/" {
-                        "/ (system)".into()
+                        crate::i18n::tr("volume.system").into()
                     } else {
                         subvol.clone()
                     }
@@ -301,9 +302,9 @@ impl App {
                         let w2 = Rc::downgrade(&app);
                         let n = cfg_name.clone();
                         app.confirm(
-                            "Wyłączyć migawki?",
-                            "Migawki tego woluminu zostaną usunięte.",
-                            "Wyłącz",
+                            crate::i18n::tr("disable.title"),
+                            crate::i18n::tr("disable.body"),
+                            crate::i18n::tr("button.turn-off"),
                             true,
                             None,
                             move || {
@@ -350,7 +351,7 @@ impl App {
             move |r| {
                 let Some(app) = w.upgrade() else { return };
                 if let Err(e) = r {
-                    app.fail("Nie udało się wyłączyć migawek.", &e);
+                    app.fail(crate::i18n::tr("error.disable"), &e);
                 }
                 app.reload();
             },
