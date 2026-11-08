@@ -1,0 +1,15 @@
+[package]
+name = "cocktail"
+version = "0.1.0"
+edition = "2021"
+description = "Cocktail: aktualizacje systemu, urządzenia, pakiety i historia (nakładka na zyppera)"
+license = "GPL-3.0-or-later"
+
+[dependencies]
+gtk = { package = "gtk4", version = "0.11", features = ["v4_14"] }
+adw = { package = "libadwaita", version = "0.9", features = ["v1_5"] }
+roxmltree = "0.21"
+
+[profile.release]
+lto = true
+strip = true

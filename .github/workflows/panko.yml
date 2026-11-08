@@ -1,0 +1,45 @@
+name: Panko
+
+on:
+  push:
+    paths: ["apps/panko/**", "site/help.json", ".github/workflows/panko.yml"]
+  pull_request:
+    paths: ["apps/panko/**", "site/help.json", ".github/workflows/panko.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    defaults: { run: { working-directory: apps/panko } }
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgtk-4-dev libadwaita-1-dev xvfb imagemagick desktop-file-utils libxml2-utils
+      - run: cargo clippy --locked --all-targets -- -D warnings
+      - run: cargo test --locked
+      - run: cargo build --locked --release
+      - run: desktop-file-validate data/org.shrimp.Panko.desktop
+      - run: xmllint --noout data/org.shrimp.Panko.policy
+      - name: Zrzuty na przykładowych danych (jasny i ciemny)
+        run: |
+          mkdir -p screens
+          shot() {
+            out=$1; shift
+            Xvfb :99 -screen 0 1000x720x24 & xp=$!
+            sleep 1
+            env DISPLAY=:99 GSK_RENDERER=cairo NO_AT_BRIDGE=1 "$@" target/release/panko --demo & ap=$!
+            sleep 4
+            DISPLAY=:99 import -window root -crop 880x640+0+0 "screens/$out.png"
+            kill $ap $xp; wait $ap $xp 2>/dev/null || true
+          }
+          for scheme in light dark; do
+            s=ADW_DEBUG_COLOR_SCHEME=prefer-$scheme
+            shot "migawki-$scheme" $s
+            shot "migawki-zaznaczona-$scheme" $s PANKO_SELECT=6
+            shot "zmiany-$scheme" $s PANKO_PAGE=zmiany PANKO_SELECT=3
+            shot "zaawansowane-$scheme" $s PANKO_PAGE=zaawansowane
+          done
+      - uses: actions/upload-artifact@v4
+        with: { name: panko-screens, path: apps/panko/screens }
