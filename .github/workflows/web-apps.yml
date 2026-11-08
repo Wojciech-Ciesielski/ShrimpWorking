@@ -23,6 +23,8 @@ jobs:
       - name: Sprawdzenie adresów i pobranie ikon
         run: python3 apps/web-apps/tools/verify.py
       - name: Zapis wyników do gałęzi
+        # Na main nic nie commitujemy: wyniki przychodzą tam razem z PR.
+        if: github.ref_name != 'main'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -48,6 +50,7 @@ jobs:
           grep -q "przycisk po: Otwórz" out.txt
           cat xdg/applications/shrimp-webapp-spotify.desktop
       - name: Zapis zrzutu do gałęzi
+        if: github.ref_name != 'main'
         working-directory: .
         run: |
           git config user.name "github-actions[bot]"

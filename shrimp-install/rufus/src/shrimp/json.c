@@ -62,6 +62,7 @@ static void sep(jb* b, const char* key)
 }
 
 void jb_init(jb* b) { memset(b, 0, sizeof(*b)); put(b, "", 0); }
+void jb_text(jb* b, const char* s) { PUTS(b, s); }
 void jb_free(jb* b) { free(b->s); memset(b, 0, sizeof(*b)); }
 
 static void jb_open(jb* b, const char* key, const char* c)
