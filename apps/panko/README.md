@@ -78,19 +78,17 @@ migawki, Panko robi to samo przez pkexec.
 
 ## Czego brakuje
 
-1. **Nie ma Panko na ISO.** Trzeba dodać budowę w chroot Leap (jak `tools/build-setup.sh`
-   dla Setup) i `apps/panko/install.sh` w `tools/build-iso.sh`, plus pakiety `snapper` i
-   `libadwaita` w `kiwi/config.kiwi`. Dopisać do menu systemowego (`shrimp-menu@shrimp`).
-2. **Dostęp bez pytania.** Najlepiej, żeby Setup po instalacji ustawił
-   `ALLOW_GROUPS=wheel SYNC_ACL=yes` w konfiguracji `root` (`setup/system/share/post-install.sh`).
-   Wtedy stan „Brak dostępu” nie pojawi się administratorowi.
+1. **Na ISO od tej zmiany:** `tools/build-setup.sh` buduje Panko w chroocie Leap, `kiwi/config.sh`
+   włącza `panko-cleanup.timer`, a `setup/system/share/post-install.sh` kopiuje go do zainstalowanego
+   systemu (dopóki nie ma pakietu). Menu Shrimp otwiera go jako „Panko”.
+2. **Dostęp bez pytania:** post-install ustawia `ALLOW_GROUPS="wheel"` i `SYNC_ACL="yes"` w konfiguracji
+   `root`, więc administrator nie widzi stanu „Brak dostępu”. Do sprawdzenia na zainstalowanym systemie.
 3. **Ikona aplikacji** `org.shrimp.Panko` – nie ma jej ani w Adwaita, ani w paczce projektu.
    Do wybrania z MoreWaita albo do narysowania (zasada: tylko prawdziwe ikony).
 4. **„Migawka przed aktualizacją”** w menu jest zawsze włączona i nieaktywna: na systemie
    niezmiennym transactional-update zawsze robi migawkę i nie ma ustawienia, żeby tego nie robić.
    Do decyzji: zostawić jako informację, ukryć albo powiązać z wtyczką zyppera.
-5. **Timer czyszczenia trzeba włączyć w obrazie** (`systemctl enable panko-cleanup.timer`,
-   np. w `kiwi/config.sh`). `install.sh` instaluje jednostki, ale ich nie włącza.
+5. **Timer czyszczenia** jest włączany w obrazie (`kiwi/config.sh`) i w zainstalowanym systemie (post-install).
 6. **Tylko migawki systemu (/)** na listach Migawki i Zmiany. Migawki /home (po włączeniu
    w Zaawansowanych) są tworzone, ale nie ma jeszcze ich przeglądania (np. przełącznik woluminu).
 7. **Przywracanie plików z /usr** na systemie niezmiennym nie przejdzie (/usr tylko do odczytu);

@@ -5,6 +5,7 @@ mod backend;
 mod demo;
 mod escape;
 mod help;
+mod i18n;
 mod model;
 mod retention;
 mod ui;

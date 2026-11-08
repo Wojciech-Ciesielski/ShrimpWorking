@@ -24,14 +24,17 @@ pub struct Entry {
     pub kind: Kind,
 }
 
+use crate::i18n::trf;
+
 impl Entry {
     pub fn title(&self) -> String {
         match &self.kind {
-            Kind::Installed => format!("Zainstalowano: {} {}", self.name, short(&self.version)),
-            Kind::Updated { old } => {
-                format!("Zaktualizowano: {} {} → {}", self.name, short(old), short(&self.version))
-            }
-            Kind::Removed => format!("Usunięto: {} {}", self.name, short(&self.version)),
+            Kind::Installed => trf("history.installed", &[("name", &self.name), ("version", short(&self.version))]),
+            Kind::Updated { old } => trf(
+                "history.updated",
+                &[("name", &self.name), ("old", short(old)), ("version", short(&self.version))],
+            ),
+            Kind::Removed => trf("history.removed", &[("name", &self.name), ("version", short(&self.version))]),
         }
     }
 }
@@ -94,13 +97,13 @@ pub fn parse_date(s: &str) -> Option<i64> {
     Some(days(it.next()??, it.next()??, it.next()??))
 }
 
-/// Grupa dnia jak w makiecie: Dziś, Wczoraj, Ostatni tydzień, Wcześniej.
+/// Grupa dnia jak w makiecie (klucz tłumaczenia): Dziś, Wczoraj, Ostatni tydzień, Wcześniej.
 pub fn group(date: &str, today: i64) -> &'static str {
     match parse_date(date).map(|d| today - d) {
-        Some(0) => "Dziś",
-        Some(1) => "Wczoraj",
-        Some(n) if (2..=7).contains(&n) => "Ostatni tydzień",
-        _ => "Wcześniej",
+        Some(0) => "history.today",
+        Some(1) => "history.yesterday",
+        Some(n) if (2..=7).contains(&n) => "history.week",
+        _ => "history.earlier",
     }
 }
 
@@ -131,10 +134,11 @@ mod tests {
     #[test]
     fn groups() {
         let today = parse_date("2026-11-07").unwrap();
-        assert_eq!(group("2026-11-07", today), "Dziś");
-        assert_eq!(group("2026-11-06", today), "Wczoraj");
-        assert_eq!(group("2026-11-01", today), "Ostatni tydzień");
-        assert_eq!(group("2026-10-01", today), "Wcześniej");
+        assert_eq!(group("2026-11-07", today), "history.today");
+        assert_eq!(group("2026-11-06", today), "history.yesterday");
+        assert_eq!(group("2026-11-01", today), "history.week");
+        assert_eq!(group("2026-10-01", today), "history.earlier");
+        assert_eq!(crate::i18n::tr(group("2026-11-07", today)), "Dziś");
         assert_eq!(days(1970, 1, 1), 0);
         assert_eq!(parse_date("2026-03-01").unwrap() - parse_date("2026-02-28").unwrap(), 1);
     }

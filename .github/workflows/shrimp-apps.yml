@@ -2,9 +2,9 @@ name: Shrimp Apps
 
 on:
   push:
-    paths: ["apps/shrimp-apps/**", "apps/web-apps/**", "site/help.json", ".github/workflows/shrimp-apps.yml"]
+    paths: ["apps/shrimp-apps/**", "apps/shrimp-i18n/**", "i18n/shrimp-apps/**", "i18n/langs.ts", "apps/web-apps/**", "site/help.json", ".github/workflows/shrimp-apps.yml"]
   pull_request:
-    paths: ["apps/shrimp-apps/**", "apps/web-apps/**", "site/help.json", ".github/workflows/shrimp-apps.yml"]
+    paths: ["apps/shrimp-apps/**", "apps/shrimp-i18n/**", "i18n/shrimp-apps/**", "i18n/langs.ts", "apps/web-apps/**", "site/help.json", ".github/workflows/shrimp-apps.yml"]
   workflow_dispatch:
 
 permissions:
@@ -13,6 +13,8 @@ permissions:
 jobs:
   apps:
     runs-on: ubuntu-24.04
+    # Zrzuty ekranu po polsku (LANGUAGE czyta i18n Shrimp i Web Apps)
+    env: { LANGUAGE: pl }
     defaults: { run: { working-directory: apps/shrimp-apps } }
     steps:
       - uses: actions/checkout@v4
@@ -72,3 +74,30 @@ jobs:
           git add test-results/shrimp-apps
           git commit -m "Shrimp Apps screenshots (run ${{ github.run_id }}) [skip ci]" || exit 0
           for i in 1 2 3; do git pull --rebase -q origin "${{ github.ref_name }}" && git push origin HEAD:"${{ github.ref_name }}" && break; sleep 5; done
+
+  # Steam z Flathub tak, jak instaluje go Setup (shrimp-apps --install). Sprawdza, czy razem z nim
+  # przychodzą 32-bitowe GL (org.freedesktop.Platform.GL32.*) i kodeki (ffmpeg-full), bez których gry
+  # się nie uruchamiają. Steam i jego środowiska to kilka GB, więc tylko przy zmianach tego pliku i ręcznie.
+  steam:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[steam]')
+    runs-on: ubuntu-24.04
+    defaults: { run: { working-directory: apps/shrimp-apps } }
+    steps:
+      - uses: actions/checkout@v4
+      - name: Zależności
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libgtk-4-dev libadwaita-1-dev libflatpak-dev flatpak ostree
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+      - run: cargo build --locked
+      - name: Instalacja Steam przez sklep Shrimp
+        run: |
+          sudo flatpak remote-add --system --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          sudo -E ./target/debug/shrimp-apps --install com.valvesoftware.Steam | tail -n 5
+          flatpak list --system --columns=ref | tee "$RUNNER_TEMP/refs.txt"
+          # --columns=ref wypisuje refy bez „app/” i „runtime/”
+          grep -q '^com.valvesoftware.Steam/' "$RUNNER_TEMP/refs.txt"
+          grep -q '^org.freedesktop.Platform.GL32.default/' "$RUNNER_TEMP/refs.txt"   # 32-bitowe GL dla gier
+          grep -q '^org.freedesktop.Platform.Compat.i386/' "$RUNNER_TEMP/refs.txt"
+          grep -q 'codecs' "$RUNNER_TEMP/refs.txt"   # kodeki (od 25.08 codecs-extra zamiast ffmpeg-full)
+          flatpak info --system --show-metadata com.valvesoftware.Steam | sed -n '/Extension/,$p' | head -40

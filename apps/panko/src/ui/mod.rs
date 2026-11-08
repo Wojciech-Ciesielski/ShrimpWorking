@@ -17,11 +17,11 @@ use crate::backend::{Backend, Error};
 use crate::model::{Config, Snapshot};
 
 pub const PAGES: [(&str, &str, &str); 3] = [
-    ("migawki", "Migawki", "document-open-recent-symbolic"),
-    ("zmiany", "Zmiany", "document-edit-symbolic"),
+    ("migawki", "page.snapshots", "document-open-recent-symbolic"),
+    ("zmiany", "page.changes", "document-edit-symbolic"),
     (
         "zaawansowane",
-        "Zaawansowane",
+        "page.advanced",
         "applications-system-symbolic",
     ),
 ];
@@ -114,7 +114,7 @@ pub fn build(app: &adw::Application, backend: Arc<dyn Backend>) {
     let header = adw::HeaderBar::new();
     header.set_show_title(false);
     let help = gtk::Button::from_icon_name("dialog-question-symbolic");
-    help.set_tooltip_text(Some("Pomoc"));
+    help.set_tooltip_text(Some(crate::i18n::tr("help")));
     match crate::help::url() {
         Some(url) => {
             help.connect_clicked(move |b| {
@@ -136,11 +136,11 @@ pub fn build(app: &adw::Application, backend: Arc<dyn Backend>) {
     for (_, title, icon) in PAGES {
         let b = gtk::Box::new(gtk::Orientation::Horizontal, 10);
         b.append(&gtk::Image::from_icon_name(icon));
-        b.append(&gtk::Label::new(Some(title)));
+        b.append(&gtk::Label::new(Some(crate::i18n::tr(title))));
         sidebar.append(&b);
     }
     let search = gtk::SearchEntry::new();
-    search.set_placeholder_text(Some("Szukaj"));
+    search.set_placeholder_text(Some(crate::i18n::tr("search.placeholder")));
     search.set_valign(gtk::Align::End);
     search.set_vexpand(true);
     let side = gtk::Box::new(gtk::Orientation::Vertical, 2);
@@ -152,7 +152,7 @@ pub fn build(app: &adw::Application, backend: Arc<dyn Backend>) {
     let pages = gtk::Stack::new();
     pages.set_transition_type(gtk::StackTransitionType::Crossfade);
     pages.set_vexpand(true);
-    let no_results = gtk::Label::new(Some("Nic nie pasuje do tego wyszukiwania."));
+    let no_results = gtk::Label::new(Some(crate::i18n::tr("search.none")));
     no_results.add_css_class("panko-empty");
     no_results.set_xalign(0.0);
     no_results.set_visible(false);
@@ -161,7 +161,7 @@ pub fn build(app: &adw::Application, backend: Arc<dyn Backend>) {
     content.append(&pages);
     content.append(&no_results);
     if backend.is_demo() {
-        let sample = gtk::Label::new(Some("Przykładowe dane, pokazują wygląd, nie stan systemu."));
+        let sample = gtk::Label::new(Some(crate::i18n::tr("demo.note")));
         sample.add_css_class("panko-sample");
         sample.set_xalign(0.0);
         content.append(&sample);
@@ -296,7 +296,7 @@ pub fn build(app: &adw::Application, backend: Arc<dyn Backend>) {
             .application_name("Panko")
             .developer_name("Shrimp")
             .version(env!("CARGO_PKG_VERSION"))
-            .comments("Cofanie zmian w systemie.")
+            .comments(crate::i18n::tr("about.comments"))
             .license_type(gtk::License::Gpl30)
             .build();
         about.present(Some(&win));
@@ -355,33 +355,33 @@ fn build_menu() -> (
     before_update.set_sensitive(false);
     before_update.set_valign(gtk::Align::Center);
     before_update.update_property(&[gtk::accessible::Property::Label(
-        "Migawka przed aktualizacją",
+        crate::i18n::tr("menu.before-update"),
     )]);
     b.append(&row(
-        "Migawka przed aktualizacją",
+        crate::i18n::tr("menu.before-update"),
         before_update.upcast_ref(),
     ));
     let timeline = gtk::Switch::new();
     timeline.set_valign(gtk::Align::Center);
-    timeline.update_property(&[gtk::accessible::Property::Label("Migawki cykliczne")]);
-    b.append(&row("Migawki cykliczne", timeline.upcast_ref()));
+    timeline.update_property(&[gtk::accessible::Property::Label(crate::i18n::tr("menu.timeline"))]);
+    b.append(&row(crate::i18n::tr("menu.timeline"), timeline.upcast_ref()));
     // Usługa migawek nie ma limitu wieku: Panko czyści sam (retention.rs, panko-cleanup.timer).
     let age_on = gtk::Switch::new();
     age_on.set_valign(gtk::Align::Center);
-    age_on.update_property(&[gtk::accessible::Property::Label("Usuwaj stare migawki")]);
-    b.append(&row("Usuwaj stare migawki", age_on.upcast_ref()));
+    age_on.update_property(&[gtk::accessible::Property::Label(crate::i18n::tr("menu.max-age"))]);
+    b.append(&row(crate::i18n::tr("menu.max-age"), age_on.upcast_ref()));
     let days = gtk::SpinButton::with_range(1.0, f64::from(crate::retention::MAX_DAYS), 1.0);
     days.set_valign(gtk::Align::Center);
     days.set_value(30.0);
     days.set_sensitive(false);
-    days.update_property(&[gtk::accessible::Property::Label("Liczba dni")]);
+    days.update_property(&[gtk::accessible::Property::Label(crate::i18n::tr("menu.days-a11y"))]);
     let num = gtk::Box::new(gtk::Orientation::Horizontal, 6);
     num.append(&days);
-    let d = gtk::Label::new(Some("dni"));
+    let d = gtk::Label::new(Some(crate::i18n::tr("menu.days")));
     d.add_css_class("dim-label");
     num.append(&d);
-    b.append(&row("Starsze niż", num.upcast_ref()));
-    let about = gtk::Button::with_label("O aplikacji Panko");
+    b.append(&row(crate::i18n::tr("menu.older-than"), num.upcast_ref()));
+    let about = gtk::Button::with_label(crate::i18n::tr("menu.about"));
     about.add_css_class("flat");
     if let Some(l) = about.child().and_downcast::<gtk::Label>() {
         l.set_xalign(0.0);
@@ -391,7 +391,7 @@ fn build_menu() -> (
     pop.set_child(Some(&b));
     let mb = gtk::MenuButton::new();
     mb.set_icon_name("open-menu-symbolic");
-    mb.set_tooltip_text(Some("Menu główne"));
+    mb.set_tooltip_text(Some(crate::i18n::tr("menu.main")));
     mb.set_popover(Some(&pop));
     (mb, timeline, days, age_on, about)
 }
@@ -458,9 +458,9 @@ impl App {
                 match r {
                     Ok((configs, _, _)) if configs.is_empty() => app.show_status(
                         "document-open-recent-symbolic",
-                        "Migawki są wyłączone",
-                        "Włącz migawki, aby móc cofać zmiany w systemie.",
-                        Some("Włącz"),
+                        crate::i18n::tr("status.off"),
+                        crate::i18n::tr("status.off-body"),
+                        Some(crate::i18n::tr("button.turn-on")),
                         |app| app.enable_volume("root", "/"),
                     ),
                     Ok((configs, snaps, max_age)) => {
@@ -472,18 +472,18 @@ impl App {
                     }
                     Err(Error::NoPermission) => app.show_status(
                         "security-high-symbolic",
-                        "Brak dostępu do migawek",
-                        "Aby przeglądać migawki, zezwól na dostęp temu kontu.",
-                        Some("Zezwól"),
+                        crate::i18n::tr("status.no-access"),
+                        crate::i18n::tr("status.no-access-body"),
+                        Some(crate::i18n::tr("button.allow")),
                         |app| app.grant_access(),
                     ),
                     Err(e) => {
                         eprintln!("panko: {e}");
                         app.show_status(
                             "dialog-warning-symbolic",
-                            "Migawki są niedostępne",
-                            "Nie udało się odczytać migawek.",
-                            Some("Spróbuj ponownie"),
+                            crate::i18n::tr("status.unavailable"),
+                            crate::i18n::tr("status.unavailable-body"),
+                            Some(crate::i18n::tr("button.retry")),
                             |app| app.reload(),
                         )
                     }
@@ -506,7 +506,7 @@ impl App {
                 match r {
                     Ok(()) => app.reload(),
                     Err(e) => {
-                        app.fail("Nie udało się zezwolić na dostęp.", &e);
+                        app.fail(crate::i18n::tr("error.allow"), &e);
                         // Przycisk znowu działa.
                         *app.status_action.borrow_mut() =
                             Some(Box::new(|app: &Rc<App>| app.grant_access()));
@@ -525,7 +525,7 @@ impl App {
             move |r| {
                 let Some(app) = weak.upgrade() else { return };
                 if let Err(e) = r {
-                    app.fail("Nie udało się włączyć migawek.", &e);
+                    app.fail(crate::i18n::tr("error.enable"), &e);
                 }
                 app.reload();
             },
@@ -590,7 +590,7 @@ impl App {
         on_ok: impl Fn() + 'static,
     ) {
         let d = adw::AlertDialog::new(Some(title), if text.is_empty() { None } else { Some(text) });
-        d.add_response("cancel", "Anuluj");
+        d.add_response("cancel", crate::i18n::tr("button.cancel"));
         d.add_response("ok", ok);
         d.set_response_appearance(
             "ok",
@@ -676,7 +676,7 @@ impl App {
                         move |r| {
                             let Some(app) = weak.upgrade() else { return };
                             if let Err(e) = r {
-                                app.fail("Nie udało się zapisać ustawień.", &e);
+                                app.fail(crate::i18n::tr("error.settings"), &e);
                             }
                             app.reload();
                         },
@@ -697,7 +697,7 @@ impl App {
             move |r| {
                 let Some(app) = weak.upgrade() else { return };
                 if let Err(e) = r {
-                    app.fail("Nie udało się zapisać ustawień.", &e);
+                    app.fail(crate::i18n::tr("error.settings"), &e);
                 }
                 // Po zapisie albo odmowie kontrolki pokazują prawdziwy stan.
                 app.reload();

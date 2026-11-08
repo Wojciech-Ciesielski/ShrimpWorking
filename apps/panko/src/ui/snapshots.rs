@@ -77,14 +77,14 @@ impl Page {
         sel_name.add_css_class("panko-sel-name");
         sel_name.set_ellipsize(gtk::pango::EllipsizeMode::End);
         sel_name.set_max_width_chars(28);
-        let show = gtk::Button::with_label("Pokaż zmiany");
-        let del = gtk::Button::with_label("Usuń");
+        let show = gtk::Button::with_label(crate::i18n::tr("snap.show-changes"));
+        let del = gtk::Button::with_label(crate::i18n::tr("button.delete"));
         let sel_box = gtk::Box::new(gtk::Orientation::Horizontal, 8);
         sel_box.append(&sel_name);
         sel_box.append(&show);
         sel_box.append(&del);
         sel_box.set_visible(false);
-        let main = gtk::Button::with_label("Utwórz migawkę");
+        let main = gtk::Button::with_label(crate::i18n::tr("snap.create"));
         main.add_css_class("suggested-action");
         main.add_css_class("panko-main");
         main.set_halign(gtk::Align::End);
@@ -94,7 +94,7 @@ impl Page {
         bar.append(&sel_box);
         bar.append(&main);
 
-        let empty = gtk::Label::new(Some("Nie ma jeszcze migawek."));
+        let empty = gtk::Label::new(Some(crate::i18n::tr("snap.none")));
         empty.add_css_class("panko-empty");
         empty.set_xalign(0.0);
         empty.set_valign(gtk::Align::Start);
@@ -208,9 +208,9 @@ impl App {
                 p.sel_name.set_label(&snap_label(s));
             }
             p.main.set_label(if sel.is_some() {
-                "Przywróć system"
+                crate::i18n::tr("snap.restore-system")
             } else {
-                "Utwórz migawkę"
+                crate::i18n::tr("snap.create")
             });
         });
     }
@@ -236,7 +236,7 @@ impl App {
             .map(|s| DayGroup::of(&local(s.date), today).title());
         self.with_snap_page(|p| {
             let mut st = p.state.borrow_mut();
-            let default = key == "Dziś" || key == "Wczoraj" || first.as_deref() == Some(key);
+            let default = key == crate::i18n::tr("day.today") || key == crate::i18n::tr("day.yesterday") || first.as_deref() == Some(key);
             let cur = *st.expanded.get(key).unwrap_or(&default);
             st.expanded.insert(key.to_owned(), !cur);
         });
@@ -269,20 +269,20 @@ impl App {
         match self.selected_snap() {
             None => {
                 let entry = gtk::Entry::new();
-                entry.set_placeholder_text(Some("Opis"));
-                entry.update_property(&[gtk::accessible::Property::Label("Opis migawki")]);
+                entry.set_placeholder_text(Some(crate::i18n::tr("snap.description")));
+                entry.update_property(&[gtk::accessible::Property::Label(crate::i18n::tr("snap.description-a11y"))]);
                 let e2 = entry.clone();
                 let w = Rc::downgrade(self);
                 self.confirm(
-                    "Utwórz migawkę",
+                    crate::i18n::tr("snap.create"),
                     "",
-                    "Utwórz",
+                    crate::i18n::tr("button.create"),
                     false,
                     Some(&entry),
                     move || {
                         let desc = e2.text().trim().to_owned();
                         let desc = if desc.is_empty() {
-                            "Migawka ręczna".to_owned()
+                            crate::i18n::tr("category.manual").to_owned()
                         } else {
                             desc
                         };
@@ -293,15 +293,12 @@ impl App {
                 );
             }
             Some(s) => {
-                let text = format!(
-                    "System wróci do stanu z migawki „{}”. Przed przywróceniem powstanie nowa migawka. System uruchomi się ponownie.",
-                    snap_label(&s)
-                );
+                let text = crate::i18n::trf("restore-system.body", &[("name", &snap_label(&s))]);
                 let w = Rc::downgrade(self);
                 self.confirm(
-                    "Przywrócić system?",
+                    crate::i18n::tr("restore-system.title"),
                     &text,
-                    "Przywróć",
+                    crate::i18n::tr("button.restore"),
                     true,
                     None,
                     move || {
@@ -325,10 +322,10 @@ impl App {
             move |r| {
                 let Some(app) = w.upgrade() else { return };
                 if let Err(e) = r {
-                    app.fail("Nie udało się utworzyć migawki.", &e);
+                    app.fail(crate::i18n::tr("error.create"), &e);
                 }
                 app.with_snap_page(|p| {
-                    p.state.borrow_mut().expanded.insert("Dziś".into(), true);
+                    p.state.borrow_mut().expanded.insert(crate::i18n::tr("day.today").into(), true);
                 });
                 app.reload();
             },
@@ -344,9 +341,9 @@ impl App {
         };
         let w = Rc::downgrade(self);
         self.confirm(
-            "Usunąć migawkę?",
-            "Tej operacji nie można cofnąć.",
-            "Usuń",
+            crate::i18n::tr("delete.title"),
+            crate::i18n::tr("delete.body"),
+            crate::i18n::tr("button.delete"),
             true,
             None,
             move || {
@@ -366,7 +363,7 @@ impl App {
                     move |r| {
                         let Some(app) = w2.upgrade() else { return };
                         if let Err(e) = r {
-                            app.fail("Nie udało się usunąć migawki.", &e);
+                            app.fail(crate::i18n::tr("error.delete"), &e);
                         }
                         app.with_snap_page(|p| p.state.borrow_mut().selected = None);
                         app.reload();
@@ -389,8 +386,8 @@ impl App {
                 let Some(app) = w.upgrade() else { return };
                 match r {
                     Ok(true) if !app.backend.is_demo() => {}
-                    Ok(_) => app.toast("Uruchom ponownie komputer, aby zakończyć."),
-                    Err(e) => app.fail("Nie udało się przywrócić systemu.", &e),
+                    Ok(_) => app.toast(crate::i18n::tr("toast.restart")),
+                    Err(e) => app.fail(crate::i18n::tr("error.restore-system"), &e),
                 }
                 app.with_snap_page(|p| p.state.borrow_mut().selected = None);
                 app.reload();

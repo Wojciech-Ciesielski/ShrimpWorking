@@ -22,7 +22,7 @@ impl Devices {
         let content = gtk::Box::new(gtk::Orientation::Vertical, 0);
         let tree = Tree::new();
         let none = super::no_results();
-        let status = super::note("Wczytywanie…");
+        let status = super::note(crate::i18n::tr("state.loading"));
         content.append(&status);
         content.append(&tree.list);
         content.append(&none);
@@ -42,7 +42,7 @@ impl Devices {
 
     fn render(&self, list: &[Device]) {
         self.status.set_visible(list.is_empty());
-        self.status.set_text("Nie udało się odczytać listy urządzeń.");
+        self.status.set_text(crate::i18n::tr("devices.error"));
         let host = glib::host_name();
         let root = self.tree.group(None, "computer-symbolic", &host, true);
         for c in Category::ALL {
@@ -62,8 +62,8 @@ impl Devices {
                     .collect();
                 drivers.dedup();
                 if !drivers.is_empty() {
-                    let s = if drivers.len() == 1 { "Używasz sterownika" } else { "Używasz sterowników" };
-                    self.tree.leaf(Some(g), None, &format!("{s}: {}", drivers.join(", ")), None, None);
+                    let s = crate::i18n::trn("devices.drivers", drivers.len() as u64, &[("list", &drivers.join(", "))]);
+                    self.tree.leaf(Some(g), None, &s, None, None);
                 }
             }
         }

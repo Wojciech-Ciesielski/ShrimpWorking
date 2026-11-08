@@ -62,11 +62,11 @@ impl Shell {
             sidebar.append(&row);
             pages.push(page);
         };
-        add(&sidebar, &mut pages, widgets::pick_icon(widgets::ICON_DISCOVER), "Odkrywaj", Page::Discover);
-        add(&sidebar, &mut pages, widgets::pick_icon(widgets::ICON_INSTALLED), "Zainstalowane", Page::Installed);
-        add(&sidebar, &mut pages, widgets::pick_icon(widgets::ICON_WEB), "Aplikacje internetowe", Page::Web);
+        add(&sidebar, &mut pages, widgets::pick_icon(widgets::ICON_DISCOVER), crate::i18n::tr("page.discover"), Page::Discover);
+        add(&sidebar, &mut pages, widgets::pick_icon(widgets::ICON_INSTALLED), crate::i18n::tr("page.installed"), Page::Installed);
+        add(&sidebar, &mut pages, widgets::pick_icon(widgets::ICON_WEB), crate::i18n::tr("page.web"), Page::Web);
         {
-            let l = gtk::Label::builder().label("Kategorie").xalign(0.0).build();
+            let l = gtk::Label::builder().label(crate::i18n::tr("sidebar.categories")).xalign(0.0).build();
             l.add_css_class("sidebar-heading");
             l.add_css_class("dim-label");
             let row = gtk::ListBoxRow::builder().child(&l).selectable(false).activatable(false).build();
@@ -82,15 +82,15 @@ impl Shell {
             .child(&sidebar)
             .build();
 
-        let search = gtk::SearchEntry::builder().placeholder_text("Szukaj aplikacji").build();
-        search.update_property(&[gtk::accessible::Property::Label("Szukaj aplikacji")]);
+        let search = gtk::SearchEntry::builder().placeholder_text(crate::i18n::tr("search.placeholder")).build();
+        search.update_property(&[gtk::accessible::Property::Label(crate::i18n::tr("search.placeholder"))]);
         let search_bar = gtk::Box::new(gtk::Orientation::Vertical, 0);
         search_bar.add_css_class("sidebar-search");
         search_bar.append(&search);
 
         let side_header = adw::HeaderBar::builder().show_title(false).build();
         let help = gtk::Button::from_icon_name(widgets::pick_icon(widgets::ICON_HELP));
-        help.set_tooltip_text(Some("Pomoc"));
+        help.set_tooltip_text(Some(crate::i18n::tr("help")));
         help.set_action_name(Some("app.help"));
         side_header.pack_start(&help);
 
@@ -136,7 +136,7 @@ impl Shell {
             pages: RefCell::new(pages),
             current: Cell::new(Page::Discover),
             discover: RefCell::new(None),
-            status: RefCell::new(Some(("Wczytywanie katalogu…".into(), false))),
+            status: RefCell::new(Some((crate::i18n::tr("status.loading-catalog").into(), false))),
             banner_css,
             search_timeout: RefCell::new(None),
         });
@@ -289,7 +289,7 @@ impl Shell {
                     self.discover.replace(None);
                     self.refresh_root();
                 } else {
-                    self.toast("Nie udało się odświeżyć katalogu", None);
+                    self.toast(crate::i18n::tr("error.refresh"), None);
                 }
             }
             Event::CatalogStale(e) => {
@@ -313,15 +313,15 @@ impl Shell {
                     (Some(e), _) => {
                         eprintln!("shrimp-apps: {kind:?} {app_id}: {e}");
                         let t = match kind {
-                            OpKind::Install => format!("Nie udało się zainstalować „{name}”"),
-                            OpKind::Update => format!("Nie udało się zaktualizować „{name}”"),
-                            OpKind::Uninstall => format!("Nie udało się usunąć „{name}”"),
+                            OpKind::Install => crate::i18n::trf("error.install", &[("name", &name)]),
+                            OpKind::Update => crate::i18n::trf("error.update", &[("name", &name)]),
+                            OpKind::Uninstall => crate::i18n::trf("error.remove", &[("name", &name)]),
                         };
                         self.toast(&t, None);
                     }
                     (None, _) => {
                         if kind == OpKind::Install {
-                            self.toast(&format!("Zainstalowano „{name}”"), Some(&app_id));
+                            self.toast(&crate::i18n::trf("toast.installed", &[("name", &name)]), Some(&app_id));
                         }
                     }
                 }
@@ -333,7 +333,7 @@ impl Shell {
             Event::LaunchFailed { app_id, error } => {
                 eprintln!("shrimp-apps: uruchomienie {app_id}: {error}");
                 let name = self.store.display_name(&app_id);
-                self.toast(&format!("Nie udało się otworzyć „{name}”"), None);
+                self.toast(&crate::i18n::trf("error.launch", &[("name", &name)]), None);
             }
         }
     }
@@ -351,7 +351,7 @@ impl Shell {
     fn toast(&self, title: &str, open_id: Option<&str>) {
         let t = adw::Toast::new(title);
         if let Some(id) = open_id {
-            t.set_button_label(Some("Otwórz"));
+            t.set_button_label(Some(crate::i18n::tr("button.open")));
             t.set_action_name(Some("app.launch"));
             t.set_action_target_value(Some(&id.to_variant()));
         }
@@ -375,14 +375,14 @@ impl Shell {
     fn root_page(&self, title: &str, tag: &str, content: &impl IsA<gtk::Widget>, show_title: bool) -> adw::NavigationPage {
         let header = adw::HeaderBar::builder().show_title(show_title).build();
         let menu = gio::Menu::new();
-        menu.append(Some("Odśwież katalog"), Some("app.refresh"));
-        menu.append(Some("Pomoc"), Some("app.help"));
-        menu.append(Some("O programie Shrimp Apps"), Some("app.about"));
+        menu.append(Some(crate::i18n::tr("menu.refresh")), Some("app.refresh"));
+        menu.append(Some(crate::i18n::tr("help")), Some("app.help"));
+        menu.append(Some(crate::i18n::tr("menu.about")), Some("app.about"));
         let mb = gtk::MenuButton::builder()
             .icon_name("open-menu-symbolic")
             .menu_model(&menu)
             .primary(true)
-            .tooltip_text("Menu główne")
+            .tooltip_text(crate::i18n::tr("menu.main"))
             .build();
         header.pack_end(&mb);
         let tv = adw::ToolbarView::new();
@@ -406,10 +406,10 @@ impl Shell {
         let page = adw::StatusPage::new();
         if error {
             page.set_icon_name(Some("network-offline-symbolic"));
-            page.set_title("Brak połączenia z internetem");
-            page.set_description(Some("Połącz się z internetem, aby zobaczyć aplikacje."));
+            page.set_title(crate::i18n::tr("offline.title"));
+            page.set_description(Some(crate::i18n::tr("offline.body")));
             let b = gtk::Button::builder()
-                .label("Spróbuj ponownie")
+                .label(crate::i18n::tr("button.retry"))
                 .halign(gtk::Align::Center)
                 .action_name("app.refresh")
                 .build();
@@ -426,7 +426,7 @@ impl Shell {
 
     fn discover_page(self: &Rc<Self>) -> adw::NavigationPage {
         if let Some(w) = self.status_widget() {
-            return self.root_page("Odkrywaj", "discover", &w, false);
+            return self.root_page(crate::i18n::tr("page.discover"), "discover", &w, false);
         }
         if let Some(p) = self.discover.borrow().as_ref() {
             return p.clone();
@@ -441,7 +441,7 @@ impl Shell {
             }
         }
         let clamp = adw::Clamp::builder().maximum_size(1200).tightening_threshold(900).child(&col).build();
-        let page = self.root_page("Odkrywaj", "discover", &Self::scrolled(&clamp), false);
+        let page = self.root_page(crate::i18n::tr("page.discover"), "discover", &Self::scrolled(&clamp), false);
         self.discover.replace(Some(page.clone()));
         page
     }
@@ -499,7 +499,7 @@ impl Shell {
             let texts = gtk::Box::new(gtk::Orientation::Vertical, 4);
             texts.set_valign(gtk::Align::Center);
             texts.set_hexpand(true);
-            let kicker = gtk::Label::builder().label("WYBÓR TYGODNIA").xalign(0.0).build();
+            let kicker = gtk::Label::builder().label(crate::i18n::tr("discover.kicker")).xalign(0.0).build();
             kicker.add_css_class("banner-kicker");
             let name = gtk::Label::builder().label(&a.name).xalign(0.0).ellipsize(gtk::pango::EllipsizeMode::End).build();
             name.add_css_class("title-1");
@@ -576,8 +576,8 @@ impl Shell {
         let carousel = adw::Carousel::builder().spacing(24).allow_scroll_wheel(false).build();
         let prev = gtk::Button::from_icon_name("go-previous-symbolic");
         let next = gtk::Button::from_icon_name("go-next-symbolic");
-        prev.set_tooltip_text(Some("Poprzednie"));
-        next.set_tooltip_text(Some("Następne"));
+        prev.set_tooltip_text(Some(crate::i18n::tr("discover.previous")));
+        next.set_tooltip_text(Some(crate::i18n::tr("discover.next")));
         for b in [&prev, &next] {
             b.add_css_class("flat");
             b.add_css_class("circular");
@@ -697,12 +697,12 @@ impl Shell {
             .collect();
         // Najpierw dopasowanie nazwy, potem popularność.
         hits.sort_by(|a, b| (b.0 / 20).cmp(&(a.0 / 20)).then(a.1.cmp(&b.1)));
-        let title = format!("Wyniki dla „{}”", q.trim());
+        let title = crate::i18n::trf("search.results", &[("query", q.trim())]);
         if hits.is_empty() {
             let st = adw::StatusPage::builder()
                 .icon_name("system-search-symbolic")
-                .title("Nic nie znaleziono")
-                .description("Spróbuj innej nazwy.")
+                .title(crate::i18n::tr("search.none"))
+                .description(crate::i18n::tr("search.none-body"))
                 .build();
             if let Some(w) = self.status_widget() {
                 return self.root_page(&title, "search", &w, true);
@@ -716,7 +716,7 @@ impl Shell {
     fn web_page(self: &Rc<Self>) -> adw::NavigationPage {
         // Katalog i tworzenie aplikacji internetowych: skrzynka apps/web-apps.
         let content = shrimp_webapps::page();
-        self.root_page("Aplikacje internetowe", "web", &content, true)
+        self.root_page(crate::i18n::tr("page.web"), "web", &content, true)
     }
 
     fn installed_page(self: &Rc<Self>) -> adw::NavigationPage {
@@ -728,10 +728,10 @@ impl Shell {
         if installed.is_empty() {
             let st = adw::StatusPage::builder()
                 .icon_name(widgets::pick_icon(widgets::ICON_INSTALLED))
-                .title("Nie masz jeszcze aplikacji")
-                .description("Aplikacje, które pobierzesz, pojawią się tutaj.")
+                .title(crate::i18n::tr("installed.none"))
+                .description(crate::i18n::tr("installed.none-body"))
                 .build();
-            return self.root_page("Zainstalowane", "installed", &st, true);
+            return self.root_page(crate::i18n::tr("page.installed"), "installed", &st, true);
         }
         let col = gtk::Box::new(gtk::Orientation::Vertical, 6);
         col.add_css_class("installed");
@@ -748,7 +748,7 @@ impl Shell {
             });
             let mut sub = Vec::new();
             if let Some(v) = &i.version {
-                sub.push(format!("Wersja {v}"));
+                sub.push(crate::i18n::trf("installed.version", &[("version", v)]));
             }
             if i.installed_size > 0 {
                 sub.push(widgets::format_size(i.installed_size));
@@ -773,13 +773,13 @@ impl Shell {
         if !updates.is_empty() {
             let head = gtk::Box::new(gtk::Orientation::Horizontal, 12);
             let l = gtk::Label::builder()
-                .label(format!("Aktualizacje ({})", updates.len()))
+                .label(crate::i18n::trf("installed.updates", &[("count", &updates.len().to_string())]))
                 .xalign(0.0)
                 .hexpand(true)
                 .build();
             l.add_css_class("title-4");
             head.append(&l);
-            let all = gtk::Button::builder().label("Zaktualizuj wszystko").build();
+            let all = gtk::Button::builder().label(crate::i18n::tr("installed.update-all")).build();
             all.add_css_class("pill");
             all.add_css_class("suggested-action");
             let busy = updates.iter().any(|u| self.store.status(&u.id).busy());
@@ -791,7 +791,7 @@ impl Shell {
             for u in &updates {
                 col.append(&row_for(u));
             }
-            let l2 = gtk::Label::builder().label("Wszystkie").xalign(0.0).build();
+            let l2 = gtk::Label::builder().label(crate::i18n::tr("installed.all")).xalign(0.0).build();
             l2.add_css_class("title-4");
             l2.set_margin_top(18);
             col.append(&l2);
@@ -800,7 +800,7 @@ impl Shell {
             col.append(&row_for(i));
         }
         let clamp = adw::Clamp::builder().maximum_size(900).child(&col).build();
-        self.root_page("Zainstalowane", "installed", &Self::scrolled(&clamp), true)
+        self.root_page(crate::i18n::tr("page.installed"), "installed", &Self::scrolled(&clamp), true)
     }
 }
 
