@@ -2,9 +2,9 @@ name: Cocktail
 
 on:
   push:
-    paths: ["apps/cocktail/**", ".github/workflows/cocktail.yml"]
+    paths: ["apps/cocktail/**", "apps/shrimp-i18n/**", "i18n/cocktail/**", "i18n/langs.ts", ".github/workflows/cocktail.yml"]
   pull_request:
-    paths: ["apps/cocktail/**", ".github/workflows/cocktail.yml"]
+    paths: ["apps/cocktail/**", "apps/shrimp-i18n/**", "i18n/cocktail/**", "i18n/langs.ts", ".github/workflows/cocktail.yml"]
   workflow_dispatch:
 
 jobs:

@@ -111,17 +111,6 @@ pub fn valid_name(name: &str) -> bool {
         && chars.all(|c| c.is_ascii_alphanumeric() || "+._-".contains(c))
 }
 
-/// Polska odmiana: 1 pakiet, 2–4 pakiety, 5 pakietów, 22 pakiety, 12 pakietów.
-pub fn plural<'a>(n: usize, one: &'a str, few: &'a str, many: &'a str) -> &'a str {
-    if n == 1 {
-        one
-    } else if (2..=4).contains(&(n % 10)) && !(12..=14).contains(&(n % 100)) {
-        few
-    } else {
-        many
-    }
-}
-
 /// Nazwa systemu do wyświetlenia z `/etc/os-release`, np. „Shrimp 26”.
 pub fn os_name(os_release: &str) -> String {
     let get = |key: &str| {
@@ -219,13 +208,13 @@ mod tests {
 
     #[test]
     fn polish_plural() {
-        let p = |n| plural(n, "pakiet", "pakiety", "pakietów");
-        assert_eq!(p(1), "pakiet");
-        assert_eq!(p(3), "pakiety");
-        assert_eq!(p(5), "pakietów");
-        assert_eq!(p(12), "pakietów");
-        assert_eq!(p(22), "pakiety");
-        assert_eq!(p(0), "pakietów");
+        let p = |n| crate::i18n::trn("updates.packages", n, &[]);
+        assert_eq!(p(1), "1 pakiet");
+        assert_eq!(p(3), "3 pakiety");
+        assert_eq!(p(5), "5 pakietów");
+        assert_eq!(p(12), "12 pakietów");
+        assert_eq!(p(22), "22 pakiety");
+        assert_eq!(p(0), "0 pakietów");
     }
 
     #[test]
