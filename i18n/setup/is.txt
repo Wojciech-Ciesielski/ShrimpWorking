@@ -1,5 +1,6 @@
 1	Til baka
 2	Upplýsingar
+3	Merki Shrimp
 4	NVIDIA-rekillinn skilar fullum afköstum í leikjum og grafíkforritum. Opni rekillinn er einfaldari en hægari.
 5	(Mælt með)
 6	Áfram
@@ -49,6 +50,7 @@
 50	Uppsetning
 51	Allt drifið
 52	Skipting disks
+53	Windows {win} · Shrimp {shrimp}
 54	Aðgangur
 55	Dulkóðun
 56	Setja upp
@@ -132,7 +134,9 @@
 134	Skrárnar þínar
 135	Skjöl, myndir og niðurhal eru í Skrár forritinu, í heimamöppunni þinni.
 136	Þar finnurðu líka Windows-drifið.
+137	Panko
 138	Hætti eitthvað að virka eftir breytingu? Í Panko geturðu farið aftur í fyrra horf.
+139	Cocktail
 140	Uppfærslur, reklar og kóðarar á einum stað. Uppfærslur eru settar upp við endurræsingu.
 141	Hraðleit
 142	Ýttu á Super-takkann, þann með Windows-merkinu, til að finna forrit, skrár og stillingar.
@@ -166,3 +170,12 @@
 170	Þróunarumhverfi
 171	Kvikmyndir og tónlist
 172	Tónlist
+173	New York
+174	Chicago
+175	Denver
+176	Los Angeles
+177	Toronto
+178	Vancouver
+179	Kanaríeyjar
+180	Sydney
+181	Perth
