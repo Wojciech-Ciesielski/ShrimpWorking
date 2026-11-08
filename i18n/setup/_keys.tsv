@@ -180,3 +180,18 @@
 179	city.canary	Canary Islands
 180	city.sydney	Sydney
 181	city.perth	Perth
+182	usb.title	Restore your USB drive
+183	usb.sub	{files} files from the drive ({size}) are safe on this computer. We'll put them back, and the drive will work as before.
+184	usb.go	Restore the drive
+185	usb.keep	Keep the files on this computer
+186	usb.plug.title	Plug in your USB drive
+187	usb.plug.sub	The one you installed Shrimp from. Its files are safe on this computer.
+188	usb.check	Check again
+189	usb.run	Restoring the drive
+190	usb.done.t	The drive is ready
+191	usb.done.d	All your files are back on the drive.
+192	usb.home.t	Your files are on this computer
+193	usb.home.d	You'll find them in the Pendrive folder in your home folder.
+194	usb.fail.t	Couldn't restore the drive
+195	usb.fail.d	Your files are still safe on this computer. Plug the drive in and try again.
+196	usb.retry	Try again

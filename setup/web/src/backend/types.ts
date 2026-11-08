@@ -81,6 +81,17 @@ export interface InstallBackend {
 export interface Network { ssid: string; secure: boolean; strength: number }
 export interface NetworkAdvanced { ip: "auto" | "manual"; dns: "auto" | "cloudflare" | "google"; proxy: "none" | "auto" }
 
+/** Zawartość pendrive'a z Shrimp Install, czekająca na przywrócenie. */
+export interface UsbState {
+  pending: boolean;
+  /** Pendrive z kopii jest teraz podłączony. */
+  present: boolean;
+  bytes: number;
+  files: number;
+}
+/** "done": pendrive przywrócony; "home": pliki w folderze Pendrive; "failed": kopia została na dysku komputera. */
+export type UsbResult = "done" | "home" | "failed";
+
 export interface FirstBootInfo {
   fullName: string;
   /** Instalacja obok Windows (dodatkowe slajdy). */
@@ -113,6 +124,9 @@ export interface FirstBootBackend {
   setAppearance(scheme: "default" | "prefer-dark", accent: string | null): Promise<void>;
   setDrivers(c: DriverChoice): Promise<void>;
   installApps(ids: string[], onProgress: (p: Progress) => void): Promise<void>;
+  usb(): Promise<UsbState>;
+  /** "restore": formatuje pendrive i wgrywa pliki; "home": zostawia je w folderze Pendrive. */
+  restoreUsb(action: "restore" | "home"): Promise<UsbResult>;
   /** Zapisuje, że konfiguracja się skończyła; wykonuje odłożone zmiany systemu (sterowniki) i restart, jeśli trzeba. */
   finish(): Promise<void>;
 }

@@ -68,5 +68,7 @@ export const demoFirstBoot: FirstBootBackend = {
       await simulate(onProgress, [[100, "apps.phase"]], 2, q.get("fail") === "net" ? 12 : undefined);
     } catch { throw new OfflineError(); }
   },
+  async usb() { return q.get("usb") === "0" ? { pending: false, present: false, bytes: 0, files: 0 } : { pending: true, present: q.get("usb") !== "plug", bytes: 7.4e9, files: 1280 }; },
+  async restoreUsb(action) { await sleep(fast ? 50 : 3000); return q.get("fail") === "usb" ? "home" : action === "home" ? "home" : "done"; },
   async finish() {},
 };
