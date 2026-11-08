@@ -107,6 +107,17 @@
         <package name="gnome-shell-extensions-common-lang"/>
         <package name="gtk4-lang"/>
         <package name="libadwaita-lang"/>
+        <!-- Shrimp Setup (tools/build-setup.sh puts the program into the image):
+             window = GTK4 + WebKitGTK 6 (web processes run in bubblewrap), installer = Agama 24 -->
+        <package name="libgtk-4-1"/>
+        <package name="libwebkitgtk-6_0-4"/>
+        <package name="bubblewrap"/>
+        <package name="xdg-dbus-proxy"/>
+        <package name="polkit"/>
+        <package name="agama"/>
+        <package name="agama-yast"/>
+        <package name="agama-web-ui"/>
+        <package name="agama-cli"/>
         <!-- build-time helpers used by config.sh (icons, GRUB fonts, shell theme) -->
         <package name="rsvg-convert"/>
         <package name="glib2-tools"/>
