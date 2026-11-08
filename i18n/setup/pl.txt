@@ -179,3 +179,18 @@
 179	Wyspy Kanaryjskie
 180	Sydney
 181	Perth
+182	Przywróć pendrive
+183	{files} plików z pendrive'a ({size}) czeka bezpiecznie na tym komputerze. Wgramy je z powrotem i pendrive będzie działał jak dawniej.
+184	Przywróć pendrive
+185	Zostaw pliki na tym komputerze
+186	Podłącz pendrive
+187	Ten, z którego instalowałeś Shrimp. Jego pliki są bezpieczne na tym komputerze.
+188	Sprawdź ponownie
+189	Przywracanie pendrive'a
+190	Pendrive jest gotowy
+191	Wszystkie Twoje pliki wróciły na pendrive.
+192	Twoje pliki są na tym komputerze
+193	Znajdziesz je w folderze Pendrive w folderze domowym.
+194	Nie udało się przywrócić pendrive'a
+195	Twoje pliki nadal są bezpieczne na tym komputerze. Podłącz pendrive i spróbuj ponownie.
+196	Spróbuj ponownie
