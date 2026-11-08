@@ -7,7 +7,7 @@ jednym kliknięciem. Shrimp Apps wstawia ją jako stronę „Aplikacje interneto
 let content = shrimp_webapps::page(); // gtk::Widget, bez własnego paska tytułu
 ```
 
-- `data/webapps.json`: 150 pozycji (`id`, `name`, `url`, `category`, opcjonalnie `names.pl`, `icon`).
+- `data/webapps.json`: 150 pozycji (`id`, `name`, `url`, `category`, opcjonalnie `names.pl`, `icon`, `icon_url` = ręcznie wskazana ikona).
   Kategorie jak w pasku bocznym Shrimp Apps. Kolejność w kategorii = popularność.
 - `data/webapps-reserve.json`: 49 kolejnych pozycji do podmiany, gdy któraś z głównych przestanie działać.
 - `data/icons/<id>.png`: ikony 128×128 z manifestu PWA (albo apple-touch-icon / favicon), wbudowywane
