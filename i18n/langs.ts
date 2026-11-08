@@ -6,6 +6,7 @@
 // bcp47   znacznik dla Intl i atrybutu lang, gdy inny niż tag
 // intl    zapasowy znacznik dla Intl, gdy ICU nie zna tego języka (liczby, jednostki, nazwy krajów)
 // match   dodatkowe znaczniki (małe litery), które wybierają ten język, np. „zh-tw” → zh-hant
+// text    język zapasowy dla brakujących tekstów (zanim użyjemy angielskiego), np. keczua → hiszpański
 export interface LangInfo {
   tag: string;
   name: string;
@@ -15,9 +16,10 @@ export interface LangInfo {
   bcp47?: string;
   intl?: string;
   match?: string[];
+  text?: string;
 }
 
-type Row = [tag: string, name: string, flags: string, extra?: { bcp47?: string; intl?: string; match?: string[] }];
+type Row = [tag: string, name: string, flags: string, extra?: { bcp47?: string; intl?: string; match?: string[]; text?: string }];
 
 const ROWS: Row[] = [
   // — największe języki, w kolejności tłumaczenia —
@@ -26,32 +28,32 @@ const ROWS: Row[] = [
   ["it", "Italiano", "wg"], ["ru", "Русский", "wg"], ["uk", "Українська", "wg"],
   ["zh-hans", "简体中文", "wg", { bcp47: "zh-Hans", match: ["zh", "zh-cn", "zh-sg"] }], ["zh-hant", "繁體中文", "wg", { bcp47: "zh-Hant", match: ["zh-tw", "zh-hk", "zh-mo"] }],
   ["ja", "日本語", "wg"], ["ko", "한국어", "wg"], ["tr", "Türkçe", "wg"], ["nl", "Nederlands", "wg"], ["cs", "Čeština", "wg"], ["sk", "Slovenčina", "wg"],
-  ["sv", "Svenska", "wg"], ["nb", "Norsk bokmål", "wg", { match: ["no"] }], ["nn", "Norsk nynorsk", "wg"], ["da", "Dansk", "wg"], ["fi", "Suomi", "wg"],
+  ["sv", "Svenska", "wg"], ["nb", "Norsk bokmål", "wg", { match: ["no"] }], ["nn", "Norsk nynorsk", "wg", { text: "nb" }], ["da", "Dansk", "wg"], ["fi", "Suomi", "wg"],
   ["ar", "العربية", "wgr"], ["he", "עברית", "wgr", { match: ["iw"] }], ["fa", "فارسی", "wgr"],
   ["hi", "हिन्दी", "wg"], ["id", "Bahasa Indonesia", "wg", { match: ["in"] }], ["vi", "Tiếng Việt", "wg"], ["th", "ไทย", "wg"], ["ms", "Bahasa Melayu", "wg"],
   ["el", "Ελληνικά", "wg"], ["hu", "Magyar", "wg"], ["ro", "Română", "wg"], ["bg", "Български", "wg"], ["hr", "Hrvatski", "wg"], ["sl", "Slovenščina", "wg"],
   ["sr-cyrl", "Српски", "wg", { bcp47: "sr-Cyrl", match: ["sr"] }], ["sr-latn", "Srpski", "wg", { bcp47: "sr-Latn", match: ["sr-me"] }],
   ["lt", "Lietuvių", "wg"], ["lv", "Latviešu", "wg"], ["et", "Eesti", "wg"], ["is", "Íslenska", "wg"],
-  ["ca", "Català", "wg"], ["eu", "Euskara", "wg"], ["gl", "Galego", "wg"], ["ca-valencia", "Valencià", "wg", { bcp47: "ca-ES-valencia", intl: "ca", match: ["ca-es-valencia"] }],
+  ["ca", "Català", "wg"], ["eu", "Euskara", "wg"], ["gl", "Galego", "wg"], ["ca-valencia", "Valencià", "wg", { bcp47: "ca-ES-valencia", intl: "ca", match: ["ca-es-valencia"], text: "ca" }],
   ["bn", "বাংলা", "wg"], ["ta", "தமிழ்", "wg"], ["te", "తెలుగు", "wg"], ["mr", "मराठी", "wg"], ["gu", "ગુજરાતી", "wg"], ["kn", "ಕನ್ನಡ", "wg"], ["ml", "മലയാളം", "wg"],
   ["ur", "اردو", "wr"], ["fil", "Filipino", "w", { match: ["tl"] }],
   ["bs", "Bosanski", "wg", { match: ["bs-latn"] }], ["mk", "Македонски", "wg"], ["sq", "Shqip", "wg"], ["be", "Беларуская", "wg"], ["ka", "ქართული", "wg"], ["hy", "Հայերեն", "wg"],
   ["az", "Azərbaycan", "wg", { match: ["az-latn"] }], ["kk", "Қазақша", "wg"], ["uz", "Oʻzbekcha", "wg", { match: ["uz-latn"] }], ["ky", "Кыргызча", "wg"], ["tg", "Тоҷикӣ", "wg"],
-  ["mn", "Монгол", "wg"], ["tk", "Türkmençe", "w"], ["tt", "Татарча", "w"], ["ug", "ئۇيغۇرچە", "wgr"],
+  ["mn", "Монгол", "wg"], ["tk", "Türkmençe", "w"], ["tt", "Татарча", "w", { text: "ru" }], ["ug", "ئۇيغۇرچە", "wgr"],
   ["af", "Afrikaans", "wg"], ["sw", "Kiswahili", "wg"], ["am", "አማርኛ", "wg"], ["zu", "isiZulu", "wg"], ["xh", "isiXhosa", "wg"],
   ["km", "ខ្មែរ", "wg"], ["lo", "ລາວ", "wg"], ["si", "සිංහල", "wg"], ["ne", "नेपाली", "wg"], ["pa", "ਪੰਜਾਬੀ", "wg"], ["or", "ଓଡ଼ିଆ", "wg"], ["as", "অসমীয়া", "wg"],
-  ["ga", "Gaeilge", "wg"], ["gd", "Gàidhlig", "wg"], ["cy", "Cymraeg", "wg"], ["mt", "Malti", "w"], ["lb", "Lëtzebuergesch", "w"], ["mi", "Māori", "wg"],
+  ["ga", "Gaeilge", "wg"], ["gd", "Gàidhlig", "wg"], ["cy", "Cymraeg", "wg"], ["mt", "Malti", "w"], ["lb", "Lëtzebuergesch", "w", { text: "de" }], ["mi", "Māori", "wg"],
   ["ckb", "کوردیی ناوەندی", "wgr", { match: ["ku-arab", "ku-arab-iq"] }], ["ku", "Kurdî", "g"], ["sd", "سنڌي", "wr", { match: ["sd-arab"] }],
-  ["pa-arab", "پنجابی", "wr", { bcp47: "pa-Arab", match: ["pa-pk"] }], ["prs", "دری", "wr", { intl: "fa-AF", match: ["fa-af"] }],
-  ["kok", "कोंकणी", "w"], ["nso", "Sesotho sa Leboa", "wg"], ["tn", "Setswana", "w"], ["rw", "Kinyarwanda", "wg"], ["ti", "ትግርኛ", "w"],
-  ["ha", "Hausa", "w"], ["ig", "Igbo", "w"], ["yo", "Yorùbá", "w"], ["wo", "Wolof", "w"],
-  ["chr", "ᏣᎳᎩ", "w"], ["iu", "Inuktitut", "w", { intl: "en-CA" }], ["quz", "Runasimi", "w", { intl: "es-PE" }], ["quc", "K’iche’", "w", { intl: "es-GT", match: ["qut", "qut-gt"] }],
+  ["pa-arab", "پنجابی", "wr", { bcp47: "pa-Arab", match: ["pa-pk"] }], ["prs", "دری", "wr", { intl: "fa-AF", match: ["fa-af"], text: "fa" }],
+  ["kok", "कोंकणी", "w", { text: "mr" }], ["nso", "Sesotho sa Leboa", "wg"], ["tn", "Setswana", "w", { text: "en" }], ["rw", "Kinyarwanda", "wg"], ["ti", "ትግርኛ", "w"],
+  ["ha", "Hausa", "w"], ["ig", "Igbo", "w"], ["yo", "Yorùbá", "w"], ["wo", "Wolof", "w", { text: "fr" }],
+  ["chr", "ᏣᎳᎩ", "w", { text: "en" }], ["iu", "Inuktitut", "w", { intl: "en-CA", text: "en" }], ["quz", "Runasimi", "w", { intl: "es-PE", text: "es" }], ["quc", "K’iche’", "w", { intl: "es-GT", match: ["qut", "qut-gt"], text: "es" }],
   // — tylko GNOME —
-  ["ab", "Аҧсуа", "g", { intl: "ru" }], ["an", "Aragonés", "g", { intl: "es" }], ["ast", "Asturianu", "g"], ["be-latn", "Biełaruskaja", "g", { bcp47: "be-Latn", intl: "be" }],
-  ["br", "Brezhoneg", "g"], ["crh", "Qırımtatarca", "g", { intl: "tr" }], ["dz", "རྫོང་ཁ", "g"], ["eo", "Esperanto", "g"], ["fo", "Føroyskt", "g"], ["fur", "Furlan", "g"],
-  ["fy", "Frysk", "g"], ["ia", "Interlingua", "g"], ["ie", "Interlingue", "g", { intl: "en" }], ["kab", "Taqbaylit", "g"], ["kw", "Kernewek", "g"],
-  ["mai", "मैथिली", "g", { intl: "hi" }], ["mg", "Malagasy", "g"], ["mjw", "Karbi", "g", { intl: "en-IN" }], ["my", "မြန်မာ", "g"], ["nds", "Plattdüütsch", "g"],
-  ["oc", "Occitan", "g"], ["os", "Ирон", "g"], ["sat", "ᱥᱟᱱᱛᱟᱲᱤ", "g"], ["uz-cyrl", "Ўзбекча", "g", { bcp47: "uz-Cyrl", match: ["uz-cyrl-uz"] }], ["wa", "Walon", "g", { intl: "fr" }],
+  ["ab", "Аҧсуа", "g", { intl: "ru", text: "ru" }], ["an", "Aragonés", "g", { intl: "es", text: "es" }], ["ast", "Asturianu", "g", { text: "es" }], ["be-latn", "Biełaruskaja", "g", { bcp47: "be-Latn", intl: "be", text: "be" }],
+  ["br", "Brezhoneg", "g", { text: "fr" }], ["crh", "Qırımtatarca", "g", { intl: "tr", text: "tr" }], ["dz", "རྫོང་ཁ", "g"], ["eo", "Esperanto", "g"], ["fo", "Føroyskt", "g"], ["fur", "Furlan", "g", { text: "it" }],
+  ["fy", "Frysk", "g", { text: "nl" }], ["ia", "Interlingua", "g"], ["ie", "Interlingue", "g", { intl: "en" }], ["kab", "Taqbaylit", "g", { text: "fr" }], ["kw", "Kernewek", "g"],
+  ["mai", "मैथिली", "g", { intl: "hi", text: "hi" }], ["mg", "Malagasy", "g", { text: "fr" }], ["mjw", "Karbi", "g", { intl: "en-IN" }], ["my", "မြန်မာ", "g"], ["nds", "Plattdüütsch", "g", { text: "de" }],
+  ["oc", "Occitan", "g", { text: "fr" }], ["os", "Ирон", "g", { text: "ru" }], ["sat", "ᱥᱟᱱᱛᱟᱲᱤ", "g", { text: "hi" }], ["uz-cyrl", "Ўзбекча", "g", { bcp47: "uz-Cyrl", match: ["uz-cyrl-uz"], text: "uz" }], ["wa", "Walon", "g", { intl: "fr", text: "fr" }],
 ];
 
 export const LANGS: LangInfo[] = ROWS.map(([tag, name, flags, x]) => ({
