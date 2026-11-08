@@ -12,13 +12,13 @@ ROOT=$PWD
 BR=${SHRIMP_BUILDROOT:-/var/tmp/shrimp-setup-buildroot}
 
 # 1. Leap build root
-if [ ! -x "$BR/usr/bin/rustup" ] || [ ! -x "$BR/usr/bin/gawk" ]; then
+if [ ! -x "$BR/usr/bin/rustup" ] || [ ! -x "$BR/usr/bin/gawk" ] || [ ! -f "$BR/usr/lib64/pkgconfig/libadwaita-1.pc" ]; then
   rm -rf "$BR"; mkdir -p "$BR"
   zypper -n --root "$BR" ar -f "$REPO" leap
   zypper -n --root "$BR" --gpg-auto-import-keys ref
   zypper -n --root "$BR" --gpg-auto-import-keys in --no-recommends \
     bash coreutils findutils gawk gcc pkg-config rustup ca-certificates ca-certificates-mozilla \
-    'pkgconfig(gtk4)' 'pkgconfig(webkitgtk-6.0)'
+    'pkgconfig(gtk4)' 'pkgconfig(webkitgtk-6.0)' 'pkgconfig(libadwaita-1)' 'pkgconfig(flatpak)'
 fi
 cp -L /etc/resolv.conf "$BR/etc/resolv.conf"
 cleanup() { umount -l "$BR/proc" "$BR/dev" "$BR/sys" 2>/dev/null || true; }
@@ -39,6 +39,23 @@ cp "$BR/src/shell/target/release/shrimp-setup" "$ROOT/setup/shell/target/release
 echo "shrimp-setup libraries (packages the ISO must contain):"
 chroot "$BR" /bin/bash -c "ldd /src/shell/target/release/shrimp-setup | awk '/=>/ {print \$3}' \
   | xargs -r rpm -qf --qf '%{NAME}\n' 2>/dev/null | sort -u | sed 's/^/  /'" || true
+
+# 2b. Shrimp Apps (the store that installs the base Flatpaks); needs ../web-apps, so the whole apps/ tree is copied
+rm -rf "$BR/src/apps"; mkdir -p "$BR/src/apps"
+cp -a "$ROOT/apps/shrimp-apps" "$ROOT/apps/web-apps" "$BR/src/apps/"
+mkdir -p "$BR/src/site" && cp "$ROOT/site/help.json" "$BR/src/site/help.json"
+rm -rf "$BR/src/i18n"; mkdir -p "$BR/src/i18n" && cp -a "$ROOT/i18n/webapps" "$BR/src/i18n/webapps"
+rm -rf "$BR/src/apps/shrimp-apps/target" "$BR/src/apps/web-apps/target"
+chroot "$BR" /bin/bash -euxc '
+  export HOME=/root CARGO_HOME=/root/.cargo RUSTUP_HOME=/root/.rustup
+  cd /src/apps/shrimp-apps && cargo build --release --locked
+'
+mkdir -p "$ROOT/apps/shrimp-apps/target/release"
+cp "$BR/src/apps/shrimp-apps/target/release/shrimp-apps" "$ROOT/apps/shrimp-apps/target/release/shrimp-apps"
+echo "shrimp-apps libraries (packages the ISO must contain):"
+chroot "$BR" /bin/bash -c "ldd /src/apps/shrimp-apps/target/release/shrimp-apps | awk '/=>/ {print \$3}' \
+  | xargs -r rpm -qf --qf '%{NAME}\n' 2>/dev/null | sort -u | sed 's/^/  /'" || true
+SHRIMP_APPS_PREBUILT=1 apps/shrimp-apps/install.sh "$DEST"
 
 # 3. Web UI (platform independent) + install into DESTDIR
 SHRIMP_SETUP_PREBUILT=1 setup/install.sh "$DEST" --live

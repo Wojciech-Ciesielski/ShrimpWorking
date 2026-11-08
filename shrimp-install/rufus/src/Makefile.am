@@ -20,7 +20,7 @@ rufus_rc.o: shrimp/shrimp.rc shrimp/ui.html shrimp/WebView2Loader.dll
 
 rufus_SOURCES = badblocks.c darkmode.c dev.c dos.c dos_locale.c drive.c format.c format_ext.c format_fat32.c hash.c icon.c iso.c localization.c \
 	 net.c parser.c pki.c process.c cregex_compile.c cregex_parse.c cregex_vm.c rufus.c smart.c stdfn.c stdio.c stdlg.c syslinux.c ui.c vhd.c wue.c xml.c \
-	 shrimp/boot.c shrimp/collect.c shrimp/fetch.c shrimp/json.c shrimp/shrimp.c shrimp/transfer.c shrimp/window.c
+	 shrimp/boot.c shrimp/collect.c shrimp/fetch.c shrimp/json.c shrimp/shrimp.c shrimp/transfer.c shrimp/usbbackup.c shrimp/window.c
 rufus_CFLAGS = -I$(srcdir)/ms-sys/inc -I$(srcdir)/syslinux/libfat -I$(srcdir)/syslinux/libinstaller -I$(srcdir)/syslinux/win -I$(srcdir)/libcdio -I$(srcdir)/wimlib -I$(srcdir)/../res $(AM_CFLAGS) \
 	-DEXT2_FLAT_INCLUDES=0 -D_RUFUS -DSOLUTION=rufus \
 	-I$(srcdir)/shrimp/compat -I$(srcdir)/shrimp/webview2/include $(SHRIMP_CFLAGS)

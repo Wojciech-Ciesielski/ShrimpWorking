@@ -1,17 +1,19 @@
 // Język Setup: tłumaczenia w i18n/setup, ładowane na żądanie (jeden plik na język), bo języków jest ponad sto.
-import { build, negotiate, type I18n } from "../../../i18n/core";
+import { build, negotiate, textFallback, type I18n } from "../../../i18n/core";
 import keys from "../../../i18n/setup/_keys.tsv?raw";
 
 const files = import.meta.glob("../../../i18n/setup/*.txt", { query: "?raw", import: "default" }) as Record<string, () => Promise<string>>;
 const byTag = new Map(Object.entries(files).map(([path, load]) => [/([^/]+)\.txt$/.exec(path)![1], load]));
 
-/** Tłumacz dla pierwszego z żądanych języków, który mamy (bez dopasowania: angielski). */
+/** Tłumacz dla pierwszego z żądanych języków, który mamy (bez dopasowania: angielski; brakujące teksty z języka zapasowego). */
 export async function load(requested: string[]): Promise<I18n> {
   const tag = negotiate(requested);
-  const f = byTag.get(tag);
-  let txt: string | undefined;
-  try { txt = f ? await f() : undefined; } catch { /* brak pliku: angielski */ }
-  return build(keys, tag, txt);
+  const read = async (t?: string) => {
+    const f = t ? byTag.get(t) : undefined;
+    try { return f ? await f() : undefined; } catch { return undefined; /* brak pliku: angielski */ }
+  };
+  const [txt, fbTxt] = await Promise.all([read(tag), read(textFallback(tag))]);
+  return build(keys, tag, txt, fbTxt);
 }
 
 /** Język startowy: ?lang= z adresu, potem języki przeglądarki (system nośnika). */

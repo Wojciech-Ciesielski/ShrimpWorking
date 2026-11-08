@@ -188,8 +188,6 @@ if [ -n "$OPT_REPO" ]; then
   opt_pkg typelib-1_0-GnomeBluetooth-3_0
   opt_pkg tuned-ppd power-profiles-daemon       # Quick Settings: power mode
   opt_pkg iio-sensor-proxy                      # Quick Settings: auto-rotate (2-in-1 laptops)
-  opt_pkg gnome-software                        # Shrimp menu: Software, Updates (Flathub)
-  opt_pkg gnome-software-plugin-flatpak
   opt_pkg gnome-system-monitor                  # Shrimp menu: System Monitor
   opt_pkg gnome-disk-utility                    # Shrimp menu: Disks
   opt_pkg gnome-extensions                      # Shrimp menu: Extensions

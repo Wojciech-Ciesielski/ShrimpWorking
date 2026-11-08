@@ -131,4 +131,8 @@
 131	Laufwerk nicht gefunden. Stecken Sie es erneut an.
 132	Die Firmware hat den Starteintrag nicht akzeptiert. Starten Sie den Computer manuell vom Laufwerk, über das Startmenü.
 133	Die Firmware hat die Einstellung für den nächsten Start nicht akzeptiert. Starten Sie den Computer manuell vom Laufwerk, über das Startmenü.
+134	Shrimp Install benötigt die Komponente Microsoft Edge WebView2, sie konnte aber nicht gestartet werden.\n\nAktualisiere Windows oder installiere die WebView2 Runtime von Microsoft und versuche es erneut.
+135	Das Fenster von Shrimp Install (WebView2) konnte nicht geöffnet werden.
+136	Die Komponente WebView2 konnte nicht gestartet werden.
 137	Kein freier Platz für den Starteintrag.
+138	Die Programmoberfläche fehlt.
