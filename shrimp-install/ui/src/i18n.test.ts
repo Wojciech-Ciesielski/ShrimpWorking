@@ -28,6 +28,17 @@ describe("pliki tłumaczeń Shrimp Install", () => {
   });
 });
 
+describe("język zapasowy dla brakujących tekstów", () => {
+  it("K’iche’ bez tłumaczenia sięga po hiszpański, a nie angielski", () => {
+    const es = load(["es"]);
+    expect(load(["quc"]).t("start.go")).toBe(es.t("start.go"));
+    expect(load(["quc"]).lang).toBe("quc");
+  });
+  it("język bez zapasowego zostaje przy angielskim", () => {
+    expect(load(["chr"]).t("start.go")).toBe(load(["en"]).t("start.go"));
+  });
+});
+
 describe("wykrywanie języka", () => {
   it("dopasowuje znaczniki Windows", () => {
     expect(negotiate(["pl-PL"])).toBe("pl");
