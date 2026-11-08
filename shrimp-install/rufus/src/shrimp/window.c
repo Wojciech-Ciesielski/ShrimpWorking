@@ -269,6 +269,7 @@ static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPara
 		break;
 	case WM_SHRIMP_EMIT: {
 		char* json = (char*)lParam;
+		ShrimpLogEvent(json);
 		if (webview != NULL) {
 			wchar_t* w = utf8_to_w(json, -1);
 			if (w != NULL)

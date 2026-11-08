@@ -29,6 +29,9 @@ void ShrimpOnDevicesChanged(void);
 void ShrimpOnImageScanned(BOOL ok);
 void ShrimpOnProgress(int pos, int max);
 void ShrimpOnFormatDone(DWORD error_status);
+/* uprintf: każdy wiersz dziennika Rufusa i Shrimp trafia też do %LOCALAPPDATA%\Shrimp Install\shrimp-install.log. */
+void ShrimpLog(const char* line);
+void ShrimpLogEvent(const char* json);    /* zdarzenie dla interfejsu (window.c) */
 
 /* ---------- wewnętrzne ---------- */
 /* json.c: budowanie JSON w UTF-8 */
