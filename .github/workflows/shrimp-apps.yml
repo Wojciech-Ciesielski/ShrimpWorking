@@ -95,8 +95,9 @@ jobs:
           sudo flatpak remote-add --system --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
           sudo -E ./target/debug/shrimp-apps --install com.valvesoftware.Steam | tail -n 5
           flatpak list --system --columns=ref | tee "$RUNNER_TEMP/refs.txt"
-          grep -q '^app/com.valvesoftware.Steam/' "$RUNNER_TEMP/refs.txt"
-          echo "GL32: $(grep -c 'org.freedesktop.Platform.GL32' "$RUNNER_TEMP/refs.txt" || true)"
-          echo "ffmpeg-full: $(grep -c 'ffmpeg-full' "$RUNNER_TEMP/refs.txt" || true)"
-          echo "Compat.i386: $(grep -c 'Compat.i386' "$RUNNER_TEMP/refs.txt" || true)"
+          # --columns=ref wypisuje refy bez „app/” i „runtime/”
+          grep -q '^com.valvesoftware.Steam/' "$RUNNER_TEMP/refs.txt"
+          grep -q '^org.freedesktop.Platform.GL32.default/' "$RUNNER_TEMP/refs.txt"   # 32-bitowe GL dla gier
+          grep -q '^org.freedesktop.Platform.Compat.i386/' "$RUNNER_TEMP/refs.txt"
+          grep -q 'codecs' "$RUNNER_TEMP/refs.txt"   # kodeki (od 25.08 codecs-extra zamiast ffmpeg-full)
           flatpak info --system --show-metadata com.valvesoftware.Steam | sed -n '/Extension/,$p' | head -40
