@@ -29,6 +29,11 @@ software:
     - gdm
     # okno Setup (shrimp-setup: GTK4 + WebKitGTK 6) w pierwszej konfiguracji
     - libwebkitgtk-6_0-4
+    # przywracanie pendrive'a z Shrimp Install (shrimp-usb-backup): partycjonowanie i systemy plików
+    - parted
+    - dosfstools
+    - exfatprogs
+    - ntfsprogs
     # Pakiet Shrimp z tym Setup, motywami i skryptem wyglądu (repozytorium Shrimp: do ustalenia
     # razem z budową ISO; dopóki go nie ma, ISO wgrywa pliki do obrazu docelowego w post-install.sh).
     # - shrimp-setup

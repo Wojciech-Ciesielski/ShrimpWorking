@@ -17,6 +17,7 @@ if ! chroot "$T" rpm -q shrimp-setup >/dev/null 2>&1; then
   log "kopiuję Setup z nośnika"
   install -Dm755 /usr/bin/shrimp-setup "$T/usr/bin/shrimp-setup"
   install -Dm755 /usr/libexec/shrimp-setup-apply "$T/usr/libexec/shrimp-setup-apply"
+  install -Dm755 /usr/libexec/shrimp-usb-backup "$T/usr/libexec/shrimp-usb-backup"
   install -Dm755 /usr/bin/shrimp-app-style "$T/usr/bin/shrimp-app-style"
   mkdir -p "$T$SRC" && cp -a "$SRC/ui" "$SRC/drivers.conf" "$T$SRC/"
   install -Dm644 /usr/share/polkit-1/actions/org.shrimp.setup.policy "$T/usr/share/polkit-1/actions/org.shrimp.setup.policy"
@@ -166,6 +167,10 @@ chroot "$T" flatpak remote-add --system --if-not-exists flathub https://dl.flath
 if /usr/bin/shrimp-setup --restore --root "$T" --user "$USER_NAME"; then :; else
   log "bez plików z Shrimp Install"
 fi
+
+# Dawna zawartość pendrive'a (shrimp-backup/ na nośniku): sprawdzona kopia na dysku komputera. Przywróci ją
+# pierwsza konfiguracja (formatuje pendrive i wgrywa pliki z powrotem). Brak shrimp-backup to nie błąd.
+/usr/libexec/shrimp-usb-backup stash --root "$T" || log "bez kopii zawartości pendrive'a (kod $?)"
 
 # Jednorazowy wpis UEFI „Shrimp Install” (BootNext z Windows) nie jest już potrzebny.
 if command -v efibootmgr >/dev/null && [ -d /sys/firmware/efi ]; then

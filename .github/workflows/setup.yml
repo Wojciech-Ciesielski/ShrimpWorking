@@ -44,6 +44,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - run: shellcheck -S warning setup/install.sh setup/system/share/post-install.sh setup/system/libexec/shrimp-setup-apply standardize/shrimp-app-style
+      - run: shellcheck -S warning setup/install.sh setup/system/share/post-install.sh setup/system/libexec/shrimp-setup-apply setup/system/libexec/shrimp-usb-backup setup/tests/test-usb-backup.sh standardize/shrimp-app-style
       - run: setup/tests/test-apply.sh
+      - run: setup/tests/test-usb-backup.sh
       - run: python3 -c "import yaml; yaml.safe_load(open('setup/system/agama/shrimp.yaml'))"

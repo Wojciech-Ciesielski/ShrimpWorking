@@ -9,13 +9,13 @@ import {
 } from "./data";
 import { firstName, slug, proposals, windowsList, tnow, esc, prefill, regionLabel, zoneName, keyboardName, type Prefill } from "./logic";
 import { load } from "./i18n";
-import { InstallError, OfflineError, type Backends, type Disk, type FirstBootInfo, type InstallPlan, type Network, type Place, type Transfer } from "./backend/types";
+import { InstallError, OfflineError, type Backends, type Disk, type FirstBootInfo, type InstallPlan, type Network, type Place, type Transfer, type UsbResult, type UsbState } from "./backend/types";
 
 const $ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector(s) as T | null;
 const $$ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => Array.from(r.querySelectorAll(s)) as T[];
 
 const STEPS = ["witaj", "jezyk", "region", "klawiatura", "dysk", "konto", "podsumowanie", "instalacja", "restart",
-  "czesc", "siec", "wyglad", "sterowniki", "programy", "gotowe"] as const;
+  "czesc", "siec", "wyglad", "sterowniki", "programy", "pendrive", "gotowe"] as const;
 type StepId = (typeof STEPS)[number];
 const idx = (id: StepId) => STEPS.indexOf(id);
 const THEME_STEP = idx("wyglad");
@@ -66,6 +66,8 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   let INFO: FirstBootInfo = { fullName: "", beside: false, wired: false, nvidia: null, windowsApps: null };
   /** Dane z Shrimp Install i wartości, które z nich wynikają (język, strefa, klawiatura, konto). */
   let TR: Transfer | null = null, PRE: Prefill | null = null;
+  /** Pendrive z Shrimp Install: jego zawartość czeka na przywrócenie (krok „pendrive”, tylko gdy jest co przywracać). */
+  let USB: UsbState = { pending: false, present: false, bytes: 0, files: 0 }, USB_RES: UsbResult = "done";
 
   const S = {
     lang: 0, region: 0, kb: 0, place: 0, win: 0, disk: 0, enc: 0, dp: "", dp2: "", online: true,
@@ -210,6 +212,17 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
         if (sub === 3) return logo("9cqw") + head(esc(tr("apps.run"))) + `<div class="pbar" role="progressbar"><i id="ab"></i></div><div class="cap"><b id="aph">${esc(tr("apps.phase"))}</b><span id="aeta">${esc(tr("eta.left", { min: L.num(2, 0) }))}</span></div>` + acts(esc(NEXT), "", { hid: true });
         return logo("5cqw") + head(esc(tr("apps.title")), esc(tr("apps.sub"))) + body(tgl("use", USES.map((s) => esc(tr(s))), (j) => S.use[j])) + acts(esc(NEXT), esc(SKIP));
       }
+      case "pendrive": {
+        if (sub === 1) return logo("9cqw") + head(esc(tr("usb.run"))) + `<div class="pbar run" role="progressbar"><i></i></div>`;
+        if (sub === 2) {
+          const k = USB_RES === "done" ? "usb.done" : USB_RES === "home" ? "usb.home" : "usb.fail";
+          return logo("6cqw") + head(esc(tr(k + ".t")), esc(tr(k + ".d"))) + acts(esc(USB_RES === "failed" ? tr("usb.retry") : NEXT), "", { act: USB_RES === "failed" ? "usbcheck" : "next" });
+        }
+        const what = tr("usb.sub", { files: L.num(USB.files, 0), size: L.unit(Math.round(USB.bytes / 1e8) / 10, "gigabyte") });
+        return USB.present
+          ? logo("6cqw") + head(esc(tr("usb.title")), esc(what)) + acts(esc(tr("usb.go")), esc(tr("usb.keep")), { act: "usbgo", skipAct: "usbhome" })
+          : logo("6cqw") + head(esc(tr("usb.plug.title")), esc(tr("usb.plug.sub"))) + acts(esc(tr("usb.check")), esc(tr("usb.keep")), { act: "usbcheck", skipAct: "usbhome" });
+      }
       case "gotowe": {
         const SL = slides(beside());
         if (sub >= 1) {
@@ -250,7 +263,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   function chrome() {
     const id = cur();
     const first = be.mode === "firstboot" ? FIRST_BOOT : 0;
-    $("#back")!.hidden = step <= first || ["witaj", "instalacja", "restart", "czesc"].includes(id) || (id === "programy" && sub === 3);
+    $("#back")!.hidden = step <= first || ["witaj", "instalacja", "restart", "czesc"].includes(id) || (id === "programy" && sub === 3) || (id === "pendrive" && sub > 0);
     const nv = id === "sterowniki" && sub === 1;
     $("#infoBtn")!.hidden = !nv; $("#infoPop")!.hidden = !nv; $("#infoPop")!.classList.remove("show");
   }
@@ -261,6 +274,8 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     step = Math.max(lo, Math.min(hi, n)); sub = s;
     // Internet po kablu: krok Sieć jest pomijany w obie strony.
     if (cur() === "siec" && INFO.wired && be.mode !== "install") step += n >= prev ? 1 : -1;
+    // Bez pendrive'a do przywrócenia krok „pendrive” jest pomijany w obie strony.
+    if (cur() === "pendrive" && !USB.pending && s === 0) step += n >= prev ? 1 : -1;
     if (cur() === "konto" && !keep) S.confirm = false;
     chrome(); applyLook(); render(true);
   }
@@ -299,6 +314,13 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     } catch {
       if (step === my && sub === mySub) openErr("net");
     }
+  }
+  async function runUsb(action: "restore" | "home") {
+    const my = step;
+    go(step, 1);
+    try { USB_RES = await be.firstboot.restoreUsb(action); } catch { USB_RES = "failed"; }
+    USB = { ...USB, pending: USB_RES === "failed" };
+    if (step === my) go(step, 2);
   }
   function showActs() { const a = $(".acts", pane)!; a.hidden = false; a.classList.remove("rise"); void a.offsetWidth; a.style.setProperty("--i", "0"); a.classList.add("rise"); }
   function restart() {
@@ -407,6 +429,9 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     }
     if (a === "done" || a === "cancel") return go(step, 0);
     if (a === "more") return go(step, 1);
+    if (a === "usbgo") return void runUsb("restore");
+    if (a === "usbhome") return void runUsb("home");
+    if (a === "usbcheck") return void be.firstboot.usb().then((u) => { USB = u; if (step === idx("pendrive")) go(step, 0); });
     if (a === "skip") {
       if (id === "siec") S.online = false;
       if (id === "programy" && sub === 1) return go(step, 2);
@@ -555,6 +580,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     if (be.mode !== "install") {
       [INFO, NETS] = await Promise.all([be.firstboot.info(), be.firstboot.networks().catch(() => [])]);
       S.online = INFO.wired || S.online;
+      USB = await be.firstboot.usb();
       if (be.mode === "demo") { S.full = "Anna Kowalska"; S.user = "anna"; S.pass = S.pass2 = "shrimp2024"; S.netPass = "dom12345"; }
     }
     const h = parseInt(q.get("step") || location.hash.slice(1), 10);

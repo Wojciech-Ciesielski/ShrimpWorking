@@ -40,7 +40,7 @@ jobs:
           # Instalacja bez okna (zestaw podstawowy, Setup): manifest z dwiema aplikacjami testowymi
           printf '{"apps":[{"id":"org.shrimp.test.Paint"},{"id":"org.shrimp.test.Music"}]}' > "$RUNNER_TEMP/base.json"
           ./target/debug/shrimp-apps --install --manifest "$RUNNER_TEMP/base.json" | tee "$RUNNER_TEMP/inst.log"
-          grep -q '"id":"org.shrimp.test.Paint","done":true}' "$RUNNER_TEMP/inst.log"
+          grep -q '"done":true,"id":"org.shrimp.test.Paint"}' "$RUNNER_TEMP/inst.log"
           flatpak info --user org.shrimp.test.Music > /dev/null
           # druga instalacja nic nie pobiera, ale kończy się powodzeniem
           ./target/debug/shrimp-apps --install org.shrimp.test.Paint | grep -q '"skipped":true'

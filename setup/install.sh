@@ -22,6 +22,7 @@ install -Dm755 "$HERE/system/share/post-install.sh" "$D/usr/share/shrimp-setup/p
 install -Dm644 "$HERE/system/share/remove-packages.txt" "$D/usr/share/shrimp-setup/remove-packages.txt"
 install -Dm644 "$HERE/system/share/drivers.conf" "$D/usr/share/shrimp-setup/drivers.conf"
 install -Dm755 "$HERE/system/libexec/shrimp-setup-apply" "$D/usr/libexec/shrimp-setup-apply"
+install -Dm755 "$HERE/system/libexec/shrimp-usb-backup" "$D/usr/libexec/shrimp-usb-backup"
 install -Dm644 "$HERE/system/polkit/org.shrimp.setup.policy" "$D/usr/share/polkit-1/actions/org.shrimp.setup.policy"
 install -Dm644 "$HERE/system/polkit/50-shrimp-setup.rules" "$D/usr/share/polkit-1/rules.d/50-shrimp-setup.rules"
 install -Dm644 "$HERE/system/autostart/shrimp-setup-first-boot.desktop" "$D/etc/xdg/autostart/shrimp-setup-first-boot.desktop"
