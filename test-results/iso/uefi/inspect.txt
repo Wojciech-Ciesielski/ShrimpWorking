@@ -31,6 +31,29 @@ gnome-shell-extensions-common-48.3-bp161.1.2.noarch
 gdm-48.0-160100.2.1.x86_64
 plymouth-22.02.122+94.4bd41a3-160100.2.1.x86_64
 grub2-2.14-160100.3.3.x86_64
+package pipewire is not installed
+package wireplumber is not installed
+package bluez is not installed
+package upower is not installed
+package gnome-bluetooth is not installed
+package tuned-ppd is not installed
+package power-profiles-daemon is not installed
+package iio-sensor-proxy is not installed
+package gnome-software is not installed
+package gnome-system-monitor is not installed
+package gnome-disk-utility is not installed
+package gnome-extensions is not installed
+package baobab is not installed
+package gnome-logs is not installed
+Gvc-1.0.typelib
+Shell-16.typelib
+St-16.typelib
+girepository-1.0
+libgnome-shell-menu.so
+libgvc.so
+libshell-16.so
+libshew-0.so
+libst-16.so
 === typelibs
 GnomeBG-4.0.typelib
 GnomeDesktop-3.0.typelib
@@ -50,10 +73,10 @@ local dash-to-dock@micxgx.gmail.com: just-perfection activities-button = No such
 local ding@rastersoft.com: just-perfection activities-button = No such schema “org.gnome.shell.extensions.just-perfection”
 local just-perfection-desktop@just-perfection: just-perfection activities-button = false
 === libraries
-lrwxrwxrwx 1 root root 24 Dec 23  2025 /tmp/tmp.JJUtdJEmEK/root/lib64/libz.so -> zlib-ng-compat/libz.so.1
-lrwxrwxrwx 1 root root 24 Dec 23  2025 /tmp/tmp.JJUtdJEmEK/root/usr/lib64/libz.so -> zlib-ng-compat/libz.so.1
+lrwxrwxrwx 1 root root 24 Dec 23  2025 /tmp/tmp.9DCS3onkSp/root/lib64/libz.so -> zlib-ng-compat/libz.so.1
+lrwxrwxrwx 1 root root 24 Dec 23  2025 /tmp/tmp.9DCS3onkSp/root/usr/lib64/libz.so -> zlib-ng-compat/libz.so.1
 GMenu-3.0.typelib
-ls: cannot access '/tmp/tmp.JJUtdJEmEK/root/usr/libexec/gvfsd-trash': No such file or directory
+ls: cannot access '/tmp/tmp.9DCS3onkSp/root/usr/libexec/gvfsd-trash': No such file or directory
 === shell theme
 /org/gnome/shell/theme/gnome-shell-dark.css: 1 shrimp blocks
 /org/gnome/shell/theme/gnome-shell-high-contrast.css: 1 shrimp blocks
@@ -66,7 +89,7 @@ ls: cannot access '/tmp/tmp.JJUtdJEmEK/root/usr/libexec/gvfsd-trash': No such fi
 AutomaticLoginEnable=True
 AutomaticLogin=shrimp
 WaylandEnable=true
-lrwxrwxrwx 1 root root 35 Nov  8 00:59 /tmp/tmp.JJUtdJEmEK/root/etc/systemd/system/display-manager.service -> /usr/lib/systemd/system/gdm.service
+lrwxrwxrwx 1 root root 35 Nov  8 00:59 /tmp/tmp.9DCS3onkSp/root/etc/systemd/system/display-manager.service -> /usr/lib/systemd/system/gdm.service
 === grub.cfg (EFI)
 search --file --set=root /boot/0x21ae2def
 set prefix=($root)/boot/grub2
