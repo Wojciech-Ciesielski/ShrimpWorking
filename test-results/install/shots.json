@@ -1,0 +1,23 @@
+{
+ "agama": "unknown",
+ "shots": [
+  "001-0000s-live.png",
+  "002-0015s-live.png",
+  "003-0030s-live.png",
+  "004-0045s-live.png",
+  "005-0060s-live.png",
+  "006-0090s-live.png",
+  "007-0120s-live.png",
+  "008-0150s-live.png",
+  "009-0180s-live.png",
+  "010-0210s-live.png",
+  "011-0240s-setup.png",
+  "012-0291s-terminal.png",
+  "013-0352s-install.png",
+  "014-0412s-install.png",
+  "015-0472s-install.png",
+  "016-0532s-install.png",
+  "017-0591s-install.png",
+  "018-6294s-install-end.png"
+ ]
+}

@@ -242,11 +242,20 @@ try:
     pause(5)
     run_dialog("kgx")
     pause(10)
-    type_text("bash /run/initramfs/live/shrimp-test/agama-install.sh\n")
+    # Where the stick is mounted is part of what we check: log it, fall back to mounting by label.
+    type_text("echo shrimp | sudo -S true; findmnt -l | sudo tee /dev/ttyS0; "
+              "f=$(find /run /media -maxdepth 5 -name agama-install.sh 2>/dev/null | head -n1); "
+              "[ -n \"$f\" ] || { sudo mkdir -p /tmp/stick; sudo mount -o ro LABEL=SHRIMP_LIVE /tmp/stick; "
+              "f=/tmp/stick/shrimp-test/agama-install.sh; }; echo \"script: $f\" | sudo tee /dev/ttyS0; bash \"$f\"\n")
     pause(20)
     shot("terminal", keep_duplicates=True)
     deadline = t() + 100 * 60
+    started = t()
     while t() < deadline and qemu.poll() is None and not serial_has("live", "===AGAMA-DONE"):
+        if t() - started > 240 and not serial_has("live", "===AGAMA-START"):
+            print(f"[{t():6.1f}s] test script did not start", flush=True)
+            shot("no-script", keep_duplicates=True)
+            break
         wait_shooting(t() + 60, 60, "install")
     for r in ("finished", "failed"):
         if serial_has("live", "===AGAMA-DONE " + r):
