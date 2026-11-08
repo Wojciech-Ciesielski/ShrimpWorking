@@ -64,7 +64,7 @@
         <package name="plymouth-dracut"/>
         <package name="plymouth-plugin-script"/>
         <package name="plymouth-plugin-label"/>
-        <!-- sound and video: PipeWire only (LinU(x), codecs in config.sh) -->
+        <!-- sound and video: PipeWire only (Linu(x), codecs in config.sh) -->
         <package name="pipewire"/>
         <package name="wireplumber"/>
         <package name="pipewire-pulseaudio"/>

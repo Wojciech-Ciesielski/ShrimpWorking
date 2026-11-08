@@ -21,7 +21,7 @@ install -Dm755 standardize/shrimp-app-style out/desc/root/usr/bin/shrimp-app-sty
 install -Dm644 standardize/shrimp-app-style.service out/desc/root/usr/lib/systemd/system/shrimp-app-style.service
 install -Dm644 standardize/shrimp-app-style.path out/desc/root/usr/lib/systemd/system/shrimp-app-style.path
 install -Dm644 standardize/shrimp-app-style-user.service out/desc/root/usr/lib/systemd/user/shrimp-app-style-user.service
-# LinU(x) build scripts add this repo if KIWI left none configured inside the image
+# Linu(x) build scripts add this repo if KIWI left none configured inside the image
 echo "$REPO/" > out/desc/root/usr/share/shrimp/linux/build/repo.url
 "$ENGINE" run --rm --privileged -v /dev:/dev -v "$PWD:/work" -w /work \
   docker.io/opensuse/tumbleweed:latest bash -euxc "
@@ -40,7 +40,7 @@ echo "$REPO/" > out/desc/root/usr/share/shrimp/linux/build/repo.url
       f=\$(find out/build/build/image-root/usr/share/icons/Adwaita -name \"\$n.svg\" -print -quit)
       [ -n \"\$f\" ] && echo \"ICON-SVG \$n \$(base64 -w0 \"\$f\")\" || true
     done
-    grep -h 'GRUB fonts\|WARNING\|extension installed\|optional package installed\|config.sh\|LinU(x)' out/kiwi.log | tail -40 || true
+    grep -h 'GRUB fonts\|WARNING\|extension installed\|optional package installed\|config.sh\|Linu(x)' out/kiwi.log | tail -40 || true
     rm -rf out/build out/desc
   "
 ls -lh out/*.iso
