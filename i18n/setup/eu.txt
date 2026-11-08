@@ -1,5 +1,6 @@
 1	Atzera
 2	Informazioa
+3	Shrimp logotipoa
 4	NVIDIA kontrolatzaileak errendimendu osoa ematen du jokoetan eta grafiko-programetan. Kontrolatzaile irekia errazagoa da, baina motelagoa.
 5	(Gomendatua)
 6	Hurrengoa
@@ -49,6 +50,7 @@
 50	Instalazioa
 51	Unitate osoa
 52	Diskoaren banaketa
+53	Windows {win} · Shrimp {shrimp}
 54	Kontua
 55	Zifratzea
 56	Instalatu
@@ -132,7 +134,9 @@
 134	Zure fitxategiak
 135	Dokumentuak, argazkiak eta deskargak Fitxategiak aplikazioan daude, zure karpeta pertsonalean.
 136	Han Windows unitatea ere aurkituko duzu.
+137	Panko
 138	Aldaketa baten ostean zerbait ez dabil? Panko-n lehengo egoerara itzul zaitezke.
+139	Cocktail
 140	Eguneratzeak, kontrolatzaileak eta kodekak leku batean. Eguneratzeak berrabiaraztean instalatzen dira.
 141	Bilaketa azkarra
 142	Sakatu Super tekla, Windows logoa duena, programak, fitxategiak eta ezarpenak aurkitzeko.
@@ -166,3 +170,12 @@
 170	Garapen-ingurunea
 171	Filmak eta musika
 172	Musika
+173	New York
+174	Chicago
+175	Denver
+176	Los Angeles
+177	Toronto
+178	Vancouver
+179	Kanariak
+180	Sydney
+181	Perth

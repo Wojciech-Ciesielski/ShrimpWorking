@@ -1,5 +1,5 @@
 {
- "checked_at": "2026-11-08 12:10 UTC",
+ "checked_at": "2026-11-08 16:43 UTC",
  "apps": [
   {
    "id": "whatsapp",
@@ -8,10 +8,11 @@
    "final_url": "https://web.whatsapp.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://web.whatsapp.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 64,
-   "result": "błąd"
+   "icon_source": "https://web.whatsapp.com/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 192,
+   "icon_style": "ostra",
+   "result": "zablokowane"
   },
   {
    "id": "telegram",
@@ -23,6 +24,7 @@
    "icon_source": "https://web.telegram.org/img/icons/icon192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -32,9 +34,10 @@
    "final_url": "https://www.messenger.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.messenger.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -44,10 +47,11 @@
    "final_url": "https://www.facebook.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.facebook.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 60,
-   "result": "błąd"
+   "icon_source": "https://www.facebook.com/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 180,
+   "icon_style": "ostra",
+   "result": "zablokowane"
   },
   {
    "id": "instagram",
@@ -59,6 +63,7 @@
    "icon_source": "https://static.cdninstagram.com/rsrc.php/yw/r/icwX0xAk0pz.webp",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -71,6 +76,7 @@
    "icon_source": "https://abs.twimg.com/responsive-web/client-web/icon-default.522d363cba131578a.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -80,9 +86,10 @@
    "final_url": "https://www.threads.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://static.cdninstagram.com/rsrc.php/yP/r/0Qa-AOmHi0c.ico",
-   "icon_kind": "icon",
-   "icon_px": 64,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.threads.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 256,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -95,6 +102,7 @@
    "icon_source": "https://web-cdn.bsky.app/static/apple-touch-icon.png",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -107,6 +115,7 @@
    "icon_source": "https://mastodon.social/packs/assets/android-chrome-192x192-jYKJbpas.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -116,9 +125,10 @@
    "final_url": "https://www.reddit.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.reddit.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.reddit.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 192,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -128,9 +138,10 @@
    "final_url": "https://www.linkedin.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://static.licdn.com/aero-v1/sc/h/al2o9zrvru7aqj8e1x2rzsrca",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.linkedin.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 64,
+   "icon_style": "kafelek",
    "result": "ok"
   },
   {
@@ -143,6 +154,7 @@
    "icon_source": "https://s.pinimg.com/images/favicon_red_192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -152,9 +164,10 @@
    "final_url": "https://discord.com/app",
    "error": null,
    "manifest": false,
-   "icon_source": "https://discord.com/assets/favicon.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=discord.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 256,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -167,6 +180,7 @@
    "icon_source": "https://app.slack.com/favicon.ico",
    "icon_kind": "favicon",
    "icon_px": 256,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -179,6 +193,7 @@
    "icon_source": "https://teams.public.onecdn.static.microsoft/evergreen-assets/icons/windows/teams-icon-pwa-v2025-192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -188,9 +203,10 @@
    "final_url": "https://app.zoom.us/wc",
    "error": null,
    "manifest": true,
-   "icon_source": "https://st1.zoom.us/zoom.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=app.zoom.us&sz=256",
+   "icon_kind": "s2",
    "icon_px": 96,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -200,9 +216,10 @@
    "final_url": "https://workspace.google.com/products/meet/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.gstatic.com/images/branding/googleg_gradient/1x/googleg_gradient_standard_20dp.png",
-   "icon_kind": "icon",
-   "icon_px": 20,
+   "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/meet_2020q4_512dp.png",
+   "icon_kind": "ręczna",
+   "icon_px": 1024,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -215,6 +232,7 @@
    "icon_source": "https://cf-st.sc-cdn.net/dw/favicons/e9b6d2d3-dweb_slash_web-prod-web-v9/android-chrome-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -227,18 +245,20 @@
    "icon_source": "https://sf16-sg.tiktokcdn.com/obj/eden-sg/uvkuhyieh7lpqpbj/pwa/192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
    "id": "gmail",
    "url": "https://mail.google.com/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://mail.google.com/mail/u/0/&emr=1&followup=https://mail.google.com/mail/u/0/&osid=1&passive=1209600&service=mail&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-417591354:1794139796228784",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://mail.google.com/mail/u/0/&emr=1&followup=https://mail.google.com/mail/u/0/&osid=1&passive=1209600&service=mail&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-434576276:1794156192770937",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/gmail_2020q4_512dp.png",
+   "icon_kind": "ręczna",
+   "icon_px": 1024,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -251,6 +271,7 @@
    "icon_source": "https://res.public.onecdn.static.microsoft/assets/mail/pwa/v4/pngs/apple-touch-icon.png",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -263,6 +284,7 @@
    "icon_source": "https://mail.proton.me/assets/android-chrome-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -275,6 +297,7 @@
    "icon_source": "https://app.tuta.com/images/apple-touch-icon.png",
    "icon_kind": "apple",
    "icon_px": 512,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -287,6 +310,7 @@
    "icon_source": "https://pl.wikipedia.org/static/apple-touch/wikipedia.png",
    "icon_kind": "apple",
    "icon_px": 160,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -299,6 +323,7 @@
    "icon_source": "https://chatgpt.com/unauth-mweb/images/chatgpt-icon-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -308,9 +333,10 @@
    "final_url": "https://claude.ai/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://claude.ai/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 48,
+   "icon_source": "https://claude.ai/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -323,18 +349,20 @@
    "icon_source": "https://www.gstatic.com/lamda/images/gemini_sparkle_4g_512_lt_f94943af3be039176192d.png",
    "icon_kind": "manifest",
    "icon_px": 512,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
    "id": "microsoft-copilot",
-   "url": "https://copilot.microsoft.com/",
+   "url": "https://copilot.com/",
    "status": 200,
    "final_url": "https://copilot.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://res.cdn.office.net/officehub/images/content/images/unauth-copilotcom/favicon-copilot-brand-refresh-23392c1f66.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=copilot.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 48,
+   "icon_style": "kafelek",
    "result": "ok"
   },
   {
@@ -347,6 +375,7 @@
    "icon_source": "https://www.perplexity.ai/apple-touch-icon.png",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -356,9 +385,10 @@
    "final_url": "https://allegro.pl/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://allegro.pl/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 48,
+   "icon_source": "https://allegro.pl/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 57,
+   "icon_style": "kafelek",
    "result": "zablokowane"
   },
   {
@@ -371,31 +401,34 @@
    "icon_source": "https://www.olx.pl/app/static/manifest/r/apple-touch-icon.png",
    "icon_kind": "apple",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
    "id": "amazon",
    "url": "https://www.amazon.pl/",
-   "status": 202,
+   "status": 200,
    "final_url": "https://www.amazon.pl/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.amazon.pl/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.amazon.pl&sz=256",
+   "icon_kind": "s2",
    "icon_px": 48,
+   "icon_style": "kafelek",
    "result": "ok"
   },
   {
    "id": "aliexpress",
    "url": "https://www.aliexpress.com/",
    "status": 302,
-   "final_url": "https://login.aliexpress.us/sync_cookie_write.htm?acs_random_token=60f84d1d8d034a3dbe28f1dfe049d6c9&xman_goto=https%3A%2F%2Fwww.aliexpress.us%2F%3FgatewayAdapt%3Dglo2usa%26_randl_shipto%3DUS&_ga=GA1.1.537096195055104.1794139798511",
+   "final_url": "https://login.aliexpress.us/sync_cookie_write.htm?acs_random_token=01c20473e528420c9c7aebe86307011a&xman_goto=https%3A%2F%2Fwww.aliexpress.us%2F%3FgatewayAdapt%3Dglo2usa%26_randl_shipto%3DUS&_ga=GA1.1.1215879356198163.1794156195897",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
-   "result": "błąd"
+   "icon_source": "https://www.google.com/s2/favicons?domain=login.aliexpress.us&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 16,
+   "icon_style": "litera",
+   "result": "zablokowane"
   },
   {
    "id": "paypal",
@@ -407,90 +440,98 @@
    "icon_source": "https://www.paypalobjects.com/marketing/web/icons/monogram/pp144.png",
    "icon_kind": "apple",
    "icon_px": 144,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
    "id": "google-docs",
    "url": "https://docs.google.com/document/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/document/&followup=https://docs.google.com/document/&ltmpl=docs&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1004491357:1794139796450815",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/document/&followup=https://docs.google.com/document/&ltmpl=docs&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S539352093:1794156193155599",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/docs_2020q4_512dp.png",
+   "icon_kind": "ręczna",
+   "icon_px": 1024,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
    "id": "google-sheets",
    "url": "https://docs.google.com/spreadsheets/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/spreadsheets/&followup=https://docs.google.com/spreadsheets/&ltmpl=sheets&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1004491357:1794139796486881",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/spreadsheets/&followup=https://docs.google.com/spreadsheets/&ltmpl=sheets&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S504461087:1794156193221163",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/sheets_2020q4_512dp.png",
+   "icon_kind": "ręczna",
+   "icon_px": 1024,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
    "id": "google-slides",
    "url": "https://docs.google.com/presentation/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/presentation/&followup=https://docs.google.com/presentation/&ltmpl=slides&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1612965395:1794139796893520",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/presentation/&followup=https://docs.google.com/presentation/&ltmpl=slides&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S539352093:1794156193286382",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/slides_2020q4_512dp.png",
+   "icon_kind": "ręczna",
+   "icon_px": 1024,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
    "id": "google-forms",
    "url": "https://docs.google.com/forms/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/forms/&followup=https://docs.google.com/forms/&ltmpl=forms&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1004491357:1794139796553625",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/forms/&followup=https://docs.google.com/forms/&ltmpl=forms&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-2079751777:1794156193313938",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/forms_2020q4_512dp.png",
+   "icon_kind": "ręczna",
+   "icon_px": 1024,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
    "id": "google-drive",
    "url": "https://drive.google.com/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://drive.google.com/&emr=1&followup=https://drive.google.com/&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-417591354:1794139796560368",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://drive.google.com/&emr=1&followup=https://drive.google.com/&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-415655216:1794156193286174",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/drive_2020q4_512dp.png",
+   "icon_kind": "ręczna",
+   "icon_px": 1024,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
    "id": "google-calendar",
    "url": "https://calendar.google.com/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://calendar.google.com/calendar/u/0/r&emr=1&followup=https://calendar.google.com/calendar/u/0/r&osid=1&passive=1209600&service=cl&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1612965395:1794139796918808",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://calendar.google.com/calendar/u/0/r&emr=1&followup=https://calendar.google.com/calendar/u/0/r&osid=1&passive=1209600&service=cl&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S539352093:1794156193347159",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/calendar_2020q4_512dp.png",
+   "icon_kind": "ręczna",
+   "icon_px": 1024,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
    "id": "google-keep",
    "url": "https://keep.google.com/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://keep.google.com/&followup=https://keep.google.com/&ltmpl=keep&passive=1209600&service=memento&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-417591354:1794139796803080",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://keep.google.com/&followup=https://keep.google.com/&ltmpl=keep&passive=1209600&service=memento&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S2080500329:1794156193426584",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://ssl.gstatic.com/images/branding/product/2x/keep_2020q4_512dp.png",
+   "icon_kind": "ręczna",
+   "icon_px": 1024,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -500,9 +541,10 @@
    "final_url": "https://m365.cloud.microsoft/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://res.cdn.office.net/officehub/images/content/images/unauth-copilotcom/favicon-copilot-brand-refresh-23392c1f66.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=m365.cloud.microsoft&sz=256",
+   "icon_kind": "s2",
    "icon_px": 48,
+   "icon_style": "kafelek",
    "result": "ok"
   },
   {
@@ -515,6 +557,7 @@
    "icon_source": "https://res.cdn.office.net/files/fabric-cdn-prod_20251117.001/assets/brand-icons/product/png/word_48x3.png",
    "icon_kind": "apple",
    "icon_px": 144,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -527,6 +570,7 @@
    "icon_source": "https://res.cdn.office.net/files/fabric-cdn-prod_20251117.001/assets/brand-icons/product/png/excel_48x3.png",
    "icon_kind": "apple",
    "icon_px": 144,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -539,6 +583,7 @@
    "icon_source": "https://res.cdn.office.net/files/fabric-cdn-prod_20251117.001/assets/brand-icons/product/png/powerpoint_48x3.png",
    "icon_kind": "apple",
    "icon_px": 144,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -548,14 +593,15 @@
    "final_url": "https://www.microsoft.com/en-us/microsoft-365/onedrive/online-cloud-storage",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.microsoft.com/favicon.ico?v2",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.microsoft.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 128,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
    "id": "onenote",
-   "url": "https://www.onenote.com/notebooks",
+   "url": "https://onenote.cloud.microsoft/",
    "status": 200,
    "final_url": "https://onenote.cloud.microsoft/",
    "error": null,
@@ -563,6 +609,7 @@
    "icon_source": "https://res.cdn.office.net/files/fabric-cdn-prod_20251117.001/assets/brand-icons/product/png/onenote_48x3.png",
    "icon_kind": "apple",
    "icon_px": 144,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -572,9 +619,10 @@
    "final_url": "https://www.dropbox.com/login?cont=%2Fhome",
    "error": null,
    "manifest": false,
-   "icon_source": "https://cfl.dropboxstatic.com/static/metaserver/static/images/favicon.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.dropbox.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 32,
+   "icon_style": "litera",
    "result": "ok"
   },
   {
@@ -587,6 +635,7 @@
    "icon_source": "https://drive.proton.me/assets/android-chrome-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -599,6 +648,7 @@
    "icon_source": "https://www.notion.com/front-static/logo-ios.png",
    "icon_kind": "apple",
    "icon_px": 512,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -611,6 +661,7 @@
    "icon_source": "https://todoist.b-cdn.net/assets/icons/todoist-pwa-192.45bc3b2c471fae15.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -620,9 +671,10 @@
    "final_url": "https://trello.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.trello.com/favicon.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=trello.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 256,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -635,6 +687,7 @@
    "icon_source": "https://d3ki9tyy5l5ruj.cloudfront.net/obj/7e5dfbdaea5868b87a9a2e0e0e35cb3d2cb782fb/AsanaSquareLogoPng.png",
    "icon_kind": "apple",
    "icon_px": 72,
+   "icon_style": "kafelek",
    "result": "ok"
   },
   {
@@ -644,9 +697,10 @@
    "final_url": "https://start.atlassian.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://start.atlassian.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 48,
+   "icon_source": "https://start.atlassian.com/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -656,9 +710,10 @@
    "final_url": "https://app.clickup.com/",
    "error": null,
    "manifest": true,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://icons.duckduckgo.com/ip3/app.clickup.com.ico",
+   "icon_kind": "ddg",
+   "icon_px": 32,
+   "icon_style": "litera",
    "result": "ok"
   },
   {
@@ -668,9 +723,10 @@
    "final_url": "https://monday.com/lang/pl",
    "error": null,
    "manifest": false,
-   "icon_source": "https://monday.com/static/img/favicons/favicon-monday5-57.png",
+   "icon_source": "https://monday.com/static/img/favicons/favicon-monday5-180.png",
    "icon_kind": "apple",
-   "icon_px": 57,
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -683,6 +739,7 @@
    "icon_source": "https://static.linear.app/assets/pwa/icon_192.png?v=3",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -692,9 +749,10 @@
    "final_url": "https://miro.com/pl/signup/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://static-website.miro.com/miro-site-auth-assets/favicon.ico",
-   "icon_kind": "icon",
-   "icon_px": 48,
+   "icon_source": "https://www.google.com/s2/favicons?domain=miro.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 128,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -706,7 +764,8 @@
    "manifest": true,
    "icon_source": "https://www.overleaf.com/overleaf-logo.svg",
    "icon_kind": "manifest",
-   "icon_px": 261,
+   "icon_px": 512,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -716,9 +775,10 @@
    "final_url": "https://www.grammarly.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://static-web.grammarly.com/cms/master/public/favicon-32x32.png",
-   "icon_kind": "icon",
-   "icon_px": 32,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.grammarly.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 48,
+   "icon_style": "kafelek",
    "result": "ok"
   },
   {
@@ -731,18 +791,20 @@
    "icon_source": "https://languagetool.org/images/favicons/android-chrome-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
    "id": "google-classroom",
    "url": "https://classroom.google.com/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://classroom.google.com/&emr=1&followup=https://classroom.google.com/&passive=1209600&service=classroom&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1004491357:1794139797635044",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://classroom.google.com/&emr=1&followup=https://classroom.google.com/&passive=1209600&service=classroom&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-434576276:1794156194534682",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=accounts.google.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 32,
+   "icon_style": "litera",
    "result": "ok"
   },
   {
@@ -755,6 +817,7 @@
    "icon_source": "https://d35aaqx5ub95lt.cloudfront.net/images/pwa-icon-circle-192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -767,6 +830,7 @@
    "icon_source": "https://www.gstatic.com/youtube/img/branding/favicon/favicon_192x192_v2.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -779,6 +843,7 @@
    "icon_source": "https://assets.nflxext.com/us/ffe/siteui/common/icons/nficon2016.png",
    "icon_kind": "apple",
    "icon_px": 64,
+   "icon_style": "kafelek",
    "result": "ok"
   },
   {
@@ -791,6 +856,7 @@
    "icon_source": "https://static-assets.bamgrid.com/product/disneyplus/favicons/msftpwa-192x192-aurora.97f08a1eb58995c81687d0cf3f953796.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -800,9 +866,10 @@
    "final_url": "https://www.primevideo.com/offers/nonprimehomepage?ref_=dv_web_force_root",
    "error": null,
    "manifest": false,
-   "icon_source": "https://m.media-amazon.com/images/G/01/digital/video/DVUI/favicons/apple-touch-icon-precomposed.png",
+   "icon_source": "https://m.media-amazon.com/images/G/01/digital/video/DVUI/favicons/apple-touch-icon-152x152.png",
    "icon_kind": "apple",
-   "icon_px": 76,
+   "icon_px": 152,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -815,6 +882,7 @@
    "icon_source": "https://www.hbomax.com/dotcom/img/hbomax/apple-touch-icon.png",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -824,9 +892,10 @@
    "final_url": "https://tv.apple.com/",
    "error": null,
    "manifest": true,
-   "icon_source": "https://tv.apple.com/assets/favicon/favicon-180.png",
-   "icon_kind": "apple",
-   "icon_px": 180,
+   "icon_source": "https://tv.apple.com/assets/app-icons/pwa-manifest/tv-icon_192.png",
+   "icon_kind": "manifest",
+   "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -839,6 +908,7 @@
    "icon_source": "https://www.skyshowtime.com/static/skyshowtime-toolkit/53.4.0/skyshowtime/favicons/apple-touch-icon_180x180.png",
    "icon_kind": "icon",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -851,6 +921,7 @@
    "icon_source": "https://static.player.pl/static/images/apple-touch-icon-180x180.png",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -860,9 +931,10 @@
    "final_url": "https://polsatboxgo.pl/start?pk=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NHcm91cHMiOlsiYXBwOmFsbCIsImFwcDpicm93c2VyIiwiYXBwOmNocm9tZSIsImJ1aWxkOjMiLCJjcHVzZXI6ZmFsc2UiLCJkZXY6YWxsIiwiZGV2OnBjIiwiZm9yY2VwbDpmYWxzZSIsImxlZ2FjeV91c2VyOmZhbHNlIiwibG9jOmFsbCIsImxvYzp3b3JsZCIsImxvZ2dlZDpmYWxzZSIsIm9zOmFsbCIsIm9zOmxpbnV4IiwicGxheWVyOmFsbCIsInBsYXllcjpodG1sIiwicGx1c3VzZXI6ZmFsc2UiLCJwb3J0YWw6cGJnIiwicHJlc3M6ZmFsc2UiLCJ0ZXN0ZXI6ZmFsc2UiLCJ0ZXN0ZXJfcGVyOmZhbHNlIiwidmVyaWZpZWQ6ZmFsc2UiLCJ2cG46ZmFsc2UiXSwiY29uc3RhbnRzIjpbInJvZG9FeHRlcm5hbENvb2tpZXNFbmFibGVkIl19.GcCI9LEIXduSkGZw8aQ7tdKFHPEy3Y6S_O5SohwObBk",
    "error": null,
    "manifest": false,
-   "icon_source": "https://polsatboxgo.pl/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 48,
+   "icon_source": "https://www.google.com/s2/favicons?domain=polsatboxgo.pl&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -872,9 +944,10 @@
    "final_url": "https://vod.tvp.pl/",
    "error": null,
    "manifest": true,
-   "icon_source": "https://vod.tvp.pl/static/images/favicon.png",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=vod.tvp.pl&sz=256",
+   "icon_kind": "s2",
    "icon_px": 60,
+   "icon_style": "kafelek",
    "result": "ok"
   },
   {
@@ -887,6 +960,7 @@
    "icon_source": "https://scdn2.cda.pl/img/icon/favicon/favicon-192.png",
    "icon_kind": "apple",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -896,9 +970,10 @@
    "final_url": "https://www.crunchyroll.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.crunchyroll.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 120,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -908,9 +983,10 @@
    "final_url": "https://www.twitch.tv/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://assets.twitch.tv/assets/favicon-32-5c61aa63605bca4f740d.png",
-   "icon_kind": "icon",
-   "icon_px": 32,
+   "icon_source": "https://www.twitch.tv/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -923,6 +999,7 @@
    "icon_source": "https://f.vimeocdn.com/cms/images/apple-icon.png",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -932,9 +1009,10 @@
    "final_url": "https://app.plex.tv/desktop/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://app.plex.tv/desktop/static/icon-iphone.png",
+   "icon_source": "https://app.plex.tv/desktop/static/icon-ipad@2x.png",
    "icon_kind": "apple",
-   "icon_px": 57,
+   "icon_px": 144,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -946,7 +1024,8 @@
    "manifest": false,
    "icon_source": "https://app.clipchamp.com/clipchamp/release-2026-11-04-00-rc00/consumer/favicon.svg",
    "icon_kind": "icon",
-   "icon_px": 96,
+   "icon_px": 512,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -959,6 +1038,7 @@
    "icon_source": "https://sf16-web-tos-buz.capcutcdn-us.com/obj/capcut-web-buz-tx/pwa/128.png",
    "icon_kind": "manifest",
    "icon_px": 128,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -971,6 +1051,7 @@
    "icon_source": "https://open.spotifycdn.com/cdn/images/icons/Spotify_128.45316d66.png",
    "icon_kind": "manifest",
    "icon_px": 128,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -980,9 +1061,10 @@
    "final_url": "https://music.youtube.com/",
    "error": null,
    "manifest": true,
-   "icon_source": "https://www.gstatic.com/youtube/media/ytm/images/applauncher/music_icon_192x192.png",
+   "icon_source": "https://www.gstatic.com/youtube/media/ytm/images/applauncher/music_icon_144x144.png",
    "icon_kind": "manifest",
-   "icon_px": 32,
+   "icon_px": 144,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -995,6 +1077,7 @@
    "icon_source": "https://music.apple.com/assets/app-icons/pwa-manifest/music-icon_192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1007,6 +1090,7 @@
    "icon_source": "https://m.media-amazon.com/images/G/01/music/logo/1.0/smile_256x256.png",
    "icon_kind": "apple",
    "icon_px": 256,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1016,9 +1100,10 @@
    "final_url": "https://tidal.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://tidal.com/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=tidal.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 48,
+   "icon_style": "kafelek",
    "result": "zablokowane"
   },
   {
@@ -1031,6 +1116,7 @@
    "icon_source": "https://cdn-files.dzcdn.net/cache/images/common/favicon/apple-touch-icon.dc494e31ef5f888a087a.png",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1043,6 +1129,7 @@
    "icon_source": "https://soundcloud.com/pwa-round-icon-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1052,9 +1139,10 @@
    "final_url": "https://bandcamp.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=bandcamp.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -1067,11 +1155,12 @@
    "icon_source": "https://play.qobuz.com/apple-touch-icon.png",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
    "id": "pocket-casts",
-   "url": "https://play.pocketcasts.com/",
+   "url": "https://pocketcasts.com/play",
    "status": 200,
    "final_url": "https://pocketcasts.com/play",
    "error": null,
@@ -1079,6 +1168,7 @@
    "icon_source": "https://pocketcasts.com/favicons/favicon-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1088,9 +1178,10 @@
    "final_url": "https://www.audible.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://m.media-amazon.com/images/G/01/Audible/images/navigation/MobileWeb_IOSandAndroid_460._SY120_CB651482445_.png",
+   "icon_source": "https://m.media-amazon.com/images/G/01/Audible/images/navigation/MobileWeb_IOSandAndroid_460._SY180_CB651482445_.png",
    "icon_kind": "apple",
-   "icon_px": 120,
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1103,6 +1194,7 @@
    "icon_source": "https://open.fm/icon_192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1112,9 +1204,10 @@
    "final_url": "https://radio.garden/",
    "error": null,
    "manifest": true,
-   "icon_source": "https://radio.garden/public/icons/ios/ios-appicon-76-76.png",
+   "icon_source": "https://radio.garden/public/icons/ios/ios-appicon-180-180.png",
    "icon_kind": "apple",
-   "icon_px": 76,
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1127,6 +1220,7 @@
    "icon_source": "https://www.last.fm/static/images/lastfm_avatar_applemusic.b06eb8ad89be.png",
    "icon_kind": "apple",
    "icon_px": 1024,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1136,9 +1230,10 @@
    "final_url": "https://www.canva.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.canva.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.canva.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -1151,6 +1246,7 @@
    "icon_source": "https://static.figma.com/app/icon/2/icon-192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1163,11 +1259,12 @@
    "icon_source": "https://www.photopea.com/promo/icon512.png",
    "icon_kind": "manifest",
    "icon_px": 512,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
    "id": "adobe-express",
-   "url": "https://new.express.adobe.com/",
+   "url": "https://express.adobe.com/",
    "status": 200,
    "final_url": "https://express.adobe.com/",
    "error": null,
@@ -1175,6 +1272,7 @@
    "icon_source": "https://express.adobe.com/static/assets/pwaIcons/192x192_v2.80dd97d711.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1187,6 +1285,7 @@
    "icon_source": "https://pixlr.com/android-chrome-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1198,7 +1297,8 @@
    "manifest": false,
    "icon_source": "https://design.penpot.app/images/favicon.svg?version=2.19.0-RC6-1793955138",
    "icon_kind": "icon",
-   "icon_px": 346,
+   "icon_px": 512,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1211,6 +1311,7 @@
    "icon_source": "https://excalidraw.com/android-chrome-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1223,6 +1324,7 @@
    "icon_source": "https://www.tldraw.com/android-chrome-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 193,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1235,6 +1337,7 @@
    "icon_source": "https://app.diagrams.net/images/icon-192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1246,7 +1349,8 @@
    "manifest": false,
    "icon_source": "https://storage.googleapis.com/gweb-mobius-cdn/photos/uploads/383ce0413fa82bcaf6de49fd7997678b21b9762e.svg",
    "icon_kind": "icon",
-   "icon_px": 683,
+   "icon_px": 512,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1259,6 +1363,7 @@
    "icon_source": "https://www.remove.bg/android-chrome-192x192.png?v=fc0bfce6e1310f1539afec9729716721",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1271,6 +1376,7 @@
    "icon_source": "https://squoosh.app/c/icon-large-cb438cac.png",
    "icon_kind": "manifest",
    "icon_px": 1024,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1280,9 +1386,10 @@
    "final_url": "https://coolors.co/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=coolors.co&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 192,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -1295,6 +1402,7 @@
    "icon_source": "https://www.tinkercad.com/img/app_icon_192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1307,6 +1415,7 @@
    "icon_source": "https://www.chess.com/bundles/web/favicons/android-chrome-192x192.25da7247.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1319,6 +1428,7 @@
    "icon_source": "https://lichess.org/assets/logo/lichess-favicon-192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1331,11 +1441,12 @@
    "icon_source": "https://play.geforcenow.com/mall/assets/icons/GFN-Logo-192.webp",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
    "id": "xbox-cloud-gaming",
-   "url": "https://www.xbox.com/play",
+   "url": "https://play.xbox.com/",
    "status": 200,
    "final_url": "https://play.xbox.com/",
    "error": null,
@@ -1343,6 +1454,7 @@
    "icon_source": "https://play.xbox.com/app-icon-192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1352,10 +1464,11 @@
    "final_url": "https://cloud.boosteroid.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://cloud.boosteroid.com/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=cloud.boosteroid.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 48,
-   "result": "błąd"
+   "icon_style": "kafelek",
+   "result": "zablokowane"
   },
   {
    "id": "steam",
@@ -1364,9 +1477,10 @@
    "final_url": "https://store.steampowered.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://store.steampowered.com/favicon.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=store.steampowered.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 256,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1379,6 +1493,7 @@
    "icon_source": "https://itch.io/static/images/itchio-square-144.png",
    "icon_kind": "manifest",
    "icon_px": 144,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1391,6 +1506,7 @@
    "icon_source": "https://a.poki-cdn.com/icons/android-chrome-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1403,6 +1519,7 @@
    "icon_source": "https://imgs.crazygames.com/favicons/favicon-192x192.png?metadata=none&quality=60&width=192&height=192&format=png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1415,6 +1532,7 @@
    "icon_source": "https://www.geoguessr.com/static/icon-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1427,6 +1545,7 @@
    "icon_source": "https://pl.boardgamearena.com/theme/img/favicon/android-icon-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1439,6 +1558,7 @@
    "icon_source": "https://www.nytimes.com/games-assets/v2/metadata/wordle-apple-touch-icon.png?v=",
    "icon_kind": "apple",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1451,6 +1571,7 @@
    "icon_source": "https://github.githubassets.com/assets/app-icon-192-bcc967ab9829.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1463,6 +1584,7 @@
    "icon_source": "https://about.gitlab.com/images/ico/favicon-192x192.png",
    "icon_kind": "apple",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1475,6 +1597,7 @@
    "icon_source": "https://codeberg.org/assets/img/logo.png",
    "icon_kind": "manifest",
    "icon_px": 256,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1487,6 +1610,7 @@
    "icon_source": null,
    "icon_kind": null,
    "icon_px": null,
+   "icon_style": null,
    "result": "ok"
   },
   {
@@ -1496,9 +1620,10 @@
    "final_url": "https://codepen.io/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=codepen.io&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -1508,9 +1633,10 @@
    "final_url": "https://codesandbox.io/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=codesandbox.io&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 48,
+   "icon_style": "kafelek",
    "result": "ok"
   },
   {
@@ -1522,7 +1648,8 @@
    "manifest": false,
    "icon_source": "https://stackblitz.com/_astro/favicon.svg",
    "icon_kind": "icon",
-   "icon_px": 16,
+   "icon_px": 512,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1535,6 +1662,7 @@
    "icon_source": "https://ssl.gstatic.com/colaboratory-static/common/7ac4eb2bf89ffe0293ec71dcc7e31ce0/img/favicon.ico",
    "icon_kind": "icon",
    "icon_px": 128,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1544,9 +1672,10 @@
    "final_url": "https://stackoverflow.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=stackoverflow.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -1559,6 +1688,7 @@
    "icon_source": "https://developer.mozilla.org/favicon-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1571,6 +1701,7 @@
    "icon_source": "https://regex101.com/static/assets/icons/manifest-icon-192.maskable.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1580,9 +1711,10 @@
    "final_url": "https://godbolt.org/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://static.ce-cdn.net/favicon.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=godbolt.org&sz=256",
+   "icon_kind": "s2",
    "icon_px": 128,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1595,6 +1727,7 @@
    "icon_source": "https://identity.getpostman.com/favicon.ico",
    "icon_kind": "favicon",
    "icon_px": 32,
+   "icon_style": "litera",
    "result": "zablokowane"
   },
   {
@@ -1607,6 +1740,7 @@
    "icon_source": "https://py8fhxnkzwtsqdo9.public.blob.vercel-storage.com/front/favicon/vercel/android-chrome-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1616,9 +1750,10 @@
    "final_url": "https://dash.cloudflare.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://dash.cloudflare.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 99,
+   "icon_source": "https://dash.cloudflare.com/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -1628,9 +1763,10 @@
    "final_url": "https://huggingface.co/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://huggingface.co/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=huggingface.co&sz=256",
+   "icon_kind": "s2",
    "icon_px": 256,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1643,6 +1779,7 @@
    "icon_source": "https://www.gstatic.com/images/branding/productlogos/maps_2025/v1/web-96dp/logo_maps_2025_color_2x_web_96dp.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1655,6 +1792,7 @@
    "icon_source": "https://www.gstatic.com/translate/favicon.ico",
    "icon_kind": "manifest",
    "icon_px": 64,
+   "icon_style": "kafelek",
    "result": "ok"
   },
   {
@@ -1667,6 +1805,7 @@
    "icon_source": "https://www.deepl.com/apple-icon?fb6f62776db8f84a",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1679,6 +1818,7 @@
    "icon_source": "https://www.openstreetmap.org/assets/android-chrome-192x192-f970b9be3965dfda6ea9481b305c39b2ec794e296f802235e30d4671f0f896e1.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1691,6 +1831,7 @@
    "icon_source": "https://img.windy.com/albums/icons/icon512x512.png?w=192",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1703,6 +1844,7 @@
    "icon_source": "https://r.cdnst.net/assets/favicon-192-CkkNUEPD.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1715,6 +1857,7 @@
    "icon_source": "https://www.desmos.com/assets/pwa/icon-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1727,6 +1870,7 @@
    "icon_source": "https://www.geogebra.org/apps/icons/suite_192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1736,9 +1880,10 @@
    "final_url": "https://wetransfer.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://wetransfer.com/apple-touch-icon.png",
+   "icon_source": "https://wetransfer.com/apple-touch-icon-180x180.png",
    "icon_kind": "apple",
-   "icon_px": 57,
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1751,6 +1896,7 @@
    "icon_source": "https://s.smallpdf.com/static/ec655987d53aea55.png",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1763,6 +1909,7 @@
    "icon_source": "https://www.ilovepdf.com/img/app-icon.png",
    "icon_kind": "apple",
    "icon_px": 114,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1775,6 +1922,7 @@
    "icon_source": "https://vault.bitwarden.com/images/icons/android-chrome-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1787,6 +1935,7 @@
    "icon_source": "https://pass.proton.me/assets/android-chrome-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1799,6 +1948,7 @@
    "icon_source": "https://jakdojade.pl/assets/icons/png/jakdojade/logo-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   }
  ],
@@ -1807,12 +1957,13 @@
    "id": "google-chat",
    "url": "https://chat.google.com/",
    "status": 200,
-   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://chat.google.com/&emr=1&osid=1&passive=1209600&service=dynamite&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-417591354:1794139801902820",
+   "final_url": "https://accounts.google.com/v3/signin/identifier?continue=https://chat.google.com/&emr=1&osid=1&passive=1209600&service=dynamite&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-2079751777:1794156198566783",
    "error": null,
    "manifest": false,
-   "icon_source": "https://accounts.google.com/favicon.ico",
-   "icon_kind": "favicon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=accounts.google.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 32,
+   "icon_style": "litera",
    "result": "ok"
   },
   {
@@ -1825,6 +1976,7 @@
    "icon_source": "https://app.element.io/vector-icons/180.png",
    "icon_kind": "manifest",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1837,6 +1989,7 @@
    "icon_source": "https://assets.tumblr.com/pop/manifest/icon_transparent_192-11c337ee.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1846,9 +1999,10 @@
    "final_url": "https://mail.yahoo.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://s.yimg.com/cv/apiv2/default/hp/favicon.ico",
-   "icon_kind": "icon",
-   "icon_px": 32,
+   "icon_source": "https://mail.yahoo.com/favicon.ico",
+   "icon_kind": "favicon",
+   "icon_px": 48,
+   "icon_style": "kafelek",
    "result": "ok"
   },
   {
@@ -1861,6 +2015,7 @@
    "icon_source": "https://app.fastmail.com/static/appicons/Icon-MacOS-512x512@1x.png",
    "icon_kind": "manifest",
    "icon_px": 512,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1870,9 +2025,10 @@
    "final_url": "https://medium.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://medium.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://www.google.com/s2/favicons?domain=medium.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -1882,9 +2038,10 @@
    "final_url": "https://substack.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=substack.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -1897,6 +2054,7 @@
    "icon_source": "https://feedly.com/apple-touch-icon.png",
    "icon_kind": "apple",
    "icon_px": 144,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1909,6 +2067,7 @@
    "icon_source": "https://www.inoreader.com/icon-192-rounded.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1921,6 +2080,7 @@
    "icon_source": "https://www.gstatic.com/gnews/logo/google_news_192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1930,9 +2090,10 @@
    "final_url": "https://chat.mistral.ai/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=chat.mistral.ai&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -1945,6 +2106,7 @@
    "icon_source": "https://grok.com/images/android-chrome-512x512.png",
    "icon_kind": "manifest",
    "icon_px": 512,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1954,9 +2116,10 @@
    "final_url": "https://chat.deepseek.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=chat.deepseek.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1966,9 +2129,10 @@
    "final_url": "https://app.revolut.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://icons.duckduckgo.com/ip3/app.revolut.com.ico",
+   "icon_kind": "ddg",
+   "icon_px": 32,
+   "icon_style": "litera",
    "result": "zablokowane"
   },
   {
@@ -1981,6 +2145,7 @@
    "icon_source": "https://wise.com/public-resources/assets/icons/wise-personal/apple_touch_icon.png",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -1990,9 +2155,10 @@
    "final_url": "https://to-do.office.com/tasks/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=to-do.office.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2005,6 +2171,7 @@
    "icon_source": "https://cdn01.boxcdn.net/_assets/img/favicons/apple-touch-icon-180x180-tV001c.png",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2014,9 +2181,10 @@
    "final_url": "https://mega.nz/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://mega.nz/favicon.ico?v=3",
-   "icon_kind": "icon",
-   "icon_px": 32,
+   "icon_source": "https://mega.nz/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2029,6 +2197,7 @@
    "icon_source": "https://calendar.proton.me/assets/android-chrome-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2038,9 +2207,10 @@
    "final_url": "https://www.icloud.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.icloud.com/favicon.ico",
-   "icon_kind": "icon",
-   "icon_px": 48,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.icloud.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2053,6 +2223,7 @@
    "icon_source": "https://accounts.evernote.com/apple-icon.png?f1d84c7346d3590c",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2065,6 +2236,7 @@
    "icon_source": "https://d107mjio2rjf74.cloudfront.net/web/static/img/apple-touch-icon-180x180.png",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2074,9 +2246,10 @@
    "final_url": "https://www.airtable.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.airtable.com/favicon.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.airtable.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 48,
+   "icon_style": "kafelek",
    "result": "ok"
   },
   {
@@ -2089,19 +2262,21 @@
    "icon_source": "https://cdn.coda.io/icons/png/color/coda-192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
    "id": "calendly",
-   "url": "https://calendly.com/app",
-   "status": 404,
-   "final_url": "https://calendly.com/app",
+   "url": "https://calendly.com/",
+   "status": 200,
+   "final_url": "https://calendly.com/",
    "error": null,
-   "manifest": false,
-   "icon_source": "https://calendly.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 48,
-   "result": "błąd"
+   "manifest": true,
+   "icon_source": "https://calendly.com/media/favicon/icon-192x192.png",
+   "icon_kind": "manifest",
+   "icon_px": 192,
+   "icon_style": "ostra",
+   "result": "ok"
   },
   {
    "id": "khan-academy",
@@ -2110,9 +2285,10 @@
    "final_url": "https://www.khanacademy.org/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.khanacademy.org/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.khanacademy.org&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 144,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2122,9 +2298,10 @@
    "final_url": "https://quizlet.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=quizlet.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -2137,6 +2314,7 @@
    "icon_source": "https://d3njjcbhbojbot.cloudfront.net/web/images/favicons/apple-touch-icon-v2-180x180.png",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2146,9 +2324,10 @@
    "final_url": "https://www.udemy.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.udemy.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -2161,6 +2340,7 @@
    "icon_source": "https://assets-cdn.kahoot.it/builder/v2/favicon.ico",
    "icon_kind": "apple",
    "icon_px": 32,
+   "icon_style": "litera",
    "result": "ok"
   },
   {
@@ -2173,6 +2353,7 @@
    "icon_source": "https://kick.com/apple-icon.png?apple-icon.0ldhg5ovdrppx.png?dpl=2b9149d9",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2185,6 +2366,7 @@
    "icon_source": "https://static.neon-ssr.dailymotion.com/neon-user-ssr/static/favicons/apple-icon-precomposed.12ce02f3a914dc2f3d6d.png",
    "icon_kind": "apple",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2197,6 +2379,7 @@
    "icon_source": "https://pluto.tv/favicon/large.png",
    "icon_kind": "manifest",
    "icon_px": 256,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2209,6 +2392,7 @@
    "icon_source": "https://cdn.loom.com/assets/favicons-loom/apple-touch-icon-180x180.png",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2221,6 +2405,7 @@
    "icon_source": "https://www.storytel.com/android-chrome-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2233,6 +2418,7 @@
    "icon_source": "https://www.mixcloud.com/apple-touch-icon.png",
    "icon_kind": "apple",
    "icon_px": 152,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2242,9 +2428,10 @@
    "final_url": "https://genius.com/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.google.com/s2/favicons?domain=genius.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -2257,6 +2444,7 @@
    "icon_source": "https://www.bandlab.com/web-app/images/favicons/icon-192x192-3236414591.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2266,9 +2454,10 @@
    "final_url": "https://unsplash.com/.within.website?redir=%2F",
    "error": null,
    "manifest": false,
-   "icon_source": "https://unsplash.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 32,
+   "icon_source": "https://unsplash.com/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 180,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -2278,9 +2467,10 @@
    "final_url": "https://www.behance.net/",
    "error": null,
    "manifest": false,
-   "icon_source": null,
-   "icon_kind": null,
-   "icon_px": null,
+   "icon_source": "https://www.behance.net/apple-touch-icon.png",
+   "icon_kind": "apple",
+   "icon_px": 144,
+   "icon_style": "ostra",
    "result": "zablokowane"
   },
   {
@@ -2293,6 +2483,7 @@
    "icon_source": "https://replit.com/public/icons/icon-rebrand-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2305,6 +2496,7 @@
    "icon_source": "https://devdocs.io/images/webapp-icon-192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2317,6 +2509,7 @@
    "icon_source": "https://hoppscotch.io/icons/pwa-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2329,6 +2522,7 @@
    "icon_source": "https://supabase.com/dashboard/favicon/android-icon-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2338,9 +2532,10 @@
    "final_url": "https://www.wolframalpha.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.wolframalpha.com/_next/static/images/favicon_b48d893b991ff67016124a4d51822e63.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=www.wolframalpha.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 64,
+   "icon_style": "kafelek",
    "result": "ok"
   },
   {
@@ -2350,9 +2545,10 @@
    "final_url": "https://track.toggl.com/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://track.toggl.com/favicon.ico",
-   "icon_kind": "favicon",
-   "icon_px": 96,
+   "icon_source": "https://www.google.com/s2/favicons?domain=track.toggl.com&sz=256",
+   "icon_kind": "s2",
+   "icon_px": 256,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2365,6 +2561,7 @@
    "icon_source": "https://pairdrop.net/images/android-chrome-192x192.png",
    "icon_kind": "manifest",
    "icon_px": 192,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2377,6 +2574,7 @@
    "icon_source": "https://archive.org/offshoot_assets/apple-touch-icon.png",
    "icon_kind": "apple",
    "icon_px": 180,
+   "icon_style": "ostra",
    "result": "ok"
   },
   {
@@ -2386,9 +2584,10 @@
    "final_url": "https://earth.google.com/web/",
    "error": null,
    "manifest": false,
-   "icon_source": "https://www.gstatic.com/earth/00-favicon.ico",
-   "icon_kind": "icon",
+   "icon_source": "https://www.google.com/s2/favicons?domain=earth.google.com&sz=256",
+   "icon_kind": "s2",
    "icon_px": 48,
+   "icon_style": "kafelek",
    "result": "ok"
   }
  ]

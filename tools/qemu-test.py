@@ -244,13 +244,6 @@ try:
     keys("esc")
     pause(2)
 
-    # Apps Menu ("Programy"): right of the logo.
-    click(85, 16)
-    pause(3)
-    shot("apps-menu", keep_duplicates=True)
-    keys("esc")
-    pause(2)
-
     # Quick Settings (system menu): status icons on the right of the top bar.
     click(W - 30, 16)
     pause(3)

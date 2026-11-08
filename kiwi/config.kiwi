@@ -59,12 +59,40 @@
         <package name="curl"/>
         <package name="unzip"/>
         <package name="fontconfig"/>
+        <!-- fonts for the scripts of all GNOME languages (Setup, onboarding, apps); Latin, Cyrillic and Greek come from Inter,
+             CJK and Arabic from the GNOME pattern. Tibetan (Dzongkha) has no Leap package: it falls back to what is installed. -->
+        <package name="google-noto-sans-fonts"/>
+        <package name="google-noto-sans-hebrew-fonts"/>
+        <package name="google-noto-sans-devanagari-fonts"/>
+        <package name="google-noto-sans-bengali-fonts"/>
+        <package name="google-noto-sans-tamil-fonts"/>
+        <package name="google-noto-sans-telugu-fonts"/>
+        <package name="google-noto-sans-kannada-fonts"/>
+        <package name="google-noto-sans-malayalam-fonts"/>
+        <package name="google-noto-sans-gujarati-fonts"/>
+        <package name="google-noto-sans-gurmukhi-fonts"/>
+        <package name="google-noto-sans-oriya-fonts"/>
+        <package name="google-noto-sans-sinhala-fonts"/>
+        <package name="google-noto-sans-thai-fonts"/>
+        <package name="google-noto-sans-lao-fonts"/>
+        <package name="google-noto-sans-khmer-fonts"/>
+        <package name="google-noto-sans-myanmar-fonts"/>
+        <package name="google-noto-sans-ethiopic-fonts"/>
+        <package name="google-noto-sans-georgian-fonts"/>
+        <package name="google-noto-sans-armenian-fonts"/>
+        <package name="google-noto-sans-olchiki-fonts"/>
+        <package name="google-noto-sans-cherokee-fonts"/>
+        <package name="google-noto-sans-canadianaboriginal-fonts"/>
+        <package name="google-noto-sans-symbols-fonts"/>
+        <package name="google-noto-sans-symbols2-fonts"/>
+        <package name="google-noto-sans-cjk-fonts"/>
+        <package name="google-noto-sans-arabic-fonts"/>
         <!-- boot splash -->
         <package name="plymouth"/>
         <package name="plymouth-dracut"/>
         <package name="plymouth-plugin-script"/>
         <package name="plymouth-plugin-label"/>
-        <!-- sound and video: PipeWire only (LinU(x), codecs in config.sh) -->
+        <!-- sound and video: PipeWire only (Linu(x), codecs in config.sh) -->
         <package name="pipewire"/>
         <package name="wireplumber"/>
         <package name="pipewire-pulseaudio"/>
@@ -78,8 +106,7 @@
         <package name="gnome-shell-extensions-common"/>
         <!-- DING (Desktop Icons) needs the GnomeDesktop 3.0 introspection data -->
         <package name="typelib-1_0-GnomeDesktop-3_0"/>
-        <!-- Apps Menu needs GMenu (gnome-menus); Desktop Icons and Dash to Dock need gvfs for trash:// -->
-        <package name="typelib-1_0-GMenu-3_0"/>
+        <!-- Desktop Icons and Dash to Dock need gvfs for trash:// -->
         <package name="gvfs"/>
         <package name="gvfs-backends"/>
         <package name="nautilus"/>
@@ -111,6 +138,11 @@
              window = GTK4 + WebKitGTK 6 (web processes run in bubblewrap), installer = Agama 24 -->
         <package name="libgtk-4-1"/>
         <package name="libwebkitgtk-6_0-4"/>
+        <!-- Shrimp Apps (store, built by tools/build-setup.sh): libflatpak + libadwaita; Steam needs gamemode and controller rules -->
+        <package name="libflatpak0"/>
+        <package name="libadwaita-1-0"/>
+        <package name="steam-devices"/>
+        <package name="gamemode"/>
         <package name="bubblewrap"/>
         <package name="xdg-dbus-proxy"/>
         <package name="polkit"/>

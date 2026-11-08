@@ -1,14 +1,4 @@
 1	Über diesen Computer
-2	Einstellungen
 3	Software
 4	Aktualisierungen
-5	Systemüberwachung
-6	Laufwerke
-7	Terminal
-8	Erweiterungen
-9	Bereitschaft
-10	Neu starten …
-11	Ausschalten …
-12	Bildschirm sperren
-13	Abmelden …
-14	Shrimp-Menü
+15	Systemwiederherstellung

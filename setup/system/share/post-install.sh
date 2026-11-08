@@ -17,6 +17,7 @@ if ! chroot "$T" rpm -q shrimp-setup >/dev/null 2>&1; then
   log "kopiuję Setup z nośnika"
   install -Dm755 /usr/bin/shrimp-setup "$T/usr/bin/shrimp-setup"
   install -Dm755 /usr/libexec/shrimp-setup-apply "$T/usr/libexec/shrimp-setup-apply"
+  install -Dm755 /usr/libexec/shrimp-usb-backup "$T/usr/libexec/shrimp-usb-backup"
   install -Dm755 /usr/bin/shrimp-app-style "$T/usr/bin/shrimp-app-style"
   mkdir -p "$T$SRC" && cp -a "$SRC/ui" "$SRC/drivers.conf" "$T$SRC/"
   install -Dm644 /usr/share/polkit-1/actions/org.shrimp.setup.policy "$T/usr/share/polkit-1/actions/org.shrimp.setup.policy"
@@ -29,6 +30,37 @@ if ! chroot "$T" rpm -q shrimp-setup >/dev/null 2>&1; then
   chroot "$T" systemctl enable shrimp-app-style.path shrimp-nvidia-flatpak.service || true
   chroot "$T" systemctl --global enable shrimp-app-style-user.service || true
 fi
+
+# Sklep Shrimp (Shrimp Apps) instaluje zestaw podstawowy i programy z onboardingu; jego pakietu też jeszcze nie ma.
+if ! chroot "$T" rpm -q shrimp-apps >/dev/null 2>&1 && [ -x /usr/bin/shrimp-apps ]; then
+  log "kopiuję Shrimp Apps z nośnika"
+  install -Dm755 /usr/bin/shrimp-apps "$T/usr/bin/shrimp-apps"
+  install -Dm644 /usr/share/applications/org.shrimp.Apps.desktop "$T/usr/share/applications/org.shrimp.Apps.desktop"
+  install -Dm644 /usr/share/metainfo/org.shrimp.Apps.metainfo.xml "$T/usr/share/metainfo/org.shrimp.Apps.metainfo.xml"
+  install -Dm644 /usr/share/shrimp/base-apps.json "$T/usr/share/shrimp/base-apps.json"
+fi
+
+# Pakiety GNOME zastąpione przez Shrimp Apps, Cocktail i Flatpaki z zestawu podstawowego: usuwamy je teraz,
+# póki system docelowy jest jeszcze zapisywalny, i blokujemy, żeby aktualizacje ich nie przywracały.
+# Firefox i aplikacje GNOME wracają jako Flatpaki ze sklepu Shrimp przy pierwszej konfiguracji.
+LIST=$SRC/remove-packages.txt
+if [ -f "$LIST" ]; then
+  while IFS= read -r pkg; do
+    case "$pkg" in ''|'#'*) continue;; esac
+    chroot "$T" zypper -n --no-refresh rm --no-confirm "$pkg" >/dev/null 2>&1 || true
+    chroot "$T" zypper -n al "$pkg" >/dev/null 2>&1 || true
+  done < "$LIST"
+  log "usunięto zastąpione pakiety GNOME"
+fi
+# Firefox z Flatpaka jest domyślną przeglądarką, zanim się zainstaluje (wpis nieszkodliwy bez niego).
+mkdir -p "$T/etc/xdg"
+cat > "$T/etc/xdg/mimeapps.list" <<'MIME'
+[Default Applications]
+x-scheme-handler/http=org.mozilla.firefox.desktop
+x-scheme-handler/https=org.mozilla.firefox.desktop
+text/html=org.mozilla.firefox.desktop
+application/xhtml+xml=org.mozilla.firefox.desktop
+MIME
 
 # Cichy start zainstalowanego systemu: menu GRUB ukryte (Esc, F4 lub F8 w ciągu sekundy je pokazuje,
 # pod BIOS także wciśnięty Shift), bez komunikatów „Loading Linux/initial ramdisk” i bez logów jądra.
@@ -55,7 +87,7 @@ if [ -f "$T/etc/grub.d/10_linux" ]; then
   GRUB_REGEN=1
 fi
 
-# Pulpit Shrimp jak na nośniku: rozszerzenia (Menu Shrimp, Programy, dok…), ustawienia domyślne
+# Pulpit Shrimp jak na nośniku: rozszerzenia (Menu Shrimp, dok…), ustawienia domyślne
 # (99_shrimp.gschema.override), tapeta i logo. Leap nie ma tych rozszerzeń w pakietach.
 log "kopiuję wygląd pulpitu Shrimp"
 EXT=/usr/share/gnome-shell/extensions
@@ -143,6 +175,10 @@ chroot "$T" flatpak remote-add --system --if-not-exists flathub https://dl.flath
 if /usr/bin/shrimp-setup --restore --root "$T" --user "$USER_NAME"; then :; else
   log "bez plików z Shrimp Install"
 fi
+
+# Dawna zawartość pendrive'a (shrimp-backup/ na nośniku): sprawdzona kopia na dysku komputera. Przywróci ją
+# pierwsza konfiguracja (formatuje pendrive i wgrywa pliki z powrotem). Brak shrimp-backup to nie błąd.
+/usr/libexec/shrimp-usb-backup stash --root "$T" || log "bez kopii zawartości pendrive'a (kod $?)"
 
 # Jednorazowy wpis UEFI „Shrimp Install” (BootNext z Windows) nie jest już potrzebny.
 if command -v efibootmgr >/dev/null && [ -d /sys/firmware/efi ]; then

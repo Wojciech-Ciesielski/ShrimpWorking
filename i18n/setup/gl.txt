@@ -1,5 +1,6 @@
 1	Atrás
 2	Información
+3	Logotipo de Shrimp
 4	O controlador de NVIDIA dá todo o rendemento en xogos e programas gráficos. O controlador aberto é máis sinxelo pero máis lento.
 5	(Recomendado)
 6	Seguinte
@@ -49,6 +50,7 @@
 50	Instalación
 51	Toda a unidade
 52	División do disco
+53	Windows {win} · Shrimp {shrimp}
 54	Conta
 55	Cifrado
 56	Instalar
@@ -132,7 +134,9 @@
 134	Os teus ficheiros
 135	Os documentos, fotos e descargas están na aplicación Ficheiros, no teu cartafol persoal.
 136	Alí tamén atoparás a unidade de Windows.
+137	Panko
 138	Algo deixou de funcionar tras un cambio? En Panko podes volver a como estaba antes.
+139	Cocktail
 140	Actualizacións, controladores e códecs nun só lugar. As actualizacións instálanse ao reiniciar.
 141	Busca rápida
 142	Preme a tecla Super, a do logotipo de Windows, para atopar programas, ficheiros e axustes.
@@ -166,3 +170,12 @@
 170	Contorna de desenvolvemento
 171	Películas e música
 172	Música
+173	Nova York
+174	Chicago
+175	Denver
+176	Os Ánxeles
+177	Toronto
+178	Vancouver
+179	Illas Canarias
+180	Sidney
+181	Perth

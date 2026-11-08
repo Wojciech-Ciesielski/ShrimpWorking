@@ -115,11 +115,22 @@ export class I18n {
 
 export interface Pack { keys: Entry[]; files: Record<string, string> }
 
-/** Buduje tłumacza dla wybranego języka z już wczytanego tekstu pliku (undefined: angielski). */
-export function build(keysTsv: string, tag: string, txt?: string): I18n {
+/** Język zapasowy dla brakujących tekstów (pole `text` w langs.ts), np. „quz” → „es”; brak: angielski. */
+export const textFallback = (tag: string): string | undefined => {
+  const t = LANGS.find((l) => l.tag === tag)?.text;
+  return t && t !== "en" && t !== tag ? t : undefined;
+};
+
+/** Buduje tłumacza dla wybranego języka z już wczytanego tekstu pliku (undefined: angielski).
+ *  `fbTxt`: plik języka zapasowego (textFallback), którego teksty zastępują brakujące przed angielskim. */
+export function build(keysTsv: string, tag: string, txt?: string, fbTxt?: string): I18n {
   const keys = parseKeys(keysTsv);
   const english = new I18n("en", keys, undefined);
   const fb = new Map(english.keys().map((k) => [k, english.t(k)]));
+  if (fbTxt) {
+    const v = parseValues(fbTxt);
+    for (const k of keys) if (v.has(k.id)) fb.set(k.key, v.get(k.id)!);
+  }
   return new I18n(tag, keys, txt ? parseValues(txt) : undefined, fb);
 }
 
@@ -131,5 +142,6 @@ export function createI18n(keysTsv: string, files: Record<string, string>, reque
     if (m && !m[1].startsWith("_")) byTag.set(m[1], txt);
   }
   const tag = negotiate(requested);
-  return build(keysTsv, tag, byTag.get(tag));
+  const fb = textFallback(tag);
+  return build(keysTsv, tag, byTag.get(tag), fb ? byTag.get(fb) : undefined);
 }

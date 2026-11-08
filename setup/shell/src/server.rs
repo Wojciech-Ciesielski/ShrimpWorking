@@ -37,6 +37,7 @@ struct Inner {
     codecs: bool,
     nvidia: String,
     apps: Job,
+    usb: Job,
 }
 
 #[derive(Clone)]
@@ -57,7 +58,7 @@ pub fn spawn(ui_dir: PathBuf) -> std::io::Result<(u16, String)> {
     let port = std_listener.local_addr()?.port();
     let state = App {
         key: Arc::new(key.clone()),
-        inner: Arc::new(Mutex::new(Inner { codecs: false, nvidia: "none".into(), apps: Job { state: "idle", ..Default::default() } })),
+        inner: Arc::new(Mutex::new(Inner { codecs: false, nvidia: "none".into(), apps: Job { state: "idle", ..Default::default() }, usb: Job { state: "idle", ..Default::default() } })),
     };
     std::thread::spawn(move || {
         let rt = tokio::runtime::Runtime::new().expect("tokio");
@@ -78,6 +79,7 @@ fn router(state: App, ui_dir: PathBuf) -> Router {
         .route("/appearance", post(appearance))
         .route("/drivers", post(drivers))
         .route("/apps", post(apps_start).get(apps_status))
+        .route("/usb", get(usb_get).post(usb_start))
         .route("/finish", post(finish))
         .route_layer(middleware::from_fn_with_state(state.clone(), auth))
         .with_state(state);
@@ -151,6 +153,14 @@ async fn apps_start(State(s): State<App>, Json(a): Json<Apps>) -> Response {
             inner.lock().await.apps.state = "offline";
             return;
         }
+        // Najpierw zestaw podstawowy ze sklepu Shrimp; niepowodzenie nie zatrzymuje wyboru użytkownika.
+        if let Err(e) = system::install_base_apps().await {
+            eprintln!("shrimp-setup: zestaw podstawowy: {}", e.0);
+            if !system::online().await {
+                inner.lock().await.apps.state = "offline";
+                return;
+            }
+        }
         let total = a.ids.len().max(1);
         let t0 = Instant::now();
         let mut failed = 0;
@@ -178,6 +188,54 @@ async fn apps_start(State(s): State<App>, Json(a): Json<Apps>) -> Response {
 }
 
 async fn apps_status(State(s): State<App>) -> Json<Job> { Json(s.inner.lock().await.apps.clone()) }
+
+#[derive(Serialize)]
+struct UsbReply {
+    #[serde(flatten)]
+    usb: system::Usb,
+    job: Job,
+}
+
+async fn usb_get(State(s): State<App>) -> Json<UsbReply> {
+    let job = s.inner.lock().await.usb.clone();
+    Json(UsbReply { usb: system::usb_status().await, job })
+}
+
+#[derive(Deserialize)]
+struct UsbAction { action: String }
+
+/// „restore”: formatuje pendrive i wgrywa pliki; błąd albo „home” zostawia pliki w ~/Pendrive.
+async fn usb_start(State(s): State<App>, Json(a): Json<UsbAction>) -> Response {
+    let st = system::usb_status().await;
+    if !st.pending || (a.action == "restore" && !st.present) || !matches!(a.action.as_str(), "restore" | "home") {
+        return err("usb", "brak pendrive'a do przywrócenia");
+    }
+    {
+        let mut i = s.inner.lock().await;
+        if i.usb.state == "running" {
+            return Json(json!({})).into_response();
+        }
+        i.usb = Job { state: "running", percent: 0.0, phase: "usb.phase".into(), eta_min: None };
+    }
+    let inner = s.inner.clone();
+    tokio::spawn(async move {
+        let mut state = "done";
+        if a.action == "restore" {
+            if let Err(e) = system::usb_restore(&st.device).await {
+                eprintln!("shrimp-setup: pendrive: {}", e.0);
+                // Kopia na dysku komputera została: ratujemy pliki w katalogu domowym.
+                state = if system::usb_to_home().await.is_ok() { "home" } else { "failed" };
+            }
+        } else if let Err(e) = system::usb_to_home().await {
+            eprintln!("shrimp-setup: ~/Pendrive: {}", e.0);
+            state = "failed";
+        }
+        let mut i = inner.lock().await;
+        i.usb.state = state;
+        i.usb.percent = 100.0;
+    });
+    Json(json!({})).into_response()
+}
 
 async fn finish(State(s): State<App>) -> Response {
     let (codecs, nvidia) = { let i = s.inner.lock().await; (i.codecs, i.nvidia.clone()) };
