@@ -1,3 +1,495 @@
 [2J[001;001H[=3h[2J[001;001H[2J[001;001H[8;042;160t[2J[001;001H[2J[001;001H[8;056;240t[2J[001;001HBdsDxe: loading Boot0002 "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:03.0-3" from PciRoot(0x0)/Pci(0x3,0x0)/USB(0x2,0x0)
 BdsDxe: starting Boot0002 "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:03.0-3" from PciRoot(0x0)/Pci(0x3,0x0)/USB(0x2,0x0)
-[0m[30m[40m[2J[001;001H[0m[37m[40m
+[0m[30m[40m[2J[001;001H[0m[37m[40mTARGET                                    SOURCE        FSTYPE      OPTIONS
+/                                         LiveOS_rootfs overlay     rw,relatime,lowerdir=/run/overlay/rootfsbase,upperdir=/run/overlay/overlayfs/rw,workdir=/run/overlay/overlayfs/work,uuid=on
+/dev                                      devtmpfs      devtmpfs    rw,nosuid,size=4096k,nr_inodes=740379,mode=755,inode64
+/dev/shm                                  tmpfs         tmpfs       rw,nosuid,nodev,inode64
+/dev/pts                                  devpts        devpts      rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000
+/sys                                      sysfs         sysfs       rw,nosuid,nodev,noexec,relatime
+/sys/kernel/security                      securityfs    securityfs  rw,nosuid,nodev,noexec,relatime
+/sys/fs/cgroup                            cgroup2       cgroup2     rw,nosuid,nodev,noexec,relatime,nsdelegate,memory_recursiveprot
+/sys/fs/pstore                            pstore        pstore      rw,nosuid,nodev,noexec,relatime
+/sys/firmware/efi/efivars                 efivarfs      efivarfs    rw,nosuid,nodev,noexec,relatime
+/sys/fs/bpf                               bpf           bpf         rw,nosuid,nodev,noexec,relatime,mode=700
+/proc                                     proc          proc        rw,nosuid,nodev,noexec,relatime
+/run                                      tmpfs         tmpfs       rw,nosuid,nodev,size=1212600k,nr_inodes=819200,mode=755,inode64
+/run/overlay                              tmpfs         tmpfs       rw,relatime,inode64
+/run/overlay/live                         /dev/sda1     vfat        ro,relatime,fmask=0022,dmask=0022,codepage=437,iocharset=iso8859-1,shortname=mixed,errors=remount-ro
+/run/overlay/squashfs_container           /dev/loop0    squashfs    ro,relatime,errors=continue,threads=single
+/run/overlay/rootfsbase                   /dev/loop1    ext4        ro,relatime
+/sys/fs/selinux                           selinuxfs     selinuxfs   rw,nosuid,noexec,relatime
+/proc/sys/fs/binfmt_misc                  systemd-1     autofs      rw,relatime,fd=31,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=3957
+/run/credentials/systemd-journald.service tmpfs         tmpfs       ro,nosuid,nodev,noexec,relatime,nosymfollow,size=1024k,nr_inodes=1024,mode=700,inode64,noswap
+/dev/hugepages                            hugetlbfs     hugetlbfs   rw,nosuid,nodev,relatime,pagesize=2M
+/sys/kernel/tracing                       tracefs       tracefs     rw,nosuid,nodev,noexec,relatime
+/dev/mqueue                               mqueue        mqueue      rw,nosuid,nodev,noexec,relatime
+/tmp                                      tmpfs         tmpfs       rw,nosuid,nodev,nr_inodes=1048576,inode64
+/sys/kernel/config                        configfs      configfs    rw,nosuid,nodev,noexec,relatime
+/sys/fs/fuse/connections                  fusectl       fusectl     rw,nosuid,nodev,noexec,relatime
+/run/user/1000                            tmpfs         tmpfs       rw,nosuid,nodev,relatime,size=606296k,nr_inodes=151574,mode=700,uid=1000,gid=100,inode64
+/run/credentials/getty@tty1.service       tmpfs         tmpfs       ro,nosuid,nodev,noexec,relatime,nosymfollow,size=1024k,nr_inodes=1024,mode=700,inode64,noswap
+/run/user/1000/doc                        portal        fuse.portal rw,nosuid,nodev,relatime,user_id=1000,group_id=100
+script: /run/overlay/live/shrimp-test/agama-install.sh
+++ cat /run/shrimp-setup/token
++ T=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc
++ '[' -n eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc ']'
++ U=http://127.0.0.1
++ echo ===AGAMA-START
+===AGAMA-START
++ ls -l /run/overlay/live/shrimp-test /run/initramfs/live /run/initramfs/live/shrimp-transfer
++ head -40
+ls: cannot access '/run/initramfs/live': No such file or directory
+ls: cannot access '/run/initramfs/live/shrimp-transfer': No such file or directory
+/run/overlay/live/shrimp-test:
+total 8
+-rwxr-xr-x 1 root root 2330 lis  8 17:32 agama-install.sh
+-rwxr-xr-x 1 root root  845 lis  8 17:32 config.json
++ lsblk -o NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINTS
+NAME    SIZE TYPE FSTYPE   LABEL       MOUNTPOINTS
+loop0   1,4G loop squashfs             /run/overlay/squashfs_container
+loop1   4,5G loop ext4                 /run/overlay/rootfsbase
+sda       8G disk                      
+└─sda1    8G part vfat     SHRIMP_LIVE /run/overlay/live
+sr0    1024M rom                       
+vda      40G disk                      
++ for p in /api/status /api/issues /api/config /api/system
++ echo '=== GET /api/status'
+=== GET /api/status
++ head -c 12000
++ api http://127.0.0.1/api/status
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
+{"stage":"configuring","tasks":[],"progresses":[]}
+HTTP 200
++ echo
+
++ for p in /api/status /api/issues /api/config /api/system
++ echo '=== GET /api/issues'
+=== GET /api/issues
++ api http://127.0.0.1/api/issues
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/issues
++ head -c 12000
+[{"scope":"manager","class":"noProduct","description":"No product has been selected."},{"scope":"users","class":"noAuth","description":"Defining a user, setting the root password or a SSH public key is required"}]
+HTTP 200
++ echo
+
++ for p in /api/status /api/issues /api/config /api/system
++ echo '=== GET /api/config'
+=== GET /api/config
++ api http://127.0.0.1/api/config
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/config
++ head -c 12000
+{}
+HTTP 200
++ echo
+
++ for p in /api/status /api/issues /api/config /api/system
++ echo '=== GET /api/system'
+=== GET /api/system
++ api http://127.0.0.1/api/system
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/system
++ head -c 12000
+{"products":[{"id":"Shrimp","name":"Shrimp","description":"Shrimp na openSUSE Leap 16.1 z GNOME.","icon":"Shrimp.svg","registration":false,"licenses":["license.opensuse"],"modes":[{"id":"immutable","name":"Shrimp","description":"System niezmienny z migawkami"}]}],"licenses":[],"hardware":{"cpu":"AMD EPYC 9V74 80-Core Processor","memory":6442450944,"model":"QEMU pc-q35-10.2"},"hostname":{"static":"shrimp","hostname":"shrimp"},"l10n":{"locales":[{"id":"bhb_IN.UTF-8","language":"Bhili","territory":"Indie","consolefont":"eurlatgr"},{"id":"aa_DJ.UTF-8","language":"afar","territory":"Dżibuti","consolefont":"eurlatgr"},{"id":"af_ZA.UTF-8","language":"afrikaans","territory":"Republika Południowej Afryki","consolefont":"eurlatgr"},{"id":"sq_AL.UTF-8","language":"albański","territory":"Albania","consolefont":"eurlatgr"},{"id":"en_AU.UTF-8","language":"angielski","territory":"Australia","consolefont":"eurlatgr"},{"id":"en_BW.UTF-8","language":"angielski","territory":"Botswana","consolefont":"eurlatgr"},{"id":"en_DK.UTF-8","language":"angielski","territory":"Dania","consolefont":"eurlatgr"},{"id":"en_PH.UTF-8","language":"angielski","territory":"Filipiny","consolefont":"eurlatgr"},{"id":"en_IE.UTF-8","language":"angielski","territory":"Irlandia","consolefont":"eurlatgr"},{"id":"en_CA.UTF-8","language":"angielski","territory":"Kanada","consolefont":"eurlatgr"},{"id":"en_NZ.UTF-8","language":"angielski","territory":"Nowa Zelandia","consolefont":"eurlatgr"},{"id":"en_ZA.UTF-8","language":"angielski","territory":"Republika Południowej Afryki","consolefont":"eurlatgr"},{"id":"en_HK.UTF-8","language":"angielski","territory":"SRA Hongkong (Chiny)","consolefont":"eurlatgr"},{"id":"en_SC.UTF-8","language":"angielski","territory":"Seszele","consolefont":"eurlatgr"},{"id":"en_SG.UTF-8","language":"angielski","territory":"Singapur","consolefont":"eurlatgr"},{"id":"en_US.UTF-8","language":"angielski","territory":"Stany Zjednoczone","consolefont":"eurlatgr"},{"id":"en_GB.UTF-8","language":"angielski","territory":"Wielka Brytania","consolefont":"eurlatgr"},{"id":"en_ZW.UTF-8","language":"angielski","territory":"Zimbabwe","consolefont":"eurlatgr"},{"id":"ar_DZ.UTF-8","language":"arabski","territory":"Algieria","consolefont":"latarcyrheb-sun16"},{"id":"ar_SA.UTF-8","language":"arabski","territory":"Arabia Saudyjska","consolefont":"latarcyrheb-sun16"},{"id":"ar_BH.UTF-8","language":"arabski","territory":"Bahrajn","consolefont":"latarcyrheb-sun16"},{"id":"ar_EG.UTF-8","language":"arabski","territory":"Egipt","consolefont":"latarcyrheb-sun16"},{"id":"ar_IQ.UTF-8","language":"arabski","territory":"Irak","consolefont":"latarcyrheb-sun16"},{"id":"ar_YE.UTF-8","language":"arabski","territory":"Jemen","consolefont":"latarcyrheb-sun16"},{"id":"ar_JO.UTF-8","language":"arabski","territory":"Jordania","consolefont":"latarcyrheb-sun16"},{"id":"ar_QA.UTF-8","language":"arabski","territory":"Katar","consolefont":"latarcyrheb-sun16"},{"id":"ar_KW.UTF-8","language":"arabski","territory":"Kuwejt","consolefont":"latarcyrheb-sun16"},{"id":"ar_LB.UTF-8","language":"arabski","territory":"Liban","consolefont":"latarcyrheb-sun16"},{"id":"ar_LY.UTF-8","language":"arabski","territory":"Libia","consolefont":"latarcyrheb-sun16"},{"id":"ar_MA.UTF-8","language":"arabski","territory":"Maroko","consolefont":"latarcyrheb-sun16"},{"id":"ar_OM.UTF-8","language":"arabski","territory":"Oman","consolefont":"latarcyrheb-sun16"},{"id":"ar_SD.UTF-8","language":"arabski","territory":"Sudan","consolefont":"latarcyrheb-sun16"},{"id":"ar_SY.UTF-8","language":"arabski","territory":"Syria","consolefont":"latarcyrheb-sun16"},{"id":"ar_TN.UTF-8","language":"arabski","territory":"Tunezja","consolefont":"latarcyrheb-sun16"},{"id":"ar_AE.UTF-8","language":"arabski","territory":"Zjednoczone Emiraty Arabskie","consolefont":"latarcyrheb-sun16"},{"id":"an_ES.UTF-8","language":"aragoński","territory":"Hiszpania","consolefont":"eurlatgr"},{"id":"ast_ES.UTF-8","language":"asturyjski","territory":"Hiszpania","consolefont":"eurlatgr"},{"id":"eu_ES.UTF-8","language":"baskijski","territory":"Hiszpania","consolefont":"eurlatgr"},{"id":"be_BY.UTF-8","language":"białoruski","territory":"Białoruś","consolefont":"latarcyrheb-sun16"},{"id":"bs_BA.UTF-8","language":"bośniacki","territory":"Bośnia i Hercegowina","consolefont":"latarcyrheb-sun16"},{"id":"br_FR.UTF-8","language":"bretoński","territory":"Francja","consolefont":"eurlatgr"},{"id":"bg_BG.UTF-8","language":"bułgarski","territory":"Bułgaria","consolefont":"latarcyrheb-sun16"},{"id":"zh_CN.UTF-8","language":"chiński","territory":"Chiny","consolefont":"eurlatgr"},{"id":"zh_HK.UTF-8","language":"chiński","territory":"SRA Hongkong (Chiny)","consolefont":"eurlatgr"},{"id":"zh_SG.UTF-8","language":"chiński","territory":"Singapur","consolefont":"eurlatgr"},{"id":"zh_TW.UTF-8","language":"chiński","territory":"Tajwan","consolefont":"eurlatgr"},{"id":"hr_HR.UTF-8","language":"chorwacki","territory":"Chorwacja","consolefont":"eurlatgr"},{"id":"cs_CZ.UTF-8","language":"czeski","territory":"Czechy","consolefont":"eurlatgr"},{"id":"da_DK.UTF-8","language":"duński","territory":"Dania","consolefont":"eurlatgr"},{"id":"et_EE.UTF-8","language":"estoński","territory":"Estonia","consolefont":"eurlatgr"},{"id":"fo_FO.UTF-8","language":"farerski","territory":"Wyspy Owcze","consolefont":"eurlatgr"},{"id":"fi_FI.UTF-8","language":"fiński","territory":"Finlandia","consolefont":"eurlatgr"},{"id":"fr_BE.UTF-8","language":"francuski","territory":"Belgia","consolefont":"eurlatgr"},{"id":"fr_FR.UTF-8","language":"francuski","territory":"Francja","consolefont":"eurlatgr"},{"id":"fr_CA.UTF-8","language":"francuski","territory":"Kanada","consolefont":"eurlatgr"},{"id":"fr_LU.UTF-8","language":"francuski","territory":"Luksemburg","consolefont":"eurlatgr"},{"id":"fr_CH.UTF-8","language":"francuski","territory":"Szwajcaria","consolefont":"eurlatgr"},{"id":"gl_ES.UTF-8","language":"galicyjski","territory":"Hiszpania","consolefont":"eurlatgr"},{"id":"lg_UG.UTF-8","language":"ganda","territory":"Uganda","consolefont":"eurlatgr"},{"id":"el_CY.UTF-8","language":"grecki","territory":"Cypr","consolefont":"eurlatgr"},{"id":"el_GR.UTF-8","language":"grecki","territory":"Grecja","consolefont":"eurlatgr"},{"id":"kl_GL.UTF-8","language":"grenlandzki","territory":"Grenlandia","consolefont":"eurlatgr"},{"id":"ka_GE.UTF-8","language":"gruziński","territory":"Gruzja","consolefont":"latarcyrheb-sun16"},{"id":"hsb_DE.UTF-8","language":"górnołużycki","territory":"Niemcy","consolefont":"eurlatgr"},{"id":"he_IL.UTF-8","language":"hebrajski","territory":"Izrael","consolefont":"latarcyrheb-sun16"},{"id":"es_AR.UTF-8","language":"hiszpański","territory":"Argentyna","consolefont":"eurlatgr"},{"id":"es_BO.UTF-8","language":"hiszpański","territory":"Boliwia","consolefont":"eurlatgr"},{"id":"es_CL.UTF-8","language":"hiszpański","territory":"Chile","consolefont":"eurlatgr"},{"id":"es_DO.UTF-8","language":"hiszpański","territory":"Dominikana","consolefont":"eurlatgr"},{"id":"es_EC.UTF-8","language":"hiszpański","territory":"Ekwador","consolefont":"eurlatgr"},{"id":"es_GT.UTF-8","language":"hiszpański","territory":"Gwatemala","consolefont":"eurlatgr"},{"id":"es_ES.UTF-8","language":"hiszpański","territory":"Hiszpania","consolefont":"eurlatgr"},{"id":"es_HN.UTF-8","language":"hiszpański","territory":"Honduras","consolefont":"eurlatgr"},{"id":"es_CO.UTF-8","language":"hiszpański","territory":"Kolumbia","consolefont":"eurlatgr"},{"id":"es_CR.UTF-8","language":"hiszpański","territory":"Kostaryka","consolefont":"eurlatgr"},{"id":"es_MX.UTF-8","language":"hiszpański","territory":"Meksyk","consolefont":"eurlatgr"},{"id":"es_NI.UTF-8","language":"hiszpański","territory":"Nikaragua","consolefont":"eurlatgr"},{"id":"es_PA.UTF-8","language":"hiszpański","territory":"Panama","consolefont":"eurlatgr"},{"id":"es_PY.UTF-8","language":"hiszpański","territory":"Paragwaj","consolefont":"eurlatgr"},{"id":"es_PE.UTF-8","language":"hiszpański","territory":"Peru","consolefont":"eurlatgr"},{"id":"es_PR.UTF-8","language":"hiszpański","territory":"Portoryko","consolefont":"eurlatgr"},{"id":"es_SV.UTF-8","language":"hiszpański","territory":"Salwador","consolefont":"eurlatgr"},{"id":"es_US.UTF-8","language":"hiszpański","territory":"Stany Zjednoczone","consolefont":"eurlatgr"},{"id":"es_UY.UTF-8","language":"hiszpański","territory":"Urugwaj","consolefont":"eurlatgr"},{"id":"es_VE.UTF-8","language":"hiszpański","territory":"Wenezuela","consolefont":"eurlatgr"},{"id":"id_ID.UTF-8","language":"indonezyjski","territory":"Indonezja","consolefont":"eurlatgr"},{"id":"ga_IE.UTF-8","language":"irlandzki","territory":"Irlandia","consolefont":"eurlatgr"},{"id":"is_IS.UTF-8","language":"islandzki","territory":"Islandia","consolefont":"eurlatgr"},{"id":"ja_JP.UTF-8","language":"japoński","territory":"Japonia","consolefont":"eurlatgr"},{"id":"yi_US.UTF-8","language":"jidysz","territory":"Stany Zjednoczone","consolefont":"latarcyrheb-sun16"},{"id":"ca_AD.UTF-8","language":"kataloński","territory":"Andora","consolefont":"eurlatgr"},{"id":"ca_FR.UTF-8","language":"kataloński","territory":"Francja","consolefont":"eurlatgr"},{"id":"ca_ES.UTF-8","language":"kataloński","territory":"Hiszpania","consolefont":"eurlatgr"},{"id":"ca_IT.UTF-8","language":"kataloński","territory":"Włochy","consolefont":"eurlatgr"},{"id":"kk_KZ.UTF-8","language":"kazachski","territory":"Kazachstan","consolefont":"latarcyrheb-sun16"},{"id":"xh_ZA.UTF-8","language":"khosa","territory":"Republika Południowej Afryki","consolefont":"eurlatgr"},{"id":"ko_KR.UTF-8","language":"koreański","territory":"Korea Południowa","consolefont":"eurlatgr"},{"id":"kw_GB.UTF-8","language":"kornijski","territory":"Wielka Brytania","consolefont":"eurlatgr"},{"id":"ku_TR.UTF-8","language":"kurdyjski","territory":"Turcja","consolefont":"latarcyrheb-sun16"},{"id":"lt_LT.UTF-8","language":"litewski","territory":"Litwa","consolefont":"eurlatgr"},{"id":"mk_MK.UTF-8","language":"macedoński","territory":"Macedonia Północna","consolefont":"latarcyrheb-sun16"},{"id":"ms_MY.UTF-8","language":"malajski","territory":"Malezja","consolefont":"eurlatgr"},{"id":"mg_MG.UTF-8","language":"malgaski","territory":"Madagaskar","consolefont":"eurlatgr"},{"id":"mt_MT.UTF-8","language":"maltański","territory":"Malta","consolefont":"eurlatgr"},{"id":"gv_GB.UTF-8","language":"manx","territory":"Wielka Brytania","consolefont":"eurlatgr"},{"id":"mi_NZ.UTF-8","language":"maoryjski","territory":"Nowa Zelandia","consolefont":"eurlatgr"},{"id":"nl_BE.UTF-8","language":"niderlandzki","territory":"Belgia","consolefont":"eurlatgr"},{"id":"nl_NL.UTF-8","language":"niderlandzki","territory":"Holandia","consolefont":"eurlatgr"},{"id":"de_AT.UTF-8","language":"niemiecki","territory":"Austria","consolefont":"eurlatgr"},{"id":"de_BE.UTF-8","language":"niemiecki","territory":"Belgia","consolefont":"eurlatgr"},{"id":"de_LI.UTF-8","language":"niemiecki","territory":"Liechtenstein","consolefont":"eurlatgr"},{"id":"de_LU.UTF-8","language":"niemiecki","territory":"Luksemburg","consolefont":"eurlatgr"},{"id":"de_DE.UTF-8","language":"niemiecki","territory":"Niemcy","consolefont":"eurlatgr"},{"id":"de_CH.UTF-8","language":"niemiecki","territory":"Szwajcaria","consolefont":"eurlatgr"},{"id":"de_IT.UTF-8","language":"niemiecki","territory":"Włochy","consolefont":"eurlatgr"},{"id":"no_NO.UTF-8","language":"norweski","territory":"Norwegia","consolefont":"eurlatgr"},{"id":"nb_NO.UTF-8","language":"norweski (bokmål)","territory":"Norwegia","consolefont":"eurlatgr"},{"id":"nn_NO.UTF-8","language":"norweski (nynorsk)","territory":"Norwegia","consolefont":"eurlatgr"},{"id":"oc_FR.UTF-8","language":"oksytański","territory":"Francja","consolefont":"eurlatgr"},{"id":"om_KE.UTF-8","language":"oromo","territory":"Kenia","consolefont":"eurlatgr"},{"id":"pl_PL.UTF-8","language":"polski","territory":"Polska","consolefont":"eurlatgr"},{"id":"pt_BR.UTF-8","language":"portugals+ echo
+
++ echo '=== config.json'
+=== config.json
++ cat /run/overlay/live/shrimp-test/config.json
+{
+ "product": {
+  "id": "Shrimp",
+  "mode": "immutable"
+ },
+ "l10n": {
+  "locale": "pl_PL.UTF-8",
+  "keymap": "pl",
+  "timezone": "Europe/Warsaw"
+ },
+ "user": {
+  "fullName": "Jan Testowy",
+  "userName": "jan",
+  "password": "shrimp",
+  "hashedPassword": false
+ },
+ "storage": {
+  "drives": [
+   {
+    "search": "/dev/vda",
+    "partitions": [
+     {
+      "search": "*",
+      "delete": true
+     },
+     {
+      "generate": {
+       "partitions": "default"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ "files": [
+  {
+   "destination": "/var/lib/shrimp-setup/install.json",
+   "permissions": "0644",
+   "content": "{\"fullName\":\"Jan Testowy\",\"userName\":\"jan\",\"beside\":false}"
+  }
+ ],
+ "scripts": {
+  "post": [
+   {
+    "name": "shrimp-post-install",
+    "chroot": false,
+    "url": "file:///usr/share/shrimp-setup/post-install.sh"
+   }
+  ]
+ }
+}
++ echo '=== PUT /api/config'
+=== PUT /api/config
++ api -X PUT --data @/run/overlay/live/shrimp-test/config.json http://127.0.0.1/api/config
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' -X PUT --data @/run/overlay/live/shrimp-test/config.json http://127.0.0.1/api/config
+
+HTTP 200
+++ seq 120
++ for i in $(seq 120)
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"configuring","tasks":[{"id":12,"name":"bootloader_config","description":"Storing bootloader settings","scope":"bootloader"},{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":10,"name":"iscsi_config","description":"Configuring iSCSI devices","scope":"iscsi"},{"id":11,"name":"storage_config","description":"Preparing the storage proposal","scope":"storage"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[]}
+HTTP 200'
++ echo '{"stage":"configuring","tasks":[{"id":12,"name":"bootloader_config","description":"Storing bootloader settings","scope":"bootloader"},{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":10,"name":"iscsi_config","description":"Configuring iSCSI devices","scope":"iscsi"},{"id":11,"name":"storage_config","description":"Preparing the storage proposal","scope":"storage"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[]}
+HTTP 200'
++ grep -q '"progresses":\[\]'
++ break
++ echo '=== status after config'
+=== status after config
++ api http://127.0.0.1/api/status
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
+{"stage":"configuring","tasks":[{"id":12,"name":"bootloader_config","description":"Storing bootloader settings","scope":"bootloader"},{"id":13,"name":"software_config","description":"Preparing the software proposal","scope":"software"},{"id":11,"name":"storage_config","description":"Preparing the storage proposal","scope":"storage"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"}],"progresses":[]}
+HTTP 200
++ echo '=== issues after config'
+=== issues after config
++ api http://127.0.0.1/api/issues
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/issues
+[]
+HTTP 200
++ echo '=== POST install'
+=== POST install
++ api -X POST --data '{"install":null}' http://127.0.0.1/api/action
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' -X POST --data '{"install":null}' http://127.0.0.1/api/action
+
+HTTP 200
++ stage=unknown
+++ seq 360
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Finished downloading rsync-3.4.1-160100.2.1.x86_64.rpm","index":109}]}
+HTTP 200'
++ echo '[15s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Finished downloading rsync-3.4.1-160100.2.1.x86_64.rpm","index":109}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[15s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Finished downloading rsync-3.4.1-160100.2.1.x86_64.rpm","index":109}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Finished downloading gnome-weather-lang-48.0-bp161.1.2.noarch.rpm","index":651}]}
+HTTP 200'
++ echo '[30s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Finished downloading gnome-weather-lang-48.0-bp161.1.2.noarch.rpm","index":651}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[30s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Finished downloading gnome-weather-lang-48.0-bp161.1.2.noarch.rpm","index":651}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Finished downloading perl-HTTP-Negotiate-6.01-160100.2.1.noarch.rpm","index":1548}]}
+HTTP 200'
++ echo '[45s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Finished downloading perl-HTTP-Negotiate-6.01-160100.2.1.noarch.rpm","index":1548}]}
+HTTP 200'
++ head -c 1500
++ tr -d '\n'
+[45s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Finished downloading perl-HTTP-Negotiate-6.01-160100.2.1.noarch.rpm","index":1548}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Finished downloading pkgconf-pkg-config-2.2.0-160100.2.1.x86_64.rpm","index":2001}]}
+HTTP 200'
++ tr -d '\n'
++ echo '[60s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Finished downloading pkgconf-pkg-config-2.2.0-160100.2.1.x86_64.rpm","index":2001}]}
+HTTP 200'
++ head -c 1500
+[60s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Finished downloading pkgconf-pkg-config-2.2.0-160100.2.1.x86_64.rpm","index":2001}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing man-pages","index":2053}]}
+HTTP 200'
++ echo '[75s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing man-pages","index":2053}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[75s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing man-pages","index":2053}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing libpaper-tools","index":2341}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
++ echo '[90s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing libpaper-tools","index":2341}]}
+HTTP 200'
+[90s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing libpaper-tools","index":2341}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing star","index":2555}]}
+HTTP 200'
++ echo '[105s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing star","index":2555}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[105s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing star","index":2555}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing procps-lang","index":2779}]}
+HTTP 200'
++ echo '[120s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing procps-lang","index":2779}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[120s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing procps-lang","index":2779}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing python3","index":2998}]}
+HTTP 200'
++ echo '[135s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing python3","index":2998}]}
+HTTP 200'
++ head -c 1500
++ tr -d '\n'
+[135s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing python3","index":2998}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing typelib-1_0-Malcontent-0","index":3180}]}
+HTTP 200'
++ echo '[150s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing typelib-1_0-Malcontent-0","index":3180}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[150s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing typelib-1_0-Malcontent-0","index":3180}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing fonts-config","index":3371}]}
+HTTP 200'
++ echo '[165s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing fonts-config","index":3371}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[165s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing fonts-config","index":3371}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing kernel-firmware-dpaa2","index":3448}]}
+HTTP 200'
++ echo '[180s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing kernel-firmware-dpaa2","index":3448}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[180s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing kernel-firmware-dpaa2","index":3448}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing kernel-default","index":3540}]}
+HTTP 200'
++ echo '[195s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing kernel-default","index":3540}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[195s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing kernel-default","index":3540}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing kernel-default-extra","index":3564}]}
+HTTP 200'
++ echo '[210s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing kernel-default-extra","index":3564}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[210s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing kernel-default-extra","index":3564}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing gnome-tour","index":3692}]}
+HTTP 200'
++ echo '[225s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing gnome-tour","index":3692}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[225s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing gnome-tour","index":3692}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing libreoffice-l10n-en","index":3796}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
++ echo '[240s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing libreoffice-l10n-en","index":3796}]}
+HTTP 200'
+[240s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing libreoffice-l10n-en","index":3796}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing dconf-editor-lang","index":3863}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
++ echo '[255s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing dconf-editor-lang","index":3863}]}
+HTTP 200'
+[255s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing dconf-editor-lang","index":3863}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing gnome-control-center-users","index":3959}]}
+HTTP 200'
++ echo '[270s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing gnome-control-center-users","index":3959}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[270s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing gnome-control-center-users","index":3959}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing patterns-gnome-gnome","index":4001}]}
+HTTP 200'
++ echo '[285s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing patterns-gnome-gnome","index":4001}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[285s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":14,"name":"selinux_config","description":"Configuring SELinux","scope":"security"},{"id":17,"name":"software_install","description":"Installing software","scope":"software"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Install software","index":2},{"scope":"software","size":4044,"steps":[],"step":"Installing patterns-gnome-gnome","index":4001}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"storage","size":1,"steps":[],"step":"Kończenie instalacji","index":1}]}
+HTTP 200'
++ echo '[300s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"storage","size":1,"steps":[],"step":"Kończenie instalacji","index":1}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
+[300s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"storage","size":1,"steps":[],"step":"Kończenie instalacji","index":1}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"storage","size":1,"steps":[],"step":"Odmontowywanie urządzeń","index":1}]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
++ echo '[315s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"storage","size":1,"steps":[],"step":"Odmontowywanie urządzeń","index":1}]}
+HTTP 200'
+[315s] {"stage":"installing","tasks":[{"id":18,"name":"configure","description":"Configuring the system","scope":"manager"},{"id":20,"name":"finalize","description":"Finalize installation","scope":"manager"},{"id":19,"name":"finish_progress","description":"Finishing installation","scope":"manager"}],"progresses":[{"scope":"manager","size":3,"steps":["Prepare the system","Install software","Configure the system"],"step":"Configure the system","index":3},{"scope":"storage","size":1,"steps":[],"step":"Odmontowywanie urządzeń","index":1}]}HTTP 200+ echo
+
++ case "$s" in
++ for i in $(seq 360)
++ sleep 15
+++ api http://127.0.0.1/api/status
+++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/status
++ s='{"stage":"finished","tasks":[],"progresses":[]}
+HTTP 200'
++ tr -d '\n'
++ head -c 1500
++ echo '[330s] {"stage":"finished","tasks":[],"progresses":[]}
+HTTP 200'
+[330s] {"stage":"finished","tasks":[],"progresses":[]}HTTP 200+ echo
+
++ case "$s" in
++ stage=finished
++ break
++ echo '=== issues at end'
+=== issues at end
++ api http://127.0.0.1/api/issues
++ curl -sS -m 60 -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTQyNDE5OTgsImNsaWVudF9pZCI6ImEzMWVlNmYwLTdjOTItNGRlYS05M2QwLTQzM2I4ZTE0NjdlMyJ9.SZeeyhiVulwncRQKU5gjVD7iOsfSInJd9xKFLZ5bbqc' -H 'Content-Type: application/json' -w '\nHTTP %{http_code}\n' http://127.0.0.1/api/issues
+[{"scope":"software","class":"loadSource","description":"Could not read the repositories","details":"[agama-1|https://download.opensuse.org/update/leap/16.1/oss/x86_64] Failed to retrieve new repository metadata."}]
+HTTP 200
++ echo '=== journal'
+=== journal
++ grep -v -iE 'pubkey|TmpPath|keyring|Tkey|zypp.tmp|hardlink|database|Pid [0-9]+ |launched'
++ tail -n 400
++ sudo journalctl -b -u agama -u agama-web-server --no-pager -o short-monotonic
+sudo: przekroczony limit czasu przy czytaniu hasła
+sudo: wymagane jest hasło
++ echo '=== post-install / target'
+=== post-install / target
++ sudo ls -la /mnt /mnt/var/lib/shrimp-setup /mnt/usr/bin/shrimp-setup /mnt/home
++ head -40
+sudo: przekroczony limit czasu przy czytaniu hasła
+sudo: wymagane jest hasło
++ head
++ sudo find '/var/log/agama*' /run/agama -maxdepth 2 -name '*post*' -o -maxdepth 2 -name '*script*'
+++ sudo find '/var/log/agama*' /run/agama /tmp -maxdepth 3 -path '*scripts*' -type f
+++ head -20
++ echo '===AGAMA-DONE finished'
+===AGAMA-DONE finished

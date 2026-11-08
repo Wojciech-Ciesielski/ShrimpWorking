@@ -1,5 +1,6 @@
 1	Tilbake
 2	Informasjon
+3	Shrimp-logo
 4	NVIDIA-driveren gir full ytelse i spel og grafikkprogram. Den opne driveren er enklare, men tregare.
 5	(Tilrådd)
 6	Neste
@@ -49,6 +50,7 @@
 50	Installasjon
 51	Heile stasjonen
 52	Diskdeling
+53	Windows {win} · Shrimp {shrimp}
 54	Konto
 55	Kryptering
 56	Installer
@@ -132,7 +134,9 @@
 134	Filene dine
 135	Dokument, bilete og nedlastingar ligg i Filer-appen, i heimemappa di.
 136	Der finn du òg Windows-stasjonen.
+137	Panko
 138	Slutta noko å fungere etter ei endring? I Panko kan du gå tilbake til slik det var før.
+139	Cocktail
 140	Oppdateringar, drivarar og kodekar på éin stad. Oppdateringar blir installerte ved omstart.
 141	Hurtigsøk
 142	Trykk på Super-tasten, den med Windows-logoen, for å finne program, filer og innstillingar.
@@ -166,3 +170,12 @@
 170	Utviklingsmiljø
 171	Filmar og musikk
 172	Musikk
+173	New York
+174	Chicago
+175	Denver
+176	Los Angeles
+177	Toronto
+178	Vancouver
+179	Kanariøyane
+180	Sydney
+181	Perth
