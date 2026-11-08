@@ -144,4 +144,25 @@ mod tests {
             }
         }
     }
+
+    #[test]
+    fn every_language_complete_with_same_placeholders() {
+        let en = build("en");
+        let ph = |s: &str| {
+            let mut v: Vec<String> = s.split('{').skip(1).filter_map(|r| r.split('}').next()).map(String::from).collect();
+            v.sort();
+            v
+        };
+        assert!(LANGS.len() > 100, "oczekiwano tłumaczeń na języki GNOME");
+        for (tag, _) in LANGS {
+            let t = build(tag);
+            for (k, v) in &en {
+                assert_eq!(ph(&t[k]), ph(v), "{tag}: {k}");
+                if *tag != "en" {
+                    assert!(!t[k].is_empty(), "{tag}: {k} puste");
+                }
+            }
+            assert_eq!(text_of(tag).unwrap().lines().filter(|l| !l.is_empty()).count(), en.len(), "{tag}: niepełne");
+        }
+    }
 }
