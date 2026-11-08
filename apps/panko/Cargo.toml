@@ -6,6 +6,7 @@ description = "Panko: cofanie zmian w systemie Shrimp (nakładka GTK na migawki)
 license = "GPL-3.0-or-later"
 
 [dependencies]
+shrimp-i18n = { path = "../shrimp-i18n" }
 gtk = { package = "gtk4", version = "0.11", features = ["v4_14"] }
 adw = { package = "libadwaita", version = "0.9", features = ["v1_5"] }
 zbus = { version = "5", default-features = false, features = ["blocking-api", "async-io"] }
