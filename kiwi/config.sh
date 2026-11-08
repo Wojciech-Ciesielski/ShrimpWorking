@@ -15,11 +15,10 @@ if [ -f /usr/lib/os-release ]; then
   sed -e 's/^NAME=.*/NAME="Shrimp"/' \
       -e 's/^PRETTY_NAME=.*/PRETTY_NAME="Shrimp Beta"/' \
       -e 's/^LOGO=.*/LOGO="shrimp-logo"/' \
-      -e '/^VARIANT=/d' -e '/^VARIANT_ID=/d' \
       /usr/lib/os-release > /etc/os-release
   grep -q '^LOGO=' /etc/os-release || echo 'LOGO="shrimp-logo"' >> /etc/os-release
-  # LinU(x) – "Linux is now usable": Shrimp's layer on top of plain Linux (/usr/share/shrimp/linux)
-  printf '%s\n' 'VARIANT="LinU(x) – Linux is now usable"' 'VARIANT_ID=linu-x' >> /etc/os-release
+  # Linu(x) (Shrimp's layer on top of plain Linux, /usr/share/shrimp/linux) stays out of os-release:
+  # the user does not see the name anywhere in the system.
 fi
 gtk-update-icon-cache -f /usr/share/icons/hicolor || true
 
@@ -255,11 +254,11 @@ ls "$EXT"
 glib-compile-schemas /usr/share/glib-2.0/schemas
 
 #--------------------------------------
-# LinU(x): official NVIDIA driver, PipeWire codecs, libadwaita look for Qt/Electron
+# Linu(x): official NVIDIA driver, PipeWire codecs, libadwaita look for Qt/Electron
 # (scripts in /usr/share/shrimp/linux/build, see linux.conf there; failures are WARNING lines)
 #--------------------------------------
 for s in /usr/share/shrimp/linux/build/*.sh; do
-  echo "config.sh: LinU(x) $(basename "$s")"
+  echo "config.sh: Linu(x) $(basename "$s")"
   bash "$s"
 done
 if [ -f /tmp/shrimp-build-oss ]; then

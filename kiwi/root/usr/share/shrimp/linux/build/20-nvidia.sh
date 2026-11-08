@@ -1,5 +1,5 @@
 #!/bin/bash
-# LinU(x) 1/3: oficjalny sterownik NVIDIA na nośniku i w zainstalowanym systemie.
+# Linu(x) 1/3: oficjalny sterownik NVIDIA na nośniku i w zainstalowanym systemie.
 # Moduł jądra: otwarte moduły NVIDIA zbudowane i podpisane przez SUSE (repozytorium Leap),
 # więc ładują się przy włączonym Secure Boot bez MOK. Biblioteki (GL, Vulkan, VA-API/NVDEC,
 # CUDA): repozytorium NVIDIA dla openSUSE, które zostaje w systemie i daje aktualizacje.
@@ -41,7 +41,7 @@ for S in $NVIDIA_OPEN_SERIES; do
   # z repozytorium NVIDIA (np. 620.x przy module 595.x) i rozwiązanie się nie składało.
   note "seria $S: instaluję $kmp"
   if ! out=$("${ZYP[@]}" install --no-recommends --auto-agree-with-licenses "$kmp" 2>&1); then
-    echo "$out" | tail -25 | sed 's/^/LinU(x): zypper: /' >&2
+    echo "$out" | tail -25 | sed 's/^/Linu(x): zypper: /' >&2
     warn "seria $S nie zainstalowała się, próbuję następnej"
     continue
   fi
@@ -74,7 +74,7 @@ for f in /etc/modprobe.d/*.conf /usr/lib/modprobe.d/*.conf; do
   note "nouveau odblokowane w $dst"
 done
 cat > /etc/modprobe.d/60-shrimp-gpu.conf <<'CONF'
-# Shrimp LinU(x): karty NVIDIA od Turinga (GTX 16xx, RTX 20xx i nowsze) dostają oficjalny
+# Shrimp Linu(x): karty NVIDIA od Turinga (GTX 16xx, RTX 20xx i nowsze) dostają oficjalny
 # sterownik, starsze nouveau. Wymuszenie nouveau: parametr jądra shrimp.nouveau=1.
 install nouveau /usr/libexec/shrimp-gpu-gate
 # Wayland w GDM i GNOME, konsola przez sterownik NVIDIA, pamięć karty zachowana przy uśpieniu.
