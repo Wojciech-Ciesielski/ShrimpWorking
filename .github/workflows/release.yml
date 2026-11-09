@@ -56,12 +56,12 @@ jobs:
 
       - name: ISO i program z tego przebiegu
         if: ${{ !inputs.reuse }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with: { name: shrimp-live-iso, path: iso }
 
       - name: Program z tego przebiegu
         if: ${{ !inputs.reuse }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with: { name: shrimp-install, path: exe }
 
       - name: Gotowe przebiegi z tego samego commita

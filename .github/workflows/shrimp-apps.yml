@@ -63,7 +63,7 @@ jobs:
           sudo -E env SHRIMP_APPS_WAIT=40 HOME=$HOME tests/screenshots.sh "$GITHUB_WORKSPACE/test-results/shrimp-apps"
           sudo chown -R "$USER" "$GITHUB_WORKSPACE/test-results/shrimp-apps"
           rm -f "$GITHUB_WORKSPACE/test-results/shrimp-apps/app.log"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with: { name: shrimp-apps-screens, path: test-results/shrimp-apps }
       - name: Zapisz zrzuty na gałęzi wyników
         if: github.event_name == 'push'
