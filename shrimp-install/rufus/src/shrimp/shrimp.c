@@ -9,7 +9,11 @@
  * Argumenty: --demo (dane z makiety), --source PLIK.iso (bez pobierania), --manifest URL,
  * --collect PLIK.json (tylko zebranie danych z Windows, bez okna), --rufus (zwykły Rufus),
  * --screen NAZWA i --theme light|dark (podgląd ekranów z makiety),
- * --backup-test ŹRÓDŁO CEL KOPIA (test kopii zawartości nośnika na katalogach, bez okna).
+ * --backup-test ŹRÓDŁO CEL KOPIA (test kopii zawartości nośnika na katalogach, bez okna),
+ * --auto-disk NUMER (test w CI: od razu cały przebieg na dysku o tym numerze, np. podłączonym VHD;
+ *   bez folderów użytkownika, kod wyjścia 0 po „done”, 3 po „fail”).
+ *
+ * Dziennik: %LOCALAPPDATA%\Shrimp Install\shrimp-install.log (poprzedni: shrimp-install.old.log).
  *
  * Copyright © 2026 Shrimp. GPLv3.
  */
@@ -18,6 +22,7 @@
 #include <windowsx.h>
 #include <shobjidl.h>
 #include <shellapi.h>
+#include <shlobj.h>
 #include <stdio.h>
 #include <string.h>
 #include "shrimp.h"
@@ -47,6 +52,75 @@ static char last_error[512];
 static const char* refused_kind;
 static char refused_text[512];
 static BOOL folders_started = FALSE;
+static int opt_auto_disk = -1;
+static volatile uint64_t copied_bytes = 0;
+static BOOL speed_armed = FALSE;
+
+/* ---------- dziennik w pliku ---------- */
+static HANDLE log_file = INVALID_HANDLE_VALUE;
+static CRITICAL_SECTION log_cs;
+
+static void log_open(void)
+{
+	PWSTR la = NULL;
+	wchar_t dir[MAX_PATH], path[MAX_PATH], old[MAX_PATH];
+	if (FAILED(SHGetKnownFolderPath(&FOLDERID_LocalAppData, 0, NULL, &la)))
+		return;
+	swprintf(dir, ARRAYSIZE(dir), L"%s\\Shrimp Install", la);
+	CoTaskMemFree(la);
+	CreateDirectoryW(dir, NULL);
+	swprintf(path, ARRAYSIZE(path), L"%s\\shrimp-install.log", dir);
+	swprintf(old, ARRAYSIZE(old), L"%s\\shrimp-install.old.log", dir);
+	MoveFileExW(path, old, MOVEFILE_REPLACE_EXISTING);
+	InitializeCriticalSection(&log_cs);
+	log_file = CreateFileW(path, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+}
+
+void ShrimpLog(const char* line)
+{
+	SYSTEMTIME t;
+	char ts[24];
+	DWORD w;
+	size_t n;
+	if (log_file == INVALID_HANDLE_VALUE || line == NULL)
+		return;
+	GetLocalTime(&t);
+	snprintf(ts, sizeof(ts), "%02d:%02d:%02d.%03d ", t.wHour, t.wMinute, t.wSecond, t.wMilliseconds);
+	n = strlen(line);
+	EnterCriticalSection(&log_cs);
+	WriteFile(log_file, ts, (DWORD)strlen(ts), &w, NULL);
+	WriteFile(log_file, line, (DWORD)n, &w, NULL);
+	if (n == 0 || line[n - 1] != '\n')
+		WriteFile(log_file, "\r\n", 2, &w, NULL);
+	LeaveCriticalSection(&log_cs);
+}
+
+/* Zdarzenia dla interfejsu w dzienniku (postęp najwyżej co 5 s); w trybie --auto-disk koniec przebiegu kończy proces. */
+void ShrimpLogEvent(const char* json)
+{
+	static uint64_t last_progress = 0;
+	if (strstr(json, "\"event\":\"progress\"") != NULL) {
+		uint64_t now = GetTickCount64();
+		if (now - last_progress < 5000)
+			return;
+		last_progress = now;
+	} else if (strstr(json, "\"event\":\"folders\"") != NULL || strstr(json, "\"event\":\"devices\"") != NULL) {
+		return;
+	}
+	if (strncmp(json, "{\"id\"", 6) == 0)
+		return;
+	ShrimpLog(json);
+	if (opt_auto_disk >= 0) {
+		if (strstr(json, "\"event\":\"done\"") != NULL) {
+			ShrimpLog("Shrimp: --auto-disk: gotowe");
+			ExitProcess(0);
+		}
+		if (strstr(json, "\"event\":\"fail\"") != NULL) {
+			ShrimpLog("Shrimp: --auto-disk: błąd");
+			ExitProcess(3);
+		}
+	}
+}
 
 /* ---------- argumenty ---------- */
 void ShrimpInit(void)
@@ -74,8 +148,14 @@ void ShrimpInit(void)
 			ExitProcess(ShrimpUsbBackupTest(argv[i + 1], argv[i + 2], argv[i + 3]));
 		else if (v != NULL && wcscmp(a, L"--theme") == 0)
 			WideCharToMultiByte(CP_UTF8, 0, argv[++i], -1, opt_theme, sizeof(opt_theme), NULL, NULL);
+		else if (v != NULL && wcscmp(a, L"--auto-disk") == 0)
+			opt_auto_disk = _wtoi(argv[++i]);
 	}
 	LocalFree(argv);
+	if (shrimp_mode && !opt_collect[0]) {
+		log_open();
+		uprintf("Shrimp Install %s", SHRIMP_VERSION);
+	}
 }
 
 /* ---------- odpowiedzi i zdarzenia ---------- */
@@ -125,22 +205,42 @@ uint64_t ShrimpSpeed(uint64_t done, BOOL reset)
 	return (uint64_t)ema;
 }
 
-void ShrimpProgress(int phase, uint64_t done, uint64_t total, uint64_t speed)
+void ShrimpProgressStep(int phase, const char* step, uint64_t done, uint64_t total, uint64_t speed)
 {
 	static uint64_t last = 0;
 	static int last_phase = 0;
+	static const char* last_step = NULL;
 	char* s;
 	uint64_t now = GetTickCount64();
-	if (phase == last_phase && done < total && now - last < 150)
+	if (phase == last_phase && step == last_step && done < total && now - last < 150)
 		return;
 	last = now;
 	last_phase = phase;
-	s = malloc(160);
+	last_step = step;
+	s = malloc(200);
 	if (s == NULL)
 		return;
-	snprintf(s, 160, "{\"event\":\"progress\",\"phase\":%d,\"done\":%llu,\"total\":%llu,\"speed\":%llu}",
-		phase, (unsigned long long)done, (unsigned long long)total, (unsigned long long)speed);
+	snprintf(s, 200, "{\"event\":\"progress\",\"phase\":%d,\"done\":%llu,\"total\":%llu,\"speed\":%llu%s%s%s}",
+		phase, (unsigned long long)done, (unsigned long long)total, (unsigned long long)speed,
+		step ? ",\"step\":\"" : "", step ? step : "", step ? "\"" : "");
 	ShrimpEmit(s);
+}
+
+void ShrimpProgress(int phase, uint64_t done, uint64_t total, uint64_t speed)
+{
+	ShrimpProgressStep(phase, NULL, done, total, speed);
+}
+
+void ShrimpEmitImage(void)
+{
+	jb b;
+	jb_init(&b);
+	jb_obj(&b, NULL);
+	jb_str(&b, "event", "image");
+	jb_u64(&b, "size", ShrimpManifest.size);
+	jb_str(&b, "version", ShrimpManifest.version);
+	jb_end_obj(&b);
+	ShrimpEmit(b.s);
 }
 
 void ShrimpFail(int phase, const char* kind, const char* message)
@@ -469,6 +569,8 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 		}
 		int id = nf > 0 ? atoi(f[0]) : 0;
 		const char* call = nf > 1 ? f[1] : "";
+		if (strcmp(call, "start") == 0 || strcmp(call, "cancel") == 0 || strcmp(call, "reboot") == 0)
+			uprintf("Shrimp: wywołanie %s (stan %d)", call, state);
 		if (strcmp(call, "info") == 0) {
 			jb b;
 			char* fj = folders_json(TRUE);
@@ -545,8 +647,9 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 			ComboBox_SetCurSel(hDeviceList, row);
 			SendMessage(hMainDialog, WM_COMMAND, MAKEWPARAM(IDC_DEVICE, CBN_SELCHANGE), (LPARAM)hDeviceList);
 		}
+		uprintf("Shrimp: obraz gotowy (%s), analiza w Rufusie", ShrimpIsoPath);
 		state = ST_SCAN;
-		ShrimpProgress(2, 0, 100, 0);
+		ShrimpProgressStep(2, "prepare", 0, 0, 0);
 		free(image_path);
 		image_path = _strdup(ShrimpIsoPath);
 		ErrorStatus = 0;
@@ -567,6 +670,7 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 			break;
 		}
 		/* Najpierw zawartość nośnika: bez sprawdzonej kopii nic nie zostanie sformatowane. */
+		uprintf("Shrimp: analiza obrazu skończona, kopia zawartości nośnika");
 		state = ST_BACKUP;
 		ShrimpSpeed(0, TRUE);
 		if (CreateThread(NULL, 0, ShrimpUsbBackupThread, (LPVOID)(uintptr_t)plan_device, 0, NULL) == NULL) {
@@ -592,8 +696,15 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 			select_data(hFileSystem, IDC_FILE_SYSTEM, FS_FAT32);
 		else
 			uprintf("Shrimp: UWAGA: obraz ma plik > 4 GB, Rufus wybierze inny system plików");
+		/* Zawsze szybkie formatowanie, bez testu uszkodzonych bloków (pełne formatowanie 32 GB to kilkadziesiąt minut). */
+		CheckDlgButton(hMainDialog, IDC_QUICK_FORMAT, BST_CHECKED);
+		CheckDlgButton(hMainDialog, IDC_BAD_BLOCKS, BST_UNCHECKED);
 		ShrimpUsbBackupMarkFormatted();
+		uprintf("Shrimp: kopia zawartości nośnika gotowa (%llu B), START w Rufusie", (unsigned long long)ShrimpUsbBackupBytes);
 		state = ST_FORMAT;
+		copied_bytes = 0;
+		ShrimpSpeed(0, TRUE);
+		ShrimpProgressStep(2, "prepare", 0, 0, 0);
 		SendMessage(hMainDialog, WM_COMMAND, IDC_START, 0);
 		break;
 
@@ -606,8 +717,15 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 			refused_kind = NULL;
 			break;
 		}
-		if (ShrimpCancel || SCODE_CODE((DWORD)wParam) == ERROR_CANCELLED) {
+		if (ShrimpCancel) {
 			finish_cancel();
+			break;
+		}
+		/* Rufus przerwał przed zapisem (np. obraz niezgodny z nośnikiem): bez tego interfejs czekałby bez końca. */
+		if (SCODE_CODE((DWORD)wParam) == ERROR_CANCELLED) {
+			uprintf("Shrimp: Rufus przerwał zapis przed startem: %s", last_error[0] ? last_error : "(bez komunikatu)");
+			state = ST_FAILED;
+			ShrimpFail(2, "write", last_error[0] ? last_error : NULL);
 			break;
 		}
 		if (IS_ERROR((DWORD)wParam)) {
@@ -615,6 +733,7 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 			ShrimpFail(2, "write", last_error[0] ? last_error : NULL);
 			break;
 		}
+		uprintf("Shrimp: zapis obrazu skończony, kopia plików");
 		ShrimpProgress(2, 100, 100, 0);
 		/* Pobrany obraz już niepotrzebny (zostawiamy tylko wskazany przez --source). */
 		if (!ShrimpLocalIso[0])
@@ -746,15 +865,34 @@ void ShrimpOnImageScanned(BOOL ok)
 		PostMessage(hShrimpWnd, WM_SHRIMP_SCANNED, ok && img_report.is_iso, 0);
 }
 
+/* Pasek fazy 2 to pasek Rufusa (formatowanie i zapis plików obrazu) przeliczony na bajty obrazu.
+ * Prędkość tylko z bajtów naprawdę zapisanych na nośnik (kopia plików ISO), nie z przeskoków paska
+ * po formatowaniu: inaczej wychodziły bzdury w rodzaju 1116 MB/s. Do pierwszych bajtów: krok „prepare”. */
+void ShrimpOnFileCopy(uint64_t processed, uint64_t total)
+{
+	(void)total;
+	if (shrimp_mode && state == ST_FORMAT)
+		copied_bytes = processed * 2048;
+}
+
 void ShrimpOnProgress(int pos, int max)
 {
-	uint64_t size;
+	uint64_t size, done;
 	if (!shrimp_mode || state != ST_FORMAT || max <= 0)
 		return;
 	size = ShrimpManifest.size ? ShrimpManifest.size : SHRIMP_ISO_ESTIMATE;
-	/* Pasek fazy 2 obejmuje też kopię zawartości nośnika (odczyt i sprawdzenie: 2 × bajty). */
-	uint64_t done = 2 * ShrimpUsbBackupBytes + size * (uint64_t)pos / (uint64_t)max;
-	ShrimpProgress(2, done, size + 2 * ShrimpUsbBackupBytes, ShrimpSpeed(done, FALSE));
+	done = size * (uint64_t)pos / (uint64_t)max;
+	if (copied_bytes == 0) {
+		speed_armed = FALSE;
+		ShrimpProgressStep(2, "prepare", done, size, 0);
+		return;
+	}
+	if (!speed_armed) {
+		/* Pomiar od pierwszych zapisanych bajtów, bez czasu formatowania. */
+		speed_armed = TRUE;
+		ShrimpSpeed(copied_bytes, TRUE);
+	}
+	ShrimpProgress(2, done, size, ShrimpSpeed(copied_bytes, FALSE));
 }
 
 void ShrimpOnFormatDone(DWORD error_status)
@@ -844,5 +982,15 @@ BOOL ShrimpStart(HINSTANCE hInstance, HWND hMainDlg)
 	jb_free(&o);
 	if (ok && !opt_demo)
 		CreateThread(NULL, 0, BitLockerThread, NULL, 0, NULL);
+	/* Test w CI: przebieg od razu, jak po „Przygotuj nośnik” w interfejsie (bez folderów użytkownika). */
+	if (ok && opt_auto_disk >= 0) {
+		char* m = malloc(64);
+		if (m != NULL) {
+			snprintf(m, 64, "0\tstart\t%lu\t", (unsigned long)(DRIVE_INDEX_MIN + opt_auto_disk));
+			uprintf("Shrimp: --auto-disk %d", opt_auto_disk);
+			if (!PostMessage(hShrimpWnd, WM_SHRIMP_CALL, 0, (LPARAM)m))
+				free(m);
+		}
+	}
 	return TRUE;
 }

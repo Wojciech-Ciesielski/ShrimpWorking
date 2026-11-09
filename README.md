@@ -1,6 +1,8 @@
 # ShrimpWorking
 Pracujemy nad distro
 
+Wyniki testów z CI (zrzuty ekranu, dzienniki QEMU, inwentarze) nie trafiają do gałęzi z kodem. Workflowy zapisują je przez `tools/ci-wyniki.sh` na osobnej gałęzi `wyniki-testow`, w katalogach `<gałąź>/<rodzaj>/` (np. `main/iso/`). Każdy przebieg zastępuje poprzedni wynik, a gałąź można usunąć w dowolnej chwili.
+
 ## ISO (Shrimp Beta, live)
 
 - Opis obrazu KIWI: `kiwi/` (`config.kiwi`, `config.sh`, nakładka plików `kiwi/root/`).
@@ -42,7 +44,7 @@ Fork Rufusa 4.16: pobiera Shrimp, zapisuje nośnik, kopiuje pliki i listę progr
 
 ## Shrimp Apps
 
-Sklep z aplikacjami z Flathub (GTK4 + libadwaita + Rust, libflatpak): `apps/shrimp-apps/`. Odkrywaj, kategorie, wyszukiwanie, strona aplikacji, instalacja, aktualizacja i usuwanie. Co działa i czego brakuje: `apps/shrimp-apps/README.md`. Workflow **Shrimp Apps** testuje go na lokalnym repozytorium i na prawdziwym Flathub, zrzuty w `test-results/shrimp-apps/`.
+Sklep z aplikacjami z Flathub (GTK4 + libadwaita + Rust, libflatpak): `apps/shrimp-apps/`. Odkrywaj, kategorie, wyszukiwanie, strona aplikacji, instalacja, aktualizacja i usuwanie. Co działa i czego brakuje: `apps/shrimp-apps/README.md`. Workflow **Shrimp Apps** testuje go na lokalnym repozytorium i na prawdziwym Flathub, zrzuty na gałęzi `wyniki-testow` (`<gałąź>/shrimp-apps/`).
 
 ## Cocktail (aktualizacje i pakiety)
 

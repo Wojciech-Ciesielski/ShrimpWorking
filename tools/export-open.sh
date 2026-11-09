@@ -9,7 +9,7 @@ cd "$(git rev-parse --show-toplevel)"
 if [ -e "$dst" ] && [ -n "$(ls -A "$dst" 2>/dev/null)" ]; then echo "katalog $dst nie jest pusty" >&2; exit 1; fi
 mkdir -p "$dst"
 
-# Wyniki testów i zrzuty z CI (commity botów) zostają w prywatnym repo.
+# Wyniki testów CI są na gałęzi wyniki-testow; starsze refy mogą jeszcze mieć test-results/.
 git archive "$ref" | tar -x -C "$dst" --exclude='./test-results'
 rm -rf "$dst/test-results"
 

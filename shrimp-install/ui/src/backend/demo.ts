@@ -7,7 +7,7 @@ export const DEMO_DEVICES: Device[] = [
   { id: 1, name: "SanDisk Ultra (E:)", kind: "usb", size: 29.8 * GiB },
   { id: 2, name: "Samsung EVO Select (G:)", kind: "sd", size: 59.6 * GiB },
   { id: 3, name: "WD Elements (H:)", kind: "disk", size: 931.5 * GiB },
-  { id: 4, name: "Kingston DataTraveler (F:)", kind: "usb", size: 14.4 * GiB },
+  { id: 4, name: "Kingston DataTraveler (F:)", kind: "usb", size: 7.5 * GiB },
 ];
 const FOLDERS: Folder[] = [
   { key: "documents", path: "C:\\Users\\Jan\\Documents", size: 3.2 * GiB },
@@ -46,7 +46,7 @@ export class DemoBackend implements Backend {
   static readonly PICKED = POOL.slice(0, 2);
 
   async info(): Promise<Info> {
-    return { bitlocker: false, shrimpSize: 1.4 * GiB, minSize: 16 * GiB, folders: FOLDERS };
+    return { bitlocker: false, shrimpSize: 1.94 * GiB, minSize: 14e9, folders: FOLDERS };
   }
   onDevices(cb: (d: Device[]) => void) {
     const v = this.o.devices || "ok";
@@ -63,7 +63,7 @@ export class DemoBackend implements Backend {
     const files = plan.paths.length
       ? POOL.filter((p) => plan.paths.includes(p.path)).reduce((a, p) => a + p.size, 0)
       : FOLDERS.filter((f) => plan.folders.includes(f.key)).reduce((a, f) => a + (f.size || 0), 0);
-    const shrimp = 1.4 * GiB;
+    const shrimp = 1.94 * GiB;
     // Całość 0–100: pobieranie 0–50, zapis 50–70, kopiowanie 70–100 (jak w makiecie).
     const PH = [0, 50, 70, 100], SPEED = [0, 14 * 1024 ** 2, 38 * 1024 ** 2, 52 * 1024 ** 2];
     const sizes = [0, shrimp, shrimp, files];

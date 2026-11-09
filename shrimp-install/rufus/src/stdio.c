@@ -35,6 +35,7 @@
 #include <math.h>
 
 #include "rufus.h"
+#include "shrimp/shrimp.h"
 #include "ntdll.h"
 #include "winio.h"
 #include "missing.h"
@@ -88,6 +89,7 @@ void uprintf(const char *format, ...)
 	*p++ = '\n';
 	*p   = '\0';
 
+	ShrimpLog(buf);	/* SHRIMP: dziennik w pliku */
 	wbuf = utf8_to_wchar(buf);
 	// Send output to Windows debug facility
 	// coverity[dont_call]

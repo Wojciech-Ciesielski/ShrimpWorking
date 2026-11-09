@@ -19,15 +19,6 @@ pub fn trf(key: &'static str, args: &[(&str, &str)]) -> String {
     shrimp_i18n::fill(tr(key), args)
 }
 
-/// Liczba mnoga: klucze `<key>.one/.few/.many/.other`, `{n}` = liczba.
-#[allow(dead_code)] // nie każda aplikacja ma teksty z liczbą mnogą
-pub fn trn(key: &str, n: u64, args: &[(&str, &str)]) -> String {
-    match LANG {
-        Some(l) => shrimp_i18n::trn_in(NS, l, key, n, args),
-        None => shrimp_i18n::trn(NS, key, n, args),
-    }
-}
-
 #[cfg(test)]
 mod tests {
     #[test]

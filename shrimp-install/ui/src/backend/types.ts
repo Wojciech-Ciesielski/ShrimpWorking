@@ -47,6 +47,9 @@ export interface Progress {
   total: number;
   /** Bajty na sekundę, 0 gdy jeszcze nie wiadomo. */
   speed: number;
+  /** Krok w fazie: verify (suma obrazu pobranego wcześniej), prepare (analiza i formatowanie),
+   *  backup (kopia zawartości nośnika). Brak: główna praca fazy. */
+  step?: "verify" | "prepare" | "backup";
 }
 
 export type FailKind = "offline" | "verify" | "write" | "copy" | "space" | "device" | "busy" | "question" | "other";
@@ -62,6 +65,8 @@ export interface Plan {
 
 export interface RunEvents {
   progress(p: Progress): void;
+  /** Prawdziwy rozmiar obrazu, gdy program przeczyta manifest (wcześniej Info.shrimpSize to szacunek). */
+  image?(size: number): void;
   fail(f: Failure): void;
   done(): void;
 }

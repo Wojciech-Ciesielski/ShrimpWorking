@@ -1,8 +1,0 @@
-Loading repository data...
-Reading installed packages...
-
-S  | Name          | Type    | Version                        | Arch   | Repository
----+---------------+---------+--------------------------------+--------+-----------
-   | gamemode      | package | 1.8.2-bp161.1.3                | x86_64 | leap
-   | gamemoded     | package | 1.8.2-bp161.1.3                | x86_64 | leap
-   | steam-devices | package | 20230412+git.1344348-bp161.1.2 | x86_64 | leap
