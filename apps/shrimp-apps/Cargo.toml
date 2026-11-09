@@ -11,7 +11,7 @@ gtk = { package = "gtk4", version = "0.10", features = ["v4_14"] }
 adw = { package = "libadwaita", version = "0.8", features = ["v1_5"] }
 libflatpak = "0.7"
 async-channel = "2"
-quick-xml = "0.41"
+quick-xml = "0.42"
 flate2 = "1"
 ureq = "3"
 serde = { version = "1", features = ["derive"] }
