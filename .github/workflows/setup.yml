@@ -2,19 +2,19 @@ name: Setup
 
 on:
   push:
-    paths: ["setup/**", "i18n/**", "standardize/**", "shrimp-install/schema/**", ".github/workflows/setup.yml"]
+    paths: ["boxes/setup/**", "boxes/app-style/**", "boxes/i18n-core/**", "boxes/install-schema/**", ".github/workflows/setup.yml"]
   pull_request:
-    paths: ["setup/**", "i18n/**", "standardize/**", "shrimp-install/schema/**", ".github/workflows/setup.yml"]
+    paths: ["boxes/setup/**", "boxes/app-style/**", "boxes/i18n-core/**", "boxes/install-schema/**", ".github/workflows/setup.yml"]
   workflow_dispatch:
 
 jobs:
   web:
     runs-on: ubuntu-24.04
-    defaults: { run: { working-directory: setup/web } }
+    defaults: { run: { working-directory: boxes/setup/web } }
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
-        with: { node-version: 22, cache: npm, cache-dependency-path: setup/web/package-lock.json }
+        with: { node-version: 22, cache: npm, cache-dependency-path: boxes/setup/web/package-lock.json }
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
@@ -29,11 +29,11 @@ jobs:
           node scripts/screens.mjs screens/1920 1920 1080
           node scripts/screens.mjs screens/1366 1366 768
       - uses: actions/upload-artifact@v7
-        with: { name: setup-screens, path: setup/web/screens }
+        with: { name: setup-screens, path: boxes/setup/web/screens }
 
   shell:
     runs-on: ubuntu-24.04
-    defaults: { run: { working-directory: setup/shell } }
+    defaults: { run: { working-directory: boxes/setup/shell } }
     steps:
       - uses: actions/checkout@v7
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgtk-4-dev libwebkitgtk-6.0-dev
@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
-      - run: shellcheck -S warning setup/install.sh setup/system/share/post-install.sh setup/system/libexec/shrimp-setup-apply setup/system/libexec/shrimp-usb-backup setup/tests/test-usb-backup.sh standardize/shrimp-app-style
-      - run: setup/tests/test-apply.sh
-      - run: setup/tests/test-usb-backup.sh
-      - run: python3 -c "import yaml; yaml.safe_load(open('setup/system/agama/shrimp.yaml'))"
+      - run: shellcheck -S warning boxes/setup/install.sh boxes/setup/system/share/post-install.sh boxes/setup/system/libexec/shrimp-setup-apply boxes/setup/system/libexec/shrimp-usb-backup boxes/setup/tests/test-usb-backup.sh boxes/app-style/shrimp-app-style boxes/app-style/install.sh
+      - run: boxes/setup/tests/test-apply.sh
+      - run: boxes/setup/tests/test-usb-backup.sh
+      - run: python3 -c "import yaml; yaml.safe_load(open('boxes/setup/system/agama/shrimp.yaml'))"

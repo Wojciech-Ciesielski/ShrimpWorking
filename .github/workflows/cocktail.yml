@@ -2,9 +2,9 @@ name: Cocktail
 
 on:
   push:
-    paths: ["apps/cocktail/**", "apps/shrimp-i18n/**", "i18n/cocktail/**", "i18n/langs.ts", ".github/workflows/cocktail.yml"]
+    paths: ["boxes/cocktail/**", "boxes/shrimp-i18n/**", "boxes/i18n-core/**", ".github/workflows/cocktail.yml"]
   pull_request:
-    paths: ["apps/cocktail/**", "apps/shrimp-i18n/**", "i18n/cocktail/**", "i18n/langs.ts", ".github/workflows/cocktail.yml"]
+    paths: ["boxes/cocktail/**", "boxes/shrimp-i18n/**", "boxes/i18n-core/**", ".github/workflows/cocktail.yml"]
   workflow_dispatch:
 
 jobs:
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-24.04
     # Zrzuty ekranu po polsku (LANGUAGE czyta i18n Shrimp i Web Apps)
     env: { LANGUAGE: pl }
-    defaults: { run: { working-directory: apps/cocktail } }
+    defaults: { run: { working-directory: boxes/cocktail } }
     steps:
       - uses: actions/checkout@v7
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgtk-4-dev libadwaita-1-dev shellcheck xvfb imagemagick
@@ -24,4 +24,4 @@ jobs:
       - name: Zrzuty zakładek na atrapach zyppera (jasny i ciemny)
         run: xvfb-run -s "-screen 0 1000x700x24" tests/screens.sh screens target/release/cocktail
       - uses: actions/upload-artifact@v7
-        with: { name: cocktail-screens, path: apps/cocktail/screens }
+        with: { name: cocktail-screens, path: boxes/cocktail/screens }
