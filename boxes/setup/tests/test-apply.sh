@@ -23,10 +23,10 @@ cat > "$T/bin/mokutil" <<Z
 cat "$T/sb" 2>/dev/null
 Z
 chmod +x "$T/bin/"*
-export PATH="$T/bin:$PATH" SHRIMP_STATE=$T/state SHRIMP_SYSFS=$T/sys SHRIMP_DRIVERS_CONF=$HERE/../system/share/drivers.conf
+export PATH="$T/bin:$PATH" SHRIMP_AUTOSTART_DIR=$T/autostart SHRIMP_STATE=$T/state SHRIMP_SYSFS=$T/sys SHRIMP_DRIVERS_CONF=$HERE/../system/share/drivers.conf
 
 gpu() { rm -rf "$T/sys"; mkdir -p "$T/sys/bus/pci/devices/0000:01:00.0"; local d=$T/sys/bus/pci/devices/0000:01:00.0; echo 0x10de > "$d/vendor"; echo 0x030000 > "$d/class"; echo "$1" > "$d/device"; }
-run() { : > "$LOG"; touch "$T/state/first-boot"; "$APPLY" "$@" 2>>"$T/stderr"; }
+run() { : > "$LOG"; touch "$T/state/first-boot"; mkdir -p "$T/autostart"; touch "$T/autostart/shrimp-setup-first-boot.desktop"; "$APPLY" "$@" 2>>"$T/stderr"; }
 fail() { echo "FAIL: $*"; echo "--- log"; cat "$LOG"; echo "--- stderr"; tail -5 "$T/stderr"; exit 1; }
 
 # 1. RTX 3060 (Turing+), G07 dostępne: otwarty sterownik G07 + kodeki, jedna migawka, restart.
@@ -39,6 +39,7 @@ OUT=$(run --codecs yes --nvidia nvidia)
 grep -q 'install --auto-agree-with-licenses nvidia-open-driver-G07-signed-kmp-meta nvidia-video-G07 nvidia-gl-G07 nvidia-compute-utils-G07' "$LOG" || fail "1: G07"
 grep -q 'install --no-recommends pipewire-pulseaudio mozilla-openh264' "$LOG" || fail "1: kodeki"
 [ -f "$T/state/nvidia-flatpak" ] && [ ! -f "$T/state/first-boot" ] || fail "1: znaczniki"
+[ ! -e "$T/autostart/shrimp-setup-first-boot.desktop" ] || fail "1: autostart Setup został po konfiguracji"
 
 # 2. Tylko G06 w repozytorium: wybiera G06.
 printf '%s\n' nvidia-open-driver-G06-signed-kmp-meta nvidia-video-G06 nvidia-gl-G06 > "$T/avail"

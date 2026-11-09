@@ -22,6 +22,15 @@ os.makedirs(OUT, exist_ok=True)
 QMP_SOCK = os.path.join(OUT, "qmp.sock")
 W, H = 1920, 1080
 
+def noguard_drive(outdir):
+    """Small FAT drive labelled SHRIMP_TEST: switches off the Shrimp Setup guard (GNOME Shell
+    extension shrimp-setup-guard@shrimp), so the test can close Setup and use the desktop."""
+    img = os.path.join(outdir, "noguard.img")
+    if not os.path.exists(img):
+        subprocess.run(["mkfs.vfat", "-C", "-n", "SHRIMP_TEST", img, "2048"], check=True, stdout=subprocess.DEVNULL)
+    return ["-drive", f"file={img},if=none,id=noguard,format=raw", "-device", "usb-storage,drive=noguard"]
+
+
 # ---------------------------------------------------------------- qemu ----
 cmd = [
     "qemu-system-x86_64", "-enable-kvm", "-cpu", "host", "-smp", "4", "-m", "6144",
@@ -46,6 +55,9 @@ if MODE in ("uefi", "secureboot"):
             "-drive", f"if=pflash,format=raw,unit=1,file={local_vars}"]
 else:
     cmd += ["-machine", "q35"]
+
+if MODE == "uefi":
+    cmd += noguard_drive(OUT)
 
 print("+", " ".join(cmd), flush=True)
 qemu = subprocess.Popen(cmd)

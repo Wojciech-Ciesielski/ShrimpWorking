@@ -57,6 +57,7 @@ pub fn hint(v: &Value) -> Value {
 
 /// Skrypt strony z podpowiedziami (JSON jest poprawnym wyrażeniem JS; `</` nie może zamknąć skryptu,
 /// ale skrypt użytkownika i tak nie jest w HTML).
+#[cfg(test)]
 pub fn hint_script(v: &Value) -> String {
     page_hint(Some(v), None)
 }

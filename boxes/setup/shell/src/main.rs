@@ -21,7 +21,7 @@ const UI_DIR: &str = "/usr/share/shrimp-setup/ui";
 /// Kopia tokenu Agamy czytelna dla użytkownika nośnika (shrimp-setup-token.service).
 const TOKEN_FILES: [&str; 2] = ["/run/shrimp-setup/token", "/run/agama/token"];
 const AGAMA_URL: &str = "http://127.0.0.1";
-/// Jak długo `--install` czeka na token Agamy (start usług po zalogowaniu sesji live).
+/// Po tylu sekundach bez tokenu Agamy `--install` zapisuje to w dzienniku (i czeka dalej).
 const TOKEN_WAIT_SECS: u32 = 180;
 
 enum Mode {
@@ -75,39 +75,16 @@ fn main() -> glib::ExitCode {
         loop { std::thread::park(); }
     }
 
+    // Instalacja: okno pokazuje się od razu (czarne, jak ekran startu), a token Agamy czytamy w tle.
+    // Wcześniej okno czekało na token do 3 minut i przez ten czas widać było pulpit sesji live.
     let url = match mode {
-        Mode::Install => {
-            // Sesja live startuje szybciej niż Agama: czekamy na token zamiast od razu kończyć
-            // (wcześniej okno po prostu się nie pokazywało).
-            let read_token = || {
-                TOKEN_FILES
-                    .iter()
-                    .find_map(|f| std::fs::read_to_string(f).ok())
-                    .map(|t| t.trim().to_string())
-                    .filter(|t| !t.is_empty())
-            };
-            let mut token = read_token();
-            for _ in 0..TOKEN_WAIT_SECS * 2 {
-                if token.is_some() {
-                    break;
-                }
-                std::thread::sleep(std::time::Duration::from_millis(500));
-                token = read_token();
-            }
-            match token {
-                Some(t) => format!("{AGAMA_URL}/login?token={t}"),
-                None => {
-                    eprintln!("shrimp-setup: brak tokenu Agamy");
-                    return glib::ExitCode::FAILURE;
-                }
-            }
-        }
+        Mode::Install => None,
         Mode::FirstBoot => {
             if !system::first_boot_pending() {
                 return glib::ExitCode::SUCCESS;
             }
             match server::spawn(ui_dir) {
-                Ok((port, key)) => format!("http://127.0.0.1:{port}/?mode=firstboot&k={key}"),
+                Ok((port, key)) => Some(format!("http://127.0.0.1:{port}/?mode=firstboot&k={key}")),
                 Err(e) => {
                     eprintln!("shrimp-setup: serwer: {e}");
                     return glib::ExitCode::FAILURE;
@@ -139,7 +116,7 @@ fn main() -> glib::ExitCode {
     // Jedno okno: ponowne uruchomienie (skrót „Zainstaluj Shrimp” na nośniku) pokazuje istniejące.
     app.connect_activate(move |app| match app.active_window() {
         Some(w) => w.present(),
-        None => build(app, &url, install, windowed, hint.as_deref()),
+        None => build(app, url.as_deref(), install, windowed, hint.as_deref()),
     });
     // GTK nie zna naszych argumentów.
     app.run_with_args::<&str>(&[])
@@ -165,8 +142,22 @@ fn hide_overview() {
     );
 }
 
-fn build(app: &gtk::Application, url: &str, install: bool, windowed: bool, hint: Option<&str>) {
+/// Token Agamy (sesja live startuje szybciej niż Agama, więc może go jeszcze nie być).
+fn read_token() -> Option<String> {
+    TOKEN_FILES
+        .iter()
+        .find_map(|f| std::fs::read_to_string(f).ok())
+        .map(|t| t.trim().to_string())
+        .filter(|t| !t.is_empty())
+}
+
+/// Czarna strona na czas czekania na Agamę (ten sam kolor co ekran startu i osłona strażnika Setup).
+const SPLASH: &str = "<!doctype html><html><body style=\"margin:0;background:#000;cursor:default\"></body></html>";
+
+fn build(app: &gtk::Application, url: Option<&str>, install: bool, windowed: bool, hint: Option<&str>) {
     let view = webkit6::WebView::new();
+    // Bez białego błysku przed pierwszą klatką strony.
+    view.set_background_color(&gtk::gdk::RGBA::BLACK);
     if let (Some(js), Some(ucm)) = (hint, view.user_content_manager()) {
         ucm.add_script(&webkit6::UserScript::new(
             js,
@@ -224,7 +215,27 @@ fn build(app: &gtk::Application, url: &str, install: bool, windowed: bool, hint:
         // Setup prowadzi do końca: zamknąć można tylko przyciskiem w ostatnim kroku.
         win.connect_close_request(|_| glib::Propagation::Stop);
     }
-    view.load_uri(url);
+    match url {
+        Some(u) => view.load_uri(u),
+        None => {
+            view.load_html(SPLASH, None);
+            let v = view.clone();
+            let mut waited = 0u32;
+            glib::timeout_add_local(std::time::Duration::from_millis(500), move || match read_token() {
+                Some(t) => {
+                    v.load_uri(&format!("{AGAMA_URL}/login?token={t}"));
+                    glib::ControlFlow::Break
+                }
+                None => {
+                    waited += 1;
+                    if waited == TOKEN_WAIT_SECS * 2 {
+                        eprintln!("shrimp-setup: brak tokenu Agamy po {TOKEN_WAIT_SECS} s, czekam dalej");
+                    }
+                    glib::ControlFlow::Continue
+                }
+            });
+        }
+    }
     win.present();
     if !windowed {
         // GNOME po zalogowaniu otwiera widok przeglądu i okno Setup jest wtedy tylko miniaturą.
