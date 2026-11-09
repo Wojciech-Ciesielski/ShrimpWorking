@@ -1,6 +1,6 @@
 # Weryfikacja katalogu aplikacji internetowych
 
-Sprawdzono: 2026-11-09 16:49 UTC (GitHub Actions, `boxes/web-apps/tools/verify.py`).
+Sprawdzono: 2026-11-09 17:53 UTC (GitHub Actions, `boxes/web-apps/tools/verify.py`).
 
 Główna lista: 150 pozycji. Odpowiada poprawnie (2xx): 134, serwer odrzuca automat (400/401/403/429/503, pętla przekierowań): 16, błąd (404, 5xx, DNS, TLS, limit czasu): 0. Ikony pobrane: 149.
 
@@ -22,7 +22,7 @@ Przekierowanie na stronę logowania albo stronę produktu jest normalne dla apli
 | Bluesky | https://bsky.app/ | ok | 200 |  | nie | apple 180px, ostra |
 | Mastodon | https://mastodon.social/ | ok | 200 |  | tak | manifest 192px, ostra |
 | Reddit | https://www.reddit.com/ | zablokowane | 403 |  | nie | s2 192px, ostra |
-| LinkedIn | https://www.linkedin.com/ | ok | 200 |  | nie | s2 64px, kafelek |
+| LinkedIn | https://www.linkedin.com/ | ok | 200 |  | nie | icon 512px, ostra |
 | Pinterest | https://www.pinterest.com/ | ok | 200 |  | tak | manifest 192px, ostra |
 | Discord | https://discord.com/app | ok | 200 |  | nie | s2 256px, ostra |
 | Slack | https://app.slack.com/client | ok | 200 |  | nie | favicon 256px, ostra |
@@ -31,7 +31,7 @@ Przekierowanie na stronę logowania albo stronę produktu jest normalne dla apli
 | Google Meet | https://meet.google.com/ | ok | 200 | https://workspace.google.com/products/meet/ | nie | ręczna 1024px, ostra |
 | Snapchat | https://www.snapchat.com/web | ok | 200 |  | tak | manifest 192px, ostra |
 | TikTok | https://www.tiktok.com/ | ok | 200 |  | tak | manifest 192px, ostra |
-| Gmail | https://mail.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://mail.google.com/mail/u/0/&emr=1&followup=https://mail.google.com/mail/u/0/&osid=1&passive=1209600&service=mail&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1847941827:1794242837830242 | nie | ręczna 1024px, ostra |
+| Gmail | https://mail.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://mail.google.com/mail/u/0/&emr=1&followup=https://mail.google.com/mail/u/0/&osid=1&passive=1209600&service=mail&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-415655216:1794246820143740 | nie | ręczna 1024px, ostra |
 | Outlook | https://outlook.live.com/mail/ | ok | 200 |  | nie | apple 180px, ostra |
 | Proton Mail | https://mail.proton.me/ | ok | 200 |  | tak | manifest 192px, ostra |
 | Tuta | https://app.tuta.com/ | ok | 200 |  | nie | apple 512px, ostra |
@@ -43,16 +43,16 @@ Przekierowanie na stronę logowania albo stronę produktu jest normalne dla apli
 | Perplexity | https://www.perplexity.ai/ | ok | 200 |  | nie | apple 180px, ostra |
 | Allegro | https://allegro.pl/ | zablokowane | 403 |  | nie | apple 57px, kafelek |
 | OLX | https://www.olx.pl/ | ok | 200 |  | nie | apple 192px, ostra |
-| Amazon | https://www.amazon.pl/ | ok | 202 |  | nie | s2 48px, kafelek |
-| AliExpress | https://www.aliexpress.com/ | zablokowane | 302 | https://login.aliexpress.us/sync_cookie_write.htm?acs_random_token=96d39cb19b694d52ad88942bd27cc844&xman_goto=https%3A%2F%2Fwww.aliexpress.us%2F%3FgatewayAdapt%3Dglo2usa%26_randl_shipto%3DUS&_ga=GA1.1.1729667445044202.1794242840345 | nie | s2 16px, litera |
+| Amazon | https://www.amazon.pl/ | ok | 200 |  | nie | s2 48px, kafelek |
+| AliExpress | https://www.aliexpress.com/ | zablokowane | 302 | https://login.aliexpress.us/sync_cookie_write.htm?acs_random_token=86fdfb7247cc44b3809cd0d8a5758959&xman_goto=https%3A%2F%2Fwww.aliexpress.us%2F%3FgatewayAdapt%3Dglo2usa%26_randl_shipto%3DUS&_ga=GA1.1.330366520104055.1794246823316 | nie | s2 16px, litera |
 | PayPal | https://www.paypal.com/ | ok | 200 | https://www.paypal.com/us/home | nie | apple 144px, ostra |
-| Google Docs | https://docs.google.com/document/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/document/&followup=https://docs.google.com/document/&ltmpl=docs&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1009884480:1794242838214392 | nie | ręczna 1024px, ostra |
-| Google Sheets | https://docs.google.com/spreadsheets/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/spreadsheets/&followup=https://docs.google.com/spreadsheets/&ltmpl=sheets&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1709615217:1794242838257443 | nie | ręczna 1024px, ostra |
-| Google Slides | https://docs.google.com/presentation/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/presentation/&followup=https://docs.google.com/presentation/&ltmpl=slides&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-617923709:1794242838216205 | nie | ręczna 1024px, ostra |
-| Google Forms | https://docs.google.com/forms/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/forms/&followup=https://docs.google.com/forms/&ltmpl=forms&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-617923709:1794242838230414 | nie | ręczna 1024px, ostra |
-| Google Drive | https://drive.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://drive.google.com/&emr=1&followup=https://drive.google.com/&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1009884480:1794242838298869 | nie | ręczna 1024px, ostra |
-| Google Calendar | https://calendar.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://calendar.google.com/calendar/u/0/r&emr=1&followup=https://calendar.google.com/calendar/u/0/r&osid=1&passive=1209600&service=cl&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1009884480:1794242838472279 | nie | ręczna 1024px, ostra |
-| Google Keep | https://keep.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://keep.google.com/&followup=https://keep.google.com/&ltmpl=keep&passive=1209600&service=memento&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1009884480:1794242838472281 | nie | ręczna 1024px, ostra |
+| Google Docs | https://docs.google.com/document/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/document/&followup=https://docs.google.com/document/&ltmpl=docs&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1563017003:1794246820721151 | nie | ręczna 1024px, ostra |
+| Google Sheets | https://docs.google.com/spreadsheets/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/spreadsheets/&followup=https://docs.google.com/spreadsheets/&ltmpl=sheets&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S539352093:1794246820760544 | nie | ręczna 1024px, ostra |
+| Google Slides | https://docs.google.com/presentation/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/presentation/&followup=https://docs.google.com/presentation/&ltmpl=slides&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S438815549:1794246820790871 | nie | ręczna 1024px, ostra |
+| Google Forms | https://docs.google.com/forms/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://docs.google.com/forms/&followup=https://docs.google.com/forms/&ltmpl=forms&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S438815549:1794246820801511 | nie | ręczna 1024px, ostra |
+| Google Drive | https://drive.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://drive.google.com/&emr=1&followup=https://drive.google.com/&osid=1&passive=1209600&service=wise&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-1979318317:1794246820833352 | nie | ręczna 1024px, ostra |
+| Google Calendar | https://calendar.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://calendar.google.com/calendar/u/0/r&emr=1&followup=https://calendar.google.com/calendar/u/0/r&osid=1&passive=1209600&service=cl&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1563017003:1794246820881322 | nie | ręczna 1024px, ostra |
+| Google Keep | https://keep.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://keep.google.com/&followup=https://keep.google.com/&ltmpl=keep&passive=1209600&service=memento&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-415655216:1794246820980982 | nie | ręczna 1024px, ostra |
 | Microsoft 365 | https://m365.cloud.microsoft/ | ok | 200 |  | nie | s2 48px, kafelek |
 | Word | https://word.cloud.microsoft/ | ok | 200 | https://word.cloud.microsoft/pl-pl/ | nie | apple 144px, ostra |
 | Excel | https://excel.cloud.microsoft/ | ok | 200 | https://excel.cloud.microsoft/pl-pl/ | nie | apple 144px, ostra |
@@ -66,19 +66,19 @@ Przekierowanie na stronę logowania albo stronę produktu jest normalne dla apli
 | Trello | https://trello.com/ | ok | 200 |  | nie | s2 256px, ostra |
 | Asana | https://app.asana.com/ | ok | 200 | https://app.asana.com/-/login | nie | apple 72px, kafelek |
 | Atlassian (Jira, Confluence) | https://start.atlassian.com/ | ok | 200 |  | nie | apple 180px, ostra |
-| ClickUp | https://app.clickup.com/ | ok | 200 |  | tak | ddg 32px, litera |
+| ClickUp | https://app.clickup.com/ | ok | 200 |  | tak | s2 192px, ostra |
 | monday.com | https://monday.com/ | ok | 200 | https://monday.com/lang/pl | nie | apple 180px, ostra |
 | Linear | https://linear.app/ | ok | 200 |  | tak | manifest 192px, ostra |
 | Miro | https://miro.com/app/ | ok | 200 | https://miro.com/pl/signup/ | nie | s2 128px, ostra |
 | Overleaf | https://www.overleaf.com/ | ok | 200 |  | tak | manifest 512px, ostra |
 | Grammarly | https://app.grammarly.com/ | ok | 200 | https://www.grammarly.com/ | nie | s2 48px, kafelek |
 | LanguageTool | https://languagetool.org/editor | ok | 200 | https://languagetool.org/pl/user-login | tak | manifest 192px, ostra |
-| Google Classroom | https://classroom.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://classroom.google.com/&emr=1&followup=https://classroom.google.com/&passive=1209600&service=classroom&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1009884480:1794242839352625 | nie | s2 32px, litera |
+| Google Classroom | https://classroom.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://classroom.google.com/&emr=1&followup=https://classroom.google.com/&passive=1209600&service=classroom&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1208235308:1794246822257407 | nie | s2 32px, litera |
 | Duolingo | https://www.duolingo.com/ | ok | 200 |  | tak | manifest 192px, ostra |
 | YouTube | https://www.youtube.com/ | ok | 200 |  | tak | manifest 192px, ostra |
 | Netflix | https://www.netflix.com/ | ok | 200 |  | nie | apple 64px, kafelek |
 | Disney+ | https://www.disneyplus.com/ | ok | 200 |  | tak | manifest 192px, ostra |
-| Prime Video | https://www.primevideo.com/ | ok | 200 |  | nie | apple 152px, ostra |
+| Prime Video | https://www.primevideo.com/ | ok | 200 | https://www.primevideo.com/offers/nonprimehomepage?ref_=dv_web_force_root | nie | apple 152px, ostra |
 | HBO Max | https://play.hbomax.com/ | ok | 200 | https://www.hbomax.com/ | nie | apple 180px, ostra |
 | Apple TV | https://tv.apple.com/ | ok | 200 |  | tak | manifest 192px, ostra |
 | SkyShowtime | https://www.skyshowtime.com/ | ok | 200 | https://www.skyshowtime.com/where-can-i-stream | nie | icon 180px, ostra |
@@ -167,7 +167,7 @@ Przekierowanie na stronę logowania albo stronę produktu jest normalne dla apli
 
 | Nazwa | Adres | Wynik | HTTP | Przekierowanie | Manifest PWA | Ikona |
 |---|---|---|---|---|---|---|
-| Google Chat | https://chat.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://chat.google.com/&emr=1&osid=1&passive=1209600&service=dynamite&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S-617923709:1794242844167895 | nie | s2 32px, litera |
+| Google Chat | https://chat.google.com/ | ok | 200 | https://accounts.google.com/v3/signin/identifier?continue=https://chat.google.com/&emr=1&osid=1&passive=1209600&service=dynamite&flowName=GlifWebSignIn&flowEntry=ServiceLogin&dsh=S1563017003:1794246827093091 | nie | s2 32px, litera |
 | Element | https://app.element.io/ | ok | 200 |  | tak | manifest 180px, ostra |
 | Tumblr | https://www.tumblr.com/ | ok | 200 |  | tak | manifest 192px, ostra |
 | Yahoo Mail | https://mail.yahoo.com/ | ok | 200 |  | nie | favicon 48px, kafelek |
