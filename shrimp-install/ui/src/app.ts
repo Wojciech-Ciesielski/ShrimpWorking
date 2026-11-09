@@ -14,7 +14,7 @@ const FOLDER_ICON: Record<FolderKey, string> = {
 
 export type Route =
   | "start" | "nosnik" | "nosnik-lista" | "nosnik-info" | "brak-nosnika" | "za-maly"
-  | "pliki" | "pliki-reczny" | "postep" | "brak-internetu" | "gotowe";
+  | "pliki" | "pliki-reczny" | "postep" | "brak-internetu" | "nosnik-zajety" | "pytanie-rufusa" | "gotowe";
 
 export class App {
   private info!: Info;
@@ -259,7 +259,7 @@ export class App {
     const ROUTES: Record<Route, [string, string?, string?]> = {
       start: ["start"], nosnik: ["nosnik"], "nosnik-lista": ["nosnik", "", "list"], "nosnik-info": ["nosnik", "", "tip"],
       "brak-nosnika": ["nosnik"], "za-maly": ["nosnik"],
-      pliki: ["pliki", "auto"], "pliki-reczny": ["pliki", "manual"], postep: ["postep"], "brak-internetu": ["postep"], gotowe: ["gotowe"],
+      pliki: ["pliki", "auto"], "pliki-reczny": ["pliki", "manual"], postep: ["postep"], "brak-internetu": ["postep"], "nosnik-zajety": ["postep"], "pytanie-rufusa": ["postep"], gotowe: ["gotowe"],
     };
     const [scr, variant, flag] = ROUTES[r] || ROUTES.start;
     this.screen = scr;

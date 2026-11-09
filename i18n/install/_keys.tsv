@@ -140,3 +140,8 @@
 139	phase.verify	Checking the image downloaded earlier · {pct}
 140	phase.prepare	Preparing the drive…
 141	phase.backup	Saving what is on the drive · {pct} · {left} left
+142	fail.busy.t	The drive is in use
+143	fail.busy.b	Another program is using the drive.
+144	fail.busy.r	Close programs that use it (for example File Explorer or a backup program) and try again.
+145	fail.question.t	Writing was stopped
+146	fail.question.b	Shrimp Install stopped before writing the drive because of an unexpected question:

@@ -52,7 +52,7 @@ export interface Progress {
   step?: "verify" | "prepare" | "backup";
 }
 
-export type FailKind = "offline" | "verify" | "write" | "copy" | "space" | "device" | "other";
+export type FailKind = "offline" | "verify" | "write" | "copy" | "space" | "device" | "busy" | "question" | "other";
 export interface Failure { phase: Phase; kind: FailKind; message?: string }
 
 export interface Plan {

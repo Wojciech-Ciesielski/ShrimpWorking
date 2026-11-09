@@ -38,7 +38,7 @@ interface ASystem {
   l10n?: { locales?: { id: string }[]; keymaps?: { id: string }[]; timezones?: { id: string }[] };
   storage?: { devices?: ADevice[]; candidateDrives?: number[] };
 }
-interface AStatus {
+export interface AStatus {
   stage: "configuring" | "installing" | "finished" | "failed";
   /** Zadania w toku (np. propozycja dysku po PUT /api/config). */
   tasks?: { id: number; name: string; scope: string }[];
@@ -99,6 +99,16 @@ export function configFromPlan(plan: InstallPlan, extra: { files?: unknown[]; sc
     storage: { drives: [{ search: plan.disk.device, partitions }] },
     ...extra,
   };
+}
+
+/** Ile nieudanych odpytań /api/status z rzędu (co sekundę) oznacza, że instalator nie odpowiada. */
+export const POLL_MISSES = 30;
+/** Po ilu minutach bez żadnej zmiany postępu Setup pyta, czy czekać dalej. */
+export const STALL_MIN = 20;
+
+/** Odcisk postępu: zmienia się przy każdym kroku, pakiecie albo nowym zadaniu Agamy. */
+export function progressKey(st: AStatus): string {
+  return JSON.stringify([st.stage, st.progresses.map((p) => [p.scope, p.index, p.size, p.step]), (st.tasks || []).map((t) => t.id)]);
 }
 
 /** Faza instalacji (klucz tłumaczenia) na podstawie zakresu (scope) postępu Agamy. */
@@ -182,12 +192,25 @@ export class AgamaBackend implements InstallBackend {
     await call("PUT", "/api/config", installConfig(plan));
     await this.settle();
     await call("POST", "/api/action", { install: null });
+    await this.watch(onProgress);
+  }
+
+  /** Śledzi /api/status. Pojedyncze nieudane odpytanie (restart usługi, chwilowy brak odpowiedzi) nie przerywa
+   *  instalacji; dopiero POLL_MISSES z rzędu to „instalator nie odpowiada”. Postęp, który stoi STALL_MIN minut,
+   *  to „trwa dłużej niż zwykle” (wtedy użytkownik może czekać dalej: watch() jeszcze raz). */
+  async watch(onProgress: (p: Progress) => void) {
     const t0 = Date.now();
+    let misses = 0, last = "", changed = Date.now();
     for (;;) {
       await sleep(1000);
-      const st = await get<AStatus>("/api/status");
+      let st: AStatus;
+      try { st = await get<AStatus>("/api/status"); misses = 0; }
+      catch (e) { if (++misses >= POLL_MISSES) throw new InstallError("agama", String(e)); continue; }
       if (st.stage === "failed") throw new InstallError("install");
       if (st.stage === "finished") { onProgress({ percent: 100, phase: "done" }); return; }
+      const key = progressKey(st);
+      if (key !== last) { last = key; changed = Date.now(); }
+      else if (Date.now() - changed > STALL_MIN * 60000) throw new InstallError("stall");
       const { percent, phase } = phaseOf(st);
       const el = (Date.now() - t0) / 60000;
       const etaMin = percent > 3 ? Math.max(1, Math.ceil((el / percent) * (100 - percent))) : 11;
