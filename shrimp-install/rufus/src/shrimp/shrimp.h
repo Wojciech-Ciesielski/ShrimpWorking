@@ -12,8 +12,8 @@
 #include <stdint.h>
 
 #define SHRIMP_VERSION "0.1.0"
-#define SHRIMP_MIN_MEDIA_SIZE (16ULL * 1000 * 1000 * 1000)   /* „co najmniej 16 GB” na opakowaniu */
-#define SHRIMP_ISO_ESTIMATE (3400ULL * 1024 * 1024)        /* zanim przyjdzie manifest */
+#define SHRIMP_MIN_MEDIA_SIZE (14ULL * 1000 * 1000 * 1000)   /* pendrive „16 GB” ma naprawdę 14,5–16 mld bajtów; interfejs pisze „16 GB” */
+#define SHRIMP_ISO_ESTIMATE (2000ULL * 1024 * 1024)        /* zanim przyjdzie manifest (Beta 2: 1,94 GiB) */
 #define SHRIMP_TRANSFER_DIR "shrimp-transfer"
 
 /* ---------- punkty zaczepienia w Rufusie ---------- */
@@ -29,6 +29,11 @@ void ShrimpOnDevicesChanged(void);
 void ShrimpOnImageScanned(BOOL ok);
 void ShrimpOnProgress(int pos, int max);
 void ShrimpOnFormatDone(DWORD error_status);
+/* _UpdateProgressWithInfo(OP_FILE_COPY): bloki ISO (2048 B) skopiowane na nośnik, do liczenia prędkości. */
+void ShrimpOnFileCopy(uint64_t processed, uint64_t total);
+/* uprintf: każdy wiersz dziennika Rufusa i Shrimp trafia też do %LOCALAPPDATA%\Shrimp Install\shrimp-install.log. */
+void ShrimpLog(const char* line);
+void ShrimpLogEvent(const char* json);    /* zdarzenie dla interfejsu (window.c) */
 
 /* ---------- wewnętrzne ---------- */
 /* json.c: budowanie JSON w UTF-8 */
@@ -128,5 +133,10 @@ BOOL ShrimpReboot(void);
 
 /* shrimp.c: wspólne */
 void ShrimpProgress(int phase, uint64_t done, uint64_t total, uint64_t speed);
+/* Jak wyżej, z krokiem w fazie: „verify” (suma pobranego już obrazu), „prepare” (analiza, formatowanie),
+ * „backup” (kopia zawartości nośnika); NULL: główna praca fazy (pobieranie, zapis plików obrazu, kopia). */
+void ShrimpProgressStep(int phase, const char* step, uint64_t done, uint64_t total, uint64_t speed);
+/* Zdarzenie „image”: prawdziwy rozmiar i wersja obrazu (po manifeście albo --source). */
+void ShrimpEmitImage(void);
 void ShrimpFail(int phase, const char* kind, const char* message);
 uint64_t ShrimpSpeed(uint64_t done, BOOL reset);

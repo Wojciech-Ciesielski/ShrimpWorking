@@ -228,7 +228,7 @@ static BOOL hash_file(const char* path, uint64_t size, uint8_t* digest)
 	while (!ShrimpCancel && ReadFile(h, buf, sizeof(buf), &n, NULL) && n > 0) {
 		hash_write[HASH_SHA256](&ctx, buf, n);
 		done += n;
-		ShrimpProgress(1, done, size, ShrimpSpeed(done, FALSE));
+		ShrimpProgressStep(1, "verify", done, size, ShrimpSpeed(done, FALSE));
 	}
 	CloseHandle(h);
 	hash_final[HASH_SHA256](&ctx);
@@ -276,6 +276,7 @@ DWORD WINAPI ShrimpFetchThread(LPVOID param)
 		}
 		static_strcpy(ShrimpIsoPath, ShrimpLocalIso);
 		ShrimpManifest.size = ((uint64_t)d.nFileSizeHigh << 32) | d.nFileSizeLow;
+		ShrimpEmitImage();
 		ShrimpProgress(1, ShrimpManifest.size, ShrimpManifest.size, 0);
 		ok = TRUE;
 		goto out;
@@ -332,6 +333,7 @@ DWORD WINAPI ShrimpFetchThread(LPVOID param)
 		goto out;
 	}
 	uprintf("Shrimp: %s, %s (%llu B)", ShrimpManifest.version, ShrimpManifest.url, ShrimpManifest.size);
+	ShrimpEmitImage();
 
 	if (!cache_dir(dir, sizeof(dir))) {
 		ShrimpFail(1, "other", "tempAccess");
@@ -353,6 +355,7 @@ DWORD WINAPI ShrimpFetchThread(LPVOID param)
 		WIN32_FILE_ATTRIBUTE_DATA d;
 		if (attrs_u(ShrimpIsoPath, &d)
 			&& ((((uint64_t)d.nFileSizeHigh << 32) | d.nFileSizeLow) == ShrimpManifest.size)) {
+			uprintf("Shrimp: obraz już pobrany, sprawdzanie sumy %s", ShrimpIsoPath);
 			if (hash_file(ShrimpIsoPath, ShrimpManifest.size, digest) && hex_equal(digest, ShrimpManifest.sha256)) {
 				ok = TRUE;
 				goto out;

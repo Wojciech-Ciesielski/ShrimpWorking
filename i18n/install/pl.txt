@@ -136,3 +136,6 @@
 136	Nie udało się uruchomić składnika WebView2.
 137	Brak wolnego miejsca na wpis uruchamiania.
 138	Brak interfejsu w programie.
+139	Sprawdzanie pobranego wcześniej obrazu · {pct}
+140	Przygotowanie nośnika…
+141	Kopia zawartości nośnika · {pct} · zostało {left}
