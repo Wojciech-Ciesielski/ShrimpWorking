@@ -6,7 +6,7 @@
 # Obrazy wolno trzymać tylko tam, gdzie są częścią produktu (lista DOZWOLONE poniżej).
 set -euo pipefail
 base="${1:-origin/main}"
-DOZWOLONE='^(apps/web-apps/data/icons/|apps/[^/]+/data/|kiwi/root/|site/assets/|site/favicon|setup/web/src/assets/|shrimp-install/ui/src/|shrimp-install/rufus/(res|src/shrimp)/)'
+DOZWOLONE='^boxes/([^/]+/(root|data)/|site/(assets/|favicon)|setup/web/src/assets/|shrimp-install/ui/src/|shrimp-install/rufus/(res|src/shrimp)/)'
 
 bad=0
 while IFS= read -r f; do

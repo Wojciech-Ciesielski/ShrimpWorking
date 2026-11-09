@@ -2,27 +2,27 @@ name: Shrimp Install
 
 on:
   push:
-    paths: ["shrimp-install/**", "i18n/**", ".github/workflows/shrimp-install.yml"]
+    paths: ["boxes/shrimp-install/**", "boxes/i18n-core/**", "boxes/help-links/**", "boxes/install-schema/**", ".github/workflows/shrimp-install.yml"]
   pull_request:
-    paths: ["shrimp-install/**", "i18n/**", ".github/workflows/shrimp-install.yml"]
+    paths: ["boxes/shrimp-install/**", "boxes/i18n-core/**", "boxes/help-links/**", "boxes/install-schema/**", ".github/workflows/shrimp-install.yml"]
   workflow_call:
   workflow_dispatch:
 
 jobs:
   ui:
     runs-on: ubuntu-24.04
-    defaults: { run: { working-directory: shrimp-install/ui } }
+    defaults: { run: { working-directory: boxes/shrimp-install/ui } }
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
-        with: { node-version: 22, cache: npm, cache-dependency-path: shrimp-install/ui/package-lock.json }
+        with: { node-version: 22, cache: npm, cache-dependency-path: boxes/shrimp-install/ui/package-lock.json }
       - run: npm ci
       - run: npm run typecheck
       - run: npm test
-      - name: Komunikaty natywne (native_i18n.h) zgodne z i18n/install
+      - name: Komunikaty natywne (native_i18n.h) zgodne z boxes/shrimp-install/i18n
         run: node ../tools/gen-native-i18n.mjs --check
       - name: Test odczytu adresów z odpowiedzi API GitHub
-        working-directory: shrimp-install
+        working-directory: boxes/shrimp-install
         run: gcc -Wall -Wextra -Werror -o /tmp/relurl_test tests/relurl_test.c && /tmp/relurl_test
       - run: npm run build
       - name: Zrzuty ekranów (jak shrimp-handoff/screenshots/install-*)
@@ -32,9 +32,9 @@ jobs:
           mkdir -p screens
           node scripts/screens.mjs screens
       - uses: actions/upload-artifact@v7
-        with: { name: install-ui-screens, path: shrimp-install/ui/screens }
+        with: { name: install-ui-screens, path: boxes/shrimp-install/ui/screens }
       - uses: actions/upload-artifact@v7
-        with: { name: install-ui, path: shrimp-install/ui/dist/index.html }
+        with: { name: install-ui, path: boxes/shrimp-install/ui/dist/index.html }
 
   windows:
     needs: ui
@@ -59,18 +59,18 @@ jobs:
           SHRIMP_REPO: ${{ github.repository }}
           SHRIMP_PRIVATE: ${{ github.event.repository.private }}
         run: |
-          SKIP_UI=1 shrimp-install/tools/prepare.sh
-          cp ui-dist/index.html shrimp-install/rufus/src/shrimp/ui.html
+          SKIP_UI=1 boxes/shrimp-install/tools/prepare.sh
+          cp ui-dist/index.html boxes/shrimp-install/rufus/src/shrimp/ui.html
       - name: Kompilacja (fork Rufusa)
-        working-directory: shrimp-install/rufus
+        working-directory: boxes/shrimp-install/rufus
         run: |
           ./bootstrap.sh
           ./configure --disable-debug
           make -j4
-          mkdir -p ../../out
-          cp src/rufus.exe ../../out/shrimp-install.exe
-          strip ../../out/shrimp-install.exe
-          sha256sum ../../out/shrimp-install.exe
+          mkdir -p ../../../out
+          cp src/rufus.exe ../../../out/shrimp-install.exe
+          strip ../../../out/shrimp-install.exe
+          sha256sum ../../../out/shrimp-install.exe
       - name: Dane z Windows (--collect)
         shell: pwsh
         run: |
@@ -82,11 +82,11 @@ jobs:
           if ($j.apps.Count -lt 1) { throw 'pusta lista programów' }
           if ($j.folders.Count -ne 6) { throw 'brak folderów' }
           "użytkownik: $($j.user.name), strefa: $($j.locale.timezone), programów: $($j.apps.Count), klawiatury: $($j.locale.keyboards -join ',')"
-      - name: Kontrakt shrimp.json (shrimp-install/schema) dla wyniku --collect i przykładu
+      - name: Kontrakt shrimp.json (boxes/install-schema) dla wyniku --collect i przykładu
         shell: pwsh
         run: |
-          $schema = "shrimp-install/schema/shrimp.schema.json"
-          foreach ($f in 'out\collect.json', 'shrimp-install\schema\shrimp.example.json') {
+          $schema = "boxes/install-schema/shrimp.schema.json"
+          foreach ($f in 'out\collect.json', 'boxes\install-schema\shrimp.example.json') {
             $ok = Get-Content $f -Raw -Encoding utf8 | Test-Json -SchemaFile $schema -ErrorAction SilentlyContinue -ErrorVariable bad
             if (-not $ok) { $bad | ForEach-Object { $_.ToString() }; throw "$f nie zgadza się ze schematem" }
             "${f}: zgodny ze schematem"

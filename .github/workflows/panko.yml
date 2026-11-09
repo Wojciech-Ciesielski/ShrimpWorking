@@ -2,9 +2,9 @@ name: Panko
 
 on:
   push:
-    paths: ["apps/panko/**", "apps/shrimp-i18n/**", "i18n/panko/**", "i18n/langs.ts", "site/help.json", ".github/workflows/panko.yml"]
+    paths: ["boxes/panko/**", "boxes/shrimp-i18n/**", "boxes/i18n-core/**", "boxes/help-links/**", ".github/workflows/panko.yml"]
   pull_request:
-    paths: ["apps/panko/**", "apps/shrimp-i18n/**", "i18n/panko/**", "i18n/langs.ts", "site/help.json", ".github/workflows/panko.yml"]
+    paths: ["boxes/panko/**", "boxes/shrimp-i18n/**", "boxes/i18n-core/**", "boxes/help-links/**", ".github/workflows/panko.yml"]
   workflow_dispatch:
 
 permissions:
@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-24.04
     # Zrzuty ekranu po polsku (LANGUAGE czyta i18n Shrimp i Web Apps)
     env: { LANGUAGE: pl }
-    defaults: { run: { working-directory: apps/panko } }
+    defaults: { run: { working-directory: boxes/panko } }
     steps:
       - uses: actions/checkout@v7
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgtk-4-dev libadwaita-1-dev xvfb imagemagick desktop-file-utils libxml2-utils
@@ -44,4 +44,4 @@ jobs:
             shot "zaawansowane-$scheme" $s PANKO_PAGE=zaawansowane
           done
       - uses: actions/upload-artifact@v7
-        with: { name: panko-screens, path: apps/panko/screens }
+        with: { name: panko-screens, path: boxes/panko/screens }
