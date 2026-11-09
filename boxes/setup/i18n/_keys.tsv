@@ -203,3 +203,5 @@
 202	err.agama.p	Check again
 203	err.user.t	This user name is used by the system
 204	err.user.d	Choose a different user name, for example with a number at the end.
+205	err.nodisk.t	No drive for Shrimp
+206	err.nodisk.d	Setup can't see this computer's internal drive. On some laptops it is hidden by Intel RST (VMD) in the firmware settings. Check the drive and try again.

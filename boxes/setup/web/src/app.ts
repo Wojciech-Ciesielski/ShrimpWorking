@@ -7,7 +7,7 @@ import {
   HELLO, ENCS, HSEC, IPS, DNSS, PROXY, THEMES, DRV, NV, ACCENTS, PLACES, USES, ERR, SHRIMP_MIN_GB,
   defaultKeymap, defaultTz, slides, type ErrKey, type Lang, type Region, type Keyboard,
 } from "./data";
-import { firstName, slug, loginFrom, isReservedUser, proposals, windowsList, tnow, esc, prefill, regionLabel, zoneName, keyboardName, type Prefill } from "./logic";
+import { firstName, slug, loginFrom, isReservedUser, proposals, windowsList, tnow, esc, prefill, installLang, regionLabel, zoneName, keyboardName, type Prefill } from "./logic";
 import { load } from "./i18n";
 import { InstallError, OfflineError, type Backends, type Disk, type FirstBootInfo, type InstallPlan, type Network, type Place, type Progress, type Transfer, type UsbResult, type UsbState } from "./backend/types";
 
@@ -461,6 +461,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       if (isReservedUser(S.user)) return openErr("user");
       return go(step + 1);
     }
+    if (id === "dysk" && sub === 0 && !disk()) return openErr("nodisk");
     if (id === "dysk" && sub === 0 && (beside() ? pool() - S.win : disk()?.sizeGB ?? 0) < shrimpMin()) return openErr("space");
     if (id === "podsumowanie") {
       return guarded(async () => {
@@ -531,6 +532,9 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       if (cur() !== "dysk") return go(idx("dysk"));
       const r = $<HTMLInputElement>("#rng"); if (r) { defaultSplit(); r.value = String(S.win); updSplit(); r.focus(); }
     }
+    else if (k === "nodisk") {
+      void be.install.disks().then((d) => { DISKS = d; S.disk = 0; defaultSplit(); go(idx("dysk")); }).catch(() => openErr("nodisk"));
+    }
     else if (k === "install") go(step);
     else if (k === "stall" || k === "agama") runInstall(true);
     else if (k === "user") { S.userEdited = true; render(false); const u = $<HTMLInputElement>("#inUser"); if (u) { u.focus(); u.select(); } }
@@ -566,15 +570,18 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     const q = new URLSearchParams(location.search);
     if (be.mode !== "firstboot") {
       [LANGS, REGS, KBS, DISKS, TR] = await Promise.all([be.install.languages(), be.install.regions(), be.install.keyboards(), be.install.disks(), be.install.transfer().catch(() => null)]);
-      S.disk = Math.max(0, DISKS.findIndex((d) => d.windows));
+      // disksFromSystem() stawia na początku dysk z Windows, potem największy (bez pendrive'a z Shrimp).
+      S.disk = 0;
       defaultSplit();
-      // Domyślnie język, w którym już mówimy (przeglądarka/system nośnika), a dla niego strefa i klawiatura.
-      const own = Math.max(0, LANGS.findIndex((l) => l.tag === L.tag)); S.lang = own;
+      // Instalacja: język z Windows (Shrimp Install), a bez niego angielski, nie polski z obrazu sesji live.
+      // Podgląd (demo): język przeglądarki. Dla wybranego języka domyślna strefa i klawiatura.
+      const own = be.mode === "install" ? installLang(TR, LANGS) : Math.max(0, LANGS.findIndex((l) => l.tag === L.tag)); S.lang = own;
+      if (LANGS[own] && LANGS[own].tag !== L.tag) { L = await load([LANGS[own].locale]); chromeText(); }
       const ktz = REGS.findIndex((r) => r.tz === defaultTz(LANGS[own].locale)); if (ktz >= 0) S.region = ktz;
       const plk = KBS.findIndex((k) => k.keymap === defaultKeymap(LANGS[own].locale)); if (plk >= 0) S.kb = plk;
       if (TR) {
         PRE = prefill(TR, LANGS, REGS, KBS);
-        if (PRE.lang >= 0) { S.lang = PRE.lang; L = await load([LANGS[S.lang].locale]); chromeText(); }
+        if (PRE.lang >= 0 && PRE.lang !== S.lang) { S.lang = PRE.lang; L = await load([LANGS[S.lang].locale]); chromeText(); }
         if (PRE.region >= 0) S.region = PRE.region;
         if (PRE.kb >= 0) { S.kb = PRE.kb; be.install.setKeymap(KBS[S.kb].keymap).catch(() => {}); }
         if (PRE.full) S.full = PRE.full;

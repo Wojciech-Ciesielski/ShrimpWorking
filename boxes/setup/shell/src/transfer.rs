@@ -58,7 +58,34 @@ pub fn hint(v: &Value) -> Value {
 /// Skrypt strony z podpowiedziami (JSON jest poprawnym wyrażeniem JS; `</` nie może zamknąć skryptu,
 /// ale skrypt użytkownika i tak nie jest w HTML).
 pub fn hint_script(v: &Value) -> String {
-    format!("window.SHRIMP_TRANSFER = {};", hint(v))
+    page_hint(Some(v), None)
+}
+
+/// Podpowiedzi dla strony: shrimp.json (jeśli jest) i język menu GRUB z nośnika (`grubLang`).
+/// Bez shrimp.json strona i tak dostaje język z Windows, gdy Shrimp Install zapisał shrimp-lang.cfg.
+pub fn page_hint(v: Option<&Value>, grub: Option<String>) -> String {
+    let mut h = v.map(hint).unwrap_or_else(|| json!({}));
+    if let Some(g) = grub {
+        h["grubLang"] = json!(g);
+    }
+    format!("window.SHRIMP_TRANSFER = {h};")
+}
+
+/// `set shrimp_lang=de` → `de` (boot/grub2/shrimp-lang.cfg, zapisuje go Shrimp Install z języka interfejsu Windows).
+pub fn parse_grub_lang(s: &str) -> Option<String> {
+    s.lines()
+        .find_map(|l| l.trim().strip_prefix("set shrimp_lang="))
+        .map(|v| v.trim().trim_matches('"').to_string())
+        .filter(|v| !v.is_empty() && v.len() <= 16 && v.chars().all(|c| c.is_ascii_alphanumeric() || c == '-' || c == '_'))
+}
+
+/// Język menu GRUB z nośnika, z którego działa sesja live.
+pub fn grub_lang() -> Option<String> {
+    let mut roots = vec![PathBuf::from("/run/overlay/live"), PathBuf::from("/run/initramfs/live")];
+    if let Some(d) = find_dir().and_then(|d| d.parent().map(Path::to_path_buf)) {
+        roots.insert(0, d);
+    }
+    roots.iter().find_map(|r| fs::read_to_string(r.join("boot/grub2/shrimp-lang.cfg")).ok()).and_then(|s| parse_grub_lang(&s))
 }
 
 // ---------- przywracanie plików ----------
@@ -399,6 +426,17 @@ mod tests {
         assert!(h.get("user").is_none() && h.get("locale").is_none());
         assert_eq!(h["bytes"], 3435973836u64 + 1024);
         assert!(known_format(&json!({})));
+    }
+
+    #[test]
+    fn grub_lang_from_shrimp_install() {
+        assert_eq!(parse_grub_lang("set shrimp_lang=de\n").as_deref(), Some("de"));
+        assert_eq!(parse_grub_lang("set shrimp_lang=ca-valencia").as_deref(), Some("ca-valencia"));
+        assert_eq!(parse_grub_lang("set shrimp_lang=\"x; rm\""), None);
+        assert_eq!(parse_grub_lang(""), None);
+        assert_eq!(page_hint(None, Some("en".into())), "window.SHRIMP_TRANSFER = {\"grubLang\":\"en\"};");
+        let v = example();
+        assert!(page_hint(Some(&v), Some("pl".into())).contains("\"grubLang\":\"pl\""));
     }
 
     #[test]

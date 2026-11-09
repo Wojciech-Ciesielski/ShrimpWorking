@@ -117,7 +117,21 @@ fn main() -> glib::ExitCode {
     };
     let install = matches!(mode, Mode::Install);
     // Podpowiedzi z Shrimp Install dla kroków 1–9 (imię, język, strefa, klawiatura, BitLocker).
-    let hint = if install { transfer::find_dir().and_then(|d| transfer::load(&d)).map(|v| transfer::hint_script(&v)) } else { None };
+    // Bez shrimp.json zostaje język menu GRUB, który Shrimp Install też bierze z Windows.
+    let hint = if install {
+        let dir = transfer::find_dir();
+        let data = dir.as_deref().and_then(transfer::load);
+        let grub = transfer::grub_lang();
+        eprintln!(
+            "shrimp-setup: shrimp-transfer {:?}, shrimp.json {}, język GRUB {:?}",
+            dir,
+            if data.is_some() { "wczytany" } else { "brak" },
+            grub
+        );
+        Some(transfer::page_hint(data.as_ref(), grub))
+    } else {
+        None
+    };
 
     let app = gtk::Application::builder()
         .application_id("org.shrimp.Setup")
@@ -165,6 +179,8 @@ fn build(app: &gtk::Application, url: &str, install: bool, windowed: bool, hint:
     if let Some(s) = WebViewExt::settings(&view) {
         s.set_enable_developer_extras(std::env::var_os("SHRIMP_SETUP_DEBUG").is_some());
         s.set_hardware_acceleration_policy(webkit6::HardwareAccelerationPolicy::Never);
+        // console.log strony (dyski Agamy, problemy instalacji) trafia do dziennika: journalctl --user -b | grep shrimp-setup
+        s.set_enable_write_console_messages_to_stdout(true);
     }
     // Bez menu kontekstowego i bez nawigacji poza Setup.
     view.connect_context_menu(|_, _, _| true);
