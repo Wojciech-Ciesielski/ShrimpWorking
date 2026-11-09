@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        dir: [apps/cocktail, apps/panko, apps/shrimp-apps, apps/shrimp-i18n, apps/web-apps, setup/shell]
+        dir: [boxes/cocktail, boxes/panko, boxes/shrimp-apps, boxes/shrimp-i18n, boxes/web-apps, boxes/setup/shell, boxes/shrimp-box]
     steps:
       - uses: actions/checkout@v4
       - uses: taiki-e/install-action@v2
@@ -29,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        dir: [setup/web, shrimp-install/ui]
+        dir: [boxes/setup/web, boxes/shrimp-install/ui]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
