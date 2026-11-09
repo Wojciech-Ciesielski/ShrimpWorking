@@ -299,4 +299,16 @@ finally:
             os.remove(os.path.join(OUT, p))
         except OSError:
             pass
+    # The serial log is only an artifact; print the diagnostics block into the job log too.
+    try:
+        with open(os.path.join(OUT, "serial.log"), errors="replace") as f:
+            text = f.read()
+        a = text.rfind("===EXT")
+        if a >= 0:
+            b = text.find("===END", a)
+            print("::group::serial: diagnostics", flush=True)
+            print(text[a:b if b > a else a + 20000][:20000])
+            print("::endgroup::", flush=True)
+    except OSError:
+        pass
     print(f"done, logs in {OUT}", flush=True)

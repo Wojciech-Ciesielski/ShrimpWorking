@@ -29,7 +29,7 @@ jobs:
             bash tools/fonts-probe.sh "${{ github.event.inputs.leap_version || '16.1' }}" test-results/fonts
           sudo chown -R "$(id -u):$(id -g)" test-results/fonts
           cat test-results/fonts/summary.txt
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: fonts
           path: test-results/fonts

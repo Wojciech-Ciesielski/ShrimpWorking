@@ -4,7 +4,7 @@ name: Release
 # przebiegu, liczy SHA-256 i dodaje manifest.json, z którego Shrimp Install pobiera ISO. Tag wskazuje ten sam commit,
 # więc w wydaniu nie ma plików z innego stanu kodu.
 #  - reuse: zamiast budować od nowa bierze gotowe udane przebiegi, ale tylko zbudowane z TEGO SAMEGO commita.
-#  - Repozytorium prywatne: manifest wskazuje zasób przez API GitHub (pobieranie wymaga tokenu, patrz shrimp-install/README.md).
+#  - Repozytorium prywatne: manifest wskazuje zasób przez API GitHub (pobieranie wymaga tokenu, patrz boxes/shrimp-install/README.md).
 #  - Repozytorium publiczne: manifest wskazuje zwykły adres pliku wydania, bez tokenu.
 on:
   workflow_dispatch:
@@ -12,11 +12,11 @@ on:
       tag:
         description: "Tag wydania (musi być nowy)"
         required: true
-        default: "beta-1"
+        default: "beta-3.1"
       version:
         description: "Wersja pokazywana w programie i w nazwie pobranego ISO"
         required: true
-        default: "Beta 1"
+        default: "Beta 3.1"
       reuse:
         description: "Użyj gotowych przebiegów Build ISO i Shrimp Install z tego samego commita (bez budowania)"
         type: boolean
@@ -94,6 +94,8 @@ jobs:
           mkdir -p assets
           cp "$iso" "assets/$name"
           cp exe/shrimp-install.exe assets/shrimp-install.exe
+          # what the ISO was built from (commit, base image, versions fetched during the build)
+          [ -f iso/build-info.txt ] && cp iso/build-info.txt assets/build-info.txt
           (cd assets && sha256sum "$name" shrimp-install.exe > SHA256SUMS)
           # Plik ISO powyżej 2 GiB nie zmieści się w zasobie wydania GitHub.
           if [ "$size" -ge $((2*1024*1024*1024)) ]; then
@@ -113,6 +115,11 @@ jobs:
           Program nie jest podpisany (Authenticode), więc SmartScreen ostrzeże przed uruchomieniem.
           Nie testowano na prawdziwym sprzęcie: zapis nośnika i start z UEFI sprawdza dopiero komputer.
           NOTES
+          # what the image build skipped (NVIDIA, codecs, icons, extensions): never silently
+          if [ -s iso/build-warnings.txt ]; then
+            { echo; echo "Ostrzeżenia z budowy obrazu (tych elementów może brakować):"; echo
+              sed 's/^/- /' iso/build-warnings.txt; } >> notes.md
+          fi
           if [ "$private" = true ]; then
             cat >> notes.md <<'NOTES'
 

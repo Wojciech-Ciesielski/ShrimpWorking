@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-24.04
     defaults: { run: { working-directory: boxes/shrimp-box } }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: cargo test --locked
       - run: cargo run --locked -q -- check
       - name: Opis obrazu ISO (config.kiwi, config.sh, root/) bez budowania
