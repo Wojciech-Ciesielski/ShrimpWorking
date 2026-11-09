@@ -1,7 +1,11 @@
 name: Fonts probe
 
 # Checks which Leap font packages cover the scripts of all GNOME languages (Setup, onboarding,
+<<<<<<< HEAD
 # apps), so kiwi/config.kiwi lists only names that exist. Result: artifact "fonts" (14 days), nothing is committed.
+=======
+# apps), so boxes/fonts/box.toml lists only names that exist. Result: fonts/ on the wyniki-testow branch (tools/ci-wyniki.sh).
+>>>>>>> origin/main
 
 on:
   push:

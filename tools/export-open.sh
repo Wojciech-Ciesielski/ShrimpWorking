@@ -24,8 +24,8 @@ echo "== Ślady prywatnego repozytorium i danych osobowych (do ręcznej decyzji)
 grep -rIn -e 'Wojciech' -e 'ShrimpWorking' -e '@icloud.com' "$dst" --exclude-dir=node_modules | head -20 || true
 
 echo "== Licencje"
-[ -f "$dst/LICENSE" ] || echo "BRAK LICENSE w korzeniu: wybierz licencję Shrimp (fork Rufusa w shrimp-install/rufus jest na GPLv3, więc ta część zostaje GPLv3)"
-[ -f "$dst/shrimp-install/rufus/LICENSE.txt" ] && echo "ok: shrimp-install/rufus/LICENSE.txt" || echo "BRAK: shrimp-install/rufus/LICENSE.txt"
+[ -f "$dst/LICENSE" ] || echo "BRAK LICENSE w korzeniu: wybierz licencję Shrimp (fork Rufusa w boxes/shrimp-install/rufus jest na GPLv3, więc ta część zostaje GPLv3)"
+[ -f "$dst/boxes/shrimp-install/rufus/LICENSE.txt" ] && echo "ok: boxes/shrimp-install/rufus/LICENSE.txt" || echo "BRAK: boxes/shrimp-install/rufus/LICENSE.txt"
 
 echo "== Pliki powyżej 50 MB"
 find "$dst" -type f -size +50M -print

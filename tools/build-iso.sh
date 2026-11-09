@@ -1,5 +1,8 @@
 #!/bin/bash
-# Builds the Shrimp live ISO with KIWI inside an openSUSE Tumbleweed container.
+# Builds the Shrimp live ISO: container iso-live (containers/iso-live.toml) → KIWI, inside an openSUSE
+# Tumbleweed container. shrimp-box (boxes/shrimp-box) assembles the KIWI description from the boxes
+# (config.kiwi packages, config.sh fragments, root/ overlays), builds the Rust boxes in a Leap chroot
+# and installs every box into the image root; kiwi-ng then builds the ISO.
 # Usage: tools/build-iso.sh [leap-version]   (default 16.1). Needs Docker or Podman and ~20 GB free.
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -15,14 +18,6 @@ done
 echo "Using repository: $REPO"
 
 mkdir -p out
-# KIWI description = kiwi/ plus files kept elsewhere in the repo
-rm -rf out/desc && cp -a kiwi out/desc
-install -Dm755 standardize/shrimp-app-style out/desc/root/usr/bin/shrimp-app-style
-install -Dm644 standardize/shrimp-app-style.service out/desc/root/usr/lib/systemd/system/shrimp-app-style.service
-install -Dm644 standardize/shrimp-app-style.path out/desc/root/usr/lib/systemd/system/shrimp-app-style.path
-install -Dm644 standardize/shrimp-app-style-user.service out/desc/root/usr/lib/systemd/user/shrimp-app-style-user.service
-# Linu(x) build scripts add this repo if KIWI left none configured inside the image
-echo "$REPO/" > out/desc/root/usr/share/shrimp/linux/build/repo.url
 "$ENGINE" run --rm --privileged -v /dev:/dev -v "$PWD:/work" -w /work \
   docker.io/opensuse/tumbleweed:latest bash -euxc "
     zypper -n --gpg-auto-import-keys ref
@@ -31,14 +26,18 @@ echo "$REPO/" > out/desc/root/usr/share/shrimp/linux/build/repo.url
     ok=0
     for i in 1 2 3; do
       zypper -n in --no-recommends python3-kiwi kiwi-systemdeps-iso-media kiwi-systemdeps-bootloaders kiwi-systemdeps-filesystems binutils findutils gawk sed coreutils \
-        nodejs-default npm-default tar gzip && { ok=1; break; }
+        nodejs-default npm-default tar gzip rustup gcc && { ok=1; break; }
       sed -i -E 's#https?://(download|cdn)\.opensuse\.org#https://downloadcontent.opensuse.org#' /etc/zypp/repos.d/*.repo
       zypper -n clean -a; sleep 20; zypper -n --gpg-auto-import-keys ref -f
     done
     [ \$ok = 1 ]
+    # shrimp-box itself (boxes/shrimp-box), then the whole container: description + chroot builds + installs
+    export CARGO_HOME=/root/.cargo RUSTUP_HOME=/root/.rustup
+    rustup toolchain list | grep -q stable || rustup default stable
+    cargo build --release --locked --manifest-path boxes/shrimp-box/Cargo.toml --target-dir out/shrimp-box
+    SB=out/shrimp-box/release/shrimp-box
     rm -rf out/build
-    # Shrimp Setup (installer + first boot) goes into out/desc/root as well
-    tools/build-setup.sh '$REPO' out/desc/root
+    \$SB image iso-live out/desc --repo '$REPO'
     kiwi-ng --logfile out/kiwi.log --color-output system build \
       --description out/desc --set-repo '$REPO' --target-dir out/build
     mv out/build/*.iso out/
