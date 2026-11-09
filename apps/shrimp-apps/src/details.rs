@@ -28,7 +28,7 @@ pub fn page(store: &Rc<Store>, app: &Rc<App>, window: &gtk::Window) -> adw::Navi
         if app.verified {
             let v = gtk::Image::from_icon_name(widgets::pick_icon(widgets::ICON_VERIFIED));
             v.add_css_class("accent");
-            v.set_tooltip_text(Some("Sprawdzony twórca"));
+            v.set_tooltip_text(Some(crate::i18n::tr("details.verified")));
             dev_box.append(&v);
         }
         texts.append(&dev_box);
@@ -43,10 +43,10 @@ pub fn page(store: &Rc<Store>, app: &Rc<App>, window: &gtk::Window) -> adw::Navi
     let main_btn = gtk::Button::builder().width_request(140).build();
     main_btn.add_css_class("pill");
     main_btn.add_css_class("suggested-action");
-    let remove_btn = gtk::Button::builder().label("Usuń").width_request(140).build();
+    let remove_btn = gtk::Button::builder().label(crate::i18n::tr("button.remove")).width_request(140).build();
     remove_btn.add_css_class("pill");
     let progress = gtk::ProgressBar::builder().width_request(140).build();
-    let cancel_btn = gtk::Button::builder().label("Anuluj").width_request(140).build();
+    let cancel_btn = gtk::Button::builder().label(crate::i18n::tr("button.cancel")).width_request(140).build();
     cancel_btn.add_css_class("pill");
     actions.append(&main_btn);
     actions.append(&progress);
@@ -119,22 +119,22 @@ pub fn page(store: &Rc<Store>, app: &Rc<App>, window: &gtk::Window) -> adw::Navi
     let size_value = gtk::Label::builder().label("…").xalign(0.0).build();
     let mut cells: Vec<(&str, gtk::Widget)> = Vec::new();
     if let Some(v) = app.version() {
-        cells.push(("Wersja", value_label(v).upcast()));
+        cells.push((crate::i18n::tr("details.version"), value_label(v).upcast()));
     }
-    cells.push(("Rozmiar", size_value.clone().upcast()));
+    cells.push((crate::i18n::tr("details.size"), size_value.clone().upcast()));
     if let Some(c) = app.main_category() {
-        cells.push(("Kategoria", value_label(c.title()).upcast()));
+        cells.push((crate::i18n::tr("details.category"), value_label(c.title()).upcast()));
     }
     if let Some(l) = &app.license {
-        cells.push(("Licencja", value_label(&license_text(l)).upcast()));
+        cells.push((crate::i18n::tr("details.license"), value_label(&license_text(l)).upcast()));
     }
     if let Some(d) = &app.developer {
-        cells.push(("Twórca", value_label(d).upcast()));
+        cells.push((crate::i18n::tr("details.developer"), value_label(d).upcast()));
     }
     if let Some(h) = &app.homepage {
-        let b = gtk::LinkButton::builder().uri(h).label("Otwórz").halign(gtk::Align::Start).build();
+        let b = gtk::LinkButton::builder().uri(h).label(crate::i18n::tr("button.open")).halign(gtk::Align::Start).build();
         b.add_css_class("info-link");
-        cells.push(("Strona WWW", b.upcast()));
+        cells.push((crate::i18n::tr("details.website"), b.upcast()));
     }
     for (i, (k, v)) in cells.into_iter().enumerate() {
         let cell = gtk::Box::new(gtk::Orientation::Vertical, 2);
@@ -160,7 +160,7 @@ pub fn page(store: &Rc<Store>, app: &Rc<App>, window: &gtk::Window) -> adw::Navi
             let remote = store2.sizes.borrow().get(&id).copied();
             let text = match (installed, remote) {
                 (Some(i), _) => widgets::format_size(i),
-                (None, Some((d, _))) if d > 0 => format!("{} do pobrania", widgets::format_size(d)),
+                (None, Some((d, _))) if d > 0 => crate::i18n::trf("details.download-size", &[("size", &widgets::format_size(d))]),
                 (None, Some((_, i))) => widgets::format_size(i),
                 _ => "—".into(),
             };
@@ -199,9 +199,9 @@ fn value_label(t: &str) -> gtk::Label {
 
 fn license_text(spdx: &str) -> String {
     if spdx.starts_with("LicenseRef-proprietary") {
-        "Zamknięta".into()
+        crate::i18n::tr("license.proprietary").into()
     } else {
-        spdx.replace(" AND ", " i ").replace(" OR ", " lub ")
+        spdx.replace(" AND ", &format!(" {} ", crate::i18n::tr("license.and"))).replace(" OR ", &format!(" {} ", crate::i18n::tr("license.or")))
     }
 }
 
@@ -233,8 +233,8 @@ fn screenshots(app: &App) -> gtk::Widget {
     if app.screenshots.len() > 1 {
         let prev = gtk::Button::from_icon_name("go-previous-symbolic");
         let next = gtk::Button::from_icon_name("go-next-symbolic");
-        prev.set_tooltip_text(Some("Poprzedni"));
-        next.set_tooltip_text(Some("Następny"));
+        prev.set_tooltip_text(Some(crate::i18n::tr("details.previous")));
+        next.set_tooltip_text(Some(crate::i18n::tr("details.next")));
         for (b, align, d) in [(&prev, gtk::Align::Start, -1i32), (&next, gtk::Align::End, 1)] {
             b.add_css_class("circular");
             b.add_css_class("osd");
@@ -261,11 +261,11 @@ fn screenshots(app: &App) -> gtk::Widget {
 
 fn confirm_remove(store: &Rc<Store>, app: &Rc<App>, window: &gtk::Window) {
     let d = adw::AlertDialog::new(
-        Some(&format!("Usunąć „{}”?", app.name)),
-        Some("Aplikacja zniknie z komputera. Twoje pliki zostaną."),
+        Some(&crate::i18n::trf("remove.title", &[("name", &app.name)])),
+        Some(crate::i18n::tr("remove.body")),
     );
-    d.add_response("cancel", "Anuluj");
-    d.add_response("remove", "Usuń");
+    d.add_response("cancel", crate::i18n::tr("button.cancel"));
+    d.add_response("remove", crate::i18n::tr("button.remove"));
     d.set_default_response(Some("cancel"));
     d.set_close_response("cancel");
     let store = store.clone();

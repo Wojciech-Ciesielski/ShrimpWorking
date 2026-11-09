@@ -55,14 +55,14 @@ impl Page {
             }),
         });
 
-        let label = gtk::Label::new(Some("Porównaj z"));
+        let label = gtk::Label::new(Some(crate::i18n::tr("changes.compare")));
         label.add_css_class("panko-sel-name");
         let choice = gtk::DropDown::from_strings(&[]);
-        choice.update_property(&[gtk::accessible::Property::Label("Migawka do porównania")]);
+        choice.update_property(&[gtk::accessible::Property::Label(crate::i18n::tr("changes.compare-a11y"))]);
         let left = gtk::Box::new(gtk::Orientation::Horizontal, 8);
         left.append(&label);
         left.append(&choice);
-        let restore = gtk::Button::with_label("Przywróć wybrane");
+        let restore = gtk::Button::with_label(crate::i18n::tr("changes.restore"));
         restore.add_css_class("suggested-action");
         restore.add_css_class("panko-main");
         restore.set_sensitive(false);
@@ -73,7 +73,7 @@ impl Page {
         bar.append(&left);
         bar.append(&restore);
 
-        let empty = gtk::Label::new(Some("Brak zmian względem tej migawki."));
+        let empty = gtk::Label::new(Some(crate::i18n::tr("changes.none")));
         empty.add_css_class("panko-empty");
         empty.set_xalign(0.0);
         empty.set_visible(false);
@@ -209,7 +209,7 @@ impl App {
                 let changes = match r {
                     Ok(c) => c,
                     Err(e) => {
-                        app.fail("Nie udało się porównać migawki.", &e);
+                        app.fail(crate::i18n::tr("error.compare"), &e);
                         vec![]
                     }
                 };
@@ -273,6 +273,7 @@ impl App {
                             name,
                             marker: c.marker(),
                             checked,
+                            restorable: c.restorable(),
                         });
                     }
                 }
@@ -302,7 +303,7 @@ impl App {
             let mut v: Vec<String> = st
                 .checked
                 .iter()
-                .filter(|(_, c)| c.get())
+                .filter(|(p, c)| c.get() && crate::model::restorable_path(p))
                 .map(|(p, _)| p.clone())
                 .collect();
             v.sort();
@@ -326,9 +327,9 @@ impl App {
         }
         let w = Rc::downgrade(self);
         self.confirm(
-            "Przywrócić wybrane pliki?",
-            "Pliki wrócą do stanu z wybranej migawki.",
-            "Przywróć",
+            crate::i18n::tr("restore-files.title"),
+            crate::i18n::tr("restore-files.body"),
+            crate::i18n::tr("button.restore"),
             true,
             None,
             move || {
@@ -356,7 +357,7 @@ impl App {
                                     app.load_changes(num);
                                 }
                             }
-                            Err(e) => app.fail("Nie udało się przywrócić plików.", &e),
+                            Err(e) => app.fail(crate::i18n::tr("error.restore-files"), &e),
                         }
                     },
                 );

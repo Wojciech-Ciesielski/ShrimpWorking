@@ -1422,6 +1422,8 @@ void _UpdateProgressWithInfo(int op, int msg, uint64_t processed, uint64_t total
 	char msg_data[128];
 	static BOOL bNoAltMode = FALSE;
 
+	if (op == OP_FILE_COPY)
+		ShrimpOnFileCopy(processed, total);	/* SHRIMP */
 	if (op == OP_INIT) {
 		start_time = current_time - 1;
 		last_refresh = 0;

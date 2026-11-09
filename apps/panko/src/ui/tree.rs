@@ -29,6 +29,8 @@ pub enum Row {
         name: String,
         marker: Marker,
         checked: Rc<Cell<bool>>,
+        /// false: pole wyboru nieaktywne (plik z /usr, tylko do odczytu).
+        restorable: bool,
     },
 }
 
@@ -198,9 +200,9 @@ impl Tree {
                     }
                     w.name.set_label(title);
                     w.root
-                        .update_property(&[gtk::accessible::Property::Label(&format!(
-                            "{} {title}",
-                            if *expanded { "Zwiń" } else { "Rozwiń" }
+                        .update_property(&[gtk::accessible::Property::Label(&crate::i18n::trf(
+                            if *expanded { "tree.collapse" } else { "tree.expand" },
+                            &[("name", title)],
                         ))]);
                 }
                 Row::Snap {
@@ -221,15 +223,19 @@ impl Tree {
                     name,
                     marker,
                     checked,
-                    ..
+                    restorable,
                 } => {
                     show(false, false, true, true, false, true);
                     w.root.add_css_class("panko-child");
-                    w.check.set_active(checked.get());
+                    w.check.set_active(checked.get() && *restorable);
+                    w.check.set_sensitive(*restorable);
+                    w.check.set_tooltip_text(if *restorable {
+                        None
+                    } else {
+                        Some(crate::i18n::tr("changes.usr-readonly"))
+                    });
                     w.check
-                        .update_property(&[gtk::accessible::Property::Label(&format!(
-                            "Wybierz {name}"
-                        ))]);
+                        .update_property(&[gtk::accessible::Property::Label(&crate::i18n::trf("tree.select", &[("name", name)]))]);
                     w.icon.set_icon_name(Some("text-x-generic-symbolic"));
                     w.name.set_label(name);
                     w.marker.set_icon_name(Some(marker.icon()));

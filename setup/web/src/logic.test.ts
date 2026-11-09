@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { slug, firstName, proposals, windowsList, mapWindowsApps, klidToXkb, prefill } from "./logic";
 import { LANGS, REGIONS, KEYBOARDS, WIN_CATALOG } from "./data";
-import { configFromPlan, disksFromSystem, phaseOf } from "./backend/agama";
+import { blockingIssues, configFromPlan, disksFromSystem, phaseOf } from "./backend/agama";
 import type { InstallPlan } from "./backend/types";
 import { createI18n } from "../../../i18n/core";
 import keys from "../../../i18n/setup/_keys.tsv?raw";
@@ -150,5 +150,16 @@ describe("agama", () => {
   it("tłumaczy postęp Agamy na fazy", () => {
     expect(phaseOf({ stage: "installing", progresses: [{ scope: "manager", index: 2, size: 4, step: "" }, { scope: "software", index: 5, size: 10, step: "" }] }))
       .toEqual({ percent: 37.5, phase: "inst.system" });
+  });
+});
+
+describe("problemy Agamy", () => {
+  it("brak metadanych repozytorium aktualizacji nie blokuje instalacji", () => {
+    const upd = { scope: "software", class: "loadSource", description: "Could not read the repositories",
+      details: "[agama-1|https://download.opensuse.org/update/leap/16.1/oss/x86_64] Failed to retrieve new repository metadata." };
+    const dist = { ...upd, details: "[agama-0|https://download.opensuse.org/distribution/leap/16.1/repo/oss/x86_64] Failed to retrieve new repository metadata." };
+    const disk = { scope: "storage", class: "proposal", description: "Not enough space" };
+    expect(blockingIssues([upd])).toEqual([]);
+    expect(blockingIssues([upd, dist, disk])).toEqual([dist, disk]);
   });
 });

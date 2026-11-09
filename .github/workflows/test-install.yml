@@ -4,7 +4,7 @@ name: Test install
 # label SHRIMP_LIVE, shrimp-transfer/shrimp.json with files), Setup on the live session,
 # installation with Agama onto an empty disk (Setup's own configuration from
 # setup/web/scripts/agama-test-config.ts), then the first boot of the installed system.
-# Screenshots and serial logs go to test-results/install/ on the same branch.
+# Screenshots and serial logs go to <branch>/install/ on the wyniki-testow branch.
 
 on:
   push:
@@ -96,13 +96,9 @@ jobs:
           path: out
           retention-days: 14
 
-      - name: Commit results
+      - name: Save results
         if: always()
         run: |
           rm -rf test-results/install && mkdir -p test-results/install
           cp out/jpg/*.jpg out/serial-*.log out/shots.json out/build-run-id.txt test-results/install/ 2>/dev/null || true
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add test-results/install
-          git commit -m "Install test results (run ${{ github.run_id }}) [skip ci]" || exit 0
-          for i in 1 2 3; do git pull --rebase -q origin "${{ github.ref_name }}" && git push origin HEAD:"${{ github.ref_name }}" && break; sleep 5; done
+          tools/ci-wyniki.sh install test-results/install

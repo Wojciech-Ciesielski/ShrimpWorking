@@ -6,7 +6,7 @@ export const GiB = 1024 ** 3;
 const MiB = 1024 ** 2;
 
 /** Szacunkowe prędkości, zanim program zmierzy prawdziwe (B/s). */
-export const EST = { download: 14 * MiB, write: 38 * MiB, copy: 52 * MiB };
+export const EST = { download: 14 * MiB, write: 38 * MiB, copy: 52 * MiB, verify: 300 * MiB };
 
 /** Rozmiar w GB z jedną cyfrą po przecinku. */
 export const gb1 = (L: I18n, bytes: number) => L.unit(bytes / GiB, "gigabyte", { max: 1, min: 1 });
@@ -35,6 +35,14 @@ export function dur(L: I18n, sec: number): string {
 
 export const mbps = (L: I18n, bps: number) => L.unit(Math.max(1, Math.round(bps / MiB)), "megabyte-per-second");
 
+/** Wymaganie jak na opakowaniu: najmniejsza typowa pojemność (4, 8, 16, 32… GB), w którą wchodzi minSize.
+ *  Pendrive „16 GB” ma naprawdę 14,5–16 mld bajtów, więc minSize jest niższy niż napis. */
+export function minLabel(L: I18n, minSize: number): string {
+  let g = 4;
+  while (g * 0.9e9 < minSize) g *= 2;
+  return L.unit(g, "gigabyte");
+}
+
 export const deviceLabel = (L: I18n, d: Device) => `${d.name} · ${fmtGB(L, d.size)}`;
 
 export interface Space { shrPct: number; filesPct: number; text: string; over: boolean }
@@ -54,8 +62,8 @@ export function space(L: I18n, cap: number, shrimp: number, files: number): Spac
 export function remaining(p: Progress, sizes: { shrimp: number; files: number }): number {
   const left = Math.max(0, p.total - p.done);
   const est = [0, EST.download, EST.write, EST.copy];
-  let s = left / (p.speed || est[p.phase]);
-  if (p.phase < 2) s += sizes.shrimp / EST.write;
+  let s = left / (p.speed || (p.step === "verify" ? EST.verify : est[p.phase]));
+  if (p.phase < 2 || p.step === "backup" || p.step === "prepare") s += sizes.shrimp / EST.write;
   if (p.phase < 3) s += sizes.files / EST.copy;
   return s;
 }
@@ -69,11 +77,14 @@ export function phaseText(L: I18n, n: Phase, cur: Progress | null, sizes: { shri
   if (n === 1) {
     if (at > 1) return L.t("phase.downloaded", { size: gb1(L, sizes.shrimp) });
     if (!cur || !cur.total) return L.t("phase.connecting");
+    if (cur.step === "verify") return L.t("phase.verify", { pct: L.percent(cur.done / cur.total) });
     return progress(cur, EST.download);
   }
   if (n === 2) {
     if (at > 2) return L.t("phase.written");
     if (at < 2 || !cur) return L.t("phase.takes", { time: dur(L, sizes.shrimp / EST.write) });
+    if (cur.step === "prepare") return L.t("phase.prepare");
+    if (cur.step === "backup") return L.t("phase.backup", { pct: L.percent(cur.total ? cur.done / cur.total : 0), left: left(cur) });
     const pct = cur.total ? cur.done / cur.total : 0;
     return L.t("phase.percent", { pct: L.percent(pct), speed: mbps(L, cur.speed || EST.write), left: left(cur) });
   }

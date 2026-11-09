@@ -53,7 +53,7 @@ Interfejs wysyła tekst `id⇥wywołanie⇥argumenty…` (ścieżki Windows nie 
 | `open` | adres `https://…` | bez odpowiedzi; program otwiera stronę w przeglądarce (odrzuca wszystko poza https i zwykłymi znakami adresu) |
 | `later`, `close`, `minimize`, `drag` | | bez odpowiedzi |
 
-Zdarzenia: `devices`, `folders` (rozmiary liczone w tle), `bitlocker`, `progress { phase 1–3, done, total, speed }`, `fail { phase, kind, message? }` (`offline`, `verify`, `space`, `write`, `device`, `copy`, `other`), `done`, `closeRequested`.
+Zdarzenia: `devices`, `folders` (rozmiary liczone w tle), `bitlocker`, `progress { phase 1–3, done, total, speed, step? }` (`step`: `verify` — suma obrazu pobranego wcześniej, `prepare` — analiza obrazu i formatowanie, `backup` — kopia zawartości nośnika; bez `step` główna praca fazy), `image { size, version }` (prawdziwy rozmiar obrazu po przeczytaniu manifestu), `fail { phase, kind, message? }` (`offline`, `verify`, `space`, `write`, `device`, `copy`, `other`), `done`, `closeRequested`.
 
 ### Strony pomocy
 
@@ -96,7 +96,7 @@ Uwaga: dysk z BitLockerem (`windows.bitlocker`, zdarzenie i alert na ekranie Sta
 `https://…/manifest.json` (adres w `SHRIMP_MANIFEST_URL` przy kompilacji albo `--manifest`):
 
 ```json
-{ "version": "Beta 1", "url": "https://…/shrimp-beta1.iso", "size": 3650722816, "sha256": "…" }
+{ "version": "Beta 2", "url": "https://…/Shrimp.x86_64-0.1.0.iso", "size": 2087512064, "sha256": "…" }
 ```
 
 Adres manifestu zależy od repozytorium, z którego budujemy (`tools/prepare.sh` zapisuje `shrimp_config.h` z `SHRIMP_REPO` i `SHRIMP_PRIVATE`; workflow ustawia je sam):
@@ -104,7 +104,7 @@ Adres manifestu zależy od repozytorium, z którego budujemy (`tools/prepare.sh`
 - **Repozytorium prywatne** (obecnie): `https://api.github.com/repos/<repo>/releases/latest`. Program znajduje w ostatnim wydaniu zasoby `manifest.json` i `manifest.json.sig`, a ISO pobiera przez API (`Accept: application/octet-stream`). GitHub wymaga tokenu: zmienna `SHRIMP_TOKEN` albo pierwszy wiersz `%LOCALAPPDATA%\Shrimp Install\token.txt` (token z odczytem zawartości repozytorium). Token jest wysyłany tylko do `api.github.com`; przekierowania program obsługuje sam i nie przekazuje go dalej. Nie wkompilowujemy go w `.exe`.
 - **Repozytorium publiczne**: `https://github.com/<repo>/releases/latest/download/manifest.json`, bez tokenu. Przy przenosinach wystarczy zbudować program w nowym repozytorium (tools/export-open.sh, OPEN-SOURCE.md w korzeniu).
 
-Wydanie składa workflow **Release** (ręcznie: tag, wersja) z gotowych przebiegów Build ISO i Shrimp Install, liczy SHA-256 i dopisuje `manifest.json` (oraz `.sig`, jeśli jest sekret `SHRIMP_MANIFEST_KEY`). Zasób wydania GitHub może mieć najwyżej 2 GiB; obecne ISO ma ok. 1,4 GB.
+Wydanie składa workflow **Release** (ręcznie: tag, wersja) z gotowych przebiegów Build ISO i Shrimp Install, liczy SHA-256 i dopisuje `manifest.json` (oraz `.sig`, jeśli jest sekret `SHRIMP_MANIFEST_KEY`). Zasób wydania GitHub może mieć najwyżej 2 GiB; obecne ISO (Beta 2) ma 2 087 512 064 B (1,94 GiB), blisko tego limitu.
 
 Obok `manifest.json.sig`: `openssl dgst -sha256 -sign klucz.pem -out manifest.json.sig manifest.json`. Klucz publiczny trafia do programu przez `tools/make-key.sh`. Bez klucza (obecny stan) podpis nie jest sprawdzany, a zaufanie do manifestu daje HTTPS. Suma SHA-256 obrazu jest sprawdzana zawsze. Obraz trafia do `%LOCALAPPDATA%\Shrimp Install\` i jest usuwany po zapisie.
 
@@ -123,9 +123,11 @@ cd rufus && ./bootstrap.sh && ./configure --disable-debug && make -j4   # MSYS2 
 cp src/rufus.exe shrimp-install.exe
 ```
 
-CI (`.github/workflows/shrimp-install.yml`) buduje interfejs i zrzuty ekranów na Linuksie, a `.exe` na Windows, potem uruchamia `--collect` (sprawdza zebrane dane) i okno w trybie `--demo` (zrzuty prawdziwego okna z WebView2).
+CI (`.github/workflows/shrimp-install.yml`) buduje interfejs i zrzuty ekranów na Linuksie, a `.exe` na Windows, potem uruchamia `--collect` (sprawdza zebrane dane), `--backup-test`, pełny zapis ISO z ostatniego wydania na pusty wirtualny dysk 32 GB (`--auto-disk`, potem sprawdza pliki na nośniku) i okno w trybie `--demo` (zrzuty prawdziwego okna z WebView2).
 
-Argumenty: `--demo` (dane z makiety, nic nie zapisuje), `--screen <ekran> --theme light|dark` (podgląd), `--source plik.iso` (bez pobierania), `--manifest URL`, `--collect plik.json` (tylko dane z Windows, bez okna), `--rufus` (zwykłe okno Rufusa). `SHRIMP_DEVTOOLS=1` włącza narzędzia deweloperskie WebView2.
+Dziennik każdego uruchomienia: `%LOCALAPPDATA%\Shrimp Install\shrimp-install.log` (poprzedni: `shrimp-install.old.log`). Przy zgłoszeniu błędu poproś o ten plik.
+
+Argumenty: `--demo` (dane z makiety, nic nie zapisuje), `--screen <ekran> --theme light|dark` (podgląd), `--source plik.iso` (bez pobierania), `--manifest URL`, `--collect plik.json` (tylko dane z Windows, bez okna), `--rufus` (zwykłe okno Rufusa), `--auto-disk NUMER` (test: od razu cały przebieg na dysku o tym numerze z Zarządzania dyskami, bez folderów użytkownika; kod wyjścia 0 po zakończeniu, 3 po błędzie; tylko dla dysków testowych, bo kasuje wskazany dysk). `SHRIMP_DEVTOOLS=1` włącza narzędzia deweloperskie WebView2.
 
 ## Otwarte
 

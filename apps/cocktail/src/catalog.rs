@@ -2,11 +2,13 @@
 //! Nazwy pakietów to nazwy z repozytoriów openSUSE Leap; sprawdzić na Leap 16.1 przed wydaniem.
 
 pub struct Item {
+    /// Klucz tłumaczenia (`pkg.*`) albo nazwa własna (VLC, gcc); wyświetlać przez `crate::i18n::tr`.
     pub title: &'static str,
     pub packages: &'static [&'static str],
 }
 
 pub struct Section {
+    /// Klucz tłumaczenia (`cat.*`).
     pub title: &'static str,
     pub icon: &'static str,
     pub items: &'static [Item],
@@ -18,26 +20,26 @@ const fn i(title: &'static str, packages: &'static [&'static str]) -> Item {
 
 pub const SECTIONS: &[Section] = &[
     Section {
-        title: "Multimedia",
+        title: "cat.multimedia",
         icon: "applications-multimedia-symbolic",
         items: &[
             // Te same pakiety co w kroku Setup „Obraz i dźwięk” (setup/system/share/drivers.conf), bez Packmana.
-            i("Kodeki wideo", &["gstreamer-plugins-good", "gstreamer-plugins-bad", "gstreamer-1.20-plugin-openh264", "mozilla-openh264"]),
-            i("Kodeki audio", &["gstreamer-plugins-base", "gstreamer-plugins-ugly"]),
+            i("pkg.video-codecs", &["gstreamer-plugins-good", "gstreamer-plugins-bad", "gstreamer-1.20-plugin-openh264", "mozilla-openh264"]),
+            i("pkg.audio-codecs", &["gstreamer-plugins-base", "gstreamer-plugins-ugly"]),
             i("VLC", &["vlc"]),
         ],
     },
     Section {
-        title: "Czcionki",
+        title: "cat.fonts",
         icon: "font-x-generic-symbolic",
         items: &[
-            i("Czcionki Microsoft", &["fetchmsttfonts"]),
+            i("pkg.ms-fonts", &["fetchmsttfonts"]),
             i("Noto", &["noto-sans-fonts"]),
             i("Noto Color Emoji", &["google-noto-coloremoji-fonts"]),
         ],
     },
     Section {
-        title: "Środowiska uruchomieniowe",
+        title: "cat.runtimes",
         icon: "application-x-executable-symbolic",
         items: &[
             i("Java (OpenJDK 21)", &["java-21-openjdk"]),
@@ -46,7 +48,7 @@ pub const SECTIONS: &[Section] = &[
         ],
     },
     Section {
-        title: "Narzędzia programistyczne",
+        title: "cat.dev",
         icon: "applications-engineering-symbolic",
         items: &[
             i("gcc", &["gcc"]),
@@ -64,45 +66,45 @@ pub const SECTIONS: &[Section] = &[
         ],
     },
     Section {
-        title: "Sieć",
+        title: "cat.network",
         icon: "network-wired-symbolic",
         items: &[
             i("nmap", &["nmap"]),
             i("OpenSSH", &["openssh"]),
             i("WireGuard", &["wireguard-tools"]),
-            i("Samba (udziały Windows)", &["samba"]),
-            i("Avahi (wykrywanie w sieci)", &["avahi"]),
+            i("pkg.samba", &["samba"]),
+            i("pkg.avahi", &["avahi"]),
         ],
     },
     Section {
-        title: "Drukowanie",
+        title: "cat.printing",
         icon: "printer-symbolic",
         items: &[i("CUPS", &["cups"]), i("cups-filters", &["cups-filters"]), i("Gutenprint", &["gutenprint"])],
     },
     Section {
-        title: "Firmware",
+        title: "cat.firmware",
         icon: "media-flash-symbolic",
         items: &[i("fwupd", &["fwupd"])],
     },
     Section {
-        title: "Zabezpieczenia",
+        title: "cat.security",
         icon: "security-high-symbolic",
         items: &[i("fprintd", &["fprintd"]), i("cryptsetup", &["cryptsetup"]), i("mokutil", &["mokutil"])],
     },
     Section {
-        title: "Wirtualizacja",
+        title: "cat.virtualization",
         icon: "computer-symbolic",
         items: &[i("QEMU", &["qemu"]), i("KVM", &["qemu-kvm"]), i("virt-manager", &["virt-manager"])],
     },
     Section {
-        title: "Narzędzia systemowe",
+        title: "cat.system",
         icon: "applications-system-symbolic",
         items: &[
             i("htop", &["htop"]),
             i("smartmontools", &["smartmontools"]),
             i("rsync", &["rsync"]),
             i("gnome-disk-utility", &["gnome-disk-utility"]),
-            i("Cockpit (panel systemu)", &["cockpit"]),
+            i("pkg.cockpit", &["cockpit"]),
         ],
     },
 ];

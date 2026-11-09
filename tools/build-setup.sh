@@ -44,7 +44,10 @@ chroot "$BR" /bin/bash -c "ldd /src/shell/target/release/shrimp-setup | awk '/=>
 rm -rf "$BR/src/apps"; mkdir -p "$BR/src/apps"
 cp -a "$ROOT/apps/shrimp-apps" "$ROOT/apps/web-apps" "$BR/src/apps/"
 mkdir -p "$BR/src/site" && cp "$ROOT/site/help.json" "$BR/src/site/help.json"
-rm -rf "$BR/src/i18n"; mkdir -p "$BR/src/i18n" && cp -a "$ROOT/i18n/webapps" "$BR/src/i18n/webapps"
+# Teksty: Web Apps i wspólny moduł i18n aplikacji GTK (apps/shrimp-i18n czyta i18n/langs.ts i i18n/<aplikacja>)
+rm -rf "$BR/src/i18n"; mkdir -p "$BR/src/i18n"
+cp -a "$ROOT/i18n/webapps" "$ROOT/i18n/shrimp-apps" "$ROOT/i18n/panko" "$ROOT/i18n/cocktail" "$ROOT/i18n/langs.ts" "$BR/src/i18n/"
+rm -rf "$BR/src/apps/shrimp-i18n"; cp -a "$ROOT/apps/shrimp-i18n" "$BR/src/apps/shrimp-i18n"; rm -rf "$BR/src/apps/shrimp-i18n/target"
 rm -rf "$BR/src/apps/shrimp-apps/target" "$BR/src/apps/web-apps/target"
 chroot "$BR" /bin/bash -euxc '
   export HOME=/root CARGO_HOME=/root/.cargo RUSTUP_HOME=/root/.rustup
@@ -56,6 +59,21 @@ echo "shrimp-apps libraries (packages the ISO must contain):"
 chroot "$BR" /bin/bash -c "ldd /src/apps/shrimp-apps/target/release/shrimp-apps | awk '/=>/ {print \$3}' \
   | xargs -r rpm -qf --qf '%{NAME}\n' 2>/dev/null | sort -u | sed 's/^/  /'" || true
 SHRIMP_APPS_PREBUILT=1 apps/shrimp-apps/install.sh "$DEST"
+
+# 2c. Cocktail (updates: packages, drivers, history) and Panko (snapshots / system restore).
+# Both only need gtk4 + libadwaita, already in the build root; Shrimp Menu opens them
+# ("Aktualizacje" -> org.shrimp.Cocktail, "Panko" -> org.shrimp.Panko).
+for app in cocktail panko; do
+  rm -rf "$BR/src/apps/$app"; cp -a "$ROOT/apps/$app" "$BR/src/apps/$app"; rm -rf "$BR/src/apps/$app/target"
+  chroot "$BR" /bin/bash -euxc "
+    export HOME=/root CARGO_HOME=/root/.cargo RUSTUP_HOME=/root/.rustup
+    cd /src/apps/$app && cargo build --release --locked
+  "
+  mkdir -p "$ROOT/apps/$app/target/release"
+  cp "$BR/src/apps/$app/target/release/$app" "$ROOT/apps/$app/target/release/$app"
+done
+COCKTAIL_PREBUILT=1 apps/cocktail/install.sh "$DEST"
+PANKO_PREBUILT=1 apps/panko/install.sh "$DEST"
 
 # 3. Web UI (platform independent) + install into DESTDIR
 SHRIMP_SETUP_PREBUILT=1 setup/install.sh "$DEST" --live

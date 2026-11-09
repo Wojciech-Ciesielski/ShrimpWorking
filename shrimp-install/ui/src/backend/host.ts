@@ -40,6 +40,7 @@ export class HostBackend implements Backend {
       case "devices": this.lastDevices = m.devices; this.devices.forEach((cb) => cb(m.devices)); break;
       case "folders": this.lastFolders = m.folders; this.folders.forEach((cb) => cb(m.folders)); break;
       case "progress": this.run?.progress(m); break;
+      case "image": if (m.size > 0) this.run?.image?.(m.size); break;
       case "fail": this.run?.fail(m); break;
       case "done": this.run?.done(); break;
       case "bitlocker": this.bitlocker.forEach((cb) => cb(!!m.on)); break;

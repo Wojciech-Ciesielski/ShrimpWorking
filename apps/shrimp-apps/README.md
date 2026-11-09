@@ -19,7 +19,7 @@ Sklep z aplikacjami Shrimp: Flathub i aplikacje internetowe. GTK4 + libadwaita +
 
 ## Czego brakuje
 
-- **Na nośniku ISO**: program nie jest jeszcze budowany do obrazu. Trzeba go zbudować w chroocie Leap jak Setup (`tools/build-setup.sh`, z `pkgconfig(gtk4)`, `pkgconfig(libadwaita-1)`, `pkgconfig(flatpak)`) i zainstalować `install.sh` do `kiwi/root`. Menu Shrimp już woła najpierw `org.shrimp.Apps.desktop`, potem GNOME Software.
+- **Na nośniku ISO**: `tools/build-setup.sh` buduje program w chroocie Leap i instaluje go do obrazu, a post-install Setup kopiuje go do zainstalowanego systemu. Menu Shrimp otwiera go jako „Oprogramowanie”.
 - **Ikona programu**: na razie `system-software-install` z motywu; własnej ikony w paczce nie ma.
 - **Tłumaczenia**: interfejs tylko po polsku (format `i18n/` do podpięcia).
 - **Strona pomocy**: temat `apps` w `site/help.json`; dopóki `base` jest puste, przycisk i pozycja „Pomoc” są nieaktywne.
@@ -41,7 +41,7 @@ Wymagania: GTK 4.14, libadwaita 1.5, flatpak 1.14 (Leap 16.1 ma nowsze).
 - `shrimp-apps --self-test [ID]`: bez okna wczytuje katalog, szuka, a z ID instaluje, aktualizuje i usuwa aplikację.
 - `tests/test-repo.py build DIR`: lokalne repozytorium udające Flathub (33 aplikacje testowe z ikonami, zrzutami i AppStream), `bump DIR ID` wydaje nową wersję. Z `SHRIMP_APPS_INSTALLATION=user` program używa instalacji użytkownika (tylko do testów).
 - `tests/screenshots.sh DIR`: zrzuty ekranu w Xvfb (jasny i ciemny).
-- Workflow **Shrimp Apps** robi to wszystko w CI: testy, repozytorium testowe (instalacja, aktualizacja 1.0 → 1.1, usuwanie), prawdziwy Flathub (katalog, wyszukiwanie, instalacja i usunięcie Flatseal) i zrzuty z prawdziwym katalogiem w `test-results/shrimp-apps/`.
+- Workflow **Shrimp Apps** robi to wszystko w CI: testy, repozytorium testowe (instalacja, aktualizacja 1.0 → 1.1, usuwanie), prawdziwy Flathub (katalog, wyszukiwanie, instalacja i usunięcie Flatseal) i zrzuty z prawdziwym katalogiem na gałęzi `wyniki-testow` (`<gałąź>/shrimp-apps/`).
 
 ## Budowa kodu
 

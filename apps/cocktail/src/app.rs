@@ -65,7 +65,7 @@ pub fn tail(out: &Out) -> String {
         msgs = msgs.split_off(n.saturating_sub(4));
     }
     if msgs.is_empty() {
-        format!("Polecenie zakończyło się kodem {}.", out.code)
+        crate::i18n::trf("error.exit-code", &[("code", &out.code.to_string())])
     } else {
         msgs.join("\n")
     }
@@ -96,14 +96,14 @@ impl App {
 
     pub async fn alert(&self, heading: &str, body: &str) {
         let d = adw::AlertDialog::new(Some(heading), Some(body));
-        d.add_response("ok", "Zamknij");
+        d.add_response("ok", crate::i18n::tr("button.close"));
         d.choose_future(Some(&self.window)).await;
     }
 
     /// Potwierdzenie. Przycisk w kolorze akcentu, nie czerwony: czerwony jest tylko dla błędów.
     pub async fn confirm(&self, heading: &str, body: &str, action: &str) -> bool {
         let d = adw::AlertDialog::new(Some(heading), Some(body));
-        d.add_response("cancel", "Anuluj");
+        d.add_response("cancel", crate::i18n::tr("button.cancel"));
         d.add_response("go", action);
         d.set_response_appearance("go", adw::ResponseAppearance::Suggested);
         d.set_default_response(Some("cancel"));
@@ -125,7 +125,7 @@ impl App {
     /// Zwraca true, gdy zmiana się udała.
     pub async fn change(self: &Rc<Self>, op: Op, packages: Vec<String>, label: &str) -> bool {
         if self.busy.get() {
-            self.toast("Poczekaj, aż skończy się poprzednia zmiana");
+            self.toast(crate::i18n::tr("toast.busy"));
             return false;
         }
         if packages.iter().any(|p| !zypper::valid_name(p)) {
@@ -152,14 +152,14 @@ impl App {
             let all = match zypper::parse_remove_preview(&out.stdout) {
                 Ok(v) if out.ok() => v,
                 _ => {
-                    self.alert(&format!("Nie można usunąć: {label}"), &tail(&out)).await;
+                    self.alert(&crate::i18n::trf("remove.cannot", &[("name", label)]), &tail(&out)).await;
                     return false;
                 }
             };
             if let Some(p) = all.iter().find(|p| zypper::is_protected(p)) {
                 self.alert(
-                    &format!("Nie można usunąć: {label}"),
-                    &format!("Bez pakietu {p} system przestałby działać."),
+                    &crate::i18n::trf("remove.cannot", &[("name", label)]),
+                    &crate::i18n::trf("remove.protected", &[("package", p)]),
                 )
                 .await;
                 return false;
@@ -170,14 +170,14 @@ impl App {
             } else {
                 let shown: Vec<&str> = extra.iter().take(12).map(|s| s.as_str()).collect();
                 let more = extra.len().saturating_sub(shown.len());
-                let mut b = format!("Razem z nim zostaną usunięte: {}", shown.join(", "));
+                let list = shown.join(", ");
                 if more > 0 {
-                    b.push_str(&format!(" i {more} {}", zypper::plural(more, "inny", "inne", "innych")));
+                    crate::i18n::trn("remove.also-more", more as u64, &[("list", &list)])
+                } else {
+                    crate::i18n::trf("remove.also", &[("list", &list)])
                 }
-                b.push('.');
-                b
             };
-            if !self.confirm(&format!("Usunąć: {label}?"), &body, "Usuń").await {
+            if !self.confirm(&crate::i18n::trf("remove.confirm", &[("name", label)]), &body, crate::i18n::tr("button.remove")).await {
                 return false;
             }
         }
@@ -196,9 +196,9 @@ impl App {
         }
         if !out.ok() {
             let heading = match op {
-                Op::Install => format!("Nie udało się zainstalować: {label}"),
-                Op::Remove => format!("Nie udało się usunąć: {label}"),
-                Op::Update => "Nie udało się zaktualizować systemu".to_string(),
+                Op::Install => crate::i18n::trf("error.install", &[("name", label)]),
+                Op::Remove => crate::i18n::trf("error.remove", &[("name", label)]),
+                Op::Update => crate::i18n::tr("error.update").to_string(),
             };
             self.alert(&heading, &tail(&out)).await;
             return false;
