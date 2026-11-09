@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-24.04
-    # Zrzuty ekranu po polsku (LANGUAGE czyta i18n Shrimp i Web Apps)
+    # Testy po polsku (LANGUAGE czyta i18n Shrimp i Web Apps)
     env: { LANGUAGE: pl }
     defaults: { run: { working-directory: boxes/cocktail } }
     steps:
@@ -21,10 +21,3 @@ jobs:
       - run: shellcheck -S warning install.sh system/libexec/* tests/*.sh
       - run: tests/test-helper.sh
       - run: python3 -c "import xml.dom.minidom; xml.dom.minidom.parse('system/polkit/org.shrimp.cocktail.policy')"
-<<<<<<< HEAD
-=======
-      - name: Zrzuty zakładek na atrapach zyppera (jasny i ciemny)
-        run: xvfb-run -s "-screen 0 1000x700x24" tests/screens.sh screens target/release/cocktail
-      - uses: actions/upload-artifact@v7
-        with: { name: cocktail-screens, path: boxes/cocktail/screens }
->>>>>>> origin/main

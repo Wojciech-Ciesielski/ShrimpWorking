@@ -1,12 +1,7 @@
 name: Web Apps
 
-<<<<<<< HEAD
-# Katalog 150 aplikacji internetowych (apps/web-apps): sprawdzenie adresów, pobranie ikon,
-# testy biblioteki i test przycisku „Utwórz”. Wyniki weryfikacji wracają do gałęzi commitem [skip ci].
-=======
 # Katalog 150 aplikacji internetowych (boxes/web-apps): sprawdzenie adresów, pobranie ikon,
-# testy biblioteki i zrzut strony. Wyniki weryfikacji wracają do gałęzi commitem [skip ci].
->>>>>>> origin/main
+# testy biblioteki i przycisku „Utwórz”. Dane weryfikacji są aktualizowane na gałęzi.
 on:
   push:
     paths: ["boxes/web-apps/**", "boxes/i18n-core/**", ".github/workflows/web-apps.yml"]
