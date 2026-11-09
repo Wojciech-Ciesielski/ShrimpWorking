@@ -4,7 +4,7 @@ name: Release
 # przebiegu, liczy SHA-256 i dodaje manifest.json, z którego Shrimp Install pobiera ISO. Tag wskazuje ten sam commit,
 # więc w wydaniu nie ma plików z innego stanu kodu.
 #  - reuse: zamiast budować od nowa bierze gotowe udane przebiegi, ale tylko zbudowane z TEGO SAMEGO commita.
-#  - Repozytorium prywatne: manifest wskazuje zasób przez API GitHub (pobieranie wymaga tokenu, patrz shrimp-install/README.md).
+#  - Repozytorium prywatne: manifest wskazuje zasób przez API GitHub (pobieranie wymaga tokenu, patrz boxes/shrimp-install/README.md).
 #  - Repozytorium publiczne: manifest wskazuje zwykły adres pliku wydania, bez tokenu.
 on:
   workflow_dispatch:
@@ -12,11 +12,11 @@ on:
       tag:
         description: "Tag wydania (musi być nowy)"
         required: true
-        default: "beta-1"
+        default: "beta-3.1"
       version:
         description: "Wersja pokazywana w programie i w nazwie pobranego ISO"
         required: true
-        default: "Beta 1"
+        default: "Beta 3.1"
       reuse:
         description: "Użyj gotowych przebiegów Build ISO i Shrimp Install z tego samego commita (bez budowania)"
         type: boolean

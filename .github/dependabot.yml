@@ -5,10 +5,11 @@ version: 2
 updates:
   - package-ecosystem: cargo
     directories:
-      - /apps/cocktail
-      - /apps/panko
-      - /apps/shrimp-i18n
-      - /setup/shell
+      - /boxes/cocktail
+      - /boxes/panko
+      - /boxes/shrimp-i18n
+      - /boxes/shrimp-box
+      - /boxes/setup/shell
     schedule: { interval: weekly }
     open-pull-requests-limit: 5
     groups:
@@ -16,8 +17,8 @@ updates:
         patterns: ["gtk4", "libadwaita", "glib", "gio", "webkit6"]
   - package-ecosystem: cargo
     directories:
-      - /apps/shrimp-apps
-      - /apps/web-apps
+      - /boxes/shrimp-apps
+      - /boxes/web-apps
     schedule: { interval: weekly }
     open-pull-requests-limit: 5
     ignore:
@@ -27,8 +28,8 @@ updates:
         update-types: ["version-update:semver-minor"]
   - package-ecosystem: npm
     directories:
-      - /setup/web
-      - /shrimp-install/ui
+      - /boxes/setup/web
+      - /boxes/shrimp-install/ui
     schedule: { interval: weekly }
     open-pull-requests-limit: 5
     groups:
