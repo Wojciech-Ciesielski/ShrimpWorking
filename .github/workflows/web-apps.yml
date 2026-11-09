@@ -49,12 +49,6 @@ jobs:
           xvfb-run -a -s "-screen 0 1280x900x24" target/debug/examples/demo --click spotify --screenshot ../../test-results/web-apps/strona.png | tee out.txt
           grep -q "przycisk po: Otwórz" out.txt
           cat xdg/applications/shrimp-webapp-spotify.desktop
-      - name: Zapis zrzutu do gałęzi
-        if: github.ref_name != 'main'
+      - name: Zapis zrzutu na gałęzi wyników
         working-directory: .
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add test-results/web-apps
-          git commit -m "Web Apps: zrzut strony (run ${{ github.run_id }}) [skip ci]" || exit 0
-          for i in 1 2 3; do git pull --rebase -q origin "${{ github.ref_name }}" && git push origin HEAD:"${{ github.ref_name }}" && break; sleep 5; done
+        run: tools/ci-wyniki.sh web-apps test-results/web-apps

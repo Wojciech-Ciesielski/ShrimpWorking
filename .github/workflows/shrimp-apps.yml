@@ -65,15 +65,10 @@ jobs:
           rm -f "$GITHUB_WORKSPACE/test-results/shrimp-apps/app.log"
       - uses: actions/upload-artifact@v4
         with: { name: shrimp-apps-screens, path: test-results/shrimp-apps }
-      - name: Zapisz zrzuty w gałęzi
+      - name: Zapisz zrzuty na gałęzi wyników
         if: github.event_name == 'push'
         working-directory: .
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add test-results/shrimp-apps
-          git commit -m "Shrimp Apps screenshots (run ${{ github.run_id }}) [skip ci]" || exit 0
-          for i in 1 2 3; do git pull --rebase -q origin "${{ github.ref_name }}" && git push origin HEAD:"${{ github.ref_name }}" && break; sleep 5; done
+        run: tools/ci-wyniki.sh shrimp-apps test-results/shrimp-apps
 
   # Steam z Flathub tak, jak instaluje go Setup (shrimp-apps --install). Sprawdza, czy razem z nim
   # przychodzą 32-bitowe GL (org.freedesktop.Platform.GL32.*) i kodeki (ffmpeg-full), bez których gry
