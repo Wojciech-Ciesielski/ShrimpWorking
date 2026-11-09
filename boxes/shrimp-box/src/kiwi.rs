@@ -102,8 +102,9 @@ pub fn describe(repo: &Repo, container: &str, out: &Path, repo_url: &str) -> Res
 
     let tpl_path = repo.root.join(&tb.dir).join(tpl);
     let tpl_text = fs::read_to_string(&tpl_path).map_err(|e| format!("{}: {e}", tpl_path.display()))?;
-    if !tpl_text.contains(PACKAGES_MARKER) {
-        return Err(format!("{}: brak {PACKAGES_MARKER}", tpl_path.display()));
+    // znacznik dokładnie raz (np. w komentarzu XML wstawione pakiety psują config.kiwi)
+    if tpl_text.matches(PACKAGES_MARKER).count() != 1 {
+        return Err(format!("{}: {PACKAGES_MARKER} musi wystąpić dokładnie raz", tpl_path.display()));
     }
     let kiwi = tpl_text.replace(PACKAGES_MARKER, &packages_xml(repo, &members)?);
     fs::write(out.join("config.kiwi"), kiwi).map_err(|e| e.to_string())?;
