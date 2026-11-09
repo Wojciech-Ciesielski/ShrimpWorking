@@ -21,15 +21,6 @@ jobs:
       - name: Identyfikatory Flathub z katalogu programów
         run: node scripts/check-flathub.mjs
       - run: npm run build
-      - name: Zrzuty wszystkich stanów (1920×1080 i 1366×768)
-        run: |
-          npm i --no-save playwright
-          npx playwright install --with-deps chromium
-          mkdir -p screens/1920 screens/1366
-          node scripts/screens.mjs screens/1920 1920 1080
-          node scripts/screens.mjs screens/1366 1366 768
-      - uses: actions/upload-artifact@v7
-        with: { name: setup-screens, path: boxes/setup/web/screens }
 
   shell:
     runs-on: ubuntu-24.04

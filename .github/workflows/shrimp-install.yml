@@ -25,14 +25,6 @@ jobs:
         working-directory: boxes/shrimp-install
         run: gcc -Wall -Wextra -Werror -o /tmp/relurl_test tests/relurl_test.c && /tmp/relurl_test
       - run: npm run build
-      - name: Zrzuty ekranów (jak shrimp-handoff/screenshots/install-*)
-        run: |
-          npm i --no-save playwright
-          npx playwright install --with-deps chromium
-          mkdir -p screens
-          node scripts/screens.mjs screens
-      - uses: actions/upload-artifact@v7
-        with: { name: install-ui-screens, path: boxes/shrimp-install/ui/screens }
       - uses: actions/upload-artifact@v7
         with: { name: install-ui, path: boxes/shrimp-install/ui/dist/index.html }
 
@@ -140,23 +132,15 @@ jobs:
           }
           "nośnik gotowy: $((Get-Item -LiteralPath (Join-Path $root 'LiveOS\squashfs.img')).Length) B squashfs, shrimp.json:"
           Get-Content -LiteralPath (Join-Path $root 'shrimp-transfer\shrimp.json') -Raw | Out-Host
-      - name: Okno z WebView2 (tryb --demo) i zrzuty
+      - name: "Okno z WebView2 (tryb --demo), program uruchamia się na każdym ekranie"
         shell: pwsh
         run: |
-          Add-Type -AssemblyName System.Windows.Forms, System.Drawing
-          New-Item -ItemType Directory -Force out\screens | Out-Null
           foreach ($t in 'light', 'dark') {
             foreach ($s in 'start', 'nosnik', 'pliki', 'postep') {
               $p = Start-Process out\shrimp-install.exe -ArgumentList '--demo', '--screen', $s, '--theme', $t -PassThru
               Start-Sleep -Seconds 8
               $p.Refresh()
               if ($p.HasExited) { throw "program zakończył się (kod $($p.ExitCode)) na ekranie $s" }
-              $b = [System.Windows.Forms.Screen]::PrimaryScreen.Bounds
-              $bmp = New-Object System.Drawing.Bitmap $b.Width, $b.Height
-              $g = [System.Drawing.Graphics]::FromImage($bmp)
-              $g.CopyFromScreen($b.Location, [System.Drawing.Point]::Empty, $b.Size)
-              $bmp.Save("$PWD\out\screens\$t-$s.png")
-              $g.Dispose(); $bmp.Dispose()
               "${t}/${s}: okno '$($p.MainWindowTitle)'"
               Stop-Process -Id $p.Id -Force
               Start-Sleep -Seconds 2

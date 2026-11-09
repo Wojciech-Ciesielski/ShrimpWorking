@@ -17,9 +17,9 @@ cargo test                 # testy (bez usługi)
 boxes/panko/install.sh DESTDIR   # program, plik .desktop, reguła polkit
 ```
 
-Do zrzutów i testów: `PANKO_PAGE=zmiany|zaawansowane`, `PANKO_SELECT=<numer migawki>`,
+Do podglądu i testów: `PANKO_PAGE=zmiany|zaawansowane`, `PANKO_SELECT=<numer migawki>`,
 `ADW_DEBUG_COLOR_SCHEME=prefer-dark`. Workflow **Panko** w GitHub Actions buduje program,
-uruchamia testy i zapisuje zrzuty obu motywów (artefakt `panko-screens`).
+uruchamia testy.
 
 ## Co działa
 

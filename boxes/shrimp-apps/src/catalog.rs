@@ -427,13 +427,13 @@ pub fn parse<R: BufRead>(input: R, langs: &Langs, icon_root: Option<&Path>) -> R
     let mut seen: HashMap<String, usize> = HashMap::new();
 
     fn start(e: &quick_xml::events::BytesStart) -> Element {
-        let name = String::from_utf8_lossy(e.name().as_ref()).into_owned();
+        let name = e.name().as_ref().to_owned();
         let attrs = e
             .attributes()
             .flatten()
             .map(|a| {
                 (
-                    String::from_utf8_lossy(a.key.as_ref()).into_owned(),
+                    a.key.as_ref().to_owned(),
                     a.normalized_value(quick_xml::XmlVersion::Implicit1_0).map(|v| v.into_owned()).unwrap_or_default(),
                 )
             })
@@ -457,13 +457,13 @@ pub fn parse<R: BufRead>(input: R, langs: &Langs, icon_root: Option<&Path>) -> R
             }
             Event::Text(t) => {
                 if let Some(top) = stack.last_mut() {
-                    let s = t.decode().map(|c| c.into_owned()).unwrap_or_default();
+                    let s = t.as_ref().to_owned();
                     top.children.push(Node::Text(s));
                 }
             }
             Event::GeneralRef(r) => {
                 if let Some(top) = stack.last_mut() {
-                    let name = String::from_utf8_lossy(r.as_ref()).into_owned();
+                    let name = r.as_ref().to_owned();
                     let s = match name.as_str() {
                         "amp" => "&".to_string(),
                         "lt" => "<".to_string(),
@@ -488,7 +488,7 @@ pub fn parse<R: BufRead>(input: R, langs: &Langs, icon_root: Option<&Path>) -> R
             }
             Event::CData(t) => {
                 if let Some(top) = stack.last_mut() {
-                    top.children.push(Node::Text(String::from_utf8_lossy(&t).into_owned()));
+                    top.children.push(Node::Text(t.as_ref().to_owned()));
                 }
             }
             Event::End(_) => {
