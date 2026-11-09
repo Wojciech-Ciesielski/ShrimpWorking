@@ -13,7 +13,9 @@
 
 #define SHRIMP_VERSION "0.1.0"
 #define SHRIMP_MIN_MEDIA_SIZE (16ULL * 1000 * 1000 * 1000)   /* „co najmniej 16 GB” na opakowaniu */
-#define SHRIMP_ISO_ESTIMATE (3400ULL * 1024 * 1024)        /* zanim przyjdzie manifest */
+/* Rozmiar obrazu, zanim przyjdzie manifest (ekran Start, sprawdzenie miejsca). ISO z wydania ma ok. 1,4 GB
+ * i nie może przekroczyć 2 GiB (limit zasobu wydania GitHub, release.yml), więc 1,6 GiB to bezpieczny zapas. */
+#define SHRIMP_ISO_ESTIMATE (1600ULL * 1024 * 1024)
 #define SHRIMP_TRANSFER_DIR "shrimp-transfer"
 
 /* ---------- punkty zaczepienia w Rufusie ---------- */

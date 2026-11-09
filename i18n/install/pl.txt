@@ -136,3 +136,8 @@
 136	Nie udało się uruchomić składnika WebView2.
 137	Brak wolnego miejsca na wpis uruchamiania.
 138	Brak interfejsu w programie.
+139	Nośnik jest używany
+140	Inny program używa nośnika.
+141	Zamknij programy, które go używają (np. Eksplorator plików albo program do kopii zapasowych), i spróbuj jeszcze raz.
+142	Zapis został zatrzymany
+143	Shrimp Install zatrzymał zapis nośnika z powodu nieoczekiwanego pytania:
