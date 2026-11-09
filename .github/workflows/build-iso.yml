@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 120
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Free disk space
         run: |
@@ -28,7 +28,7 @@ jobs:
         run: sudo tools/build-iso.sh "${{ github.event.inputs.leap_version || '16.1' }}"
 
       - name: Upload ISO
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: shrimp-live-iso
           path: out/*.iso
@@ -37,7 +37,7 @@ jobs:
 
       - name: Upload build log
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: kiwi-log
           path: out/kiwi.log

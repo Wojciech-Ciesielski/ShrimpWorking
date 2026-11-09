@@ -17,7 +17,7 @@ jobs:
     env: { LANGUAGE: pl }
     defaults: { run: { working-directory: apps/shrimp-apps } }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Zależności
         run: |
           sudo apt-get update
@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-24.04
     defaults: { run: { working-directory: apps/shrimp-apps } }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Zależności
         run: |
           sudo apt-get update

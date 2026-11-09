@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-24.04
     defaults: { run: { working-directory: shrimp-install/ui } }
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with: { node-version: 22, cache: npm, cache-dependency-path: shrimp-install/ui/package-lock.json }
       - run: npm ci
       - run: npm run typecheck
@@ -25,7 +25,7 @@ jobs:
         working-directory: shrimp-install
         run: gcc -Wall -Wextra -Werror -o /tmp/relurl_test tests/relurl_test.c && /tmp/relurl_test
       - run: npm run build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with: { name: install-ui, path: shrimp-install/ui/dist/index.html }
 
   windows:
@@ -43,8 +43,8 @@ jobs:
             base-devel
             autotools
             unzip
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
         with: { name: install-ui, path: ui-dist }
       - name: WebView2 SDK, adres manifestu i interfejs
         env:
@@ -146,6 +146,6 @@ jobs:
               Start-Sleep -Seconds 2
             }
           }
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with: { name: shrimp-install, path: out }

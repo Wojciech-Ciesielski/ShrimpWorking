@@ -46,7 +46,7 @@ jobs:
       VERSION: ${{ inputs.version }}
       MANIFEST_KEY: ${{ secrets.SHRIMP_MANIFEST_KEY }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Sprawdź tag
         run: |
@@ -56,12 +56,12 @@ jobs:
 
       - name: ISO i program z tego przebiegu
         if: ${{ !inputs.reuse }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with: { name: shrimp-live-iso, path: iso }
 
       - name: Program z tego przebiegu
         if: ${{ !inputs.reuse }}
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with: { name: shrimp-install, path: exe }
 
       - name: Gotowe przebiegi z tego samego commita
