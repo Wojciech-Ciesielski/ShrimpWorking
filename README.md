@@ -3,6 +3,8 @@ Pracujemy nad distro
 
 Wyniki testów z CI (zrzuty ekranu, dzienniki QEMU, inwentarze) nie trafiają do gałęzi z kodem. Workflowy zapisują je przez `tools/ci-wyniki.sh` na osobnej gałęzi `wyniki-testow`, w katalogach `<gałąź>/<rodzaj>/` (np. `main/iso/`). Każdy przebieg zastępuje poprzedni wynik, a gałąź można usunąć w dowolnej chwili.
 
+Zasada: żaden PR nie dodaje zrzutów ekranu ani `test-results/`. Pilnuje tego workflow **Bez zrzutów** (`tools/bez-zrzutow.sh`, można uruchomić lokalnie przed pushem).
+
 ## ISO (Shrimp Beta, live)
 
 - Opis obrazu KIWI: `kiwi/` (`config.kiwi`, `config.sh`, nakładka plików `kiwi/root/`).
