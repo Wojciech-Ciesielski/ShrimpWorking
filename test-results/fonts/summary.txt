@@ -1,2 +1,0 @@
-available: 27  missing: 9
-font packages in repo: 0
