@@ -2,9 +2,9 @@ name: Shrimp Apps
 
 on:
   push:
-    paths: ["apps/shrimp-apps/**", "apps/shrimp-i18n/**", "i18n/shrimp-apps/**", "i18n/langs.ts", "apps/web-apps/**", "site/help.json", ".github/workflows/shrimp-apps.yml"]
+    paths: ["boxes/shrimp-apps/**", "boxes/flathub/**", "boxes/shrimp-i18n/**", "boxes/i18n-core/**", "boxes/web-apps/**", "boxes/help-links/**", ".github/workflows/shrimp-apps.yml"]
   pull_request:
-    paths: ["apps/shrimp-apps/**", "apps/shrimp-i18n/**", "i18n/shrimp-apps/**", "i18n/langs.ts", "apps/web-apps/**", "site/help.json", ".github/workflows/shrimp-apps.yml"]
+    paths: ["boxes/shrimp-apps/**", "boxes/flathub/**", "boxes/shrimp-i18n/**", "boxes/i18n-core/**", "boxes/web-apps/**", "boxes/help-links/**", ".github/workflows/shrimp-apps.yml"]
   workflow_dispatch:
 
 permissions:
@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-24.04
     # Zrzuty ekranu po polsku (LANGUAGE czyta i18n Shrimp i Web Apps)
     env: { LANGUAGE: pl }
-    defaults: { run: { working-directory: apps/shrimp-apps } }
+    defaults: { run: { working-directory: boxes/shrimp-apps } }
     steps:
       - uses: actions/checkout@v7
       - name: Zależności
@@ -63,7 +63,7 @@ jobs:
   steam:
     if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[steam]')
     runs-on: ubuntu-24.04
-    defaults: { run: { working-directory: apps/shrimp-apps } }
+    defaults: { run: { working-directory: boxes/shrimp-apps } }
     steps:
       - uses: actions/checkout@v7
       - name: Zależności

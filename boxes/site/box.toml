@@ -1,0 +1,6 @@
+[box]
+id = "site"
+version = "0.1.0"
+kind = "web"
+platform = "web"
+summary = "Strona projektu (Cloudflare Pages: katalog wyjściowy boxes/site)"

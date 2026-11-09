@@ -1,5 +1,5 @@
 #!/bin/bash
-# Which font packages Leap offers for the scripts of all GNOME languages (names for kiwi/config.kiwi).
+# Which font packages Leap offers for the scripts of all GNOME languages (names for boxes/fonts/box.toml).
 # Runs as root in an openSUSE container (see .github/workflows/fonts-probe.yml).
 #   tools/fonts-probe.sh LEAP_VERSION OUTDIR
 set -uo pipefail
