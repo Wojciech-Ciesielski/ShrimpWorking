@@ -13,7 +13,7 @@ jobs:
     defaults: { run: { working-directory: setup/web } }
     steps:
       - uses: actions/checkout@v7
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with: { node-version: 22, cache: npm, cache-dependency-path: setup/web/package-lock.json }
       - run: npm ci
       - run: npm run typecheck
@@ -28,7 +28,7 @@ jobs:
           mkdir -p screens/1920 screens/1366
           node scripts/screens.mjs screens/1920 1920 1080
           node scripts/screens.mjs screens/1366 1366 768
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with: { name: setup-screens, path: setup/web/screens }
 
   shell:
