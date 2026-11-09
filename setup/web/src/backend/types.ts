@@ -57,7 +57,7 @@ export interface Progress {
 }
 
 export class InstallError extends Error {
-  constructor(public key: "space" | "install", msg?: string) { super(msg || key); }
+  constructor(public key: "space" | "install" | "stall" | "agama", msg?: string) { super(msg || key); }
 }
 
 /** Część 1: instalacja z nośnika, nad Agamą. */
@@ -75,6 +75,8 @@ export interface InstallBackend {
   /** Sprawdza plan bez instalowania (np. czy starczy miejsca). */
   check(plan: InstallPlan): Promise<void>;
   install(plan: InstallPlan, onProgress: (p: Progress) => void): Promise<void>;
+  /** Dalsze śledzenie instalacji, która już trwa (po „Czekaj dalej” albo po utracie kontaktu z instalatorem). */
+  watch(onProgress: (p: Progress) => void): Promise<void>;
   reboot(): Promise<void>;
 }
 

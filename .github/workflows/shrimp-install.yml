@@ -5,6 +5,7 @@ on:
     paths: ["shrimp-install/**", "i18n/**", ".github/workflows/shrimp-install.yml"]
   pull_request:
     paths: ["shrimp-install/**", "i18n/**", ".github/workflows/shrimp-install.yml"]
+  workflow_call:
   workflow_dispatch:
 
 jobs:
@@ -81,6 +82,15 @@ jobs:
           if ($j.apps.Count -lt 1) { throw 'pusta lista programów' }
           if ($j.folders.Count -ne 6) { throw 'brak folderów' }
           "użytkownik: $($j.user.name), strefa: $($j.locale.timezone), programów: $($j.apps.Count), klawiatury: $($j.locale.keyboards -join ',')"
+      - name: Kontrakt shrimp.json (shrimp-install/schema) dla wyniku --collect i przykładu
+        shell: pwsh
+        run: |
+          $schema = "shrimp-install/schema/shrimp.schema.json"
+          foreach ($f in 'out\collect.json', 'shrimp-install\schema\shrimp.example.json') {
+            $ok = Get-Content $f -Raw -Encoding utf8 | Test-Json -SchemaFile $schema -ErrorAction SilentlyContinue -ErrorVariable bad
+            if (-not $ok) { $bad | ForEach-Object { $_.ToString() }; throw "$f nie zgadza się ze schematem" }
+            "${f}: zgodny ze schematem"
+          }
       - name: Kopia zawartości nośnika (--backup-test)
         shell: pwsh
         run: |

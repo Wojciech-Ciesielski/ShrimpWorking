@@ -31,9 +31,22 @@ pub fn load(dir: &Path) -> Option<Value> {
     serde_json::from_str(&fs::read_to_string(dir.join("shrimp.json")).ok()?).ok()
 }
 
+/// Wersja formatu shrimp.json, którą rozumie Setup (shrimp-install/schema/shrimp.schema.json).
+pub const FORMAT_VERSION: u64 = 1;
+
+/// Brak pola `version` = pliki z pierwszych wersji Shrimp Install, czyli 1.
+pub fn known_format(v: &Value) -> bool {
+    v["version"].as_u64().unwrap_or(FORMAT_VERSION) == FORMAT_VERSION
+}
+
 /// Tylko to, czego potrzebują kroki instalacji. Lista programów i ścieżki zostają poza stroną.
+/// Nieznana wersja formatu: bez podpowiedzi (imię, język mogłyby znaczyć co innego), tylko rozmiar plików.
 pub fn hint(v: &Value) -> Value {
     let bytes: u64 = v["files"].as_array().map(|a| a.iter().filter_map(|f| f["bytes"].as_u64()).sum()).unwrap_or(0);
+    if !known_format(v) {
+        eprintln!("shrimp-setup: shrimp.json w wersji {} (znana: {FORMAT_VERSION}), bez podpowiedzi", v["version"]);
+        return json!({ "bytes": bytes });
+    }
     json!({
         "user": v["user"],
         "locale": v["locale"],
@@ -358,6 +371,34 @@ mod tests {
         assert_eq!(st.files, 3);
         assert!(restore(Some(tr), &root, "ola").is_err());
         fs::remove_dir_all(&t).unwrap();
+    }
+
+    /// Przykład z kontraktu Shrimp Install ↔ Setup (shrimp-install/schema): to samo, co zapisuje program dla Windows.
+    fn example() -> Value {
+        let p = Path::new(env!("CARGO_MANIFEST_DIR")).join("../../shrimp-install/schema/shrimp.example.json");
+        serde_json::from_str(&fs::read_to_string(p).unwrap()).unwrap()
+    }
+
+    #[test]
+    fn hint_from_contract_example() {
+        let v = example();
+        let h = hint(&v);
+        assert_eq!(h["user"]["name"], "Jan.Kowalski");
+        assert_eq!(h["locale"]["timezone"], "Europe/Warsaw");
+        assert_eq!(h["locale"]["keyboards"][0], "00000415");
+        assert_eq!(h["bitlocker"], false);
+        assert_eq!(h["bytes"], 3435973836u64 + 1024);
+        assert!(hint_script(&v).starts_with("window.SHRIMP_TRANSFER = {"));
+    }
+
+    #[test]
+    fn unknown_format_version_gives_no_hints() {
+        let mut v = example();
+        v["version"] = json!(2);
+        let h = hint(&v);
+        assert!(h.get("user").is_none() && h.get("locale").is_none());
+        assert_eq!(h["bytes"], 3435973836u64 + 1024);
+        assert!(known_format(&json!({})));
     }
 
     #[test]

@@ -41,8 +41,11 @@ export const demoInstall: InstallBackend = {
   },
   async install(_plan, onProgress) {
     try {
-      await simulate(onProgress, [[28, "inst.disk"], [80, "inst.system"], [100, "inst.files"]], 11, q.get("fail") === "install" ? 41 : undefined);
-    } catch { throw new InstallError("install"); }
+      await simulate(onProgress, [[28, "inst.disk"], [80, "inst.system"], [100, "inst.files"]], 11, ["install", "stall", "agama"].includes(q.get("fail") || "") ? 41 : undefined);
+    } catch { throw new InstallError(q.get("fail") === "stall" ? "stall" : q.get("fail") === "agama" ? "agama" : "install"); }
+  },
+  async watch(onProgress) {
+    await simulate(onProgress, [[80, "inst.system"], [100, "inst.files"]], 4);
   },
   async reboot() {},
 };

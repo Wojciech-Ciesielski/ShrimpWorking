@@ -194,3 +194,11 @@
 194	Nie udało się przywrócić pendrive'a
 195	Twoje pliki nadal są bezpieczne na tym komputerze. Podłącz pendrive i spróbuj ponownie.
 196	Spróbuj ponownie
+197	Instalacja trwa dłużej niż zwykle
+198	Od 20 minut nic się nie zmieniło. Możesz poczekać dłużej albo zakończyć i spróbować później.
+199	Czekaj dalej
+200	Instalator nie odpowiada
+201	Shrimp Setup stracił kontakt z instalatorem. Instalacja może nadal trwać: sprawdź za chwilę albo zakończ i uruchom komputer z nośnika jeszcze raz.
+202	Sprawdź ponownie
+203	Tej nazwy używa system
+204	Wybierz inną nazwę użytkownika, np. z cyfrą na końcu.

@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { slug, firstName, proposals, windowsList, mapWindowsApps, klidToXkb, prefill } from "./logic";
+import { slug, firstName, proposals, windowsList, mapWindowsApps, klidToXkb, prefill, loginFrom, isReservedUser } from "./logic";
+import example from "../../../shrimp-install/schema/shrimp.example.json";
+import type { Transfer } from "./backend/types";
 import { LANGS, REGIONS, KEYBOARDS, WIN_CATALOG } from "./data";
-import { blockingIssues, configFromPlan, disksFromSystem, phaseOf } from "./backend/agama";
+import { blockingIssues, configFromPlan, disksFromSystem, phaseOf, progressKey, type AStatus } from "./backend/agama";
 import type { InstallPlan } from "./backend/types";
 import { createI18n } from "../../../i18n/core";
 import keys from "../../../i18n/setup/_keys.tsv?raw";
@@ -162,5 +164,48 @@ describe("problemy Agamy", () => {
     const disk = { scope: "storage", class: "proposal", description: "Not enough space" };
     expect(blockingIssues([upd])).toEqual([]);
     expect(blockingIssues([upd, dist, disk])).toEqual([dist, disk]);
+  });
+});
+
+describe("nazwa konta: przypadki brzegowe", () => {
+  it("nie zaczyna się cyfrą i ma najwyżej 32 znaki", () => {
+    expect(slug("2pac")).toBe("pac");
+    expect(slug("x".repeat(40)).length).toBe(32);
+  });
+  it("imię bez liter łacińskich daje „user”, puste daje pusto", () => {
+    expect(loginFrom("李明")).toBe("user");
+    expect(loginFrom("  ")).toBe("");
+  });
+  it("nazwy zajęte przez system dostają cyfrę", () => {
+    expect(loginFrom("Admin Kowalski")).toBe("admin1");
+    expect(loginFrom("", "root")).toBe("root1");
+    expect(isReservedUser("gdm")).toBe(true);
+    expect(isReservedUser("anna")).toBe(false);
+  });
+});
+
+describe("kontrakt Shrimp Install ↔ Setup (shrimp-install/schema)", () => {
+  // Strona dostaje to, co shrimp-setup --install wycina z shrimp.json (transfer.rs › hint).
+  const hint: Transfer = { user: example.user, locale: example.locale, bitlocker: example.windows.bitlocker };
+  it("podpowiedzi z przykładu trafiają w język, strefę, klawiaturę i konto", () => {
+    const p = prefill(hint, LANGS, REGIONS, KEYBOARDS);
+    expect(LANGS[p.lang].locale.startsWith("pl_PL")).toBe(true);
+    expect(REGIONS[p.region].tz).toBe("Europe/Warsaw");
+    expect(KEYBOARDS[p.kb].keymap).toBe("pl");
+    expect(p.full).toBe("Jan Kowalski");
+    expect(p.user).toBe("jankowalski");
+  });
+  it("programy z przykładu mają odpowiedniki", () => {
+    const apps = mapWindowsApps(example.apps.map((a) => a.name!).filter(Boolean), example.storeApps);
+    expect(apps.length).toBeGreaterThan(0);
+  });
+});
+
+describe("śledzenie instalacji", () => {
+  const st = (index: number, step = "x"): AStatus => ({ stage: "installing", progresses: [{ scope: "software", index, size: 10, step }] });
+  it("odcisk postępu zmienia się z każdym krokiem i tylko wtedy", () => {
+    expect(progressKey(st(1))).toBe(progressKey(st(1)));
+    expect(progressKey(st(1))).not.toBe(progressKey(st(2)));
+    expect(progressKey(st(1, "a"))).not.toBe(progressKey(st(1, "b")));
   });
 });
