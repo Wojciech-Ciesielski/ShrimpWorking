@@ -253,8 +253,13 @@ try:
         type_text("echo shrimp | sudo -S true; { echo ===DIAG; ls -la ~ ~/Dokumenty ~/Documents; "
                   "sudo ls -la /var/lib/shrimp-setup; sudo cat /var/lib/shrimp-setup/install.json; "
                   "ls /etc/xdg/autostart /usr/etc/xdg/autostart; cat /etc/gdm/custom.conf; "
-                  "plymouth-set-default-theme; gnome-extensions list --enabled; "
-                  "sudo journalctl -b --no-pager -o short-monotonic | grep -iE 'shrimp|welcome' | tail -n 80; "
+                  "plymouth-set-default-theme; ls /usr/share/plymouth/themes; gnome-extensions list --details; "
+                  "echo ===MISSING; for f in /usr/share/fonts/truetype/inter /usr/share/grub2/themes/shrimp "
+                  "/usr/share/plymouth/themes/shrimp /usr/share/shrimp /usr/share/icons/MoreWaita /usr/bin/cocktail /usr/bin/panko "
+                  "/usr/bin/shrimp-apps; do [ -e $f ] || echo missing $f; done; "
+                  "rpm -q typelib-1_0-GnomeDesktop-3_0 gvfs plymouth-plugin-script plymouth-plugin-label adwaita-icon-theme "
+                  "| grep 'not installed'; echo ===FAILED; systemctl --failed --no-pager; "
+                  "sudo journalctl -b --no-pager -o short-monotonic | grep -iE 'shrimp|welcome|JS ERROR|ding|typelib|localsearch' | tail -n 120; "
                   "echo ===DIAG-END; } 2>&1 | sudo tee /dev/ttyS0 >/dev/null\n")
         pause(20)
         stage("diag", keep_duplicates=True)
@@ -273,4 +278,20 @@ finally:
             os.remove(os.path.join(OUT, p))
         except OSError:
             pass
+    # The serial logs are only an artifact; print the parts worth reading into the job log too.
+    for phase, start_mark, end_mark in (("live", "=== post-install / target", "===AGAMA-DONE"),
+                                        ("installed", "===DIAG", "===DIAG-END")):
+        try:
+            with open(os.path.join(OUT, f"serial-{phase}.log"), errors="replace") as f:
+                text = f.read()
+        except OSError:
+            continue
+        lines = [l for l in text.splitlines() if "shrimp-post-install" in l] if phase == "live" else []
+        a = text.rfind(start_mark)
+        b = text.find(end_mark, a) if a >= 0 else -1
+        print(f"::group::serial-{phase}: {start_mark}", flush=True)
+        print("\n".join(lines[-60:]))
+        if a >= 0:
+            print(text[a:b if b > a else a + 20000][:20000])
+        print("::endgroup::", flush=True)
     print(f"done, Agama {result}, logs in {OUT}", flush=True)
