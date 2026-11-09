@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-24.04
     defaults: { run: { working-directory: setup/web } }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with: { node-version: 22, cache: npm, cache-dependency-path: setup/web/package-lock.json }
       - run: npm ci
@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-24.04
     defaults: { run: { working-directory: setup/shell } }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgtk-4-dev libwebkitgtk-6.0-dev
       - run: cargo test --locked
       - run: cargo build --locked --release
@@ -43,7 +43,7 @@ jobs:
   scripts:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: shellcheck -S warning setup/install.sh setup/system/share/post-install.sh setup/system/libexec/shrimp-setup-apply setup/system/libexec/shrimp-usb-backup setup/tests/test-usb-backup.sh standardize/shrimp-app-style
       - run: setup/tests/test-apply.sh
       - run: setup/tests/test-usb-backup.sh

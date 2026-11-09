@@ -19,7 +19,7 @@ jobs:
       matrix:
         dir: [apps/cocktail, apps/panko, apps/shrimp-apps, apps/shrimp-i18n, apps/web-apps, setup/shell]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: taiki-e/install-action@v2
         with: { tool: cargo-audit }
       - run: cargo audit --file "${{ matrix.dir }}/Cargo.lock"
@@ -31,7 +31,7 @@ jobs:
       matrix:
         dir: [setup/web, shrimp-install/ui]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with: { node-version: 22 }
       - run: npm audit --package-lock-only --audit-level=moderate
