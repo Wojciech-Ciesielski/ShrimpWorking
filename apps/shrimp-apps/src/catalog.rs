@@ -434,7 +434,7 @@ pub fn parse<R: BufRead>(input: R, langs: &Langs, icon_root: Option<&Path>) -> R
             .map(|a| {
                 (
                     String::from_utf8_lossy(a.key.as_ref()).into_owned(),
-                    a.unescape_value().map(|v| v.into_owned()).unwrap_or_default(),
+                    a.normalized_value(quick_xml::XmlVersion::Implicit1_0).map(|v| v.into_owned()).unwrap_or_default(),
                 )
             })
             .collect();
