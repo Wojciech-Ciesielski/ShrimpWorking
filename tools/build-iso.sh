@@ -51,3 +51,22 @@ mkdir -p out
     rm -rf out/build out/desc
   "
 ls -lh out/*.iso
+
+# What the image was built from and what the build skipped (next to the ISO, read by Release):
+# build-info.txt (commit, base image, repositories, versions fetched at build time) and
+# build-warnings.txt (every WARNING line from config.sh: NVIDIA, codecs, MoreWaita, extensions).
+{
+  echo "commit: $(git -c safe.directory='*' rev-parse HEAD 2>/dev/null || echo unknown)"
+  echo "built: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  echo "leap repository: $REPO"
+  echo "tumbleweed image: $("$ENGINE" image inspect --format '{{index .RepoDigests 0}}' docker.io/opensuse/tumbleweed:latest 2>/dev/null || echo unknown)"
+  grep -hoE 'MoreWaita downloaded from [^ ]+|extension installed: .*|Linu\(x\): repozytorium NVIDIA: .*|optional package installed: .*' out/kiwi.log \
+    | sed 's/\x1b\[[0-9;]*m//g' | sort -u || true
+} > out/build-info.txt
+grep -hoE 'WARNING: .*' out/kiwi.log | sed -e 's/\x1b\[[0-9;]*m//g' -e 's/^WARNING: //' -e 's/^Linu(x): //' | sort -u > out/build-warnings.txt || true
+cat out/build-info.txt
+if [ -s out/build-warnings.txt ]; then
+  echo "Build warnings:"; cat out/build-warnings.txt
+  # GitHub Actions: each one as an annotation on the run
+  if [ -n "${GITHUB_ACTIONS:-}" ]; then sed 's/^/::warning title=Build ISO::/' out/build-warnings.txt; fi
+fi

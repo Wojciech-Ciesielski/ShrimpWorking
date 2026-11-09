@@ -94,6 +94,8 @@ jobs:
           mkdir -p assets
           cp "$iso" "assets/$name"
           cp exe/shrimp-install.exe assets/shrimp-install.exe
+          # what the ISO was built from (commit, base image, versions fetched during the build)
+          [ -f iso/build-info.txt ] && cp iso/build-info.txt assets/build-info.txt
           (cd assets && sha256sum "$name" shrimp-install.exe > SHA256SUMS)
           # Plik ISO powyżej 2 GiB nie zmieści się w zasobie wydania GitHub.
           if [ "$size" -ge $((2*1024*1024*1024)) ]; then
@@ -113,6 +115,11 @@ jobs:
           Program nie jest podpisany (Authenticode), więc SmartScreen ostrzeże przed uruchomieniem.
           Nie testowano na prawdziwym sprzęcie: zapis nośnika i start z UEFI sprawdza dopiero komputer.
           NOTES
+          # what the image build skipped (NVIDIA, codecs, icons, extensions): never silently
+          if [ -s iso/build-warnings.txt ]; then
+            { echo; echo "Ostrzeżenia z budowy obrazu (tych elementów może brakować):"; echo
+              sed 's/^/- /' iso/build-warnings.txt; } >> notes.md
+          fi
           if [ "$private" = true ]; then
             cat >> notes.md <<'NOTES'
 

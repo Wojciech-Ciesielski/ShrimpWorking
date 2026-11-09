@@ -31,7 +31,10 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: shrimp-live-iso
-          path: out/*.iso
+          path: |
+            out/*.iso
+            out/build-info.txt
+            out/build-warnings.txt
           compression-level: 0
           retention-days: 14
 
