@@ -363,25 +363,64 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   // --- wybór ---
   const SINGLE: Record<string, 1> = { lang: 1, region: 1, kb: 1, place: 1, disk: 1, enc: 1, net: 1, hsec: 1, ip: 1, dns: 1, proxy: 1, drv: 1, nv: 1, theme: 1 };
   const RELAYOUT: Record<string, 1> = { place: 1, net: 1, hsec: 1, disk: 1, enc: 1 };
-  /** Interfejs od razu przechodzi na wybrany język. */
-  async function langSwitch(i: number) {
-    L = await load([LANGS[i].locale]); chromeText();
-    if (S.lang === i && cur() === "jezyk") render(false);
+  /** Interfejs przechodzi na wybrany język, gdy wybór się zatrzyma (przewijanie listy klawiszem albo
+   *  touchpadem nie ładuje po drodze każdego języka i nie przebudowuje listy w trakcie ruchu). */
+  let langTimer = 0, kbTimer = 0;
+  function langSwitch(i: number) {
+    clearTimeout(langTimer);
+    langTimer = window.setTimeout(async () => {
+      const next = await load([LANGS[i].locale]);
+      if (S.lang !== i) return;
+      L = next; chromeText();
+      if (cur() !== "jezyk") return;
+      // Na liście są nazwy języków w ich własnym języku: zmieniają się tylko tytuł i przycisk.
+      const h = $(".h1", pane); if (h) h.textContent = tr("lang.title");
+      const b = $(".acts .btn", pane); if (b) b.textContent = tr("next");
+    }, 250);
   }
-  function pick(l: string, i: number) {
+  /** Zaznaczona pozycja listy przewijanej na środku. Klawisze i kółko/touchpad: od razu, bez animacji,
+   *  żeby strzałka zaznaczenia nie zostawała w tyle; kliknięcie: płynnie, tylko gdy pozycja jest przy krawędzi. */
+  function keepSelVisible(box: HTMLElement, how: "click" | "key") {
+    const so = $<HTMLElement>(".opt.sel", box); if (!so) return;
+    const top = so.offsetTop, bot = top + so.offsetHeight, mid = top - box.clientHeight / 2 + so.offsetHeight / 2;
+    if (how === "key") box.scrollTop = mid;
+    else if (top < box.scrollTop + box.clientHeight * 0.25 || bot > box.scrollTop + box.clientHeight * 0.75) box.scrollTo({ top: mid, behavior: "smooth" });
+  }
+  function pick(l: string, i: number, how: "click" | "key" = "click") {
     if (l === "theme") { S.theme = i === 1 ? "dark" : "light"; applyLook(); } else (S as unknown as Record<string, number>)[l] = i;
     if (l === "disk") defaultSplit();
     if (l === "lang") langSwitch(i);
-    if (l === "kb") be.install.setKeymap(KBS[i].keymap).catch(() => {});
+    if (l === "kb") { clearTimeout(kbTimer); kbTimer = window.setTimeout(() => be.install.setKeymap(KBS[i].keymap).catch(() => {}), 250); }
     if (RELAYOUT[l]) { render(false); return; }
     const box = $<HTMLElement>(`.list[data-l="${l}"]`, pane)!;
     $$(".opt", box).forEach((o, k) => { o.classList.toggle("sel", k === i); o.setAttribute("aria-checked", String(k === i)); });
-    if (box.classList.contains("scroll")) {
-      const so = $<HTMLElement>(".opt.sel", box)!, top = so.offsetTop, bot = top + so.offsetHeight;
-      if (top < box.scrollTop + box.clientHeight * 0.25 || bot > box.scrollTop + box.clientHeight * 0.75) box.scrollTo({ top: top - box.clientHeight / 2 + so.offsetHeight / 2, behavior: "smooth" });
-    }
+    if (box.classList.contains("scroll")) keepSelVisible(box, how);
     const d = $("#desc"); if (d) d.textContent = descFor();
   }
+  /** Kółko myszy i touchpad na liście przewijanej (język, kraj, klawiatura) przesuwają zaznaczenie
+   *  o jedną pozycję na „ząbek” albo na wysokość pozycji przy touchpadzie, zamiast przewijać listę
+   *  bez zaznaczenia. Wcześniej WebKitGTK przewijał kilka pozycji naraz, a strzałka zostawała na miejscu. */
+  let wheelAcc = 0, wheelAt = 0;
+  pane.addEventListener("wheel", (e) => {
+    const box = (e.target as HTMLElement).closest<HTMLElement>(".list.scroll[data-l]");
+    if (!box || boot || !modal.hidden) return;
+    e.preventDefault();
+    const opts = $$<HTMLButtonElement>(".opt", box), c = opts.findIndex((o) => o.classList.contains("sel"));
+    const h = opts[0]?.offsetHeight || 30;
+    if (e.timeStamp - wheelAt > 400) wheelAcc = 0;
+    wheelAt = e.timeStamp;
+    // Mysz: duży skok na „ząbek” (linie albo ≥ 50 px) = jedna pozycja. Touchpad: małe kroki sumowane,
+    // jedna pozycja na 1,5 wysokości pozycji (wolniej niż zwykłe przewijanie, które było za szybkie).
+    const step = h * 1.5;
+    if (e.deltaMode !== 0 || Math.abs(e.deltaY) >= 50) wheelAcc = Math.sign(e.deltaY) * step;
+    else wheelAcc += e.deltaY;
+    const n = Math.trunc(wheelAcc / step);
+    if (!n) return;
+    wheelAcc -= n * step;
+    let k = Math.max(0, Math.min(opts.length - 1, (c < 0 ? 0 : c) + n));
+    while (opts[k]?.disabled && k > 0 && k < opts.length - 1) k += Math.sign(n);
+    if (k !== c && opts[k] && !opts[k].disabled) pick(box.getAttribute("data-l")!, k, "key");
+  }, { passive: false });
   function toggle(l: string, i: number) {
     const o = $(`.list[data-l="${l}"] .opt[data-t="${i}"]`, pane)!;
     let on: boolean;
@@ -559,7 +598,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       const step1 = e.key === "ArrowDown" ? 1 : opts.length - 1;
       let n = (c + step1) % opts.length;
       while (opts[n].disabled && n !== c) n = (n + step1) % opts.length;
-      pick(l, n);
+      pick(l, n, "key");
     } else if (e.key === "Enter" && !target.closest("button")) {
       const p = $<HTMLButtonElement>(".btn:not([disabled])", pane); if (p && !p.closest("[hidden]")) { e.preventDefault(); p.click(); }
     }
