@@ -8,12 +8,12 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   apps:
     runs-on: ubuntu-24.04
-    # Zrzuty ekranu po polsku (LANGUAGE czyta i18n Shrimp i Web Apps)
+    # Testy po polsku (LANGUAGE czyta i18n Shrimp i Web Apps)
     env: { LANGUAGE: pl }
     defaults: { run: { working-directory: boxes/shrimp-apps } }
     steps:
@@ -56,19 +56,6 @@ jobs:
         run: |
           sudo flatpak remote-add --system --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
           sudo -E ./target/debug/shrimp-apps --self-test com.github.tchx84.Flatseal
-
-      - name: Zrzuty ekranu z prawdziwym Flathub
-        run: |
-          sudo flatpak install --system -y --noninteractive flathub com.github.tchx84.Flatseal
-          sudo -E env SHRIMP_APPS_WAIT=40 HOME=$HOME tests/screenshots.sh "$GITHUB_WORKSPACE/test-results/shrimp-apps"
-          sudo chown -R "$USER" "$GITHUB_WORKSPACE/test-results/shrimp-apps"
-          rm -f "$GITHUB_WORKSPACE/test-results/shrimp-apps/app.log"
-      - uses: actions/upload-artifact@v7
-        with: { name: shrimp-apps-screens, path: test-results/shrimp-apps }
-      - name: Zapisz zrzuty na gałęzi wyników
-        if: github.event_name == 'push'
-        working-directory: .
-        run: tools/ci-wyniki.sh shrimp-apps test-results/shrimp-apps
 
   # Steam z Flathub tak, jak instaluje go Setup (shrimp-apps --install). Sprawdza, czy razem z nim
   # przychodzą 32-bitowe GL (org.freedesktop.Platform.GL32.*) i kodeki (ffmpeg-full), bez których gry

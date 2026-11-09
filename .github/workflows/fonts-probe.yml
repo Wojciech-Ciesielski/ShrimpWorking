@@ -1,7 +1,7 @@
 name: Fonts probe
 
 # Checks which Leap font packages cover the scripts of all GNOME languages (Setup, onboarding,
-# apps), so boxes/fonts/box.toml lists only names that exist. Result: fonts/ on the wyniki-testow branch (tools/ci-wyniki.sh).
+# apps), so boxes/fonts/box.toml lists only names that exist. Result: artifact "fonts" (14 days), nothing is committed.
 
 on:
   push:
@@ -14,7 +14,7 @@ on:
         default: "16.1"
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   inventory:
@@ -29,5 +29,8 @@ jobs:
             bash tools/fonts-probe.sh "${{ github.event.inputs.leap_version || '16.1' }}" test-results/fonts
           sudo chown -R "$(id -u):$(id -g)" test-results/fonts
           cat test-results/fonts/summary.txt
-      - name: Save result
-        run: tools/ci-wyniki.sh fonts test-results/fonts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: fonts
+          path: test-results/fonts
+          retention-days: 14

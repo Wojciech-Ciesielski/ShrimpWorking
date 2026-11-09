@@ -40,8 +40,7 @@ Wymagania: GTK 4.14, libadwaita 1.5, flatpak 1.14 (Leap 16.1 ma nowsze).
 
 - `shrimp-apps --self-test [ID]`: bez okna wczytuje katalog, szuka, a z ID instaluje, aktualizuje i usuwa aplikację.
 - `tests/test-repo.py build DIR`: lokalne repozytorium udające Flathub (33 aplikacje testowe z ikonami, zrzutami i AppStream), `bump DIR ID` wydaje nową wersję. Z `SHRIMP_APPS_INSTALLATION=user` program używa instalacji użytkownika (tylko do testów).
-- `tests/screenshots.sh DIR`: zrzuty ekranu w Xvfb (jasny i ciemny).
-- Workflow **Shrimp Apps** robi to wszystko w CI: testy, repozytorium testowe (instalacja, aktualizacja 1.0 → 1.1, usuwanie), prawdziwy Flathub (katalog, wyszukiwanie, instalacja i usunięcie Flatseal) i zrzuty z prawdziwym katalogiem na gałęzi `wyniki-testow` (`<gałąź>/shrimp-apps/`).
+- Workflow **Shrimp Apps** robi to wszystko w CI: testy, repozytorium testowe (instalacja, aktualizacja 1.0 → 1.1, usuwanie), prawdziwy Flathub (katalog, wyszukiwanie, instalacja i usunięcie Flatseal).
 
 ## Budowa kodu
 

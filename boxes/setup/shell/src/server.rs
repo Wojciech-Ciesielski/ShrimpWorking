@@ -49,7 +49,7 @@ struct App {
 /// Uruchamia serwer w osobnym wątku. Zwraca port i klucz sesji.
 pub fn spawn(ui_dir: PathBuf) -> std::io::Result<(u16, String)> {
     let key: String = {
-        use rand::Rng;
+        use rand::RngExt;
         let mut r = rand::rng();
         (0..32).map(|_| format!("{:x}", r.random_range(0..16u8))).collect()
     };

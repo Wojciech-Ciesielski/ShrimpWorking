@@ -1,7 +1,7 @@
 name: Web Apps
 
 # Katalog 150 aplikacji internetowych (boxes/web-apps): sprawdzenie adresów, pobranie ikon,
-# testy biblioteki i zrzut strony. Wyniki weryfikacji wracają do gałęzi commitem [skip ci].
+# testy biblioteki i przycisku „Utwórz”. Dane weryfikacji są aktualizowane na gałęzi.
 on:
   push:
     paths: ["boxes/web-apps/**", "boxes/i18n-core/**", ".github/workflows/web-apps.yml"]
@@ -42,13 +42,10 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgtk-4-dev libadwaita-1-dev xvfb librsvg2-common
       - run: cargo test --locked
       - run: cargo build --locked --example demo
-      - name: Zrzut strony i test przycisku „Utwórz”
+      - name: Test przycisku „Utwórz”
         run: |
-          mkdir -p ../../test-results/web-apps xdg
+          mkdir -p xdg
           export XDG_DATA_HOME=$PWD/xdg LANGUAGE=pl GSK_RENDERER=cairo
-          xvfb-run -a -s "-screen 0 1280x900x24" target/debug/examples/demo --click spotify --screenshot ../../test-results/web-apps/strona.png | tee out.txt
+          xvfb-run -a -s "-screen 0 1280x900x24" target/debug/examples/demo --click spotify | tee out.txt
           grep -q "przycisk po: Otwórz" out.txt
           cat xdg/applications/shrimp-webapp-spotify.desktop
-      - name: Zapis zrzutu na gałęzi wyników
-        working-directory: .
-        run: tools/ci-wyniki.sh web-apps test-results/web-apps

@@ -5,8 +5,6 @@ Pracujemy nad distro
 
 Cały kod leży w boxach (`boxes/<id>/` z plikiem `box.toml`: identyfikator, zależności, pakiety, budowa), a kontenery (`containers/`) mówią, które boxy tworzą produkt: `iso-live` (nośnik), `desktop` (pulpit), `shrimp-install` (Windows), `site` (strona). Opis i zasady: [`boxes/README.md`](boxes/README.md). Sprawdzenie: `cd boxes/shrimp-box && cargo run -- check` (workflow **Boxy**).
 
-Wyniki testów z CI (zrzuty ekranu, dzienniki QEMU, inwentarze) nie trafiają do gałęzi z kodem. Workflowy zapisują je przez `tools/ci-wyniki.sh` na osobnej gałęzi `wyniki-testow`, w katalogach `<gałąź>/<rodzaj>/` (np. `main/iso/`). Każdy przebieg zastępuje poprzedni wynik, a gałąź można usunąć w dowolnej chwili.
-
 Zasada: żaden PR nie dodaje zrzutów ekranu ani `test-results/`. Pilnuje tego workflow **Bez zrzutów** (`tools/bez-zrzutow.sh`, można uruchomić lokalnie przed pushem).
 
 ## ISO (Shrimp Beta, live)
@@ -50,11 +48,11 @@ Fork Rufusa 4.16: pobiera Shrimp, zapisuje nośnik, kopiuje pliki i listę progr
 
 ## Shrimp Apps
 
-Sklep z aplikacjami z Flathub (GTK4 + libadwaita + Rust, libflatpak): `boxes/shrimp-apps/`. Odkrywaj, kategorie, wyszukiwanie, strona aplikacji, instalacja, aktualizacja i usuwanie. Co działa i czego brakuje: `boxes/shrimp-apps/README.md`. Workflow **Shrimp Apps** testuje go na lokalnym repozytorium i na prawdziwym Flathub, zrzuty na gałęzi `wyniki-testow` (`<gałąź>/shrimp-apps/`).
+Sklep z aplikacjami z Flathub (GTK4 + libadwaita + Rust, libflatpak): `boxes/shrimp-apps/`. Odkrywaj, kategorie, wyszukiwanie, strona aplikacji, instalacja, aktualizacja i usuwanie. Co działa i czego brakuje: `boxes/shrimp-apps/README.md`. Workflow **Shrimp Apps** testuje go na lokalnym repozytorium i na prawdziwym Flathub.
 
 ## Cocktail (aktualizacje i pakiety)
 
-`boxes/cocktail`: GTK4 + libadwaita w Rust, nakładka na zyppera i `transactional-update` (Aktualizacje, Urządzenia, Pakiety, Historia). Zmiany w systemie przez pkexec (`cocktail-helper`, `cocktail-query`, polkit `org.shrimp.cocktail.*`). Opis, budowa, testy i lista braków: `boxes/cocktail/README.md`. Workflow **Cocktail** (artefakt `cocktail-screens`).
+`boxes/cocktail`: GTK4 + libadwaita w Rust, nakładka na zyppera i `transactional-update` (Aktualizacje, Urządzenia, Pakiety, Historia). Zmiany w systemie przez pkexec (`cocktail-helper`, `cocktail-query`, polkit `org.shrimp.cocktail.*`). Opis, budowa, testy i lista braków: `boxes/cocktail/README.md`. Workflow **Cocktail**.
 
 ## Aplikacje GNOME (GTK4 + libadwaita, Rust)
 

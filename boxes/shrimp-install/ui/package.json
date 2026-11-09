@@ -7,8 +7,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
-    "screens": "node scripts/screens.mjs"
+    "test": "vitest run"
   },
   "devDependencies": {
     "@fontsource/inter": "^5.3.0",
