@@ -530,8 +530,8 @@ pub fn load_dir(dir: &Path, langs: &Langs) -> Result<Vec<App>, String> {
     }
 }
 
-#[allow(dead_code)]
-pub fn parse_str(xml: &str, langs: &Langs) -> Vec<App> {
+#[cfg(test)]
+fn parse_str(xml: &str, langs: &Langs) -> Vec<App> {
     parse(BufReader::new(xml.as_bytes()), langs, None).unwrap_or_default()
 }
 

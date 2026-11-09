@@ -113,8 +113,6 @@ export class I18n {
   }
 }
 
-export interface Pack { keys: Entry[]; files: Record<string, string> }
-
 /** Język zapasowy dla brakujących tekstów (pole `text` w langs.ts), np. „quz” → „es”; brak: angielski. */
 export const textFallback = (tag: string): string | undefined => {
   const t = LANGS.find((l) => l.tag === tag)?.text;
