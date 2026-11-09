@@ -43,5 +43,5 @@ jobs:
             shot "zmiany-$scheme" $s PANKO_PAGE=zmiany PANKO_SELECT=3
             shot "zaawansowane-$scheme" $s PANKO_PAGE=zaawansowane
           done
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with: { name: panko-screens, path: apps/panko/screens }
