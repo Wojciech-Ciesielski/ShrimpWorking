@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Shrimp Beta: live ISO on openSUSE Leap 16.1 + GNOME. Szablon boxa image-base: shrimp-box
-     (boxes/shrimp-box) wstawia pakiety wszystkich boxów kontenera iso-live w @SHRIMP_PACKAGES@.
+     (boxes/shrimp-box) wstawia pakiety wszystkich boxów kontenera iso-live w miejsce znacznika w <packages type="image">.
      Build: tools/build-iso.sh (local, needs Docker) or the "Build ISO" GitHub workflow. -->
 <image schemaversion="8.5" name="Shrimp" displayname="Shrimp">
     <description type="system">
