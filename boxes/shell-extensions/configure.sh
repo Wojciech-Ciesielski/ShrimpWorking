@@ -23,7 +23,7 @@ install_ext() {
     glib-compile-schemas "$EXT/$uuid/schemas" 2>&1 | grep -v 'No such schema' || true
   fi
   chmod -R a+rX "$EXT/$uuid"
-  echo "extension installed: $uuid"
+  echo "extension installed: $uuid version $(echo "$info" | sed -n 's/.*"version": *\([0-9]*\).*/\1/p')"
 }
 for uuid in ding@rastersoft.com blur-my-shell@aunetx dash-to-dock@micxgx.gmail.com just-perfection-desktop@just-perfection; do
   [ -d "$EXT/$uuid" ] || install_ext "$uuid" || die "extension $uuid has no release for GNOME $SHELL_MAJOR"
