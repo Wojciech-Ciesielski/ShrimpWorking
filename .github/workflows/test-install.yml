@@ -38,7 +38,7 @@ jobs:
           gh run download "$id" -R "$GITHUB_REPOSITORY" -n shrimp-live-iso -D iso
           ls -l iso
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with: { node-version: 22 }
 
       - name: Setup's Agama configuration for the test disk
