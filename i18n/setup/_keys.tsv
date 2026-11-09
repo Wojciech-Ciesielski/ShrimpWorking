@@ -195,3 +195,11 @@
 194	usb.fail.t	Couldn't restore the drive
 195	usb.fail.d	Your files are still safe on this computer. Plug the drive in and try again.
 196	usb.retry	Try again
+197	err.stall.t	Installation is taking longer than usual
+198	err.stall.d	Nothing has changed for 20 minutes. You can keep waiting or quit and try again later.
+199	err.stall.p	Keep waiting
+200	err.agama.t	The installer isn't responding
+201	err.agama.d	Shrimp Setup lost contact with the installer. It may still be working: check again in a moment, or quit and start the computer from the drive again.
+202	err.agama.p	Check again
+203	err.user.t	This user name is used by the system
+204	err.user.d	Choose a different user name, for example with a number at the end.

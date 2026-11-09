@@ -17,7 +17,16 @@ Start → Nośnik → Pliki → Przygotuj nośnik
 Gotowe → Uruchom ponownie: wpis UEFI „Shrimp Install” + BootNext (jednorazowo), wyłączone szybkie uruchamianie, restart
 ```
 
-Rufus robi to, co umie: wykrywa nośniki, analizuje ISO, formatuje i zapisuje. Jego okno istnieje, ale jest ukryte. Shrimp ustawia jego kontrolki i „naciska” START. Pytania Rufusa (komunikaty, wybór ISO/DD) dostają odpowiedź automatyczną: zawsze tryb ISO, bo tylko wtedy na nośniku zostaje partycja FAT32 z miejscem na pliki z Windows.
+Rufus robi to, co umie: wykrywa nośniki, analizuje ISO, formatuje i zapisuje. Jego okno istnieje, ale jest ukryte. Shrimp ustawia jego kontrolki i „naciska” START. Wybór ISO/DD dostaje zawsze tryb ISO, bo tylko wtedy na nośniku zostaje partycja FAT32 z miejscem na pliki z Windows.
+
+Pytania Rufusa (`ShrimpNotification` w `shrimp.c`) mają jawną listę odpowiedzi:
+
+| Pytanie Rufusa | Odpowiedź Shrimp |
+|---|---|
+| „Wszystkie dane na nośniku zostaną usunięte” (MSG_003), kilka partycji (MSG_094), sektor ≠ 512 B (MSG_197) | tak: zawartość nośnika jest już skopiowana i sprawdzona |
+| „Inny program używa nośnika” (MSG_132) | nie: błąd `busy` („Nośnik jest używany”), użytkownik zamyka program i ponawia |
+| Pobranie plików GRUB/Syslinux z serwerów Rufusa (MSG_115, MSG_103), aktualizacja DBX (MSG_353), podmiana `.c32` (MSG_083) | nie: start z UEFI ich nie potrzebuje |
+| każde inne (np. odwołany program rozruchowy UEFI, MSG_338) | nie: błąd `question` z tekstem Rufusa, zamiast zgadywania |
 
 Interfejs to strona w WebView2 (`ui/`, TypeScript), zbudowana do jednego pliku HTML i wkompilowana w `.exe` razem z `WebView2Loader.dll` (licencja BSD z WebView2 SDK).
 
@@ -53,13 +62,17 @@ Interfejs wysyła tekst `id⇥wywołanie⇥argumenty…` (ścieżki Windows nie 
 | `open` | adres `https://…` | bez odpowiedzi; program otwiera stronę w przeglądarce (odrzuca wszystko poza https i zwykłymi znakami adresu) |
 | `later`, `close`, `minimize`, `drag` | | bez odpowiedzi |
 
-Zdarzenia: `devices`, `folders` (rozmiary liczone w tle), `bitlocker`, `progress { phase 1–3, done, total, speed }`, `fail { phase, kind, message? }` (`offline`, `verify`, `space`, `write`, `device`, `copy`, `other`), `done`, `closeRequested`.
+Zdarzenia: `devices`, `folders` (rozmiary liczone w tle), `bitlocker`, `progress { phase 1–3, done, total, speed }`, `fail { phase, kind, message? }` (`offline`, `verify`, `space`, `write`, `device`, `busy`, `question`, `copy`, `other`), `done`, `closeRequested`.
+
+Podgląd ekranów błędów bez Windows: `cd ui && npm run dev`, potem `?screen=brak-internetu`, `?screen=nosnik-zajety`, `?screen=pytanie-rufusa`.
 
 ### Strony pomocy
 
 Ikony ⓘ (np. przy wyborze nośnika i plików) otwierają stronę pomocy w przeglądarce, gdy znamy jej adres. Adresy i tematy są w [`site/help.json`](../site/help.json) (wspólne z Setup): wpisz stronę w `base` (np. `https://…/help`), a ikona otworzy `base/<ścieżka tematu>?lang=<język interfejsu>&from=install`. Przy pustym `base` ikony zostają samą podpowiedzią. Adres z manifestu wydania (`helpUrl` w odpowiedzi `info`) ma pierwszeństwo. Podstrony do przygotowania: `download-iso`, `copy-files`, `usb-drive`, `bitlocker`, `no-internet`, `boot-from-usb`, `nvidia-driver`.
 
 ## shrimp.json
+
+Opis formalny (JSON Schema) i przykład sprawdzany po obu stronach: [`schema/`](schema/README.md).
 
 Na nośniku w `shrimp-transfer/shrimp.json` (na żywym systemie `/run/initramfs/live/shrimp-transfer/`). Setup czyta go w obu częściach: przy instalacji podpowiada imię, język, strefę i klawiaturę, a po restarcie przywraca pliki i proponuje odpowiedniki programów.
 
@@ -104,9 +117,14 @@ Adres manifestu zależy od repozytorium, z którego budujemy (`tools/prepare.sh`
 - **Repozytorium prywatne** (obecnie): `https://api.github.com/repos/<repo>/releases/latest`. Program znajduje w ostatnim wydaniu zasoby `manifest.json` i `manifest.json.sig`, a ISO pobiera przez API (`Accept: application/octet-stream`). GitHub wymaga tokenu: zmienna `SHRIMP_TOKEN` albo pierwszy wiersz `%LOCALAPPDATA%\Shrimp Install\token.txt` (token z odczytem zawartości repozytorium). Token jest wysyłany tylko do `api.github.com`; przekierowania program obsługuje sam i nie przekazuje go dalej. Nie wkompilowujemy go w `.exe`.
 - **Repozytorium publiczne**: `https://github.com/<repo>/releases/latest/download/manifest.json`, bez tokenu. Przy przenosinach wystarczy zbudować program w nowym repozytorium (tools/export-open.sh, OPEN-SOURCE.md w korzeniu).
 
-Wydanie składa workflow **Release** (ręcznie: tag, wersja) z gotowych przebiegów Build ISO i Shrimp Install, liczy SHA-256 i dopisuje `manifest.json` (oraz `.sig`, jeśli jest sekret `SHRIMP_MANIFEST_KEY`). Zasób wydania GitHub może mieć najwyżej 2 GiB; obecne ISO ma ok. 1,4 GB.
+Wydanie składa workflow **Release** (ręcznie: tag, wersja): w jednym przebiegu buduje ISO i `.exe` z tego samego commita (wywołuje Build ISO i Shrimp Install), liczy SHA-256 i dopisuje `manifest.json` (oraz `.sig`, jeśli jest sekret `SHRIMP_MANIFEST_KEY`). Zasób wydania GitHub może mieć najwyżej 2 GiB; obecne ISO ma ok. 1,4 GB.
 
 Obok `manifest.json.sig`: `openssl dgst -sha256 -sign klucz.pem -out manifest.json.sig manifest.json`. Klucz publiczny trafia do programu przez `tools/make-key.sh`. Bez klucza (obecny stan) podpis nie jest sprawdzany, a zaufanie do manifestu daje HTTPS. Suma SHA-256 obrazu jest sprawdzana zawsze. Obraz trafia do `%LOCALAPPDATA%\Shrimp Install\` i jest usuwany po zapisie.
+
+Pobieranie przetrwa zerwane połączenie: plik `shrimp-<wersja>.iso.<16 znaków sumy>.part` zostaje na dysku, a kolejna próba
+(automatycznie do 4 razy, z przerwą 2, 4, 8 s, albo po ponownym uruchomieniu programu) dociąga resztę nagłówkiem `Range`.
+Serwer, który nie wznawia (HTTP 200 zamiast 206), dostaje pobieranie od początku. Suma jest liczona z całego pliku na dysku,
+a części innych wydań są usuwane. Błędy serwera (404, brak tokenu) nie są ponawiane.
 
 ## Wymagania wobec ISO (wątek budowy ISO)
 

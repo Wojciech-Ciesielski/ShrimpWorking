@@ -1,10 +1,11 @@
 name: Release
 
-# Składa wydanie z gotowych przebiegów: ISO (Build ISO) i shrimp-install.exe (Shrimp Install)
-# z tej samej gałęzi, liczy SHA-256 i dodaje manifest.json, z którego Shrimp Install pobiera ISO.
+# Składa wydanie z jednego commita: buduje ISO (Build ISO) i shrimp-install.exe (Shrimp Install) w tym samym
+# przebiegu, liczy SHA-256 i dodaje manifest.json, z którego Shrimp Install pobiera ISO. Tag wskazuje ten sam commit,
+# więc w wydaniu nie ma plików z innego stanu kodu.
+#  - reuse: zamiast budować od nowa bierze gotowe udane przebiegi, ale tylko zbudowane z TEGO SAMEGO commita.
 #  - Repozytorium prywatne: manifest wskazuje zasób przez API GitHub (pobieranie wymaga tokenu, patrz shrimp-install/README.md).
 #  - Repozytorium publiczne: manifest wskazuje zwykły adres pliku wydania, bez tokenu.
-# Przy przeniesieniu do repozytorium otwartego nic nie trzeba zmieniać: to wszystko wynika z github.repository.
 on:
   workflow_dispatch:
     inputs:
@@ -16,51 +17,70 @@ on:
         description: "Wersja pokazywana w programie i w nazwie pobranego ISO"
         required: true
         default: "Beta 1"
-      iso_run_id:
-        description: "Przebieg Build ISO (puste: ostatni udany na tej gałęzi)"
-        required: false
-      install_run_id:
-        description: "Przebieg Shrimp Install (puste: ostatni udany na tej gałęzi)"
-        required: false
+      reuse:
+        description: "Użyj gotowych przebiegów Build ISO i Shrimp Install z tego samego commita (bez budowania)"
+        type: boolean
+        default: false
 
 permissions:
   contents: write
   actions: read
 
 jobs:
+  iso:
+    if: ${{ !inputs.reuse }}
+    uses: ./.github/workflows/build-iso.yml
+
+  exe:
+    if: ${{ !inputs.reuse }}
+    uses: ./.github/workflows/shrimp-install.yml
+
   release:
+    needs: [iso, exe]
+    if: ${{ always() && (inputs.reuse || (needs.iso.result == 'success' && needs.exe.result == 'success')) }}
     runs-on: ubuntu-24.04
     env:
       GH_TOKEN: ${{ github.token }}
       REPO: ${{ github.repository }}
       TAG: ${{ inputs.tag }}
       VERSION: ${{ inputs.version }}
-      ISO_RUN: ${{ inputs.iso_run_id }}
-      EXE_RUN: ${{ inputs.install_run_id }}
       MANIFEST_KEY: ${{ secrets.SHRIMP_MANIFEST_KEY }}
     steps:
       - uses: actions/checkout@v4
 
-      - name: Sprawdź tag i wybierz przebiegi
+      - name: Sprawdź tag
         run: |
           if gh api "repos/$REPO/git/ref/tags/$TAG" >/dev/null 2>&1; then
             echo "::error::Tag $TAG już istnieje"; exit 1
           fi
-          [ -n "$ISO_RUN" ] || ISO_RUN=$(gh run list -R "$REPO" -w build-iso.yml -b "$GITHUB_REF_NAME" -s success -L 1 --json databaseId -q '.[0].databaseId')
-          [ -n "$EXE_RUN" ] || EXE_RUN=$(gh run list -R "$REPO" -w shrimp-install.yml -b "$GITHUB_REF_NAME" -s success -L 1 --json databaseId -q '.[0].databaseId')
-          if [ -z "$ISO_RUN" ] || [ -z "$EXE_RUN" ]; then
-            echo "::error::Brak udanego przebiegu Build ISO ($ISO_RUN) lub Shrimp Install ($EXE_RUN) na gałęzi $GITHUB_REF_NAME"; exit 1
-          fi
-          echo "ISO_RUN=$ISO_RUN" >> "$GITHUB_ENV"
-          echo "EXE_RUN=$EXE_RUN" >> "$GITHUB_ENV"
-          echo "Build ISO: $ISO_RUN, Shrimp Install: $EXE_RUN"
 
-      - name: Pobierz ISO i program
+      - name: ISO i program z tego przebiegu
+        if: ${{ !inputs.reuse }}
+        uses: actions/download-artifact@v4
+        with: { name: shrimp-live-iso, path: iso }
+
+      - name: Program z tego przebiegu
+        if: ${{ !inputs.reuse }}
+        uses: actions/download-artifact@v4
+        with: { name: shrimp-install, path: exe }
+
+      - name: Gotowe przebiegi z tego samego commita
+        if: ${{ inputs.reuse }}
         run: |
+          pick() { gh run list -R "$REPO" -w "$1" -c "$GITHUB_SHA" -s success -L 1 --json databaseId -q '.[0].databaseId'; }
+          ISO_RUN=$(pick build-iso.yml); EXE_RUN=$(pick shrimp-install.yml)
+          if [ -z "$ISO_RUN" ] || [ -z "$EXE_RUN" ]; then
+            echo "::error::Brak udanego przebiegu Build ISO ($ISO_RUN) albo Shrimp Install ($EXE_RUN) dla commita $GITHUB_SHA. Uruchom wydanie bez „reuse”, żeby je zbudować."; exit 1
+          fi
+          echo "Build ISO: $ISO_RUN, Shrimp Install: $EXE_RUN (commit $GITHUB_SHA)"
           gh run download "$ISO_RUN" -R "$REPO" -n shrimp-live-iso -D iso
           gh run download "$EXE_RUN" -R "$REPO" -n shrimp-install -D exe
+
+      - name: Sprawdź pliki
+        run: |
           ls -l iso exe
           test -f exe/shrimp-install.exe
+          [ "$(ls iso/*.iso | wc -l)" = 1 ] || { echo "::error::oczekiwano jednego pliku ISO"; exit 1; }
 
       - name: Manifest i sumy kontrolne
         run: |

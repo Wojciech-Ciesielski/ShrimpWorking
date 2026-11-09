@@ -144,13 +144,16 @@ export const LANGID_XKB: Record<string, string> = {
 /** Stare nazwy stref, które Windows (ICU) może jeszcze zwracać. */
 export const TZ_ALIAS: Record<string, string> = { "Europe/Kiev": "Europe/Kyiv", "Asia/Calcutta": "Asia/Kolkata", "America/Buenos_Aires": "America/Argentina/Buenos_Aires" };
 
-export type ErrKey = "pass" | "dpass" | "space" | "install" | "wifi" | "net";
+export type ErrKey = "pass" | "dpass" | "space" | "install" | "stall" | "agama" | "user" | "wifi" | "net";
 /** Klucze tłumaczeń okna błędu: tytuł, opis, przycisk główny, przycisk dodatkowy (opcjonalny). */
 export const ERR: Record<ErrKey, { t: string; d: string; p: string; s?: string }> = {
   dpass: { t: "err.dpass.t", d: "err.dpass.d", p: "err.retry" },
   pass: { t: "err.pass.t", d: "err.pass.d", p: "err.retry" },
   space: { t: "err.space.t", d: "err.space.d", p: "err.space.p", s: "err.space.s" },
   install: { t: "err.install.t", d: "err.install.d", p: "err.retry", s: "err.install.s" },
+  stall: { t: "err.stall.t", d: "err.stall.d", p: "err.stall.p", s: "err.install.s" },
+  agama: { t: "err.agama.t", d: "err.agama.d", p: "err.agama.p", s: "err.install.s" },
+  user: { t: "err.user.t", d: "err.user.d", p: "err.retry" },
   wifi: { t: "err.wifi.t", d: "err.wifi.d", p: "err.retry", s: "skip" },
   net: { t: "err.net.t", d: "err.net.d", p: "err.retry", s: "skip" },
 };
