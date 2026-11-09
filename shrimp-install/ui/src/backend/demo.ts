@@ -1,6 +1,6 @@
 // Dane przykładowe z makiety: podgląd w przeglądarce, zrzuty ekranów i `shrimp-install.exe --demo`.
 import { GiB } from "../logic";
-import type { Backend, Device, Folder, Info, Picked, Plan, RunEvents } from "./types";
+import type { Backend, Device, Failure, Folder, Info, Picked, Plan, RunEvents } from "./types";
 
 const MB = 1024 ** 2;
 export const DEMO_DEVICES: Device[] = [
@@ -31,6 +31,8 @@ export interface DemoOptions {
   /** Postęp zaczyna od tylu procent całości (zrzuty). */
   at?: number;
   offline?: boolean;
+  /** Błąd zapisu nośnika (faza 2) do podglądu ekranów błędów. */
+  fail?: Failure;
   /** Bez upływu czasu (zrzuty). */
   frozen?: boolean;
 }
@@ -67,6 +69,7 @@ export class DemoBackend implements Backend {
     const sizes = [0, shrimp, shrimp, files];
     let total = this.o.at ?? 0;
     const tick = () => {
+      if (this.o.fail) { ev.progress({ phase: 2, done: 0.02 * shrimp, total: shrimp, speed: 0 }); ev.fail(this.o.fail); return false; }
       if (this.o.offline) { ev.progress({ phase: 1, done: 0.06 * 2 * shrimp, total: shrimp, speed: 0 }); ev.fail({ phase: 1, kind: "offline" }); return false; }
       if (total >= 100) { ev.done(); return false; }
       const ph = (total >= PH[2] ? 3 : total >= PH[1] ? 2 : 1) as 1 | 2 | 3;

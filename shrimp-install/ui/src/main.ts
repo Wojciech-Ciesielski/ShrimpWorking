@@ -16,6 +16,8 @@ if (theme) document.documentElement.dataset.theme = theme;
 const demo: DemoOptions = {
   devices: screen === "brak-nosnika" ? "none" : screen === "za-maly" ? "small" : "ok",
   offline: screen === "brak-internetu",
+  fail: screen === "nosnik-zajety" ? { phase: 2, kind: "busy" }
+    : screen === "pytanie-rufusa" ? { phase: 2, kind: "question", message: "Revoked UEFI bootloader detected" } : undefined,
   at: screen === "postep" ? 24 : 0,
   frozen: q.has("shot"),
 };

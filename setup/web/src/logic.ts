@@ -9,10 +9,28 @@ export const esc = (s: string) =>
 /** Pierwsze słowo imienia i nazwiska („Cześć, Anna”). */
 export function firstName(full: string, fallback = "") { return full.trim().split(/\s+/)[0] || fallback; }
 
-/** Nazwa użytkownika z imienia: małe litery, bez polskich znaków. */
+/** Nazwa użytkownika z imienia: małe litery, bez polskich znaków, nie zaczyna się cyfrą, najwyżej 32 znaki (useradd). */
 export function slug(s: string) {
   const map: Record<string, string> = { ł: "l", ø: "o", đ: "d", ð: "d", ß: "ss", æ: "ae", œ: "oe", ı: "i", þ: "th" };
-  return s.toLowerCase().replace(/[łøđðßæœıþ]/g, (c) => map[c]).normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, "");
+  return s.toLowerCase().replace(/[łøđðßæœıþ]/g, (c) => map[c]).normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, "")
+    .replace(/^[0-9]+/, "").slice(0, 32);
+}
+
+/** Konta i grupy, które istnieją w systemie (Leap 16 + GNOME + Shrimp); konto użytkownika nie może się tak nazywać. */
+const RESERVED_USERS = new Set([
+  "root", "bin", "daemon", "adm", "lp", "sync", "shutdown", "halt", "mail", "news", "uucp", "operator", "games", "ftp",
+  "nobody", "man", "messagebus", "polkitd", "systemd", "dbus", "gdm", "rtkit", "pipewire", "pulse", "avahi", "colord",
+  "geoclue", "flatpak", "nm", "dnsmasq", "chrony", "srvgeoclue", "sshd", "tss", "usbmux", "wheel", "users", "audio",
+  "video", "input", "render", "kvm", "shadow", "sudo", "tty", "disk", "utmp", "admin", "shrimp", "agama", "snapper",
+]);
+export const isReservedUser = (u: string) => RESERVED_USERS.has(u);
+
+/** Proponowana nazwa konta z imienia i nazwiska (albo z nazwy konta Windows). Imię bez liter łacińskich
+ *  (np. 李明, Ελένη bez transliteracji) daje „user”; nazwa zajęta przez system dostaje cyfrę („admin1”). */
+export function loginFrom(full: string, windowsName = ""): string {
+  let u = slug(windowsName) || slug(firstName(full, ""));
+  if (!u && full.trim()) u = "user";
+  return isReservedUser(u) ? u.slice(0, 31) + "1" : u;
 }
 
 /** Godzina w strefie, w formacie języka interfejsu. */
@@ -96,7 +114,7 @@ export function prefill(t: Transfer, langs: Lang[], regs: Region[], kbs: Keyboar
   const x = (t.locale?.keyboards || []).map((k) => klidToXkb(k, keys)).find((k) => k);
   const kb = x ? keys.indexOf(x) : -1;
   const full = (t.user?.fullName || "").trim();
-  const user = slug(t.user?.name || "") || slug(firstName(full, ""));
+  const user = loginFrom(full, t.user?.name || "");
   return { lang, region, kb, full, user };
 }
 

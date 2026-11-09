@@ -30,6 +30,7 @@
 #include "../msapi_utf8.h"
 #include "../drive.h"
 #include "../resource.h"
+#include "../localization.h"
 
 extern DWORD WINAPI ImageScanThread(LPVOID param);
 extern HANDLE format_thread;
@@ -47,6 +48,9 @@ static DWORD plan_device;
 static int cancel_id = 0;
 static volatile LONG fail_sent = 0;
 static char last_error[512];
+/* Pytanie Rufusa, na które Shrimp nie odpowiada „tak” (rodzaj błędu dla interfejsu i tekst Rufusa). */
+static const char* refused_kind;
+static char refused_text[512];
 static BOOL folders_started = FALSE;
 static int opt_auto_disk = -1;
 static volatile uint64_t copied_bytes = 0;
@@ -473,6 +477,7 @@ static void begin(int id, char** f, int nf)
 	ShrimpCancel = FALSE;
 	fail_sent = 0;
 	last_error[0] = 0;
+	refused_kind = NULL;
 	state = ST_FETCH;
 	reply(id, "null");
 	if (CreateThread(NULL, 0, ShrimpFetchThread, NULL, 0, NULL) == NULL) {
@@ -704,6 +709,14 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 		break;
 
 	case WM_SHRIMP_FORMATTED:
+		if (refused_kind != NULL && !ShrimpCancel) {
+			/* Zapis zatrzymany na pytaniu Rufusa (np. inny program używa nośnika). */
+			state = ST_FAILED;
+			/* Tekst Rufusa tylko przy nieznanym pytaniu; „nośnik jest używany” ma własny opis w interfejsie. */
+			ShrimpFail(2, refused_kind, strcmp(refused_kind, "question") == 0 ? refused_text : NULL);
+			refused_kind = NULL;
+			break;
+		}
 		if (ShrimpCancel) {
 			finish_cancel();
 			break;
@@ -763,24 +776,79 @@ BOOL ShrimpCanClose(void)
 }
 
 /* ---------- punkty zaczepienia w Rufusie ---------- */
-int ShrimpNotification(int type, const char* title, const char* message)
+
+
+static void refuse(const char* kind, const char* title, const char* message)
 {
-	uprintf("Shrimp: komunikat Rufusa (odpowiedź automatyczna): %s: %s", title ? title : "", message ? message : "");
-	if ((type & MB_ICONERROR) == MB_ICONERROR && message != NULL) {
+	refused_kind = kind;
+	static_sprintf(refused_text, "%s%s%s", title ? title : "", title && message ? ": " : "", message ? message : "");
+	for (char* p = refused_text; *p; p++)
+		if (*p == '\r' || *p == '\n')
+			*p = ' ';
+	uprintf("Shrimp: pytanie Rufusa bez zgody (%s)", kind);
+}
+
+/* Czy tekst powstał z komunikatu Rufusa `id` z jednym argumentem %s (porównanie części przed i po argumencie). */
+static BOOL matches_msg1(const char* text, int id)
+{
+	char fmt[LOC_MESSAGE_SIZE];
+	const char *mark, *tail;
+	size_t head;
+	if (text == NULL)
+		return FALSE;
+	static_strcpy(fmt, lmprintf(id, "\x01"));
+	mark = strchr(fmt, '\x01');
+	if (mark == NULL)
+		return strcmp(text, fmt) == 0;
+	head = (size_t)(mark - fmt);
+	tail = mark + 1;
+	return strncmp(text, fmt, head) == 0 && strlen(text) >= head + strlen(tail)
+		&& strcmp(text + strlen(text) - strlen(tail), tail) == 0;
+}
+
+/* Odpowiedzi na pytania Rufusa. Tylko pytania znane z przebiegu Shrimp (nośnik GPT + UEFI + FAT32, tryb ISO)
+ * dostają zgodę; każde inne zatrzymuje zapis i pokazuje użytkownikowi tekst Rufusa, zamiast zgadywać. */
+int ShrimpNotification(int type, const char* title_in, const char* message)
+{
+	char title[256];
+	int kind = type & 0x0F, no;
+	static_strcpy(title, title_in ? title_in : "");
+	uprintf("Shrimp: komunikat Rufusa: %s: %s", title, message ? message : "");
+	if ((type & MB_ICONMASK) == MB_ICONERROR && message != NULL) {
 		static_strcpy(last_error, message);
 		for (char* p = last_error; *p; p++)
 			if (*p == '\r' || *p == '\n')
 				*p = ' ';
 	}
-	switch (type & 0x0F) {
-	case MB_OKCANCEL:
-		return IDOK;
-	case MB_YESNO:
-	case MB_YESNOCANCEL:
-		return IDYES;
-	default:
-		return IDOK;
+	if (kind != MB_OKCANCEL && kind != MB_YESNO && kind != MB_YESNOCANCEL && kind != MB_ABORTRETRYIGNORE)
+		return IDOK;	/* informacja albo błąd: tylko potwierdzenie */
+	no = kind == MB_OKCANCEL ? IDCANCEL : kind == MB_ABORTRETRYIGNORE ? IDABORT : IDNO;
+
+	/* Inny program używa nośnika: nie formatujemy na siłę, użytkownik zamyka program i próbuje jeszcze raz. */
+	if (message != NULL && strcmp(message, lmprintf(MSG_132)) == 0) {
+		refuse("busy", NULL, message);
+		return no;
 	}
+	/* „Wszystkie dane na nośniku zostaną usunięte”: zawartość jest już skopiowana i sprawdzona (usbbackup.c). */
+	if (kind == MB_OKCANCEL && strcmp(title, APPLICATION_NAME) == 0)
+		return IDOK;
+	/* Kilka partycji na nośniku, sektor inny niż 512 B: formatujemy cały nośnik, Rufus tylko ostrzega. */
+	if (kind == MB_OKCANCEL && (strcmp(title, lmprintf(MSG_094)) == 0 || strcmp(title, lmprintf(MSG_197)) == 0))
+		return IDOK;
+	/* Pobieranie plików GRUB/Syslinux/DBX z serwerów Rufusa: niepotrzebne dla startu z UEFI, odmawiamy.
+	 * Tam, gdzie „nie” znaczy „użyj wersji wbudowanej” (pytanie z trzema odpowiedziami), zapis idzie dalej;
+	 * gdzie „nie” przerywa zapis, użytkownik dostaje tekst Rufusa zamiast cichego przerwania. */
+	if (kind == MB_YESNOCANCEL && (strcmp(title, lmprintf(MSG_115)) == 0 || matches_msg1(title, MSG_103)))
+		return IDNO;
+	if (strcmp(title, lmprintf(MSG_353)) == 0)
+		return IDNO;
+	/* Starsze pliki .c32 z obrazu: Rufus pyta, czy je podmienić; zostawiamy pliki z obrazu Shrimp. */
+	if (matches_msg1(title, MSG_083))
+		return IDNO;
+	/* Wszystko inne, np. odwołany program rozruchowy UEFI w obrazie (MSG_338: nośnik nie wystartuje z Secure Boot):
+	 * zapis się zatrzymuje, a interfejs pokazuje pytanie Rufusa jako błąd. */
+	refuse("question", title, message);
+	return no;
 }
 
 int ShrimpSelection(const char* title, const char* message, int choices)

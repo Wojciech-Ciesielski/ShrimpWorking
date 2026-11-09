@@ -1,0 +1,39 @@
+# Cotygodniowe propozycje aktualizacji zależności (PR od Dependabota; nic nie trafia na main bez scalenia).
+# Ograniczenie świadome: Shrimp Apps i Web Apps zostają przy gtk4 0.10 / libadwaita 0.8, bo libflatpak 0.7
+# (najnowszy) jest zbudowany na glib 0.21; gtk4 0.11 używa glib 0.22 i typy się nie zgadzają.
+version: 2
+updates:
+  - package-ecosystem: cargo
+    directories:
+      - /apps/cocktail
+      - /apps/panko
+      - /apps/shrimp-i18n
+      - /setup/shell
+    schedule: { interval: weekly }
+    open-pull-requests-limit: 5
+    groups:
+      gtk-rs:
+        patterns: ["gtk4", "libadwaita", "glib", "gio", "webkit6"]
+  - package-ecosystem: cargo
+    directories:
+      - /apps/shrimp-apps
+      - /apps/web-apps
+    schedule: { interval: weekly }
+    open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: gtk4
+        update-types: ["version-update:semver-minor"]
+      - dependency-name: libadwaita
+        update-types: ["version-update:semver-minor"]
+  - package-ecosystem: npm
+    directories:
+      - /setup/web
+      - /shrimp-install/ui
+    schedule: { interval: weekly }
+    open-pull-requests-limit: 5
+    groups:
+      toolchain:
+        patterns: ["typescript", "vite", "vitest"]
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: monthly }

@@ -7,9 +7,9 @@ import {
   HELLO, ENCS, HSEC, IPS, DNSS, PROXY, THEMES, DRV, NV, ACCENTS, PLACES, USES, ERR, SHRIMP_MIN_GB,
   defaultKeymap, defaultTz, slides, type ErrKey, type Lang, type Region, type Keyboard,
 } from "./data";
-import { firstName, slug, proposals, windowsList, tnow, esc, prefill, regionLabel, zoneName, keyboardName, type Prefill } from "./logic";
+import { firstName, slug, loginFrom, isReservedUser, proposals, windowsList, tnow, esc, prefill, regionLabel, zoneName, keyboardName, type Prefill } from "./logic";
 import { load } from "./i18n";
-import { InstallError, OfflineError, type Backends, type Disk, type FirstBootInfo, type InstallPlan, type Network, type Place, type Transfer, type UsbResult, type UsbState } from "./backend/types";
+import { InstallError, OfflineError, type Backends, type Disk, type FirstBootInfo, type InstallPlan, type Network, type Place, type Progress, type Transfer, type UsbResult, type UsbState } from "./backend/types";
 
 const $ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector(s) as T | null;
 const $$ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => Array.from(r.querySelectorAll(s)) as T[];
@@ -294,10 +294,11 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     const f = $(ph); if (f) f.textContent = tx(p.phase);
     const e = $(eta); if (e) e.textContent = p.percent >= 100 ? "" : !p.etaMin ? "" : p.etaMin <= 1 ? tr("eta.soon") : tr("eta.left", { min: L.num(p.etaMin, 0) });
   }
-  async function runInstall() {
+  async function runInstall(watchOnly = false) {
     const my = step;
+    const show = (p: Progress) => { if (step === my) setBar("#ib", "#ph", "#eta", p); };
     try {
-      await be.install.install(plan(), (p) => { if (step === my) setBar("#ib", "#ph", "#eta", p); });
+      await (watchOnly ? be.install.watch(show) : be.install.install(plan(), show));
       if (step === my) showActs();
     } catch (e) {
       if (step === my) openErr(e instanceof InstallError ? e.key : "install");
@@ -348,7 +349,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   pane.addEventListener("input", (e) => {
     const t = e.target as HTMLInputElement, id = t.id;
     if (id === "rng") { updSplit(); return; }
-    if (id === "inFull") { S.full = t.value; if (!S.userEdited) { S.user = slug(firstName(S.full, "")); $<HTMLInputElement>("#inUser")!.value = S.user; } syncAccount(); }
+    if (id === "inFull") { S.full = t.value; if (!S.userEdited) { S.user = loginFrom(S.full); $<HTMLInputElement>("#inUser")!.value = S.user; } syncAccount(); }
     else if (id === "inUser") { S.user = t.value = slug(t.value); S.userEdited = true; syncAccount(); }
     else if (id === "inPass") { S.pass = t.value; syncAccount(); }
     else if (id === "inPass2") { S.pass2 = t.value; syncAccount(); }
@@ -457,6 +458,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     if (id === "konto") {
       if (!S.confirm) { S.confirm = true; const f2 = $("#f2")!; f2.hidden = false; f2.classList.add("rise"); $<HTMLInputElement>("#inPass2")!.focus(); syncAccount(); return; }
       if (S.pass !== S.pass2) return openErr("pass");
+      if (isReservedUser(S.user)) return openErr("user");
       return go(step + 1);
     }
     if (id === "dysk" && sub === 0 && (beside() ? pool() - S.win : disk()?.sizeGB ?? 0) < shrimpMin()) return openErr("space");
@@ -530,12 +532,14 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       const r = $<HTMLInputElement>("#rng"); if (r) { defaultSplit(); r.value = String(S.win); updSplit(); r.focus(); }
     }
     else if (k === "install") go(step);
+    else if (k === "stall" || k === "agama") runInstall(true);
+    else if (k === "user") { S.userEdited = true; render(false); const u = $<HTMLInputElement>("#inUser"); if (u) { u.focus(); u.select(); } }
     else if (k === "wifi") { if (sub === 0) S.netPass = ""; else S.hpass = ""; render(false); $<HTMLInputElement>(sub === 0 ? "#inNet" : "#inHPass")?.focus(); }
     else if (k === "net") { S.online = true; go(step, 3); }
   });
   $("#dS")!.addEventListener("click", () => {
     const k = S.err; closeErr();
-    if (k === "install") go(0);
+    if (k === "install" || k === "stall" || k === "agama") go(0);
     else if (k === "space") go(idx("dysk"));
     else if (k === "wifi") { S.online = false; go(step + 1); }
     else if (k === "net") go(step + 1);

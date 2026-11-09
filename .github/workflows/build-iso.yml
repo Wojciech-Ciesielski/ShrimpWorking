@@ -4,6 +4,7 @@ on:
   push:
     branches: [main, "claude/**"]
     paths: ["kiwi/**", "setup/**", "i18n/**", "standardize/**", "tools/build-iso.sh", "tools/build-setup.sh", ".github/workflows/build-iso.yml"]
+  workflow_call:
   workflow_dispatch:
     inputs:
       leap_version:

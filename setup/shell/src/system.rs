@@ -389,6 +389,15 @@ mod tests {
     }
 
     #[test]
+    fn windows_apps_from_contract_example() {
+        let p = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../shrimp-install/schema/shrimp.example.json");
+        let v: serde_json::Value = serde_json::from_str(&std::fs::read_to_string(p).unwrap()).unwrap();
+        let (apps, store) = windows_apps_of(&v);
+        assert_eq!(apps.unwrap()[1], "Steam");
+        assert_eq!(store.unwrap(), vec!["SpotifyAB.SpotifyMusic".to_string()]);
+    }
+
+    #[test]
     fn windows_apps_from_shrimp_json() {
         let v = serde_json::json!({ "apps": [{ "name": "Steam", "version": "2.10" }, { "publisher": "x" }], "storeApps": ["SpotifyAB.SpotifyMusic"] });
         let (a, s) = windows_apps_of(&v);
