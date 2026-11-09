@@ -34,19 +34,19 @@ impl Category {
 
     pub fn title(self) -> &'static str {
         match self {
-            Category::Batteries => "Baterie",
-            Category::Processors => "Procesory",
-            Category::Graphics => "Karty graficzne",
-            Category::Sound => "Dźwięk",
-            Category::Cameras => "Kamery",
-            Category::Network => "Karty sieciowe",
-            Category::Bluetooth => "Bluetooth",
-            Category::Keyboards => "Klawiatury",
-            Category::Pointers => "Wskaźniki",
-            Category::Disks => "Dyski",
-            Category::Usb => "Urządzenia USB",
-            Category::Biometrics => "Biometria",
-            Category::Other => "Nieznane urządzenia",
+            Category::Batteries => crate::i18n::tr("device.batteries"),
+            Category::Processors => crate::i18n::tr("device.processors"),
+            Category::Graphics => crate::i18n::tr("device.graphics"),
+            Category::Sound => crate::i18n::tr("device.sound"),
+            Category::Cameras => crate::i18n::tr("device.cameras"),
+            Category::Network => crate::i18n::tr("device.network"),
+            Category::Bluetooth => crate::i18n::tr("device.bluetooth"),
+            Category::Keyboards => crate::i18n::tr("device.keyboards"),
+            Category::Pointers => crate::i18n::tr("device.pointers"),
+            Category::Disks => crate::i18n::tr("device.disks"),
+            Category::Usb => crate::i18n::tr("device.usb"),
+            Category::Biometrics => crate::i18n::tr("device.biometrics"),
+            Category::Other => crate::i18n::tr("device.other"),
         }
     }
 
@@ -141,7 +141,7 @@ pub fn parse_cpuinfo(text: &str) -> Option<String> {
 pub fn driver_label(driver: &str) -> String {
     match driver {
         "nvidia" => "NVIDIA".into(),
-        "nouveau" => "nouveau (otwarty)".into(),
+        "nouveau" => crate::i18n::tr("driver.nouveau").into(),
         "i915" | "xe" => "Intel".into(),
         "amdgpu" | "radeon" => "AMD".into(),
         other => other.into(),

@@ -5,6 +5,7 @@ mod catalog;
 mod categories;
 mod details;
 mod headless;
+mod i18n;
 mod net;
 mod selftest;
 mod store;
@@ -163,7 +164,7 @@ fn about(window: &adw::ApplicationWindow) {
         .developer_name("Shrimp")
         .version(env!("CARGO_PKG_VERSION"))
         .license_type(gtk::License::Gpl30)
-        .comments("Aplikacje z Flathub")
+        .comments(crate::i18n::tr("about.comments"))
         .build();
     d.present(Some(window));
 }

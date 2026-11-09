@@ -853,9 +853,14 @@ dependencies = [
  "quick-xml",
  "serde",
  "serde_json",
+ "shrimp-i18n",
  "shrimp-webapps",
  "ureq",
 ]
+
+[[package]]
+name = "shrimp-i18n"
+version = "0.1.0"
 
 [[package]]
 name = "shrimp-webapps"

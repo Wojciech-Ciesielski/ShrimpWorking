@@ -1,0 +1,11 @@
+# Cloudflare Pages: przekierowania (https://developers.cloudflare.com/pages/configuration/redirects/)
+#
+# ADRES POBIERANIA SHRIMP INSTALL: jedyne miejsce, które trzeba zmienić.
+# Oba przyciski „Pobierz Shrimp Install” prowadzą do /download. Dopóki poniższa linia jest wyłączona (#),
+# /download pokazuje stronę „Shrimp Install jest prawie gotowy” (site/download/index.html).
+# Gdy plik .exe będzie publicznie dostępny, usuń # i wpisz jego adres, np. w R2:
+# /download  https://dl.shrimp-organization.dev/shrimp-install.exe  302
+#
+# Strony pomocy z site/help.json (Shrimp Install, Setup, Panko, Shrimp Apps) do czasu napisania treści
+# pokazują jedną stronę „Pomoc jest w drodze” zamiast błędu 404.
+/help/*  /help/  200

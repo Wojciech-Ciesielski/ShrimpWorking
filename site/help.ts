@@ -1,8 +1,6 @@
 // Adresy stron pomocy (site/help.json), wspólne dla Shrimp Install i Setup.
 import cfg from "./help.json";
 
-export type HelpTopic = keyof typeof cfg.topics;
-
 /**
  * Adres strony pomocy dla tematu albo null, gdy strony jeszcze nie ma (puste `base`) lub adres jest niebezpieczny.
  * `base` z parametru (np. z manifestu wydania) ma pierwszeństwo przed wpisem w help.json.

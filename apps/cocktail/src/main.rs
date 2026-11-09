@@ -5,6 +5,7 @@ mod app;
 mod catalog;
 mod devices;
 mod history;
+mod i18n;
 mod pages;
 mod tree;
 mod zypper;
@@ -25,12 +26,12 @@ const CSS: &str = "
 .cocktail-main { min-width: 160px; min-height: 34px; padding-left: 20px; padding-right: 20px; }
 ";
 
-/// Zakładki paska bocznego: identyfikator, ikona, nazwa.
+/// Zakładki paska bocznego: identyfikator, ikona, nazwa (klucz tłumaczenia).
 const SECTIONS: [(&str, &str, &str); 4] = [
-    ("aktualizacje", "emblem-synchronizing-symbolic", "Aktualizacje"),
-    ("urzadzenia", "computer-symbolic", "Urządzenia"),
-    ("pakiety", "package-x-generic-symbolic", "Pakiety"),
-    ("historia", "document-open-recent-symbolic", "Historia"),
+    ("aktualizacje", "emblem-synchronizing-symbolic", "section.updates"),
+    ("urzadzenia", "computer-symbolic", "section.devices"),
+    ("pakiety", "package-x-generic-symbolic", "section.packages"),
+    ("historia", "document-open-recent-symbolic", "section.history"),
 ];
 
 fn main() -> glib::ExitCode {
@@ -73,8 +74,8 @@ fn build(application: &adw::Application) {
         .height_request(300)
         .build();
 
-    let banner = adw::Banner::new("Uruchom ponownie, aby zakończyć");
-    banner.set_button_label(Some("Uruchom ponownie"));
+    let banner = adw::Banner::new(crate::i18n::tr("updates.restart-to-finish"));
+    banner.set_button_label(Some(crate::i18n::tr("button.restart")));
     banner.connect_button_clicked(|_| app::reboot());
     let toasts = adw::ToastOverlay::new();
 
@@ -103,10 +104,10 @@ fn build(application: &adw::Application) {
     let nav = gtk::ListBox::new();
     nav.add_css_class("navigation-sidebar");
     for (_, icon, title) in SECTIONS {
-        nav.append(&sidebar_row(icon, title));
+        nav.append(&sidebar_row(icon, crate::i18n::tr(title)));
     }
     let search = gtk::SearchEntry::new();
-    search.set_placeholder_text(Some("Szukaj"));
+    search.set_placeholder_text(Some(crate::i18n::tr("search.placeholder")));
     search.set_margin_start(8);
     search.set_margin_end(8);
     search.set_margin_top(8);
@@ -127,11 +128,11 @@ fn build(application: &adw::Application) {
 
     // Treść: menu główne (☰) w pasku tytułu.
     let menu = gio::Menu::new();
-    menu.append(Some("O aplikacji Cocktail"), Some("app.about"));
+    menu.append(Some(crate::i18n::tr("menu.about")), Some("app.about"));
     let menu_button = gtk::MenuButton::new();
     menu_button.set_icon_name("open-menu-symbolic");
     menu_button.set_menu_model(Some(&menu));
-    menu_button.set_tooltip_text(Some("Menu główne"));
+    menu_button.set_tooltip_text(Some(crate::i18n::tr("menu.main")));
     let content_header = adw::HeaderBar::new();
     content_header.set_title_widget(Some(&adw::Bin::new()));
     content_header.pack_end(&menu_button);
@@ -140,7 +141,7 @@ fn build(application: &adw::Application) {
     content_view.add_top_bar(&banner);
     toasts.set_child(Some(&stack));
     content_view.set_content(Some(&toasts));
-    let content_page = adw::NavigationPage::new(&content_view, "Aktualizacje");
+    let content_page = adw::NavigationPage::new(&content_view, crate::i18n::tr("section.updates"));
 
     let split = adw::NavigationSplitView::new();
     split.set_sidebar(Some(&sidebar_page));
@@ -167,7 +168,7 @@ fn build(application: &adw::Application) {
             let (id, _, title) = SECTIONS[row.index() as usize];
             *current.borrow_mut() = id.to_string();
             stack.set_visible_child_name(id);
-            content_page.set_title(title);
+            content_page.set_title(crate::i18n::tr(title));
             search.set_visible(id != "aktualizacje");
             search.set_text("");
             match id {
@@ -204,7 +205,7 @@ fn build(application: &adw::Application) {
             .application_icon("system-software-update")
             .developer_name("Shrimp")
             .version(env!("CARGO_PKG_VERSION"))
-            .comments("Aktualizacje systemu, urządzenia i pakiety.")
+            .comments(crate::i18n::tr("about.comments"))
             .license_type(gtk::License::Gpl30)
             .build();
         d.present(Some(&w));
