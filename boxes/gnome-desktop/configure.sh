@@ -23,6 +23,7 @@ opt_pkg() {
 if [ -n "$OPT_REPO" ]; then
   zypper -n --gpg-auto-import-keys addrepo -f "$OPT_REPO" shrimp-build-oss
   zypper -n --gpg-auto-import-keys refresh shrimp-build-oss
+  opt_pkg 'typelib(GLibUnix)' typelib-1_0-GLibUnix-2_0  # DING: GLibUnix 2.0 (GLib 2.86)
   opt_pkg gnome-bluetooth                       # Quick Settings: Bluetooth toggle
   opt_pkg typelib-1_0-GnomeBluetooth-3_0
   opt_pkg tuned-ppd power-profiles-daemon       # Quick Settings: power mode

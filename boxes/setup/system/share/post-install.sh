@@ -172,7 +172,7 @@ if [ -f "$MAN/desktop.files" ]; then
   log "pliki pulpitu z nośnika: $n"
 fi
 # Pliki, które boxy generują przy budowie obrazu (nie ma ich w nakładkach root/).
-for d in /usr/share/plymouth/themes/shrimp /usr/share/fonts/truetype/inter; do
+for d in /usr/share/plymouth/themes/shrimp /usr/share/fonts/truetype/inter /usr/share/grub2/themes/shrimp; do
   [ -d "$d" ] && { mkdir -p "$T$d"; cp -a "$d"/. "$T$d"/; }
 done
 # Motyw powłoki i ekranu logowania (gnome-shell-theme.gresource z dodatkami Shrimp) tylko przy tej
@@ -185,12 +185,34 @@ else
 fi
 chroot "$T" fc-cache -f >/dev/null 2>&1 || true
 chroot "$T" dconf update >/dev/null 2>&1 || true
-# Ekran startu Shrimp: motyw Plymouth i nowy initrd (motyw jest w initrd).
-if chroot "$T" plymouth-set-default-theme shrimp >/dev/null 2>&1; then
+# DING (ikony na pulpicie) wymaga GLibUnix 2.0 z GLib 2.86; bez niego proces DING pada w pętli.
+if ! ls "$T"/usr/lib64/girepository-1.0/GLibUnix-2.0.typelib >/dev/null 2>&1; then
+  chroot "$T" zypper -n --gpg-auto-import-keys install --no-recommends 'typelib(GLibUnix)' >/dev/null 2>&1 \
+    && log "doinstalowano typelib GLibUnix (DING)" || log "brak typelib GLibUnix: DING może nie działać"
+fi
+# Menu GRUB Shrimp: motyw w /boot (jak na nośniku), GRUB_THEME i nowy grub.cfg.
+if [ -d "$T/usr/share/grub2/themes/shrimp" ]; then
+  mkdir -p "$T/boot/grub2/themes/shrimp" && cp -a "$T/usr/share/grub2/themes/shrimp"/. "$T/boot/grub2/themes/shrimp"/
+  G="$T/etc/default/grub"
+  if [ -f "$G" ]; then
+    sed -i -e 's|^GRUB_DISTRIBUTOR=.*|GRUB_DISTRIBUTOR="Shrimp"|' -e '/^GRUB_THEME=/d' "$G"
+    echo 'GRUB_THEME=/boot/grub2/themes/shrimp/theme.txt' >> "$G"
+    grep -q '^GRUB_GFXMODE=' "$G" || echo 'GRUB_GFXMODE=1920x1080,auto' >> "$G"
+  fi
+  if chroot "$T" grub2-mkconfig -o /boot/grub2/grub.cfg >/dev/null 2>&1; then log "GRUB: motyw shrimp"
+  else log "GRUB: grub2-mkconfig nie powiódł się, motyw wejdzie przy następnej aktualizacji GRUB"; fi
+fi
+# Ekran startu Shrimp: motyw Plymouth i nowy initrd (motyw jest w initrd). plymouth-set-default-theme
+# bywa nieobecny w systemie (osobny pakiet skryptów), wtedy wpis w plymouthd.conf.
+if [ -d "$T/usr/share/plymouth/themes/shrimp" ]; then
+  if ! chroot "$T" plymouth-set-default-theme shrimp >/dev/null 2>&1; then
+    mkdir -p "$T/etc/plymouth"
+    printf '[Daemon]\nTheme=shrimp\n' > "$T/etc/plymouth/plymouthd.conf"
+  fi
   if chroot "$T" dracut -f --regenerate-all >/dev/null 2>&1; then log "Plymouth: motyw shrimp"
   else log "Plymouth: dracut nie powiódł się, motyw wejdzie przy następnej aktualizacji jądra"; fi
 else
-  log "Plymouth: nie można ustawić motywu shrimp"
+  log "Plymouth: brak motywu shrimp na nośniku"
 fi
 
 # Pulpit Shrimp jak na nośniku: rozszerzenia (Menu Shrimp, dok…), ustawienia domyślne
