@@ -190,7 +190,7 @@ static BOOL make_parents(const wchar_t* path)
 static void progress(int phase, uint64_t* done, uint64_t total, uint64_t add)
 {
 	*done += add;
-	ShrimpProgress(phase, *done, total, ShrimpSpeed(*done, FALSE));
+	ShrimpProgressStep(phase, phase == 2 ? "backup" : NULL, *done, total, ShrimpSpeed(*done, FALSE));
 }
 
 /* ---------- odczyt z sumą ---------- */

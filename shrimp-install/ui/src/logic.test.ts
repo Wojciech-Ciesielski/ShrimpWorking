@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { GiB, dur, fmtGB, fmtSize, hostMessage, phaseFrac, phaseText, remaining, space } from "./logic";
+import { GiB, dur, fmtGB, fmtSize, hostMessage, minLabel, phaseFrac, phaseText, remaining, space } from "./logic";
 import { load } from "./i18n";
 
 const en = load(["en-US"]);
@@ -25,6 +25,10 @@ describe("formatowanie", () => {
     expect(dur(en, 70)).toBe("about 1 minute");
     expect(dur(pl, 720)).toBe("około 12 minut");
     expect(dur(en, 720)).toBe("about 12 minutes");
+  });
+  it("wymagana pojemność jak na opakowaniu", () => {
+    expect(n(minLabel(pl, 14e9))).toBe("16 GB");
+    expect(n(minLabel(en, 7e9))).toBe("8 GB");
   });
   it("jednostki w języku interfejsu", () => {
     expect(n(fmtGB(load(["ru"]), 32e9))).toBe("29,8 ГБ");
@@ -62,6 +66,23 @@ describe("postęp", () => {
     expect(phaseFrac(2, p, false)).toBe(0.25);
     expect(phaseFrac(3, p, false)).toBe(0);
     expect(remaining({ phase: 3, done: 0, total: 40 * 1024 ** 2, speed: 40 * 1024 ** 2 }, sizes)).toBeCloseTo(1);
+  });
+});
+
+describe("kroki w fazach (Beta 2: mylące „pobieranie 1116 MB/s” i „0%” przy zapisie)", () => {
+  const sizes = { shrimp: 1.94 * GiB, files: 0 };
+  it("sprawdzanie pobranego wcześniej obrazu nie udaje pobierania", () => {
+    const p = { phase: 1 as const, done: 0.97 * GiB, total: 1.94 * GiB, speed: 1116 * 1024 ** 2, step: "verify" as const };
+    expect(n(phaseText(pl, 1, p, sizes, false))).toBe("Sprawdzanie pobranego wcześniej obrazu · 50%");
+  });
+  it("przygotowanie i kopia zawartości nośnika mają własny opis", () => {
+    expect(phaseText(pl, 2, { phase: 2, done: 0, total: 0, speed: 0, step: "prepare" }, sizes, false)).toBe("Przygotowanie nośnika…");
+    const b = { phase: 2 as const, done: 1 * GiB, total: 4 * GiB, speed: 50 * 1024 ** 2, step: "backup" as const };
+    expect(n(phaseText(pl, 2, b, sizes, false))).toBe("Kopia zawartości nośnika · 25% · zostało około 1 minuta");
+    expect(remaining(b, sizes)).toBeGreaterThan(sizes.shrimp / (38 * 1024 ** 2));
+  });
+  it("po zakończeniu pobierania podaje prawdziwy rozmiar obrazu", () => {
+    expect(n(phaseText(pl, 1, { phase: 2, done: 0, total: 0, speed: 0 }, sizes, false))).toBe("Pobrano 1,9 GB");
   });
 });
 

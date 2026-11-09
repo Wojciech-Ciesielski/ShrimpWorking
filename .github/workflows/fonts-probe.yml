@@ -1,7 +1,7 @@
 name: Fonts probe
 
 # Checks which Leap font packages cover the scripts of all GNOME languages (Setup, onboarding,
-# apps), so kiwi/config.kiwi lists only names that exist. Result: test-results/fonts/ on the same branch.
+# apps), so kiwi/config.kiwi lists only names that exist. Result: fonts/ on the wyniki-testow branch (tools/ci-wyniki.sh).
 
 on:
   push:
@@ -29,10 +29,5 @@ jobs:
             bash tools/fonts-probe.sh "${{ github.event.inputs.leap_version || '16.1' }}" test-results/fonts
           sudo chown -R "$(id -u):$(id -g)" test-results/fonts
           cat test-results/fonts/summary.txt
-      - name: Commit result
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add test-results/fonts
-          git commit -m "Fonts probe (run ${{ github.run_id }}) [skip ci]" || exit 0
-          for i in 1 2 3; do git pull --rebase -q origin "${{ github.ref_name }}" && git push origin HEAD:"${{ github.ref_name }}" && break; sleep 5; done
+      - name: Save result
+        run: tools/ci-wyniki.sh fonts test-results/fonts
