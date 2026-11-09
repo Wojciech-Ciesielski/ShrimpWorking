@@ -23,5 +23,5 @@ jobs:
       - run: python3 -c "import xml.dom.minidom; xml.dom.minidom.parse('system/polkit/org.shrimp.cocktail.policy')"
       - name: Zrzuty zakładek na atrapach zyppera (jasny i ciemny)
         run: xvfb-run -s "-screen 0 1000x700x24" tests/screens.sh screens target/release/cocktail
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with: { name: cocktail-screens, path: boxes/cocktail/screens }

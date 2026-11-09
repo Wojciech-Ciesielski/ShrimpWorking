@@ -14,7 +14,7 @@ jobs:
     defaults: { run: { working-directory: boxes/shrimp-install/ui } }
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with: { node-version: 22, cache: npm, cache-dependency-path: boxes/shrimp-install/ui/package-lock.json }
       - run: npm ci
       - run: npm run typecheck
@@ -31,9 +31,9 @@ jobs:
           npx playwright install --with-deps chromium
           mkdir -p screens
           node scripts/screens.mjs screens
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with: { name: install-ui-screens, path: boxes/shrimp-install/ui/screens }
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with: { name: install-ui, path: boxes/shrimp-install/ui/dist/index.html }
 
   windows:
@@ -162,6 +162,6 @@ jobs:
               Start-Sleep -Seconds 2
             }
           }
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with: { name: shrimp-install, path: out }
