@@ -137,7 +137,51 @@ pub fn describe(repo: &Repo, container: &str, out: &Path, repo_url: &str) -> Res
             }
         }
     }
+    write_manifests(repo, container, &out.join("root"))?;
     Ok(owner.len())
+}
+
+/// Katalog w obrazie z opisem kontenerów, z których go złożono.
+pub const MANIFEST_DIR: &str = "usr/share/shrimp/containers";
+
+/// Kontener i wszystkie kontenery z jego `include` (przechodnio), każdy raz.
+fn container_tree(repo: &Repo, id: &str, out: &mut Vec<String>) -> Result<(), String> {
+    if out.iter().any(|c| c == id) {
+        return Ok(());
+    }
+    out.push(id.to_string());
+    for inc in &repo.container(id)?.meta().include {
+        container_tree(repo, inc, out)?;
+    }
+    Ok(())
+}
+
+/// Dla kontenera obrazu i każdego dołączonego (np. desktop w iso-live) zapisuje w obrazie
+/// `<id>.packages` (pakiety RPM `[packages] image` jego boxów) i `<id>.files` (pliki nakładek root/,
+/// ścieżki bezwzględne). Instalator (post-install Setup) dokłada z nich do zainstalowanego systemu
+/// to, czego Agama nie instaluje z repozytorium, żeby pulpit po instalacji był taki jak na nośniku.
+pub fn write_manifests(repo: &Repo, container: &str, root: &Path) -> Result<(), String> {
+    let mut ids = Vec::new();
+    container_tree(repo, container, &mut ids)?;
+    let dir = root.join(MANIFEST_DIR);
+    fs::create_dir_all(&dir).map_err(|e| format!("{}: {e}", dir.display()))?;
+    for id in ids {
+        let mut pkgs = std::collections::BTreeSet::new();
+        let mut files = std::collections::BTreeSet::new();
+        for m in graph::members(repo, &id)? {
+            let b = repo.get(&m.id)?;
+            pkgs.extend(b.file.packages.image.iter().cloned());
+            if let Some(overlay) = b.root_overlay(&repo.root) {
+                for rel in fsx::files(&repo.root.join(&overlay))? {
+                    files.insert(format!("/{}", rel.to_string_lossy()));
+                }
+            }
+        }
+        let join = |set: std::collections::BTreeSet<String>| set.into_iter().map(|l| l + "\n").collect::<String>();
+        fs::write(dir.join(format!("{id}.packages")), join(pkgs)).map_err(|e| e.to_string())?;
+        fs::write(dir.join(format!("{id}.files")), join(files)).map_err(|e| e.to_string())?;
+    }
+    Ok(())
 }
 
 /// Pliki root/ w kontenerze, które dwa boxy chcą położyć w tym samym miejscu.

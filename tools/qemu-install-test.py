@@ -287,7 +287,7 @@ finally:
         except OSError:
             continue
         lines = [l for l in text.splitlines() if "shrimp-post-install" in l] if phase == "live" else []
-        a = text.rfind(start_mark)
+        a = text.rfind(start_mark + "\n")
         b = text.find(end_mark, a) if a >= 0 else -1
         print(f"::group::serial-{phase}: {start_mark}", flush=True)
         print("\n".join(lines[-60:]))

@@ -9,6 +9,22 @@ SRC=/usr/share/shrimp-setup
 log() { echo "shrimp-post-install: $*"; }
 
 mkdir -p "$STATE"
+
+# DNS w chroot: system docelowy nie ma jeszcze własnego resolv.conf (zwykle dowiązanie do /run, którego
+# w /mnt nie ma), więc zypper i flatpak w chroot nie widziały sieci („Could not resolve hostname”).
+# Na czas skryptu kładziemy kopię z sesji live, na końcu przywracamy to, co było.
+RESOLV=$T/etc/resolv.conf
+RESOLV_LINK=""
+if [ -L "$RESOLV" ]; then RESOLV_LINK=$(readlink "$RESOLV"); rm -f "$RESOLV"
+elif [ -e "$RESOLV" ]; then mv "$RESOLV" "$RESOLV.shrimp-orig"; fi
+cp -L /etc/resolv.conf "$RESOLV" 2>/dev/null || log "brak /etc/resolv.conf w sesji live"
+restore_resolv() {
+  rm -f "$RESOLV"
+  if [ -n "$RESOLV_LINK" ]; then ln -s "$RESOLV_LINK" "$RESOLV"
+  elif [ -e "$RESOLV.shrimp-orig" ]; then mv "$RESOLV.shrimp-orig" "$RESOLV"; fi
+}
+trap restore_resolv EXIT
+
 USER_NAME=$(sed -n 's/.*"userName":"\([^"]*\)".*/\1/p' "$STATE/install.json")
 [ -n "$USER_NAME" ] || { log "brak userName w install.json"; exit 1; }
 
@@ -117,6 +133,64 @@ fi
 if [ -x /usr/libexec/shrimp-os-release ]; then
   /usr/libexec/shrimp-os-release "$T" || log "os-release: nie udało się"
   install -Dm755 /usr/libexec/shrimp-os-release "$T/usr/libexec/shrimp-os-release"
+fi
+
+# Pulpit Shrimp jak na nośniku. Agama instaluje z repozytorium tylko wzorce i pakiety produktu, więc
+# brakowało pakietów, które boxy pulpitu dokładają do obrazu (np. typelib GnomeDesktop dla DING, gvfs,
+# wtyczki Plymouth), i plików z ich nakładek root/ (motyw Plymouth, czcionki, ustawienia GDM, Linu(x)).
+# Listy składa shrimp-box przy budowie obrazu: /usr/share/shrimp/containers/desktop.{packages,files}.
+MAN=/usr/share/shrimp/containers
+if [ -f "$MAN/desktop.packages" ]; then
+  MISSING=""
+  while IFS= read -r p; do
+    [ -n "$p" ] || continue
+    chroot "$T" rpm -q --whatprovides "$p" >/dev/null 2>&1 || MISSING="$MISSING $p"
+  done < "$MAN/desktop.packages"
+  if [ -n "$MISSING" ]; then
+    log "doinstalowuję pakiety pulpitu:$MISSING"
+    # najpierw razem; jeśli któregoś nie ma w repozytorium, po jednym, żeby reszta weszła
+    if ! chroot "$T" zypper -n --gpg-auto-import-keys install --no-recommends $MISSING >/dev/null 2>&1; then
+      for p in $MISSING; do
+        chroot "$T" zypper -n --gpg-auto-import-keys install --no-recommends "$p" >/dev/null 2>&1 || log "pakiet niedostępny: $p"
+      done
+    fi
+  fi
+fi
+# Wyszukiwanie plików (localsearch-extractor) potrzebuje libz.so.1, którego Leap 16.1 sam nie dokłada.
+if [ -x "$T/usr/libexec/localsearch-extractor-3" ] && ! chroot "$T" ldconfig -p | grep -q 'libz\.so\.1 '; then
+  for p in libz1 libz-ng-compat1 zlib-ng-compat; do
+    chroot "$T" zypper -n --gpg-auto-import-keys install --no-recommends "$p" >/dev/null 2>&1 && { log "doinstalowano $p (libz.so.1)"; break; }
+  done
+fi
+if [ -f "$MAN/desktop.files" ]; then
+  n=0
+  while IFS= read -r f; do
+    [ -f "$f" ] || continue
+    install -D -m "$(stat -c %a "$f")" "$f" "$T$f" && n=$((n + 1))
+  done < "$MAN/desktop.files"
+  mkdir -p "$T$MAN" && cp -a "$MAN"/. "$T$MAN"/
+  log "pliki pulpitu z nośnika: $n"
+fi
+# Pliki, które boxy generują przy budowie obrazu (nie ma ich w nakładkach root/).
+for d in /usr/share/plymouth/themes/shrimp /usr/share/fonts/truetype/inter; do
+  [ -d "$d" ] && { mkdir -p "$T$d"; cp -a "$d"/. "$T$d"/; }
+done
+# Motyw powłoki i ekranu logowania (gnome-shell-theme.gresource z dodatkami Shrimp) tylko przy tej
+# samej wersji gnome-shell, bo zasób z innej wersji psuje powłokę.
+RES=/usr/share/gnome-shell/gnome-shell-theme.gresource
+if [ -f "$RES" ] && [ "$(rpm -q gnome-shell)" = "$(chroot "$T" rpm -q gnome-shell 2>/dev/null)" ]; then
+  cp -a "$RES" "$T$RES" && log "motyw powłoki Shrimp"
+else
+  log "motyw powłoki: inna wersja gnome-shell w systemie, zostaje domyślny"
+fi
+chroot "$T" fc-cache -f >/dev/null 2>&1 || true
+chroot "$T" dconf update >/dev/null 2>&1 || true
+# Ekran startu Shrimp: motyw Plymouth i nowy initrd (motyw jest w initrd).
+if chroot "$T" plymouth-set-default-theme shrimp >/dev/null 2>&1; then
+  if chroot "$T" dracut -f --regenerate-all >/dev/null 2>&1; then log "Plymouth: motyw shrimp"
+  else log "Plymouth: dracut nie powiódł się, motyw wejdzie przy następnej aktualizacji jądra"; fi
+else
+  log "Plymouth: nie można ustawić motywu shrimp"
 fi
 
 # Pulpit Shrimp jak na nośniku: rozszerzenia (Menu Shrimp, dok…), ustawienia domyślne
