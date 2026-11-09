@@ -1,7 +1,7 @@
 name: Bez zrzutów
 
 # Zasada właściciela: żaden PR nie dodaje zrzutów ekranu ani wyników testów (test-results/).
-# Zrzuty z CI trafiają tylko na gałąź wyniki-testow (tools/ci-wyniki.sh).
+# CI niczego nie zapisuje w repo: wyniki testów są tylko artefaktami przebiegów (14 dni).
 on:
   pull_request:
 

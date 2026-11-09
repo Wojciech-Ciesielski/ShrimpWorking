@@ -3,7 +3,7 @@
 To repozytorium jest brudnopisem. Oficjalne repozytorium wydania jest osobne. Kod jest przygotowany tak, żeby przenosiny nie wymagały zmian w programie:
 
 - **Adresy zależą od repozytorium.** Shrimp Install bierze adres manifestu z `shrimp_config.h`, który `shrimp-install/tools/prepare.sh` tworzy z `github.repository` i widoczności repozytorium. W repozytorium publicznym program pobiera ISO bez tokenu z `https://github.com/<repo>/releases/latest/download/manifest.json`. Workflow **Release** też nie ma zapisanej nazwy repozytorium.
-- **Czyste drzewo:** `tools/export-open.sh KATALOG` kopiuje stan gałęzi (wyniki testów CI są na osobnej gałęzi `wyniki-testow`), szuka sekretów i śladów prywatnego repo, sprawdza licencje i duże pliki. Historia git nie jest przenoszona.
+- **Czyste drzewo:** `tools/export-open.sh KATALOG` kopiuje stan gałęzi, szuka sekretów i śladów prywatnego repo, sprawdza licencje i duże pliki. Historia git nie jest przenoszona.
 
 ## Do zrobienia przed publikacją (decyzje właściciela)
 

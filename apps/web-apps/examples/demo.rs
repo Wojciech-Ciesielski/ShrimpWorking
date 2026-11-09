@@ -1,10 +1,9 @@
 //! Podgląd strony bez Shrimp Apps: `cargo run --example demo`.
-//! Z argumentem `--screenshot plik.png` zapisuje zrzut okna i kończy (CI).
+//! `--click <id>` naciska przycisk „Utwórz” w wierszu aplikacji (test w CI).
 use adw::prelude::*;
 
 fn main() -> gtk::glib::ExitCode {
     let arg = |name: &str| std::env::args().skip_while(|a| a != name).nth(1);
-    let shot = arg("--screenshot");
     // --click <id>: naciska przycisk „Utwórz” w wierszu tej aplikacji (test w CI).
     let click = arg("--click");
     let app = adw::Application::builder().application_id("org.shrimp.WebAppsDemo").build();
@@ -25,22 +24,6 @@ fn main() -> gtk::glib::ExitCode {
                 println!("przycisk przed: {}", button.label().unwrap_or_default());
                 button.emit_clicked();
                 println!("przycisk po: {}", button.label().unwrap_or_default());
-            });
-        }
-        if let Some(path) = shot.clone() {
-            let win = win.clone();
-            gtk::glib::timeout_add_local_once(std::time::Duration::from_millis(1500), move || {
-                let paintable = gtk::WidgetPaintable::new(Some(&win));
-                let (w, h) = (win.width(), win.height());
-                let snap = gtk::Snapshot::new();
-                paintable.snapshot(&snap, w as f64, h as f64);
-                if let Some(node) = snap.to_node() {
-                    if let Some(renderer) = win.native().and_then(|n| n.renderer()) {
-                        let tex = renderer.render_texture(&node, Some(&gtk::graphene::Rect::new(0.0, 0.0, w as f32, h as f32)));
-                        tex.save_to_png(&path).expect("zapis zrzutu");
-                    }
-                }
-                win.application().unwrap().quit();
             });
         }
     });

@@ -8,9 +8,8 @@ Usage: qemu-install-test.py <usb.img> <outdir>
 Phase 1 boots the stick (UEFI) with an empty 40 GB disk, waits for the Setup window, then
 runs shrimp-test/agama-install.sh, which drives Agama with Setup's own configuration and
 logs to the serial port. Phase 2 boots the installed disk and captures the first boot
-(Setup, first configuration). Everything lands in <outdir> (screenshots, serial*.log).
+(Setup, first configuration). Everything lands in <outdir> (serial*.log, result.json); no screenshots.
 """
-import hashlib
 import json
 import os
 import shutil
@@ -101,42 +100,20 @@ class QMP:
 
 
 
-# ---------------------------------------------------------- screenshots ----
-shots = []
-_last_hash = None
-_seq = 0
-
-
-def shot(label, keep_duplicates=False):
-    """Screendump to PNG; consecutive identical frames are dropped."""
-    global _last_hash, _seq
+# ---------------------------------------------------------------- stages ----
+# Zrzutów ekranu nie robimy i nie zapisujemy (zasada właściciela). Etapy trafiają tylko do logu.
+def stage(label, keep_duplicates=False):
+    """Marks a stage of the run in the log (no screenshot)."""
     if qemu.poll() is not None:
         return
-    tmp = os.path.join(OUT, "tmp.png")
-    if qmp.cmd("screendump", filename=tmp, format="png") is None:
-        return
-    for _ in range(50):
-        if os.path.exists(tmp) and os.path.getsize(tmp) > 0:
-            break
-        time.sleep(0.05)
-    h = hashlib.sha1(open(tmp, "rb").read()).hexdigest()
-    if h == _last_hash and not keep_duplicates:
-        os.remove(tmp)
-        return
-    _last_hash = h
-    _seq += 1
-    name = f"{_seq:03d}-{int(t()):04d}s-{label}.png"
-    os.rename(tmp, os.path.join(OUT, name))
-    shots.append(name)
-    print(f"[{t():6.1f}s] shot {name}", flush=True)
+    print(f"[{t():6.1f}s] stage {label}", flush=True)
 
 
-def wait_shooting(until, every, label):
+def wait_stages(until, every, label):
+    """Waits until `until` (seconds since start) or until QEMU exits; logs the stage once."""
+    stage(label)
     while t() < until and qemu.poll() is None:
-        nxt = t() + every
-        shot(label)
-        while t() < nxt:
-            time.sleep(0.05)
+        time.sleep(min(every, 1))
 
 
 # ---------------------------------------------------------------- input ----
@@ -235,8 +212,8 @@ try:
     # ---------------------------------------------------------- phase 1 ----
     qemu = start("live", True)
     qmp = QMP(QMP_SOCK)
-    wait_shooting(240, 15, "live")
-    shot("setup", keep_duplicates=True)
+    wait_stages(240, 15, "live")
+    stage("setup", keep_duplicates=True)
     # Setup window up: drive Agama from a terminal (same token and config as Setup).
     run_dialog("pkill -f shrimp-setup")
     pause(5)
@@ -248,29 +225,28 @@ try:
               "[ -n \"$f\" ] || { sudo mkdir -p /tmp/stick; sudo mount -o ro LABEL=SHRIMP_LIVE /tmp/stick; "
               "f=/tmp/stick/shrimp-test/agama-install.sh; }; echo \"script: $f\" | sudo tee /dev/ttyS0; bash \"$f\"\n")
     pause(20)
-    shot("terminal", keep_duplicates=True)
+    stage("terminal", keep_duplicates=True)
     deadline = t() + 100 * 60
     started = t()
     while t() < deadline and qemu.poll() is None and not serial_has("live", "===AGAMA-DONE"):
         if t() - started > 240 and not serial_has("live", "===AGAMA-START"):
             print(f"[{t():6.1f}s] test script did not start", flush=True)
-            shot("no-script", keep_duplicates=True)
+            stage("no-script", keep_duplicates=True)
             break
-        wait_shooting(t() + 60, 60, "install")
+        wait_stages(t() + 60, 60, "install")
     for r in ("finished", "failed"):
         if serial_has("live", "===AGAMA-DONE " + r):
             result = r
     print(f"[{t():6.1f}s] Agama: {result}", flush=True)
-    shot("install-end", keep_duplicates=True)
+    stage("install-end", keep_duplicates=True)
     stop()
 
     # ---------------------------------------------------------- phase 2 ----
     if result == "finished":
-        _last_hash = None
         qemu = start("installed", False)
         qmp = QMP(QMP_SOCK)
-        wait_shooting(t() + 300, 10, "firstboot")
-        shot("firstboot", keep_duplicates=True)
+        wait_stages(t() + 300, 10, "firstboot")
+        stage("firstboot", keep_duplicates=True)
         # What the installed system got: files from Windows, Setup state, autostart, journal.
         run_dialog("kgx")
         pause(10)
@@ -281,7 +257,7 @@ try:
                   "sudo journalctl -b --no-pager -o short-monotonic | grep -iE 'shrimp|welcome' | tail -n 80; "
                   "echo ===DIAG-END; } 2>&1 | sudo tee /dev/ttyS0 >/dev/null\n")
         pause(20)
-        shot("diag", keep_duplicates=True)
+        stage("diag", keep_duplicates=True)
         stop()
 except VMGone:
     print(f"[{t():6.1f}s] QEMU exited", flush=True)
@@ -290,11 +266,11 @@ finally:
         stop()
     except Exception:
         pass
-    with open(os.path.join(OUT, "shots.json"), "w") as f:
-        json.dump({"agama": result, "shots": shots}, f, indent=1)
-    for p in ("tmp.png", "vars.fd", "qmp.sock", "disk.qcow2"):
+    with open(os.path.join(OUT, "result.json"), "w") as f:
+        json.dump({"agama": result}, f, indent=1)
+    for p in ("vars.fd", "qmp.sock", "disk.qcow2"):
         try:
             os.remove(os.path.join(OUT, p))
         except OSError:
             pass
-    print(f"{len(shots)} screenshots in {OUT}, Agama {result}", flush=True)
+    print(f"done, Agama {result}, logs in {OUT}", flush=True)

@@ -10,7 +10,7 @@ przeglądu native speakerów. Nie tłumaczymy ich ponownie: czekają na ludzi, k
 | `kw` | kornijski | mało źródeł, dużo zgadywania |
 | `mai` | maithili | tekstowy język zapasowy: hindi (`text` w `langs.ts`) |
 | `os` | osetyjski | tekstowy język zapasowy: rosyjski |
-| `dz` | dzongkha | brak czcionki tybetańskiej w Leap (workflow Fonts probe, gałąź `wyniki-testow`), więc tekst może się nie wyświetlać |
+| `dz` | dzongkha | brak czcionki tybetańskiej w Leap (workflow Fonts probe), więc tekst może się nie wyświetlać |
 
 ## Potem
 

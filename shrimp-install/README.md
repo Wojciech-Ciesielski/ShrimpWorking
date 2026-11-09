@@ -141,7 +141,7 @@ cd rufus && ./bootstrap.sh && ./configure --disable-debug && make -j4   # MSYS2 
 cp src/rufus.exe shrimp-install.exe
 ```
 
-CI (`.github/workflows/shrimp-install.yml`) buduje interfejs i zrzuty ekranów na Linuksie, a `.exe` na Windows, potem uruchamia `--collect` (sprawdza zebrane dane), `--backup-test`, pełny zapis ISO z ostatniego wydania na pusty wirtualny dysk 32 GB (`--auto-disk`, potem sprawdza pliki na nośniku) i okno w trybie `--demo` (zrzuty prawdziwego okna z WebView2).
+CI (`.github/workflows/shrimp-install.yml`) buduje interfejs na Linuksie, a `.exe` na Windows, potem uruchamia `--collect` (sprawdza zebrane dane), `--backup-test`, pełny zapis ISO z ostatniego wydania na pusty wirtualny dysk 32 GB (`--auto-disk`, potem sprawdza pliki na nośniku) i okno w trybie `--demo` (sprawdza, że program z WebView2 uruchamia się na każdym ekranie).
 
 Dziennik każdego uruchomienia: `%LOCALAPPDATA%\Shrimp Install\shrimp-install.log` (poprzedni: `shrimp-install.old.log`). Przy zgłoszeniu błędu poproś o ten plik.
 

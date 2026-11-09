@@ -9,7 +9,7 @@ cd "$(git rev-parse --show-toplevel)"
 if [ -e "$dst" ] && [ -n "$(ls -A "$dst" 2>/dev/null)" ]; then echo "katalog $dst nie jest pusty" >&2; exit 1; fi
 mkdir -p "$dst"
 
-# Wyniki testów CI są na gałęzi wyniki-testow; starsze refy mogą jeszcze mieć test-results/.
+# Starsze refy mogą jeszcze mieć test-results/ (zrzuty z CI); do repozytorium otwartego nie trafiają.
 git archive "$ref" | tar -x -C "$dst" --exclude='./test-results'
 rm -rf "$dst/test-results"
 
