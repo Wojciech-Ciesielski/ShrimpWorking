@@ -27,7 +27,7 @@ jobs:
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Download ISO
         run: |
@@ -38,7 +38,7 @@ jobs:
           gh run download "$id" -R "$GITHUB_REPOSITORY" -n shrimp-live-iso -D iso
           ls -l iso
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with: { node-version: 22 }
 
       - name: Setup's Agama configuration for the test disk
@@ -85,7 +85,7 @@ jobs:
         if: always()
         run: cp build-run-id.txt out/ || true
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: install-test

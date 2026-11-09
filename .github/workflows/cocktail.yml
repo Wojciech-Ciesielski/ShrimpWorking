@@ -14,7 +14,7 @@ jobs:
     env: { LANGUAGE: pl }
     defaults: { run: { working-directory: apps/cocktail } }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libgtk-4-dev libadwaita-1-dev shellcheck
       - run: cargo test --locked
       - run: cargo build --locked --release
