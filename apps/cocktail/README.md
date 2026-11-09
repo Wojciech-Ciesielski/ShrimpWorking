@@ -34,13 +34,12 @@ cd apps/cocktail
 cargo build --release          # potrzebne: libgtk-4-dev/gtk4-devel, libadwaita-1-dev/libadwaita-devel
 cargo test                     # parsery zyppera, historii, lspci/lsusb, odmiana liczebników
 tests/test-helper.sh           # pomocnicy na atrapach zypper/transactional-update
-xvfb-run -s "-screen 0 1000x700x24" tests/screens.sh screens   # zrzuty 4 zakładek, jasny i ciemny
 ./install.sh DESTDIR           # /usr/bin/cocktail, /usr/libexec/cocktail-*, polkit, .desktop
 ```
 
 Uruchomienie poza openSUSE na atrapach (bez pkexec): `. tests/fake-system.sh /tmp/fake && cargo run`
 (`COCKTAIL_MODE=transactional` pokazuje ścieżkę z migawką, `COCKTAIL_PAGE=pakiety` otwiera zakładkę).
-Workflow **Cocktail** w GitHub Actions robi to samo i zapisuje zrzuty jako artefakt `cocktail-screens`.
+Workflow **Cocktail** w GitHub Actions robi to samo.
 
 ## Czego brakuje
 

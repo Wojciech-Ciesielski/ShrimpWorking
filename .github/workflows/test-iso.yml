@@ -1,8 +1,7 @@
 name: Test ISO
 
-# Boots the newest successful "Build ISO" artifact in QEMU/KVM and saves
-# screenshots of GRUB, Plymouth, the desktop, the lock screen and GDM to
-# <branch>/iso/ on the wyniki-testow branch (tools/ci-wyniki.sh).
+# Boots the newest successful "Build ISO" artifact in QEMU/KVM (uefi, secureboot, bios) and keeps the
+# serial log and the inspection report as an artifact (14 days). No screenshots, nothing is committed.
 
 on:
   push:
@@ -18,7 +17,7 @@ on:
         default: ""
 
 permissions:
-  contents: write
+  contents: read
   actions: read
 
 jobs:
@@ -64,7 +63,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
           sudo apt-get update -q
-          sudo apt-get install -yq --no-install-recommends qemu-system-x86 ovmf imagemagick libglib2.0-bin squashfs-tools
+          sudo apt-get install -yq --no-install-recommends qemu-system-x86 ovmf libglib2.0-bin squashfs-tools
           ls -l /dev/kvm /usr/share/OVMF/
 
       - name: Inspect ISO contents
@@ -77,14 +76,9 @@ jobs:
       - name: Boot and capture (${{ matrix.mode }})
         run: python3 tools/qemu-test.py iso/*.iso out/${{ matrix.mode }} ${{ matrix.mode }}
 
-      - name: Convert screenshots
+      - name: Id of the tested build
         if: always()
-        run: |
-          cd out/${{ matrix.mode }} || exit 0
-          mkdir -p jpg
-          for f in *.png; do [ -e "$f" ] && convert "$f" -quality 85 "jpg/${f%.png}.jpg"; done
-          cp ../../build-run-id.txt . || true
-          ls -l jpg | tail -n +1
+        run: cp build-run-id.txt out/${{ matrix.mode }}/ || true
 
       - uses: actions/upload-artifact@v4
         if: always()
@@ -92,28 +86,3 @@ jobs:
           name: iso-test-${{ matrix.mode }}
           path: out/${{ matrix.mode }}
           retention-days: 14
-
-  publish:
-    needs: boot
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref_name }}
-
-      - uses: actions/download-artifact@v4
-        with:
-          pattern: iso-test-*
-          path: dl
-
-      - name: Save screenshots
-        run: |
-          rm -rf test-results/iso
-          for d in dl/iso-test-*; do
-            m=${d#dl/iso-test-}
-            mkdir -p test-results/iso/$m
-            cp "$d"/jpg/*.jpg test-results/iso/$m/ 2>/dev/null || true
-            cp "$d"/serial.log "$d"/inspect.txt "$d"/shots.json "$d"/build-run-id.txt test-results/iso/$m/ 2>/dev/null || true
-          done
-          tools/ci-wyniki.sh iso test-results/iso

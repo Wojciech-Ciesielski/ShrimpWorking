@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
-"""Boot the Shrimp live ISO in QEMU and capture screenshots of every stage.
+"""Boot the Shrimp live ISO in QEMU and log every stage (no screenshots are taken or kept).
 
 Usage: qemu-test.py <iso> <outdir> <mode>
   mode: uefi        full run: silent GRUB (no menu), Plymouth, desktop, extensions, lock screen, GDM, shutdown
         secureboot  OVMF with Microsoft keys enrolled, F4 opens the hidden GRUB menu, boot stages only
         bios        SeaBIOS, F4 opens the hidden GRUB menu, boot stages only
 
-Screenshots are taken through QMP (screendump), keys and clicks are injected
-through QMP too, and diagnostics typed into a terminal in the live session are
+Keys and clicks are injected through QMP, and diagnostics typed into a terminal in the live session are
 written to the serial port (<outdir>/serial.log).
 """
-import hashlib
 import json
 import os
 import shutil
@@ -100,42 +98,20 @@ class QMP:
 
 qmp = QMP(QMP_SOCK)
 
-# ---------------------------------------------------------- screenshots ----
-shots = []
-_last_hash = None
-_seq = 0
-
-
-def shot(label, keep_duplicates=False):
-    """Screendump to PNG; consecutive identical frames are dropped."""
-    global _last_hash, _seq
+# ---------------------------------------------------------------- stages ----
+# Zrzutów ekranu nie robimy i nie zapisujemy (zasada właściciela). Etapy trafiają tylko do logu.
+def stage(label, keep_duplicates=False):
+    """Marks a stage of the run in the log (no screenshot)."""
     if qemu.poll() is not None:
         return
-    tmp = os.path.join(OUT, "tmp.png")
-    if qmp.cmd("screendump", filename=tmp, format="png") is None:
-        return
-    for _ in range(50):
-        if os.path.exists(tmp) and os.path.getsize(tmp) > 0:
-            break
-        time.sleep(0.05)
-    h = hashlib.sha1(open(tmp, "rb").read()).hexdigest()
-    if h == _last_hash and not keep_duplicates:
-        os.remove(tmp)
-        return
-    _last_hash = h
-    _seq += 1
-    name = f"{_seq:03d}-{int(t()):04d}s-{label}.png"
-    os.rename(tmp, os.path.join(OUT, name))
-    shots.append(name)
-    print(f"[{t():6.1f}s] shot {name}", flush=True)
+    print(f"[{t():6.1f}s] stage {label}", flush=True)
 
 
-def wait_shooting(until, every, label):
+def wait_stages(until, every, label):
+    """Waits until `until` (seconds since start) or until QEMU exits; logs the stage once."""
+    stage(label)
     while t() < until and qemu.poll() is None:
-        nxt = t() + every
-        shot(label)
-        while t() < nxt:
-            time.sleep(0.05)
+        time.sleep(min(every, 1))
 
 
 # ---------------------------------------------------------------- input ----
@@ -217,51 +193,51 @@ try:
         # SeaBIOS/OVMF (Esc would open their own menus), so tap it from power-on.
         while t() < 25 and qemu.poll() is None:
             press(["f4"])
-            shot("grub-f4")
+            stage("grub-f4")
             time.sleep(0.25)
-        shot("grub-menu", keep_duplicates=True)
+        stage("grub-menu", keep_duplicates=True)
         keys("ret")
     # Normal start: no GRUB menu, no boot text, then the Plymouth splash. Dense frames.
-    wait_shooting(45, 1, "boot")
+    wait_stages(45, 1, "boot")
     if MODE != "uefi":
-        wait_shooting(240, 5, "boot")
+        wait_stages(240, 5, "boot")
         raise SystemExit(0)
 
     # Live session: GDM autologin into GNOME (software rendering, so be patient).
-    wait_shooting(150, 10, "session")
+    wait_stages(150, 10, "session")
     # Shrimp Setup opens full screen on its own once Agama is up (autostart, shrimp-setup --install).
-    wait_shooting(t() + 90, 10, "setup")
-    shot("setup", keep_duplicates=True)
+    wait_stages(t() + 90, 10, "setup")
+    stage("setup", keep_duplicates=True)
     # Close it for the desktop checks below (the window itself refuses to close).
     run_dialog("pkill -f shrimp-setup")
     pause(5)
-    shot("desktop", keep_duplicates=True)
+    stage("desktop", keep_duplicates=True)
 
     # Shrimp Menu: the logo, first item on the left of the top bar.
     click(20, 16)
     pause(3)
-    shot("shrimp-menu", keep_duplicates=True)
+    stage("shrimp-menu", keep_duplicates=True)
     keys("esc")
     pause(2)
 
     # Quick Settings (system menu): status icons on the right of the top bar.
     click(W - 30, 16)
     pause(3)
-    shot("quick-settings", keep_duplicates=True)
+    stage("quick-settings", keep_duplicates=True)
     keys("esc")
     pause(2)
 
     # Overview (Super): Blur my Shell, dash, workspaces.
     keys("meta_l")
     pause(4)
-    shot("overview", keep_duplicates=True)
+    stage("overview", keep_duplicates=True)
     keys("esc")
     pause(3)
 
     # Terminal with diagnostics; everything is copied to the serial port.
     run_dialog("kgx")
     pause(8)
-    shot("terminal", keep_duplicates=True)
+    stage("terminal", keep_duplicates=True)
     type_text("sudo -v\n")
     pause(3)
     type_text("shrimp\n")
@@ -276,39 +252,39 @@ try:
     )
     type_text(diag)
     pause(15)
-    shot("terminal-diag", keep_duplicates=True)
+    stage("terminal-diag", keep_duplicates=True)
     type_text("exit\n")
     pause(3)
 
     # Lock screen: clock, then the password prompt, then unlock.
     keys("meta_l", "l")
     pause(4)
-    shot("lock-blank", keep_duplicates=True)
+    stage("lock-blank", keep_duplicates=True)
     keys("shift")  # wake the screen: the clock, no password prompt yet
     pause(3)
-    shot("lock", keep_duplicates=True)
+    stage("lock", keep_duplicates=True)
     pause(3)
-    shot("lock", keep_duplicates=True)
+    stage("lock", keep_duplicates=True)
     keys("spc")
     pause(3)
-    shot("lock-password", keep_duplicates=True)
+    stage("lock-password", keep_duplicates=True)
     type_text("shrimp")
     pause(1)
-    shot("lock-password-typed", keep_duplicates=True)
+    stage("lock-password-typed", keep_duplicates=True)
     keys("ret")
     pause(6)
-    shot("unlocked", keep_duplicates=True)
+    stage("unlocked", keep_duplicates=True)
 
     # Log out to see the GDM greeter.
     run_dialog("gnome-session-quit --logout --no-prompt")
-    wait_shooting(t() + 30, 3, "gdm")
-    shot("gdm", keep_duplicates=True)
+    wait_stages(t() + 30, 3, "gdm")
+    stage("gdm", keep_duplicates=True)
 
     # Power off from the greeter: Plymouth shutdown splash.
     qmp.cmd("system_powerdown")
-    wait_shooting(t() + 6, 1, "powerdown")
+    wait_stages(t() + 6, 1, "powerdown")
     keys("ret")  # confirm a power-off dialog if one appears
-    wait_shooting(t() + 60, 1, "shutdown")
+    wait_stages(t() + 60, 1, "shutdown")
 except VMGone:
     print(f"[{t():6.1f}s] QEMU exited", flush=True)
 finally:
@@ -318,11 +294,9 @@ finally:
         except VMGone:
             pass
         qemu.wait(10)
-    with open(os.path.join(OUT, "shots.json"), "w") as f:
-        json.dump(shots, f, indent=1)
-    for p in ("tmp.png", "vars.fd", "qmp.sock"):
+    for p in ("vars.fd", "qmp.sock"):
         try:
             os.remove(os.path.join(OUT, p))
         except OSError:
             pass
-    print(f"{len(shots)} screenshots in {OUT}", flush=True)
+    print(f"done, logs in {OUT}", flush=True)
