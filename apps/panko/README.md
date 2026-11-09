@@ -5,11 +5,6 @@ przywracanie plików i całego systemu. Nakładka GTK4 + libadwaita (Rust) na mi
 systemu (usługa `org.opensuse.Snapper`). Projekt: `shrimp-handoff/mockups/panko.html`,
 spec: `shrimp-handoff/specs/gnome-apps.md` › Panko.
 
-| Migawki | Zmiany | Zaawansowane |
-|---|---|---|
-| ![](zrzuty/migawki-jasny.png) | ![](zrzuty/zmiany-jasny.png) | ![](zrzuty/zaawansowane-ciemny.png) |
-| ![](zrzuty/migawki-zaznaczona-ciemny.png) | ![](zrzuty/zmiany-ciemny.png) | ![](zrzuty/menu.png) |
-
 ## Uruchomienie
 
 ```sh
