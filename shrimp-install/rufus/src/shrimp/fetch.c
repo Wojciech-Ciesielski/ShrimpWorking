@@ -73,6 +73,24 @@ static BOOL offline_error(DWORD e)
 
 static BOOL cache_dir(char* dir, size_t size);
 
+/* Pobieranie ISO ponawia się po zerwaniu połączenia. W czasie prób, które mogą się jeszcze powtórzyć, błędy sieci
+ * są tylko zapamiętywane (net_quiet); interfejs dostaje błąd dopiero po ostatniej próbie. */
+static BOOL net_quiet, net_fatal;
+static const char* net_kind;
+static char net_msg[160];
+
+static void net_fail(const char* kind, const char* msg)
+{
+	if (!net_quiet) {
+		ShrimpFail(1, kind, msg);
+		return;
+	}
+	net_kind = kind;
+	static_strcpy(net_msg, msg ? msg : "");
+	/* Błąd serwera (404, przekierowanie, brak tokenu) nie minie po ponowieniu. */
+	net_fatal = strcmp(kind, "offline") != 0;
+}
+
 #define API_HOST "https://api.github.com/"
 #define ACCEPT_JSON 1
 #define ACCEPT_BINARY 0
@@ -109,9 +127,9 @@ static const char* shrimp_token(void)
 
 /* Otwiera adres (ręcznie idąc za przekierowaniami, żeby token nie wyciekł poza api.github.com);
  * przy błędzie zgłasza go interfejsowi i zwraca NULL. */
-static HINTERNET open_url(HINTERNET session, const char* url, uint64_t* length, int accept_json)
+static HINTERNET open_url(HINTERNET session, const char* url, uint64_t* length, int accept_json, uint64_t from, DWORD* status_out)
 {
-	char buf[32], cur[1100], hdr[640], loc[1100];
+	char buf[32], cur[1100], hdr[700], loc[1100];
 	DWORD status = 0, size = sizeof(status);
 	HINTERNET r = NULL;
 	int hop;
@@ -121,6 +139,12 @@ static HINTERNET open_url(HINTERNET session, const char* url, uint64_t* length, 
 		BOOL api = strncmp(cur, API_HOST, sizeof(API_HOST) - 1) == 0;
 		const char* tok = api ? shrimp_token() : "";
 		static_strcpy(hdr, "Accept-Encoding: identity\r\n");
+		if (from > 0) {
+			/* Wznowienie: reszta pliku od bajtu `from` (serwer odpowiada 206, a 200 = cały plik od nowa). */
+			char range[64];
+			static_sprintf(range, "Range: bytes=%llu-\r\n", (unsigned long long)from);
+			strncat(hdr, range, sizeof(hdr) - strlen(hdr) - 1);
+		}
 		if (api) {
 			strncat(hdr, accept_json ? "Accept: application/vnd.github+json\r\n" : "Accept: application/octet-stream\r\n",
 				sizeof(hdr) - strlen(hdr) - 1);
@@ -137,9 +161,9 @@ static HINTERNET open_url(HINTERNET session, const char* url, uint64_t* length, 
 			DWORD e = GetLastError();
 			uprintf("Shrimp: %s: błąd %lu", cur, e);
 			if (offline_error(e))
-				ShrimpFail(1, "offline", NULL);
+				net_fail("offline", NULL);
 			else
-				ShrimpFail(1, "other", "connect");
+				net_fail("other", "connect");
 			return NULL;
 		}
 		status = 0;
@@ -149,7 +173,7 @@ static HINTERNET open_url(HINTERNET session, const char* url, uint64_t* length, 
 			size = sizeof(loc);
 			if (!HttpQueryInfoA(r, HTTP_QUERY_LOCATION, loc, &size, NULL) || strncmp(loc, "https://", 8) != 0) {
 				InternetCloseHandle(r);
-				ShrimpFail(1, "other", "redirect");
+				net_fail("other", "redirect");
 				return NULL;
 			}
 			InternetCloseHandle(r);
@@ -160,17 +184,19 @@ static HINTERNET open_url(HINTERNET session, const char* url, uint64_t* length, 
 		break;
 	}
 	if (r == NULL) {
-		ShrimpFail(1, "other", "redirect");
+		net_fail("other", "redirect");
 		return NULL;
 	}
-	if (status != 200) {
+	if (status_out != NULL)
+		*status_out = status;
+	if (status != 200 && !(status == 206 && from > 0)) {
 		char m[160];
 		uprintf("Shrimp: %s: HTTP %lu", cur, status);
 		if ((status == 404 || status == 401) && strncmp(cur, API_HOST, sizeof(API_HOST) - 1) == 0 && !shrimp_token()[0])
 			static_strcpy(m, "Prywatne repozytorium: ustaw zmienną SHRIMP_TOKEN (token GitHub z dostępem do odczytu).");
 		else
 			static_sprintf(m, "http:%lu", status);
-		ShrimpFail(1, "other", m);
+		net_fail("other", m);
 		InternetCloseHandle(r);
 		return NULL;
 	}
@@ -187,7 +213,7 @@ static BYTE* fetch_small(HINTERNET session, const char* url, DWORD* out_len, int
 	uint64_t len;
 	DWORD n, total = 0, cap = 256 * 1024;
 	BYTE* buf;
-	HINTERNET r = open_url(session, url, &len, accept_json);
+	HINTERNET r = open_url(session, url, &len, accept_json, 0, NULL);
 	if (r == NULL)
 		return NULL;
 	buf = calloc(1, cap + 1);
@@ -252,6 +278,41 @@ static BOOL cache_dir(char* dir, size_t size)
 	return TRUE;
 }
 
+#define FETCH_ATTEMPTS 4
+
+static uint64_t file_size_u(const char* path)
+{
+	WIN32_FILE_ATTRIBUTE_DATA d;
+	return attrs_u(path, &d) ? (((uint64_t)d.nFileSizeHigh << 32) | d.nFileSizeLow) : 0;
+}
+
+/* Części innych wydań (shrimp-*.part) zajmują miejsce, a nie da się ich już dokończyć. */
+static void remove_stale_parts(const char* dir, const char* keep)
+{
+	char pattern[MAX_PATH], path[MAX_PATH];
+	WIN32_FIND_DATAW fd;
+	HANDLE h;
+	wchar_t* w;
+	static_sprintf(pattern, "%s\\shrimp-*.part", dir);
+	w = utf8_to_wchar(pattern);
+	if (w == NULL)
+		return;
+	h = FindFirstFileW(w, &fd);
+	free(w);
+	if (h == INVALID_HANDLE_VALUE)
+		return;
+	do {
+		char* name = wchar_to_utf8(fd.cFileName);
+		if (name != NULL) {
+			static_sprintf(path, "%s\\%s", dir, name);
+			if (_stricmp(path, keep) != 0 && DeleteFileU(path))
+				uprintf("Shrimp: usunięto starą część pobierania %s", name);
+			free(name);
+		}
+	} while (FindNextFileW(h, &fd));
+	FindClose(h);
+}
+
 DWORD WINAPI ShrimpFetchThread(LPVOID param)
 {
 	HINTERNET session = NULL, r = NULL;
@@ -262,7 +323,6 @@ DWORD WINAPI ShrimpFetchThread(LPVOID param)
 	uint64_t len = 0, done = 0;
 	ULARGE_INTEGER free_bytes;
 	HANDLE f = INVALID_HANDLE_VALUE;
-	HASH_CONTEXT ctx;
 	static uint8_t buf[1024 * 1024];
 	BOOL ok = FALSE;
 
@@ -346,7 +406,9 @@ DWORD WINAPI ShrimpFetchThread(LPVOID param)
 		name[k] = 0;
 	}
 	static_sprintf(ShrimpIsoPath, "%s\\%s.iso", dir, name);
-	static_sprintf(part, "%s.part", ShrimpIsoPath);
+	/* Część pobrana wcześniej należy do konkretnego obrazu (suma w nazwie), więc nowe wydanie nie dokleja się do starego. */
+	static_sprintf(part, "%s.%.16s.part", ShrimpIsoPath, ShrimpManifest.sha256);
+	remove_stale_parts(dir, part);
 
 	/* Już pobrane? Wystarczy sprawdzić sumę. */
 	{
@@ -361,54 +423,105 @@ DWORD WINAPI ShrimpFetchThread(LPVOID param)
 		}
 	}
 
-	if (free_space_u(dir, &free_bytes) && free_bytes.QuadPart < ShrimpManifest.size + 256ULL * 1024 * 1024) {
-		char m[160];
-		static_sprintf(m, "Do pobrania Shrimp potrzeba %.1f GB wolnego miejsca na dysku %c:.",
-			(ShrimpManifest.size + 256.0 * 1024 * 1024) / (1024.0 * 1024 * 1024), dir[0]);
-		for (char* c = m; *c; c++)
-			if (*c == '.' && c[1] >= '0' && c[1] <= '9')
-				*c = ',';
-		ShrimpFail(1, "space", m);
-		goto out;
-	}
-
-	r = open_url(session, ShrimpManifest.url, &len, ACCEPT_BINARY);
-	if (r == NULL)
-		goto out;
-	f = CreateFileU(part, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-	if (f == INVALID_HANDLE_VALUE) {
-		ShrimpFail(1, "other", "writeDl");
-		goto out;
-	}
-	hash_init[HASH_SHA256](&ctx);
-	ShrimpSpeed(0, TRUE);
-	for (;;) {
+	for (int attempt = 0; ; attempt++) {
+		BOOL last = attempt >= FETCH_ATTEMPTS - 1;
+		uint64_t have = file_size_u(part);
+		DWORD status = 0;
+		if (have > ShrimpManifest.size) {
+			DeleteFileU(part);
+			have = 0;
+		}
+		if (attempt == 0 && free_space_u(dir, &free_bytes)
+			&& free_bytes.QuadPart < ShrimpManifest.size - have + 256ULL * 1024 * 1024) {
+			char m[160];
+			static_sprintf(m, "Do pobrania Shrimp potrzeba %.1f GB wolnego miejsca na dysku %c:.",
+				(ShrimpManifest.size - have + 256.0 * 1024 * 1024) / (1024.0 * 1024 * 1024), dir[0]);
+			for (char* c = m; *c; c++)
+				if (*c == '.' && c[1] >= '0' && c[1] <= '9')
+					*c = ',';
+			ShrimpFail(1, "space", m);
+			goto out;
+		}
+		done = have;
+		if (have < ShrimpManifest.size) {
+			net_quiet = !last;
+			net_kind = NULL;
+			net_fatal = FALSE;
+			r = open_url(session, ShrimpManifest.url, &len, ACCEPT_BINARY, have, &status);
+			net_quiet = FALSE;
+			if (r == NULL && net_fatal) {
+				ShrimpFail(1, net_kind, net_msg[0] ? net_msg : NULL);
+				goto out;
+			}
+			if (r != NULL) {
+				if (have > 0 && status != 206) {
+					uprintf("Shrimp: serwer nie wznawia pobierania (HTTP %lu), od początku", status);
+					have = done = 0;
+				} else if (have > 0) {
+					uprintf("Shrimp: wznawiam pobieranie od %llu B", have);
+				}
+				f = CreateFileU(part, GENERIC_WRITE, 0, NULL, have ? OPEN_ALWAYS : CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+				if (f == INVALID_HANDLE_VALUE) {
+					ShrimpFail(1, "other", "writeDl");
+					goto out;
+				}
+				if (have) {
+					LARGE_INTEGER pos;
+					pos.QuadPart = (LONGLONG)have;
+					SetFilePointerEx(f, pos, NULL, FILE_BEGIN);
+					SetEndOfFile(f);
+				}
+				ShrimpSpeed(0, TRUE);
+				for (;;) {
+					if (ShrimpCancel)
+						goto out;	/* część zostaje: następna próba ją dokończy */
+					if (!InternetReadFile(r, buf, sizeof(buf), &n)) {
+						DWORD e = GetLastError();
+						net_kind = offline_error(e) ? "offline" : "other";
+						uprintf("Shrimp: odczyt przerwany (błąd %lu) po %llu B", e, done);
+						break;
+					}
+					if (n == 0)
+						break;
+					if (done + n > ShrimpManifest.size) {
+						ShrimpFail(1, "verify", NULL);	/* serwer daje więcej, niż mówi manifest */
+						CloseHandle(f);
+						f = INVALID_HANDLE_VALUE;
+						DeleteFileU(part);
+						goto out;
+					}
+					if (!WriteFile(f, buf, n, &w, NULL) || w != n) {
+						ShrimpFail(1, GetLastError() == ERROR_DISK_FULL ? "space" : "other", "writeDl");
+						goto out;
+					}
+					done += n;
+					ShrimpProgress(1, done, ShrimpManifest.size, ShrimpSpeed(done, FALSE));
+				}
+				CloseHandle(f);
+				f = INVALID_HANDLE_VALUE;
+				InternetCloseHandle(r);
+				r = NULL;
+			}
+		}
+		if (done == ShrimpManifest.size)
+			break;
+		/* Połączenie zerwane (WinInet kończy wtedy odczyt bez błędu albo z błędem sieci). */
+		if (last) {
+			ShrimpFail(1, net_kind != NULL ? net_kind : "offline", net_msg[0] ? net_msg : NULL);
+			goto out;
+		}
+		uprintf("Shrimp: próba %d z %d nieudana, ponawiam", attempt + 1, FETCH_ATTEMPTS);
+		for (DWORD t = 0; t < (2000UL << attempt) && !ShrimpCancel; t += 100)
+			Sleep(100);
 		if (ShrimpCancel)
 			goto out;
-		if (!InternetReadFile(r, buf, sizeof(buf), &n)) {
-			ShrimpFail(1, offline_error(GetLastError()) ? "offline" : "other", NULL);
-			goto out;
-		}
-		if (n == 0)
-			break;
-		if (!WriteFile(f, buf, n, &w, NULL) || w != n) {
-			ShrimpFail(1, GetLastError() == ERROR_DISK_FULL ? "space" : "other", "writeDl");
-			goto out;
-		}
-		hash_write[HASH_SHA256](&ctx, buf, n);
-		done += n;
-		ShrimpProgress(1, done, ShrimpManifest.size, ShrimpSpeed(done, FALSE));
 	}
-	CloseHandle(f);
-	f = INVALID_HANDLE_VALUE;
-	hash_final[HASH_SHA256](&ctx);
-	memcpy(digest, ctx.buf, 32);
-	if (done != ShrimpManifest.size) {
-		/* Połączenie zerwane w trakcie: WinInet kończy wtedy odczyt bez błędu. */
-		ShrimpFail(1, "offline", NULL);
+
+	/* Suma liczona z pliku na dysku: obejmuje też część pobraną przy wcześniejszym uruchomieniu. */
+	if (!hash_file(part, ShrimpManifest.size, digest))
 		goto out;
-	}
 	if (!hex_equal(digest, ShrimpManifest.sha256)) {
+		DeleteFileU(part);
 		ShrimpFail(1, "verify", NULL);
 		goto out;
 	}
@@ -419,10 +532,9 @@ DWORD WINAPI ShrimpFetchThread(LPVOID param)
 	ok = TRUE;
 
 out:
-	if (f != INVALID_HANDLE_VALUE) {
+	/* Niedokończona część zostaje na dysku: następne uruchomienie wznowi pobieranie od tego miejsca. */
+	if (f != INVALID_HANDLE_VALUE)
 		CloseHandle(f);
-		DeleteFileU(part);
-	}
 	if (r != NULL)
 		InternetCloseHandle(r);
 	if (session != NULL)

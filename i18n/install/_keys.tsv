@@ -137,3 +137,8 @@
 136	native.wv2fail	Couldn't start the WebView2 component.
 137	host.noSlot	No free slot for the boot entry.
 138	native.noUi	The program's interface is missing.
+139	fail.busy.t	The drive is in use
+140	fail.busy.b	Another program is using the drive.
+141	fail.busy.r	Close programs that use it (for example File Explorer or a backup program) and try again.
+142	fail.question.t	Writing was stopped
+143	fail.question.b	Shrimp Install stopped before writing the drive because of an unexpected question:

@@ -10,6 +10,7 @@ const STATES = [
   ["01-start", "start"], ["02-nosnik", "nosnik"], ["03-pliki", "pliki"], ["04-postep", "postep"], ["05-gotowe", "gotowe"],
   ["06-nosnik-lista", "nosnik-lista"], ["07-nosnik-info", "nosnik-info"], ["08-brak-nosnika", "brak-nosnika"],
   ["09-za-maly", "za-maly"], ["10-pliki-reczny", "pliki-reczny"], ["11-brak-internetu", "brak-internetu"],
+  ["12-nosnik-zajety", "nosnik-zajety"], ["13-pytanie-rufusa", "pytanie-rufusa"],
 ];
 const server = await preview({ preview: { port: 4180 }, logLevel: "silent" });
 const browser = await chromium.launch();

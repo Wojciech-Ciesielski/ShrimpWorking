@@ -1,6 +1,6 @@
 // Dane przykładowe z makiety: podgląd w przeglądarce, zrzuty ekranów i `shrimp-install.exe --demo`.
 import { GiB } from "../logic";
-import type { Backend, Device, Folder, Info, Picked, Plan, RunEvents } from "./types";
+import type { Backend, Device, Failure, Folder, Info, Picked, Plan, RunEvents } from "./types";
 
 const MB = 1024 ** 2;
 export const DEMO_DEVICES: Device[] = [
@@ -31,6 +31,8 @@ export interface DemoOptions {
   /** Postęp zaczyna od tylu procent całości (zrzuty). */
   at?: number;
   offline?: boolean;
+  /** Błąd zapisu nośnika (faza 2) do podglądu ekranów błędów. */
+  fail?: Failure;
   /** Bez upływu czasu (zrzuty). */
   frozen?: boolean;
 }
@@ -44,7 +46,7 @@ export class DemoBackend implements Backend {
   static readonly PICKED = POOL.slice(0, 2);
 
   async info(): Promise<Info> {
-    return { bitlocker: false, shrimpSize: 3.1 * GiB, minSize: 16 * GiB, folders: FOLDERS };
+    return { bitlocker: false, shrimpSize: 1.4 * GiB, minSize: 16 * GiB, folders: FOLDERS };
   }
   onDevices(cb: (d: Device[]) => void) {
     const v = this.o.devices || "ok";
@@ -61,12 +63,13 @@ export class DemoBackend implements Backend {
     const files = plan.paths.length
       ? POOL.filter((p) => plan.paths.includes(p.path)).reduce((a, p) => a + p.size, 0)
       : FOLDERS.filter((f) => plan.folders.includes(f.key)).reduce((a, f) => a + (f.size || 0), 0);
-    const shrimp = 3.1 * GiB;
+    const shrimp = 1.4 * GiB;
     // Całość 0–100: pobieranie 0–50, zapis 50–70, kopiowanie 70–100 (jak w makiecie).
     const PH = [0, 50, 70, 100], SPEED = [0, 14 * 1024 ** 2, 38 * 1024 ** 2, 52 * 1024 ** 2];
     const sizes = [0, shrimp, shrimp, files];
     let total = this.o.at ?? 0;
     const tick = () => {
+      if (this.o.fail) { ev.progress({ phase: 2, done: 0.02 * shrimp, total: shrimp, speed: 0 }); ev.fail(this.o.fail); return false; }
       if (this.o.offline) { ev.progress({ phase: 1, done: 0.06 * 2 * shrimp, total: shrimp, speed: 0 }); ev.fail({ phase: 1, kind: "offline" }); return false; }
       if (total >= 100) { ev.done(); return false; }
       const ph = (total >= PH[2] ? 3 : total >= PH[1] ? 2 : 1) as 1 | 2 | 3;
