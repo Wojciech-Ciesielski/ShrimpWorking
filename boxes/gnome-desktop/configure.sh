@@ -34,10 +34,18 @@ if [ -n "$OPT_REPO" ]; then
   opt_pkg gnome-logs                            # app grid: system log
   opt_pkg gvfs-lang                             # translated "Trash" on the desktop (trash:// display name)
   opt_pkg NetworkManager-lang                   # translated "Wired" in Quick Settings (libnm device names)
+  # File search (localsearch-extractor-3) links against libz.so.1, which no installed package provides
+  # in Leap 16.1: without it the extractor crash-loops once a second for the whole session.
+  if ! ldconfig -p | grep -q 'libz\.so\.1 '; then
+    opt_pkg libz1 libz-ng-compat1 zlib-ng-compat
+  fi
   zypper -n removerepo shrimp-build-oss
   zypper -n clean -a
 else
   echo "WARNING: Leap ${VERSION_ID} repository not reachable, optional system tools skipped"
+fi
+if [ -x /usr/libexec/localsearch-extractor-3 ] && ldd /usr/libexec/localsearch-extractor-3 | grep -q 'not found'; then
+  echo "WARNING: localsearch-extractor-3 is missing libraries: $(ldd /usr/libexec/localsearch-extractor-3 | grep 'not found' | tr -s ' \t' ' ')"
 fi
 for unit in bluetooth.service tuned.service tuned-ppd.service power-profiles-daemon.service; do
   [ -f "/usr/lib/systemd/system/$unit" ] && systemctl enable "$unit" || true
