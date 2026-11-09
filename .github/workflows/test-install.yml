@@ -3,13 +3,8 @@ name: Test install
 # Full Shrimp path in QEMU: a stick made like Shrimp Install makes it (ISO files on FAT32,
 # label SHRIMP_LIVE, shrimp-transfer/shrimp.json with files), Setup on the live session,
 # installation with Agama onto an empty disk (Setup's own configuration from
-<<<<<<< HEAD
-# setup/web/scripts/agama-test-config.ts), then the first boot of the installed system.
-# Serial logs and the Agama result are kept as an artifact (14 days). No screenshots, nothing is committed.
-=======
 # boxes/setup/web/scripts/agama-test-config.ts), then the first boot of the installed system.
-# Screenshots and serial logs go to <branch>/install/ on the wyniki-testow branch.
->>>>>>> origin/main
+# Serial logs and the Agama result are kept as an artifact (14 days). No screenshots, nothing is committed.
 
 on:
   push:

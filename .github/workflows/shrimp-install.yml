@@ -25,17 +25,6 @@ jobs:
         working-directory: boxes/shrimp-install
         run: gcc -Wall -Wextra -Werror -o /tmp/relurl_test tests/relurl_test.c && /tmp/relurl_test
       - run: npm run build
-<<<<<<< HEAD
-=======
-      - name: Zrzuty ekranów (jak shrimp-handoff/screenshots/install-*)
-        run: |
-          npm i --no-save playwright
-          npx playwright install --with-deps chromium
-          mkdir -p screens
-          node scripts/screens.mjs screens
-      - uses: actions/upload-artifact@v7
-        with: { name: install-ui-screens, path: boxes/shrimp-install/ui/screens }
->>>>>>> origin/main
       - uses: actions/upload-artifact@v7
         with: { name: install-ui, path: boxes/shrimp-install/ui/dist/index.html }
 
