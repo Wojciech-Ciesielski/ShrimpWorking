@@ -1,0 +1,11 @@
+[box]
+id = "app-style"
+version = "0.1.0"
+kind = "system"
+summary = "Jeden wygląd aplikacji: GTK3, Qt i Electron z Flathub jak GTK4/libadwaita"
+
+[packages]
+image = ["flatpak"]
+
+[build]
+install = "install.sh"
