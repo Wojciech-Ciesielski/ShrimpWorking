@@ -1,9 +1,12 @@
 // Strona Shrimp: język (pl/en), odsłanianie przy przewijaniu i odpowiedź przycisku pobierania.
 // Bez bibliotek. Strona działa też bez JS (wtedy po polsku i bez animacji przewijania).
+// Teksty: krótkie wspólne napisy mają klucz data-t (słownik T poniżej); tytuł i opis strony mają
+// wersję angielską w atrybucie data-en; dłuższe treści (strony pomocy) mają oba języki w HTML
+// w blokach data-l="pl" / data-l="en", które przełącza sam CSS według <html lang>.
 (() => {
   const T = {
     en: {
-      "nav.help": "Help", "nav.up": "Back to top",
+      "nav.help": "Help", "nav.up": "Back to top", "skip": "Skip to content",
       "hero.lead": "Linux that works from the very first start.",
       "hero.more": "How it works",
       "dl.label": "Download Shrimp Install", "dl.going": "Downloading…",
@@ -26,18 +29,19 @@
       "back": "Back to the home page",
       "wait.title": "Shrimp Install is almost here.",
       "wait.lead": "Shrimp Beta 3.1 is in closed testing. The download will start from this address as soon as it opens.",
-      "help.title": "Help is on its way.",
-      "help.lead": "This page is being written. Come back soon, or start from the home page.",
       "nf.title": "Nothing here.",
       "nf.lead": "This address doesn't lead anywhere. The home page has everything you need.",
-      "desc": "Shrimp is Linux that's ready from the first start. Download Shrimp Install for Windows and prepare a drive in minutes.",
+      "help.all": "All help topics", "help.before": "Before installing", "help.after": "After installing",
     },
   };
   const HTML_KEYS = new Set(["f1", "f2", "f3", "f4"]);
   const nodes = [...document.querySelectorAll("[data-t]")];
   const pl = new Map(nodes.map((n) => [n, n.innerHTML]));
-  const desc = document.querySelector('meta[name="description"]');
-  const plDesc = desc?.content;
+  // tytuł, opis i inne pojedyncze teksty z wersją angielską w data-en (meta: atrybut content)
+  const alt = [...document.querySelectorAll("[data-en]")].map((n) => {
+    const attr = n.tagName === "META" ? "content" : null;
+    return { n, attr, pl: attr ? n.getAttribute(attr) : n.textContent };
+  });
 
   const store = {
     get() { try { return localStorage.getItem("lang"); } catch { return null; } },
@@ -61,7 +65,10 @@
       if (v == null) continue;
       if (!d || HTML_KEYS.has(k)) n.innerHTML = v; else n.textContent = v;
     }
-    if (desc) desc.content = d ? d.desc : plDesc;
+    for (const { n, attr, pl: v0 } of alt) {
+      const v = d ? n.dataset.en : v0;
+      if (attr) n.setAttribute(attr, v); else n.textContent = v;
+    }
     for (const b of document.querySelectorAll("[data-lang]")) b.setAttribute("aria-pressed", String(b.dataset.lang === lang));
   }
 

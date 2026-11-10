@@ -34,6 +34,11 @@ body {
 a { color: inherit; }
 img, svg { display: block; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+/* dwa języki w jednym pliku: bez JS widać polski, JS ustawia <html lang> */
+html:not([lang="en"]) [data-l="en"], html[lang="en"] [data-l="pl"] { display: none !important; }
+/* „Przejdź do treści”: widoczne tylko z klawiatury */
+.skip { position: fixed; z-index: 20; top: 12px; left: 12px; padding: 10px 16px; border-radius: 999px; background: var(--btn-bg); color: var(--btn-fg); font-size: 14px; text-decoration: none; transform: translateY(-200%); }
+.skip:focus { transform: none; }
 :where(a, button):focus-visible { outline: 2px solid currentColor; outline-offset: 3px; border-radius: 4px; }
 ::selection { background: var(--fg); color: var(--bg); }
 
@@ -129,7 +134,8 @@ section { padding: clamp(88px, 13vw, 168px) max(16px, 6vw); }
 .linux { text-align: center; }
 .linux .wrap { display: flex; flex-direction: column; align-items: center; }
 .mark { margin: 0; font-size: clamp(64px, 13vw, 176px); line-height: 0.95; font-weight: 600; letter-spacing: -0.06em; white-space: nowrap; }
-.mark .x { display: inline-block; color: var(--faint); transition: color 1.4s ease 0.5s, letter-spacing 1.4s var(--ease) 0.3s; letter-spacing: 0.08em; }
+.mark .x { display: inline-block; color: var(--fg); letter-spacing: -0.06em; }
+.js .mark .x { color: var(--faint); transition: color 1.4s ease 0.5s, letter-spacing 1.4s var(--ease) 0.3s; letter-spacing: 0.08em; }
 .mark.in .x { color: var(--fg); letter-spacing: -0.06em; }
 .mark-sub { margin: 22px 0 0; font-size: clamp(20px, 2.4vw, 28px); color: var(--dim); letter-spacing: -0.015em; }
 .facts { list-style: none; margin: clamp(56px, 8vw, 96px) 0 0; padding: 0; display: flex; flex-direction: column; gap: 18px; font-size: clamp(19px, 2.2vw, 26px); line-height: 1.35; letter-spacing: -0.015em; }
@@ -163,6 +169,36 @@ footer nav { display: flex; gap: 22px; }
 .solo .lead { max-width: 40ch; font-size: 18px; }
 .solo .back { margin-top: 36px; font-size: 15px; }
 
+/* pomoc: jedna kolumna tekstu, nagłówki jak na stronie głównej, bez ramek */
+.doc { padding: clamp(112px, 14vw, 160px) max(16px, 6vw) clamp(88px, 12vw, 140px); }
+.doc .wrap { max-width: 720px; }
+.doc .h2 { max-width: 20ch; }
+.doc .lead { max-width: 40ch; margin-top: 20px; }
+.doc .crumb { margin: 0 0 18px; font-size: 14px; }
+.doc article > section { margin-top: clamp(44px, 6vw, 64px); padding: 28px 0 0; border-top: 1px solid var(--line); }
+.doc h2 { margin: 0 0 14px; font-size: clamp(21px, 2.4vw, 26px); line-height: 1.25; font-weight: 600; letter-spacing: -0.02em; }
+.doc h3 { margin: 22px 0 6px; font-size: 17px; font-weight: 600; }
+.doc p, .doc li { color: var(--dim); }
+.doc p { margin: 0 0 12px; }
+.doc b, .doc strong { color: var(--fg); font-weight: 600; }
+.doc ul, .doc ol { margin: 0 0 12px; padding-left: 1.3em; }
+.doc li { margin: 6px 0; padding-left: 4px; }
+.doc li::marker { color: var(--faint); }
+.doc kbd, .doc code { font: 500 0.92em/1 ui-monospace, "SF Mono", "Cascadia Mono", monospace; color: var(--fg); }
+.doc kbd { padding: 0 2px; }
+.doc a:not(.link) { text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.doc .all { margin-top: clamp(56px, 8vw, 88px); font-size: 15px; }
+/* lista tematów pomocy: nazwa i jedno zdanie, cały wiersz jest linkiem */
+.doc .topics { list-style: none; margin: 0; padding: 0; }
+.doc .topics li { margin: 0; padding: 0; }
+.doc .group { margin: clamp(48px, 7vw, 72px) 0 14px; font-size: 14px; font-weight: 400; letter-spacing: 0; color: var(--dim); }
+.topics li { border-top: 1px solid var(--line); }
+.topics li:last-child { border-bottom: 1px solid var(--line); }
+.topics a { display: block; padding: 22px 0; text-decoration: none; }
+.topics b { display: block; font-size: clamp(20px, 2.4vw, 24px); font-weight: 600; letter-spacing: -0.02em; transition: transform 0.4s var(--ease); }
+.topics span { display: block; margin-top: 4px; color: var(--dim); }
+.topics a:hover b { transform: translateX(6px); }
+
 /* ruch: wejście „rise” (DESIGN.md §8) i odsłanianie przy przewijaniu */
 .rise { animation: rise 0.9s var(--ease) both; animation-delay: calc(var(--i, 0) * 90ms + 80ms); }
 @keyframes rise { from { opacity: 0; transform: translateY(14px) scale(0.97); } to { opacity: 1; transform: none; } }
@@ -190,6 +226,6 @@ footer nav { display: flex; gap: 22px; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .js .reveal { opacity: 1; transform: none; }
-  .mark .x { color: var(--fg); letter-spacing: -0.06em; }
+  .js .mark .x { color: var(--fg); letter-spacing: -0.06em; }
   .steps li::before { transform: scaleX(1); }
 }

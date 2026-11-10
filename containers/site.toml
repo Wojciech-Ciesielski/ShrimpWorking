@@ -4,3 +4,5 @@ id = "site"
 summary = "Strona shrimp-organization.dev"
 platform = "web"
 boxes = ["site"]
+ci = "site"
+ci_extra = ["tools/check-site.py"]
