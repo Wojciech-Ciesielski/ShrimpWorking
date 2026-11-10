@@ -33,25 +33,37 @@
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
-    <clipPath id="wave-a" clipPathUnits="objectBoundingBox"><path d="M0,0.14 C0.12,0.02 0.26,0.02 0.4,0.1 C0.56,0.2 0.7,0.26 0.84,0.14 C0.92,0.07 0.97,0.05 1,0.06 L1,1 L0,1 Z"/></clipPath>
+    <clipPath id="wave-top" clipPathUnits="objectBoundingBox"><path d="M0,0 L1,0 L1,0.8 C0.9,0.95 0.76,0.97 0.62,0.88 C0.46,0.77 0.3,0.72 0.16,0.82 C0.09,0.87 0.04,0.93 0,0.92 Z"/></clipPath>
     <clipPath id="wave-b" clipPathUnits="objectBoundingBox"><path d="M0,0.08 C0.16,0.2 0.3,0.22 0.46,0.12 C0.62,0.02 0.78,0 0.9,0.1 C0.95,0.14 0.98,0.15 1,0.14 L1,1 L0,1 Z"/></clipPath>
-    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5 4.5 14H11l-1 7.5L19.5 10H13z"/></symbol>
-    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
-    <symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5z"/></symbol>
-    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3"/></symbol>
-    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.5-4M4 4v4h4M4 13a8 8 0 0 0 14.5 4M20 20v-4h-4"/></symbol>
-    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></symbol>
+    <symbol id="i-ready" viewBox="0 0 16 16"><path fill="currentColor" d="m 13.753906 4.660156 c 0.175782 -0.199218 0.261719 -0.460937 0.246094 -0.726562 c -0.019531 -0.265625 -0.140625 -0.511719 -0.339844 -0.6875 c -0.199218 -0.175782 -0.460937 -0.261719 -0.726562 -0.246094 c -0.265625 0.019531 -0.511719 0.140625 -0.6875 0.339844 l -6.296875 7.195312 l -2.242188 -2.242187 c -0.390625 -0.390625 -1.023437 -0.390625 -1.414062 0 c -0.1875 0.1875 -0.292969 0.441406 -0.292969 0.707031 s 0.105469 0.519531 0.292969 0.707031 l 3 3 c 0.195312 0.195313 0.464843 0.304688 0.738281 0.292969 c 0.277344 -0.007812 0.539062 -0.132812 0.722656 -0.339844 z m 0 0"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 16 16"><path fill="currentColor" d="m 1 4 v 1 h 8 v -1 z m 0 0 m 3 1 c -1.644531 0 -3 1.355469 -3 3 v 8 c 0 1.644531 1.355469 3 3 3 h 10 c 1.644531 0 3 -1.355469 3 -3 v -6 c 0 -1.644531 -1.355469 -3 -3 -3 h -3.585938 l -1.707031 -1.707031 c -0.1875 -0.1875 -0.441406 -0.292969 -0.707031 -0.292969 z m 0 2 h 3.585938 l 1.707031 1.707031 c 0.1875 0.1875 0.441406 0.292969 0.707031 0.292969 h 4 c 0.5625 0 1 0.4375 1 1 v 6 c 0 0.566406 -0.4375 1 -1 1 h -10 c -0.5625 0 -1 -0.433594 -1 -1 v -8 c 0 -0.5625 0.4375 -1 1 -1 z m 0 0"/></symbol>
+    <symbol id="i-play" viewBox="0 0 16 16"><path fill="currentColor" d="m 2 2.5 v 11 c 0 1.5 1.269531 1.492188 1.269531 1.492188 h 0.128907 c 0.246093 0.003906 0.488281 -0.050782 0.699218 -0.171876 l 9.796875 -5.597656 c 0.433594 -0.242187 0.65625 -0.734375 0.65625 -1.226562 c 0 -0.492188 -0.222656 -0.984375 -0.65625 -1.222656 l -9.796875 -5.597657 c -0.210937 -0.121093 -0.453125 -0.175781 -0.699218 -0.175781 h -0.128907 s -1.269531 0 -1.269531 1.5 z m 0 0"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 16 16"><path fill="currentColor" d="m 5 2 c -0.265625 0 -0.519531 0.105469 -0.707031 0.292969 l -4 4 c -0.3906252 0.390625 -0.3906252 1.023437 0 1.414062 l 4 4 c 0.390625 0.390625 1.023437 0.390625 1.414062 0 s 0.390625 -1.023437 0 -1.414062 l -2.292969 -2.292969 h 8.585938 c 1.117188 0 2 0.882812 2 2 s -0.882812 2 -2 2 c -0.550781 0 -1 0.449219 -1 1 s 0.449219 1 1 1 c 2.199219 0 4 -1.800781 4 -4 s -1.800781 -4 -4 -4 h -8.585938 l 2.292969 -2.292969 c 0.390625 -0.390625 0.390625 -1.023437 0 -1.414062 c -0.1875 -0.1875 -0.441406 -0.292969 -0.707031 -0.292969 z m 0 0"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 16 16"><path fill="currentColor" d="m 8 0 c -0.257812 0 -0.511719 0.0976562 -0.707031 0.292969 l -1.707031 1.707031 h -2.585938 c -0.550781 0 -1 0.449219 -1 1 v 2.585938 l -1.707031 1.707031 c -0.3906252 0.390625 -0.3906252 1.023437 0 1.414062 l 1.707031 1.707031 v 2.585938 c 0 0.550781 0.449219 1 1 1 h 2.585938 l 1.707031 1.707031 c 0.390625 0.390625 1.023437 0.390625 1.414062 0 l 1.707031 -1.707031 h 2.585938 c 0.550781 0 1 -0.449219 1 -1 v -2.585938 l 1.707031 -1.707031 c 0.390625 -0.390625 0.390625 -1.023437 0 -1.414062 l -1.707031 -1.707031 v -2.585938 c 0 -0.550781 -0.449219 -1 -1 -1 h -2.585938 l -1.707031 -1.707031 c -0.195312 -0.1953128 -0.449219 -0.292969 -0.707031 -0.292969 z m 0 5 c 0.257812 0 0.511719 0.097656 0.707031 0.292969 l 2 2 c 0.183594 0.1875 0.289063 0.441406 0.285157 0.707031 h 0.007812 v 1 h -2 v 2 h -2 v -2 h -2 v -1 h 0.007812 c -0.003906 -0.265625 0.101563 -0.519531 0.285157 -0.707031 l 2 -2 c 0.195312 -0.195313 0.449219 -0.292969 0.707031 -0.292969 z m 0 0"/></symbol>
+    <symbol id="i-look" viewBox="0 0 16 16"><path fill="currentColor" d="m 15 7 h -1 c -0.550781 0 -1 0.449219 -1 1 s 0.449219 1 1 1 h 1 c 0.550781 0 1 -0.449219 1 -1 s -0.449219 -1 -1 -1 z m -2.753906 -4.660156 l -0.707032 0.707031 c -0.390624 0.390625 -0.390624 1.023437 0 1.414063 c 0.390626 0.390624 1.023438 0.390624 1.414063 0 l 0.707031 -0.707032 c 0.390625 -0.390625 0.390625 -1.023437 0 -1.414062 s -1.023437 -0.390625 -1.414062 0 z m -5.242188 -1.347656 v 1 c 0 0.550781 0.449219 1 1 1 c 0.554688 0 1 -0.449219 1 -1 v -1 c 0 -0.554688 -0.445312 -1.0000005 -1 -1.0000005 c -0.550781 0 -1 0.4453125 -1 1.0000005 z m -4.660156 2.75 l 0.707031 0.707031 c 0.253907 0.253906 0.621094 0.355469 0.96875 0.261719 c 0.34375 -0.09375 0.613281 -0.363282 0.707031 -0.707032 c 0.089844 -0.347656 -0.007812 -0.714844 -0.261718 -0.96875 l -0.707032 -0.707031 c -0.253906 -0.253906 -0.621093 -0.351563 -0.964843 -0.257813 c -0.347657 0.089844 -0.617188 0.359376 -0.710938 0.707032 c -0.089843 0.34375 0.007813 0.714844 0.261719 0.964844 z m -1.347656 5.242187 h 1 c 0.550781 0 1 -0.445313 1 -1 c 0 -0.550781 -0.449219 -1 -1 -1 h -1 c -0.554688 0 -1.00000025 0.449219 -1.00000025 1 c 0 0.554687 0.44531225 1 1.00000025 1 z m 2.753906 4.664063 l 0.707031 -0.707032 c 0.390625 -0.390625 0.390625 -1.027344 0 -1.414062 c -0.390625 -0.390625 -1.027343 -0.390625 -1.414062 0 l -0.710938 0.707031 c -0.386719 0.390625 -0.386719 1.023437 0 1.414063 c 0.390625 0.390624 1.027344 0.390624 1.417969 0 z m 5.242188 1.347656 v -1 c 0 -0.554688 -0.449219 -1 -1 -1 c -0.554688 0 -1 0.445312 -1 1 v 1 c 0 0.550781 0.445312 1 1 1 c 0.550781 0 1 -0.449219 1 -1 z m 4.660156 -2.753906 l -0.707032 -0.707032 c -0.253906 -0.253906 -0.621093 -0.351562 -0.96875 -0.261718 c -0.34375 0.09375 -0.613281 0.363281 -0.707031 0.710937 c -0.09375 0.34375 0.007813 0.710937 0.261719 0.964844 l 0.707031 0.707031 c 0.25 0.253906 0.621094 0.351562 0.964844 0.261719 c 0.347656 -0.09375 0.617187 -0.363281 0.707031 -0.707031 c 0.09375 -0.347657 -0.003906 -0.714844 -0.257812 -0.96875 z m 0 0 m 8 10 c -1.097656 0 -2 -0.902344 -2 -2 s 0.902344 -2 2 -2 s 2 0.902344 2 2 s -0.902344 2 -2 2 z m 0 -6 c -2.214844 0 -4 1.785156 -4 4 s 1.785156 4 4 4 s 4 -1.785156 4 -4 s -1.785156 -4 -4 -4 z m 0 0"/></symbol>
+    <symbol id="i-down" viewBox="0 0 16 16"><path fill="currentColor" d="m 13.996094 5 l -5.996094 6 l -6.003906 -6 z m 0 0"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 16 16"><path fill="currentColor" d="m 1 2 h 14 v 2 h -14 z m 0 0 m 1 7 h 14 v 2 h -14 z m 0 0 m 1 12 h 14 v 2 h -14 z m 0 0"/></symbol>
+    <symbol id="i-save" viewBox="0 0 16 16"><path fill="currentColor" d="m 8 0 c -0.550781 0 -1 0.449219 -1 1 v 8.585938 l -2.292969 -2.292969 c -0.1875 -0.1875 -0.441406 -0.292969 -0.707031 -0.292969 s -0.519531 0.105469 -0.707031 0.292969 c -0.390625 0.390625 -0.390625 1.023437 0 1.414062 l 4 4 c 0.390625 0.390625 1.023437 0.390625 1.414062 0 l 4 -4 c 0.390625 -0.390625 0.390625 -1.023437 0 -1.414062 s -1.023437 -0.390625 -1.414062 0 l -2.292969 2.292969 v -8.585938 c 0 -0.550781 -0.449219 -1 -1 -1 z m -6 14 v 2 h 12 v -2 z m 0 0"/></symbol>
   </defs>
 </svg>
 
 <header class="top" id="top">
-  <a class="iconbtn" href="/iso" data-t-aria="iso.aria" aria-label="Pobierz obraz ISO" title="ISO"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11m0 0-4.5-4.5M12 14.5l4.5-4.5"/><path d="M4.5 16.5v1.75A2.25 2.25 0 0 0 6.75 20.5h10.5a2.25 2.25 0 0 0 2.25-2.25V16.5"/></svg><span>ISO</span></a>
-  <button class="iconbtn burger" type="button" id="burger" aria-expanded="false" aria-controls="menu" data-t-aria="menu.aria" aria-label="Menu"><i></i><i></i><i></i></button>
+  <div class="dlmenu">
+    <div class="dlbtn">
+      <a class="dlmain" href="#pobierz" data-t="dl.short">Pobierz</a>
+      <button class="dlmore" type="button" id="dlmore" aria-expanded="false" aria-controls="dlpop" data-t-aria="dl.more" aria-label="Inne opcje pobierania"><svg class="ico" aria-hidden="true"><use href="#i-down"/></svg></button>
+    </div>
+    <div class="dlpop" id="dlpop">
+      <a href="/download"><span data-t="dl.label">Instalator</span><small data-t="dl.os">Windows 10 i 11</small></a>
+      <a href="/iso"><span data-t="menu.iso">Obraz ISO</span><small>.iso</small></a>
+    </div>
+  </div>
+  <button class="burger" type="button" id="burger" aria-expanded="false" aria-controls="menu" data-t-aria="menu.aria" aria-label="Menu"><svg class="ico" aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 
 <div class="menu" id="menu" role="dialog" aria-modal="true" aria-labelledby="burger">
   <ul>
-    <li><a href="/download" style="--i:0"><span data-t="dl.label">Pobierz Shrimp Install</span><small data-t="dl.os">Windows 10 i 11</small></a></li>
+    <li><a href="/download" style="--i:0"><span data-t="dl.label">Instalator</span><small data-t="dl.os">Windows 10 i 11</small></a></li>
     <li><a href="/iso" style="--i:1"><span data-t="menu.iso">Obraz ISO</span><small>.iso</small></a></li>
     <li><a href="/help/" style="--i:2"><span data-t="nav.help">Pomoc</span></a></li>
   </ul>
@@ -63,60 +75,31 @@
 
 <main id="main">
   <section class="home-hero" aria-labelledby="h">
+    <div class="wavepic" role="img" aria-label="Mont Blanc" data-t-aria="alt.mb"></div>
     <div class="in">
       <svg class="logo rise" style="--i:0" viewBox="-1.1 3.6 184.6 178.5" aria-hidden="true"><use href="/assets/logo.svg#s"/></svg>
       <h1 class="h1 rise" style="--i:1" id="h">Shrimp</h1>
       <p class="lead rise" style="--i:2" data-t="hero.lead">Linux, który działa od pierwszego uruchomienia.</p>
     </div>
-    <div class="wavepic" role="img" aria-label="Mont Blanc" data-t-aria="alt.mb"></div>
-    <svg class="waveline" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true"><path vector-effect="non-scaling-stroke" d="M0,0.14 C0.12,0.02 0.26,0.02 0.4,0.1 C0.56,0.2 0.7,0.26 0.84,0.14 C0.92,0.07 0.97,0.05 1,0.06"/></svg>
   </section>
 
   <section class="words" aria-labelledby="h-w">
     <h2 class="h2 reveal" id="h-w" data-t="w.t">Włączasz. Działa.</h2>
-    <p class="sub reveal" style="--i:1" data-t="w.s">Spokojny system, który dba o siebie sam.</p>
+    <p class="sub reveal" style="--i:1" data-t="w.s">I nic więcej.</p>
     <ul class="perks">
-      <li class="perk reveal" style="--i:0"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-bolt"/></svg></span><h3 data-t="p1.t">Gotowy od razu</h3><p data-t="p1.d">Bez konfigurowania i szukania instrukcji.</p></li>
-      <li class="perk reveal" style="--i:1"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-folder"/></svg></span><h3 data-t="p2.t">Twoje rzeczy jadą z tobą</h3><p data-t="p2.d">Pliki i ustawienia z Windows przenoszą się same.</p></li>
-      <li class="perk reveal" style="--i:2"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-play"/></svg></span><h3 data-t="p3.t">Obraz i dźwięk bez kłopotu</h3><p data-t="p3.d">Filmy, muzyka i gry działają od pierwszego dnia.</p></li>
-      <li class="perk reveal" style="--i:0"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-undo"/></svg></span><h3 data-t="p4.t">Wszystko da się cofnąć</h3><p data-t="p4.d">Coś poszło nie tak? Wracasz do chwili, gdy działało.</p></li>
-      <li class="perk reveal" style="--i:1"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-refresh"/></svg></span><h3 data-t="p5.t">Aktualizacje bez przerywania</h3><p data-t="p5.d">Instalują się przy ponownym uruchomieniu, nie w środku pracy.</p></li>
-      <li class="perk reveal" style="--i:2"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkle"/></svg></span><h3 data-t="p6.t">Spójny, spokojny wygląd</h3><p data-t="p6.d">Każdy ekran wygląda, jakby zrobiła go jedna ręka.</p></li>
+      <li class="perk reveal" style="--i:0"><span class="ic"><svg aria-hidden="true"><use href="#i-ready"/></svg></span><h3 data-t="p1.t">Gotowy od razu</h3><p data-t="p1.d">Bez konfigurowania i szukania instrukcji.</p></li>
+      <li class="perk reveal" style="--i:1"><span class="ic"><svg aria-hidden="true"><use href="#i-folder"/></svg></span><h3 data-t="p2.t">Twoje rzeczy jadą z tobą</h3><p data-t="p2.d">Pliki i ustawienia z Windows przenoszą się same.</p></li>
+      <li class="perk reveal" style="--i:2"><span class="ic"><svg aria-hidden="true"><use href="#i-play"/></svg></span><h3 data-t="p3.t">Obraz i dźwięk bez kłopotu</h3><p data-t="p3.d">Filmy, muzyka i gry działają od pierwszego dnia.</p></li>
+      <li class="perk reveal" style="--i:0"><span class="ic"><svg aria-hidden="true"><use href="#i-undo"/></svg></span><h3 data-t="p4.t">Wszystko da się cofnąć</h3><p data-t="p4.d">Coś poszło nie tak? Wracasz do chwili, gdy działało.</p></li>
+      <li class="perk reveal" style="--i:1"><span class="ic"><svg aria-hidden="true"><use href="#i-refresh"/></svg></span><h3 data-t="p5.t">Aktualizacje bez przerywania</h3><p data-t="p5.d">Instalują się przy ponownym uruchomieniu, nie w środku pracy.</p></li>
+      <li class="perk reveal" style="--i:2"><span class="ic"><svg aria-hidden="true"><use href="#i-look"/></svg></span><h3 data-t="p6.t">Spójny, spokojny wygląd</h3><p data-t="p6.d">Każdy ekran wygląda, jakby zrobiła go jedna ręka.</p></li>
     </ul>
   </section>
 
   <section class="lap-wrap" id="lap" aria-label="Shrimp">
     <div class="stage">
       <p class="kicker" data-t="lap.k">Zobacz, jak to wygląda</p>
-      <div class="scene">
-        <div class="laptop" data-s="0">
-          <div class="lid"><div class="lid-in">
-            <div class="face front"><div class="display">
-              <div class="scr scr-0">
-                <div class="d-bar"><svg class="logo" viewBox="-1.1 3.6 184.6 178.5" aria-hidden="true"><use href="/assets/logo.svg#s"/></svg><span>12:40</span></div>
-                <div class="d-win"><div class="side"><i></i><i></i><i></i><i></i></div><div class="main"><span class="t" data-t="md.files">Pliki</span><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-                <div class="d-dock"><i></i><i></i><i></i><i></i><i></i></div>
-              </div>
-              <div class="scr scr-1">
-                <span class="i-step" data-t="mi.step">Krok 2 z 3</span>
-                <span class="i-title" data-t="mi.t">Wybierz nośnik</span>
-                <div class="i-list">
-                  <div class="i-row sel"><b data-t="mi.a">Pendrive</b><span>32 GB</span></div>
-                  <div class="i-row"><b data-t="mi.b">Karta SD</b><span>64 GB</span></div>
-                  <div class="i-row"><b data-t="mi.c">Dysk zewnętrzny</b><span>500 GB</span></div>
-                </div>
-                <span class="i-next" data-t="mi.next">Dalej</span>
-              </div>
-              <div class="scr scr-2">
-                <div class="a-head"><div class="a-tabs"><b data-t="ma.t">Odkrywaj</b><span data-t="ma.i">Zainstalowane</span></div><div class="a-q" data-t="ma.q">Szukaj aplikacji</div></div>
-                <div class="a-grid"><div class="a-card" style="--h:210"><div class="a-ic"></div><div class="a-ln"></div><div class="a-ln s"></div><div class="a-get" data-t="ma.get">Pobierz</div></div><div class="a-card" style="--h:28"><div class="a-ic"></div><div class="a-ln"></div><div class="a-ln s"></div><div class="a-get" data-t="ma.get">Pobierz</div></div><div class="a-card" style="--h:140"><div class="a-ic"></div><div class="a-ln"></div><div class="a-ln s"></div><div class="a-get" data-t="ma.get">Pobierz</div></div><div class="a-card" style="--h:275"><div class="a-ic"></div><div class="a-ln"></div><div class="a-ln s"></div><div class="a-get" data-t="ma.get">Pobierz</div></div><div class="a-card" style="--h:350"><div class="a-ic"></div><div class="a-ln"></div><div class="a-ln s"></div><div class="a-get" data-t="ma.get">Pobierz</div></div><div class="a-card" style="--h:48"><div class="a-ic"></div><div class="a-ln"></div><div class="a-ln s"></div><div class="a-get" data-t="ma.get">Pobierz</div></div><div class="a-card" style="--h:185"><div class="a-ic"></div><div class="a-ln"></div><div class="a-ln s"></div><div class="a-get" data-t="ma.get">Pobierz</div></div><div class="a-card" style="--h:100"><div class="a-ic"></div><div class="a-ln"></div><div class="a-ln s"></div><div class="a-get" data-t="ma.get">Pobierz</div></div></div>
-              </div>
-            </div></div>
-            <div class="face back"><svg class="logo" viewBox="-1.1 3.6 184.6 178.5" aria-hidden="true"><use href="/assets/logo.svg#s"/></svg></div>
-          </div></div>
-          <div class="base"><div class="keys"></div><div class="pad"></div><div class="lip"></div></div>
-        </div>
-      </div>
+      <div class="scene"><canvas id="gl" role="img" aria-label="Laptop z ekranem Shrimp" data-t-aria="lap.alt"></canvas></div>
       <div class="tabs" role="group" aria-label="Ekrany" data-t-aria="tabs.aria">
         <button type="button" data-s="0" aria-pressed="true" data-t="tab.0">Pulpit</button>
         <button type="button" data-s="1" aria-pressed="false" data-t="tab.1">Instalator</button>
@@ -125,12 +108,11 @@
     </div>
   </section>
 
-  <section class="final" aria-labelledby="h-end">
+  <section class="final" id="pobierz" aria-labelledby="h-end">
     <div class="wavepic" aria-hidden="true"></div>
-    <svg class="waveline" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true"><path vector-effect="non-scaling-stroke" d="M0,0.08 C0.16,0.2 0.3,0.22 0.46,0.12 C0.62,0.02 0.78,0 0.9,0.1 C0.95,0.14 0.98,0.15 1,0.14"/></svg>
-    <h2 class="h2 reveal" id="h-end" data-t="end.title">Wszystko zaczyna się od jednego pliku.</h2>
-    <a class="glass reveal" style="--i:1" href="/download" data-dl><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11m0 0-4.5-4.5M12 14.5l4.5-4.5"/><path d="M4.5 16.5v1.75A2.25 2.25 0 0 0 6.75 20.5h10.5a2.25 2.25 0 0 0 2.25-2.25V16.5"/></svg><span class="label"><span class="now" data-t="dl.label">Pobierz Shrimp Install</span><span class="then" aria-hidden="true" data-t="dl.going">Pobieranie…</span></span></a>
-    <p class="meta"><span data-t="dl.os">Windows 10 i 11</span><span class="sep">·</span>.exe<span class="sep">·</span><span data-t="dl.ver">Shrimp Beta 3.1</span></p>
+    <h2 class="h2 reveal" id="h-end" data-t="end.title">Zacznij swoją przygodę tutaj</h2>
+    <a class="btn reveal" style="--i:1" href="/download" data-dl><svg class="ico" aria-hidden="true"><use href="#i-save"/></svg><span class="label"><span class="now" data-t="dl.label">Instalator</span><span class="then" aria-hidden="true" data-t="dl.going">Pobieranie…</span></span></a>
+    <p class="meta" data-t="dl.os">Windows 10 i 11</p>
     <footer>
       <div class="l"><svg class="logo" viewBox="-1.1 3.6 184.6 178.5" aria-hidden="true"><use href="/assets/logo.svg#s"/></svg><span>© <span data-year>2026</span> Shrimp</span></div>
       <nav><a class="link" href="/help/" data-t="nav.help">Pomoc</a><a class="link" href="#top" data-t="nav.up">Do góry</a></nav>
