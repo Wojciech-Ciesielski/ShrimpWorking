@@ -15,3 +15,13 @@ input, textarea { user-select: text; }
 /* Przeciąganie okna za pasek tytułu (WebView2 z obsługą app-region; inaczej wiadomość „drag” do programu). */
 .titlebar { app-region: drag; }
 .caps { app-region: no-drag; }
+
+/* „Gdzie zainstalować Shrimp?”: podział dysku z Windows */
+.split { margin-top: 8px; }
+.split .bar { height: 12px; border-radius: 6px; }
+#splitWinBar { background: var(--text-3); }
+#splitShrBar { background: var(--accent); margin-left: auto; }
+.split .sp-top b { color: var(--text); font-weight: 600; }
+.split input[type="range"] { display: block; width: 100%; margin: 14px 0 0; accent-color: var(--accent); cursor: pointer; }
+.placenote { margin-top: 12px; }
+.row.phase[hidden] { display: none; }

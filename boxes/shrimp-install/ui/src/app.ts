@@ -1,8 +1,8 @@
 // Shrimp Install: ekrany z makiety (mockups/shrimp-install.html) sterowane przez Backend.
 import type { I18n } from "../../../i18n-core/core";
-import type { Backend, Device, Failure, Folder, FolderKey, Info, Picked, Progress } from "./backend/types";
+import type { Backend, Device, Failure, Folder, FolderKey, Info, Picked, Progress, WinDisk } from "./backend/types";
 import { helpUrl } from "../../../help-links/help";
-import { deviceLabel, dur, fmtGB, fmtSize, hostMessage, minLabel, phaseFrac, phaseText, remaining, space } from "./logic";
+import { GiB, deviceLabel, dur, fmtGB, fmtSize, hostMessage, minLabel, phaseFrac, phaseText, placeLimits, remaining, space, windowsAfter } from "./logic";
 
 const $ = <T extends HTMLElement = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector(s) as T;
 const $$ = <T extends HTMLElement = HTMLElement>(s: string, r: ParentNode = document) => Array.from(r.querySelectorAll(s)) as T[];
@@ -14,7 +14,7 @@ const FOLDER_ICON: Record<FolderKey, string> = {
 
 export type Route =
   | "start" | "nosnik" | "nosnik-lista" | "nosnik-info" | "brak-nosnika" | "za-maly"
-  | "pliki" | "pliki-reczny" | "postep" | "brak-internetu" | "nosnik-zajety" | "pytanie-rufusa" | "gotowe";
+  | "pliki" | "pliki-reczny" | "miejsce" | "miejsce-brak" | "miejsce-pelny" | "postep" | "brak-internetu" | "nosnik-zajety" | "pytanie-rufusa" | "gotowe";
 
 export class App {
   private info!: Info;
@@ -30,6 +30,14 @@ export class App {
   private running = false;
   private closeAfterCancel = false;
   private screen = "start";
+  // „Gdzie zainstalować Shrimp?”
+  private disk: WinDisk | null = null;
+  private bitlocker = false;
+  private place: "beside" | "replace" = "beside";
+  /** Miejsce dla Shrimp wybrane suwakiem (bajty); null: wartość domyślna. */
+  private shrimpBytes: number | null = null;
+  /** Miejsce zamawiane w bieżącym przygotowaniu (faza 4), 0: bez fazy 4. */
+  private shrink = 0;
 
   constructor(private be: Backend, private L: I18n, private preview = false) {}
 
@@ -42,7 +50,7 @@ export class App {
     document.documentElement.dir = L.rtl ? "rtl" : "ltr";
     $$("[data-i]").forEach((el) => { el.textContent = L.t(el.dataset.i!); });
     $$("[data-i-aria]").forEach((el) => el.setAttribute("aria-label", L.t(el.dataset.iAria!)));
-    $$("[data-step]").forEach((el) => { el.textContent = L.t("step", { n: L.num(+el.dataset.step!, 0), total: L.num(4, 0) }); });
+    $$("[data-step]").forEach((el) => { el.textContent = L.t("step", { n: L.num(+el.dataset.step!, 0), total: L.num(5, 0) }); });
   }
 
   async init(first: Route = "start") {
@@ -50,7 +58,7 @@ export class App {
     this.applyStatic();
     this.folders = this.info.folders.map((f) => ({ ...f, on: false }));
     this.defaults();
-    $("#bitlocker").hidden = !this.info.bitlocker;
+    this.bitlocker = this.info.bitlocker;
     this.initHelp();
     this.be.onDevices((d) => { this.devices = d; this.pickDevice(); this.drawCb(); });
     this.be.onFolders((f) => {
@@ -58,8 +66,9 @@ export class App {
       if (!this.touched) this.defaults();
       if (this.screen === "pliki") this.drawFolders();
     });
-    this.be.onBitLocker((on) => { $("#bitlocker").hidden = !on; });
-    this.be.onCloseRequest(() => { if (this.running) { this.closeAfterCancel = true; this.openDlg(); } });
+    this.be.onBitLocker((on) => { this.bitlocker = on; if (this.screen === "miejsce") this.drawPlace(); });
+    this.be.onDisk((d) => { this.disk = d; if (this.screen === "miejsce") this.drawPlace(); });
+    this.be.onCloseRequest(() => { if (this.running) this.askClose(); });
     this.wire();
     this.go(first);
   }
@@ -164,7 +173,7 @@ export class App {
   }
   private setMode(m: "auto" | "manual", animate: boolean) {
     this.mode = m;
-    $$(".mode").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.mode === m)));
+    $$(".mode[data-mode]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.mode === m)));
     $("#paneAuto").hidden = m !== "auto";
     $("#paneManual").hidden = m !== "manual";
     this.drawFolders(); this.drawPicked();
@@ -179,12 +188,79 @@ export class App {
     rise($$("#picked .row").slice(-fresh.length));
   }
 
+  // ---------- miejsce ----------
+  /** Faza 4 trwa: Windows zmniejsza partycję, tego nie przerywamy. */
+  private get shrinking() { return this.running && this.cur?.phase === 4; }
+  /** Nośnik gotowy, nie udało się tylko zrobić miejsca: ekran „miejsce” ponawia samą fazę 4. */
+  private get mediaReady() { return this.failed?.phase === 4; }
+  private limits() { return this.disk ? placeLimits(this.disk, this.used()) : null; }
+  private drawPlace() {
+    const d = this.disk, lim = this.limits(), can = !!lim?.ok;
+    if (d && !can) this.place = "replace";
+    const beside = this.place === "beside";
+    $$(".mode[data-place]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.place === this.place)));
+    $<HTMLButtonElement>('.mode[data-place="beside"]').disabled = !!d && !can;
+    $("#diskScan").hidden = !!d || !beside;
+    $("#split").hidden = !(can && beside);
+    let note = "";
+    if (!d) note = beside ? this.t("place.checking") : "";
+    else if (!d.ok) note = this.t("place.nodisk");
+    else if (!can) note = this.t("place.nospace", { size: fmtGB(this.L, lim!.min) });
+    if (can && lim) {
+      const v = Math.min(lim.max, Math.max(lim.min, this.shrimpBytes ?? lim.def));
+      // Suwak to granica Windows | Shrimp na pasku całego dysku (Shrimp od prawej), w pełnych GiB.
+      const r = $<HTMLInputElement>("#splitRange"), all = d!.size + d!.free, win = windowsAfter(d!, v);
+      r.min = "0"; r.max = String(Math.floor(all / GiB)); r.value = String(Math.round((all - v) / GiB));
+      $("#splitWin").textContent = this.t("place.win", { size: fmtGB(this.L, win) });
+      $("#splitShr").textContent = this.t("place.shr", { size: fmtGB(this.L, v) });
+      $("#splitWinBar").style.width = (win / all) * 100 + "%";
+      $("#splitShrBar").style.width = (v / all) * 100 + "%";
+      r.setAttribute("aria-valuetext", fmtGB(this.L, v));
+      if (beside) note = this.t(d!.free >= v ? "place.free" : "place.shrink");
+    }
+    $("#placeNote").textContent = note;
+    $("#placeBl").hidden = !(this.bitlocker && beside && can);
+    $("#placeBack").hidden = this.mediaReady;
+    $("#placeGo").textContent = this.t(this.mediaReady ? "retry" : "files.go");
+    $<HTMLButtonElement>("#placeGo").disabled = beside && !can;
+  }
+  /** Bajty miejsca dla Shrimp do zrobienia w fazie 4 (0: „Zamiast Windows”). */
+  private chosenSpace() {
+    const lim = this.limits();
+    if (this.place !== "beside" || !lim?.ok) return 0;
+    return Math.min(lim.max, Math.max(lim.min, this.shrimpBytes ?? lim.def));
+  }
+  private async placeGo() {
+    const b = $<HTMLButtonElement>("#placeGo");
+    const bytes = this.chosenSpace();
+    b.disabled = true;
+    try { await this.be.setSpace(bytes); } finally { b.disabled = false; }
+    this.shrink = bytes;
+    if (!this.mediaReady) { this.go("postep"); return; }
+    // Nośnik jest gotowy: ponawiamy tylko fazę 4 albo kończymy bez niej („Zamiast Windows”).
+    this.failed = null;
+    if (bytes > 0) {
+      this.running = true;
+      this.cur = { phase: 4, done: 0, total: 0, speed: 0 };
+      this.be.retryShrink();
+      this.go("postep");
+    } else {
+      this.finished = true;
+      this.go("gotowe");
+    }
+  }
+
   // ---------- postęp ----------
-  private sizes() { return { shrimp: this.info.shrimpSize, files: this.used() }; }
+  private sizes() { return { shrimp: this.info.shrimpSize, files: this.used(), shrink: this.shrink }; }
+  private askClose() {
+    if (this.shrinking) return;   // Windows zmniejsza partycję: okno zostaje do końca
+    if (this.running) { this.closeAfterCancel = true; this.openDlg(); } else this.be.close();
+  }
   private drawRun() {
     const STI = { wait: "#f-circle", active: "#f-circle", done: "#f-checkmark_circle-filled", fail: "#f-error_circle" };
-    const at = this.finished ? 4 : this.cur?.phase ?? 1;
-    for (const n of [1, 2, 3] as const) {
+    const at = this.finished ? 5 : this.cur?.phase ?? 1;
+    $("#ph4").hidden = !this.shrink;
+    for (const n of [1, 2, 3, 4] as const) {
       const el = $("#ph" + n);
       const st = this.failed?.phase === n ? "fail" : n < at ? "done" : n === at ? "active" : "wait";
       el.className = "row phase " + st;
@@ -206,7 +282,7 @@ export class App {
     $("#pgErr").hidden = !err; $("#pgInfo").hidden = err || this.finished;
     $("#retryBtn").hidden = !err; $("#nextBtn").hidden = err;
     $<HTMLButtonElement>("#nextBtn").disabled = !this.finished;
-    $("#cancelBtn").hidden = this.finished;
+    $("#cancelBtn").hidden = this.finished || this.shrinking;
     if (err) {
       const f = this.failed!, k = `fail.${f.kind}.`;
       $("#pgErrTxt").innerHTML = `<b>${esc(this.t(k + "b"))}</b>` + (this.L.has(k + "r") ? " " + esc(this.t(k + "r")) : "") + (f.message ? " " + esc(hostMessage(this.L, f.message)) : "");
@@ -259,7 +335,7 @@ export class App {
     const ROUTES: Record<Route, [string, string?, string?]> = {
       start: ["start"], nosnik: ["nosnik"], "nosnik-lista": ["nosnik", "", "list"], "nosnik-info": ["nosnik", "", "tip"],
       "brak-nosnika": ["nosnik"], "za-maly": ["nosnik"],
-      pliki: ["pliki", "auto"], "pliki-reczny": ["pliki", "manual"], postep: ["postep"], "brak-internetu": ["postep"], "nosnik-zajety": ["postep"], "pytanie-rufusa": ["postep"], gotowe: ["gotowe"],
+      pliki: ["pliki", "auto"], "pliki-reczny": ["pliki", "manual"], miejsce: ["miejsce"], "miejsce-brak": ["miejsce"], "miejsce-pelny": ["miejsce"], postep: ["postep"], "brak-internetu": ["postep"], "nosnik-zajety": ["postep"], "pytanie-rufusa": ["postep"], gotowe: ["gotowe"],
     };
     const [scr, variant, flag] = ROUTES[r] || ROUTES.start;
     this.screen = scr;
@@ -274,6 +350,7 @@ export class App {
       if (flag === "list") requestAnimationFrame(() => { this.openPop(); $("#cb").focus(); });
     }
     if (scr === "pliki") this.setMode((variant as "auto" | "manual") || this.mode, false);
+    if (scr === "miejsce") this.drawPlace();
     if (scr === "postep" && !this.running && !this.finished && !this.failed) this.startRun();
     else if (scr === "postep") this.drawRun();
     $("#scrim").hidden = true;
@@ -294,9 +371,7 @@ export class App {
     // pasek tytułu: przeciąganie i przyciski okna
     $(".titlebar").addEventListener("mousedown", (e) => { if (e.button === 0 && !(e.target as Element).closest(".caps")) this.be.drag(); });
     $("#minBtn").addEventListener("click", () => this.be.minimize());
-    $("#closeBtn").addEventListener("click", () => {
-      if (this.running) { this.closeAfterCancel = true; this.openDlg(); } else this.be.close();
-    });
+    $("#closeBtn").addEventListener("click", () => this.askClose());
     // nośnik
     const cb = $("#cb"), pop = $("#cbPop");
     cb.addEventListener("click", () => (pop.hidden ? this.openPop() : this.closePop(true)));
@@ -320,9 +395,24 @@ export class App {
       if (!pop.hidden && !t.closest("#cbPop") && !t.closest("#cb")) this.closePop(false);
     });
     // pliki
-    $$(".mode").forEach((b) => b.addEventListener("click", () => {
+    $$(".mode[data-mode]").forEach((b) => b.addEventListener("click", () => {
       if (b.getAttribute("aria-checked") !== "true") this.setMode(b.dataset.mode as "auto" | "manual", true);
     }));
+    // miejsce
+    $$<HTMLButtonElement>(".mode[data-place]").forEach((b) => b.addEventListener("click", () => {
+      if (b.disabled || b.getAttribute("aria-checked") === "true") return;
+      this.place = b.dataset.place as "beside" | "replace";
+      this.drawPlace();
+      if (this.place === "beside") rise($$("#split, #placeNote").filter((el) => !el.hidden));
+    }));
+    $("#splitRange").addEventListener("input", (e) => {
+      const lim = this.limits(), d = this.disk;
+      if (!lim?.ok || !d) return;
+      const v = Math.floor(d.size + d.free - +(e.target as HTMLInputElement).value * GiB);
+      this.shrimpBytes = Math.min(lim.max, Math.max(lim.min, Math.round(v / GiB) * GiB));
+      this.drawPlace();
+    });
+    $("#placeGo").addEventListener("click", () => this.placeGo());
     $("#folders").addEventListener("click", (e) => {
       const t = (e.target as Element).closest<HTMLButtonElement>(".fol");
       if (!t || t.disabled) return;
@@ -350,7 +440,9 @@ export class App {
       this.cur = null; this.failed = null; this.finished = false;
       if (close) this.be.close(); else this.go("nosnik");
     });
-    $("#retryBtn").addEventListener("click", () => { this.failed = null; this.startRun(); riseScreen($('.screen[data-screen="postep"]')); });
+    $("#retryBtn").addEventListener("click", () => {
+      if (this.mediaReady) { this.go("miejsce"); return; }
+      this.failed = null; this.startRun(); riseScreen($('.screen[data-screen="postep"]')); });
     document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !$("#scrim").hidden) this.closeDlg(); });
     // gotowe
     $("#laterBtn").addEventListener("click", () => this.be.later());

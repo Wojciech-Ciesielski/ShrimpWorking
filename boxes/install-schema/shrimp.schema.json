@@ -72,6 +72,8 @@
         }
       }
     },
+    "place": { "enum": ["beside", "replace"], "description": "Wybór z ekranu „Gdzie zainstalować Shrimp?”; beside: Shrimp Install zrobił miejsce obok Windows" },
+    "shrimpSpace": { "type": "integer", "minimum": 0, "description": "Bajty wolnego miejsca dla Shrimp obok Windows (przy place = beside)" },
     "split": { "type": "array", "items": { "type": "string" } },
     "skipped": {
       "type": "array",

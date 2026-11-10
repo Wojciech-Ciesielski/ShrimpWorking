@@ -1,7 +1,7 @@
 // Most do programu Shrimp Install (WebView2). Wiadomości do programu to tekst rozdzielony
 // tabulatorami: „id⇥wywołanie⇥argumenty…” (ścieżki Windows nie mogą zawierać tabulatora).
 // Program odpowiada obiektem JSON: { id, ok, result | error } albo zdarzeniem { event, … }.
-import type { Backend, Device, Folder, Info, Picked, Plan, RunEvents } from "./types";
+import type { Backend, Device, Folder, Info, Picked, Plan, RunEvents, WinDisk } from "./types";
 
 interface WebView {
   postMessage(m: string): void;
@@ -22,6 +22,8 @@ export class HostBackend implements Backend {
   private run: RunEvents | null = null;
   private bitlocker: ((on: boolean) => void)[] = [];
   private closeReq: (() => void)[] = [];
+  private disk: ((d: WinDisk) => void)[] = [];
+  private lastDisk: WinDisk | null = null;
 
   constructor() {
     this.wv.addEventListener("message", (e) => this.recv(e.data));
@@ -43,6 +45,7 @@ export class HostBackend implements Backend {
       case "image": if (m.size > 0) this.run?.image?.(m.size); break;
       case "fail": this.run?.fail(m); break;
       case "done": this.run?.done(); break;
+      case "disk": this.lastDisk = m.disk; this.disk.forEach((cb) => cb(m.disk)); break;
       case "bitlocker": this.bitlocker.forEach((cb) => cb(!!m.on)); break;
       case "closeRequested": this.closeReq.forEach((cb) => cb()); break;
     }
@@ -57,7 +60,11 @@ export class HostBackend implements Backend {
   }
   private send(name: string) { this.wv.postMessage([0, name].join("\t")); }
 
-  info() { return this.call<Info>("info"); }
+  async info() {
+    const i = await this.call<Info>("info");
+    if (i.disk && !this.lastDisk) this.lastDisk = i.disk;
+    return i;
+  }
   onDevices(cb: (d: Device[]) => void) {
     this.devices.push(cb);
     if (this.lastDevices) cb(this.lastDevices);
@@ -68,6 +75,14 @@ export class HostBackend implements Backend {
     if (this.lastFolders) cb(this.lastFolders);
   }
   onBitLocker(cb: (on: boolean) => void) { this.bitlocker.push(cb); }
+  onDisk(cb: (d: WinDisk) => void) {
+    this.disk.push(cb);
+    if (this.lastDisk) cb(this.lastDisk);
+  }
+  async setSpace(bytes: number) { await this.call("space", Math.max(0, Math.round(bytes))); }
+  retryShrink() {
+    this.call("shrink").catch((e: Error) => this.run?.fail({ phase: 4, kind: "shrink", message: e.message }));
+  }
   onCloseRequest(cb: () => void) { this.closeReq.push(cb); }
   pick(kind: "folder" | "file") { return this.call<Picked[]>("pick", kind); }
   start(plan: Plan, ev: RunEvents) {

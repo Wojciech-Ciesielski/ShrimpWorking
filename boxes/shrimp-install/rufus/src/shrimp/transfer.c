@@ -290,6 +290,10 @@ static BOOL write_json(const char* root, copy_ctx* c, jb* files)
 	jb_str(&b, "sha256", ShrimpManifest.sha256[0] ? ShrimpManifest.sha256 : NULL);
 	jb_end_obj(&b);
 	ShrimpCollect(&b);
+	/* Wybór z ekranu „Gdzie zainstalować Shrimp?” (Setup proponuje to samo): beside, gdy Shrimp Install robi miejsce obok Windows. */
+	jb_str(&b, "place", ShrimpShrinkBytes > 0 ? "beside" : "replace");
+	if (ShrimpShrinkBytes > 0)
+		jb_u64(&b, "shrimpSpace", ShrimpShrinkBytes);
 	jb_raw(&b, "files", files->s);
 	jb_raw(&b, "split", c->split.s);
 	jb_raw(&b, "skipped", c->skipped.s);
