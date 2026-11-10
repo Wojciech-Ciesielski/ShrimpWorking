@@ -27,6 +27,10 @@ install -Dm644 "$HERE/system/polkit/50-shrimp-setup.rules" "$D/usr/share/polkit-
 install -Dm644 "$HERE/system/autostart/shrimp-setup-first-boot.desktop" "$D/etc/xdg/autostart/shrimp-setup-first-boot.desktop"
 install -Dm644 "$HERE/system/systemd/shrimp-nvidia-flatpak.service" "$D/usr/lib/systemd/system/shrimp-nvidia-flatpak.service"
 install -Dm644 "$HERE/system/agama/shrimp.yaml" "$D/usr/share/agama/products.d/shrimp.yaml"
+# Strażnik Setup (rozszerzenie GNOME Shell): w sesji live i w pierwszej konfiguracji nie ma przeglądu ani pulpitu.
+install -d "$D/usr/share/gnome-shell/extensions"
+cp -a "$HERE/system/gnome-shell/shrimp-setup-guard@shrimp" "$D/usr/share/gnome-shell/extensions/"
+chmod -R a+rX "$D/usr/share/gnome-shell/extensions/shrimp-setup-guard@shrimp"
 # Jeden wygląd aplikacji (shrimp-app-style) to osobny box: boxes/app-style.
 
 

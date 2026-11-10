@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { slug, firstName, proposals, windowsList, mapWindowsApps, klidToXkb, prefill, loginFrom, isReservedUser } from "./logic";
+import { slug, firstName, proposals, windowsList, mapWindowsApps, klidToXkb, prefill, loginFrom, isReservedUser, installLang } from "./logic";
 import example from "../../../install-schema/shrimp.example.json";
 import type { Transfer } from "./backend/types";
 import { LANGS, REGIONS, KEYBOARDS, WIN_CATALOG } from "./data";
@@ -149,9 +149,51 @@ describe("agama", () => {
     });
     expect(d[0].windows).toEqual({ partition: "/dev/nvme0n1p3", minGB: 270, poolGB: 250, bitlocker: true });
   });
+  it("Vivobook: BitLocker jako szyfrowanie, pendrive z Shrimp pierwszy na liście Agamy", () => {
+    // Układ z testu na ASUS Vivobook X513EA (2026-11-09): Agama wymienia najpierw pendrive 32 GB z Shrimp Install,
+    // a partycja Windows z BitLockerem nie ma systemu plików, tylko block.encrypted i typ danych Windows.
+    const d = disksFromSystem({
+      storage: {
+        candidateDrives: [10, 1],
+        devices: [
+          { sid: 10, name: "/dev/sda", block: { size: 32e9 }, drive: { vendor: "SanDisk", model: "Ultra" },
+            partitions: [{ sid: 11, name: "/dev/sda1", block: { size: 32e9 }, filesystem: { type: "vfat", label: "SHRIMP_LIVE" } }] },
+          { sid: 1, name: "/dev/nvme0n1", block: { size: 512e9 }, drive: { model: "INTEL SSDPEKNW512G8" },
+            partitionTable: { unusedSlots: [] },
+            partitions: [
+              { sid: 2, name: "/dev/nvme0n1p1", block: { size: 1e8 }, filesystem: { type: "vfat" }, partition: { efi: true, id: "esp" } },
+              { sid: 3, name: "/dev/nvme0n1p3", description: "Encrypted Partition", block: { size: 510e9, encrypted: true, shrinking: { supported: false } }, partition: { efi: false, id: "windows_basic_data" } },
+            ] },
+        ],
+      },
+    });
+    expect(d).toEqual([{ device: "/dev/nvme0n1", name: "INTEL SSDPEKNW512G8", sizeGB: 512, windows: { partition: "/dev/nvme0n1p3", minGB: 530, poolGB: 510, bitlocker: true } }]);
+  });
+  it("bez Windows: największy dysk pierwszy, zaszyfrowany Linux to nie BitLocker", () => {
+    const d = disksFromSystem({
+      storage: {
+        devices: [
+          { sid: 1, name: "/dev/sda", block: { size: 128e9 }, partitions: [{ sid: 2, name: "/dev/sda2", block: { size: 120e9, encrypted: true }, partition: { efi: false, id: "linux" } }] },
+          { sid: 5, name: "/dev/nvme0n1", block: { size: 1000e9 } },
+        ],
+      },
+    });
+    expect(d.map((x) => [x.device, !!x.windows])).toEqual([["/dev/nvme0n1", false], ["/dev/sda", false]]);
+  });
   it("tłumaczy postęp Agamy na fazy", () => {
     expect(phaseOf({ stage: "installing", progresses: [{ scope: "manager", index: 2, size: 4, step: "" }, { scope: "software", index: 5, size: 10, step: "" }] }))
       .toEqual({ percent: 37.5, phase: "inst.system" });
+  });
+});
+
+describe("domyślny język instalacji", () => {
+  const idx = (t: any) => LANGS[installLang(t, LANGS)].locale;
+  it("z Windows (shrimp.json), potem z menu GRUB, na końcu angielski, nie polski z sesji live", () => {
+    expect(idx({ locale: { language: "de-DE" }, grubLang: "fr" })).toBe("de_DE.UTF-8");
+    expect(idx({ grubLang: "fr" })).toBe("fr_FR.UTF-8");
+    expect(idx(null)).toBe("en_US.UTF-8");
+    expect(idx({ locale: { language: "xx-YY" } })).toBe("en_US.UTF-8");
+    expect(idx({ locale: { language: "pl-PL" } })).toBe("pl_PL.UTF-8");
   });
 });
 

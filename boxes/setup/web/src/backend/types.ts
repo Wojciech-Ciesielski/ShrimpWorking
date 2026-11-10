@@ -30,6 +30,8 @@ export interface Transfer {
   bitlocker?: boolean;
   /** Pliki do przeniesienia (bajty): tyle miejsca więcej potrzebuje Shrimp. */
   bytes?: number;
+  /** Język menu GRUB z nośnika (boot/grub2/shrimp-lang.cfg), też z Windows; jest nawet bez shrimp.json. */
+  grubLang?: string;
 }
 
 /** Wszystko, co zebrały kroki 1–7. */

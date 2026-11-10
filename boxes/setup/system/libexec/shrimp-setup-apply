@@ -95,5 +95,8 @@ if [ -f /etc/gdm/custom.conf ]; then
   sed -i 's/^AutomaticLoginEnable=.*/AutomaticLoginEnable=False/; /^AutomaticLogin=/d' /etc/gdm/custom.conf
 fi
 rm -f "$STATE/first-boot"
+# Setup znika z systemu: bez autostartu (okno i tak by od razu kończyło, a strażnik Setup wyłącza się
+# razem ze znacznikiem). Program zostaje w /usr (system tylko do odczytu), ale nic go już nie uruchamia.
+rm -f "${SHRIMP_AUTOSTART_DIR:-/etc/xdg/autostart}/shrimp-setup-first-boot.desktop"
 [ "$REBOOT" = yes ] && echo reboot
 exit 0

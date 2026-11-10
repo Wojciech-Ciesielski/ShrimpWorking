@@ -63,7 +63,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
           sudo apt-get update -q
-          sudo apt-get install -yq --no-install-recommends qemu-system-x86 ovmf libglib2.0-bin squashfs-tools
+          sudo apt-get install -yq --no-install-recommends qemu-system-x86 ovmf libglib2.0-bin squashfs-tools dosfstools
           ls -l /dev/kvm /usr/share/OVMF/
 
       - name: Inspect ISO contents

@@ -202,3 +202,5 @@
 202	Sprawdź ponownie
 203	Tej nazwy używa system
 204	Wybierz inną nazwę użytkownika, np. z cyfrą na końcu.
+205	Nie widzę dysku dla Shrimp
+206	Setup nie widzi wewnętrznego dysku tego komputera. W niektórych laptopach ukrywa go tryb Intel RST (VMD) w ustawieniach firmware. Sprawdź dysk i spróbuj ponownie.

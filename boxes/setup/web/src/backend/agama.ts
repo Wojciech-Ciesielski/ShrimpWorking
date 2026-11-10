@@ -26,9 +26,9 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 // --- typy odpowiedzi Agamy (tylko pola, których używamy) ---
 interface ADevice {
   sid: number; name: string; description?: string; class?: string;
-  block?: { size: number; systems?: string[]; shrinking?: { supported: boolean; minSize?: number } };
-  drive?: { vendor?: string; model?: string };
-  filesystem?: { type: string };
+  block?: { size: number; encrypted?: boolean; udevPaths?: string[]; systems?: string[]; shrinking?: { supported: boolean; minSize?: number } };
+  drive?: { vendor?: string; model?: string; transport?: string; bus?: string };
+  filesystem?: { type: string; label?: string };
   encryption?: { type?: string; method?: string };
   partition?: { efi: boolean; id?: string };
   partitionTable?: { unusedSlots: { start: number; size: number }[] };
@@ -54,17 +54,37 @@ export function blockingIssues(issues: AIssue[]): AIssue[] {
   return issues.filter((i) => !(i.scope === "software" && i.class === "loadSource" && /\/update\//.test(i.details || i.description)));
 }
 
-/** Dyski z systemu Agamy → dyski Setup. Czysta funkcja (testy w agama.test.ts). */
+/** Etykieta nośnika z Shrimp Install (FAT32) i obrazu ISO (volid w image-base/config.kiwi). */
+export const LIVE_LABEL = "SHRIMP_LIVE";
+
+/** Partycja zaszyfrowana BitLockerem. libstorage-ng pokazuje ją na dwa sposoby, zależnie od wersji:
+ *  jako system plików „bitlocker” albo jako szyfrowanie (block.encrypted, bez systemu plików,
+ *  typ partycji danych Windows). Wcześniej Setup znał tylko pierwszy sposób, więc na Vivobooku
+ *  z BitLockerem (Leap 16.1) dysk wyglądał na pusty. */
+export function isBitlocker(p: ADevice): boolean {
+  if (/bitlocker/i.test(JSON.stringify([p.filesystem?.type, p.encryption, p.description, p.block?.systems]))) return true;
+  return !!p.block?.encrypted && !p.filesystem && /windows|microsoft|basic_data|ntfs/i.test(p.partition?.id || "");
+}
+
+/** Nośnik, z którego działa Setup (pendrive z Shrimp Install): nie wolno na nim instalować. */
+export function isLiveMedium(d: ADevice): boolean {
+  return [d, ...(d.partitions || [])].some((p) => p.filesystem?.label === LIVE_LABEL);
+}
+
+/** Dyski z systemu Agamy → dyski Setup. Czysta funkcja (testy w logic.test.ts).
+ *  Kolejność: najpierw dyski z Windows, potem od największego. Pendrive z Shrimp, z którego
+ *  działa Setup, nie jest dyskiem docelowym (wcześniej bywał pierwszy na liście i Setup
+ *  wybierał go domyślnie, a 32 GB to za mało, stąd „za mało miejsca” przy dysku 512 GB). */
 export function disksFromSystem(sys: ASystem): Disk[] {
   const devs = sys.storage?.devices || [];
   const cand = new Set(sys.storage?.candidateDrives || devs.map((d) => d.sid));
-  return devs.filter((d) => cand.has(d.sid) && d.block).map((d) => {
+  const disks = devs.filter((d) => cand.has(d.sid) && d.block && !isLiveMedium(d)).map((d) => {
     const sizeGB = Math.floor(d.block!.size / GB);
     const name = [d.drive?.vendor, d.drive?.model].filter(Boolean).join(" ").trim() || d.description || d.name;
     const parts = d.partitions || [];
     const bySize = (a: ADevice, b: ADevice) => (b.block?.size || 0) - (a.block?.size || 0);
-    // BitLocker: Agama nie zajrzy do środka, więc rozpoznajemy go po typie (nazwa zależy od wersji libstorage-ng).
-    const locked = parts.filter((p) => /bitlocker/i.test(JSON.stringify([p.filesystem, p.encryption, p.block?.systems]))).sort(bySize)[0];
+    // BitLocker: Agama nie zajrzy do środka, więc rozpoznajemy go po typie (isBitlocker).
+    const locked = parts.filter(isBitlocker).sort(bySize)[0];
     const win = parts
       .filter((p) => p.filesystem?.type === "ntfs" && (p.block?.systems || []).some((s) => /windows/i.test(s)))
       .sort(bySize)[0] || locked;
@@ -82,6 +102,7 @@ export function disksFromSystem(sys: ASystem): Disk[] {
     }
     return disk;
   });
+  return disks.sort((a, b) => Number(!!b.windows) - Number(!!a.windows) || b.sizeGB - a.sizeGB);
 }
 
 /** Plan Setup → konfiguracja Agamy (PUT /api/config). Czysta funkcja. */
@@ -160,7 +181,19 @@ export class AgamaBackend implements InstallBackend {
     const ids = new Set(((await this.system()).l10n?.keymaps || []).map((k) => k.id));
     return ids.size ? KEYBOARDS.filter((k) => ids.has(k.keymap)) : KEYBOARDS;
   }
-  async disks(): Promise<Disk[]> { return disksFromSystem(await this.system()); }
+  private disksRead = false;
+  async disks(): Promise<Disk[]> {
+    // Drugi odczyt (przycisk „Spróbuj ponownie” w oknie „Nie widzę dysku”) pyta Agamę od nowa.
+    const sys = this.disksRead ? await get<ASystem>("/api/system") : await this.system();
+    this.disksRead = true;
+    const disks = disksFromSystem(sys);
+    // Do dziennika (journalctl --user): co widzi Agama, gdy na sprzęcie coś nie gra.
+    console.log("shrimp-setup: dyski Agamy", JSON.stringify((sys.storage?.devices || []).map((d) => ({
+      name: d.name, size: d.block?.size, live: isLiveMedium(d),
+      parts: (d.partitions || []).map((p) => [p.name, p.block?.size, p.filesystem?.type, p.filesystem?.label, p.block?.encrypted, p.partition?.id, p.description]),
+    }))), "→ Setup", JSON.stringify(disks));
+    return disks;
+  }
 
   async setLanguage(locale: string) {
     await call("POST", "/api/action", { configureL10n: { locale } });
@@ -183,6 +216,7 @@ export class AgamaBackend implements InstallBackend {
     await call("PUT", "/api/config", configFromPlan(plan));
     await this.settle();
     const issues = blockingIssues(await get<AIssue[]>("/api/issues"));
+    if (issues.length) console.log("shrimp-setup: problemy Agamy", JSON.stringify(issues));
     const storage = issues.filter((i) => i.scope === "storage");
     if (storage.length) throw new InstallError("space", storage.map((i) => i.description).join("; "));
     if (issues.length) throw new InstallError("install", issues.map((i) => i.description).join("; "));

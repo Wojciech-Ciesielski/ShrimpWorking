@@ -67,6 +67,11 @@ button, input { font: inherit; color: inherit; }
 .dcap { margin-top: 1.2cqw; font-size: max(12px, 1.3cqw); color: var(--s-dim); }
 .opt { position: relative; display: flex; align-items: baseline; justify-content: center; gap: 1.2cqw; border: 0; background: transparent; padding: 0.5cqw 1cqw; cursor: pointer; font-size: max(15px, 1.9cqw); line-height: 1.3; color: var(--s-dim); }
 .opt:hover { color: var(--s-fg); }
+/* Listy przewijane (język, kraj, klawiatura): bez 0,7 s przejścia koloru z .screen *, bo zaznaczenie
+   zostawało w tyle za strzałką przy szybkim ruchu, a podświetlenie pod kursorem udawało zaznaczenie. */
+.list.scroll .opt, .list.scroll .opt * { transition: none; }
+.list.scroll .opt:not(.sel):hover { color: color-mix(in srgb, var(--s-fg) 55%, var(--s-dim)); }
+.list.scroll { overscroll-behavior: contain; }
 .opt:disabled { opacity: 0.45; cursor: default; color: var(--s-dim); }
 .opt .t { position: relative; display: inline-flex; align-items: center; gap: 0.7cqw; }
 .opt .mk { position: absolute; right: 100%; top: 50%; margin: -0.5em 0.9cqw 0 0; opacity: 0; color: var(--s-acc, var(--s-fg)); font-size: max(15px, 1.9cqw); }

@@ -96,11 +96,12 @@ export function klidToXkb(klid: string, known: string[]): string | null {
 export interface Prefill { lang: number; region: number; kb: number; full: string; user: string }
 
 /** Wartości kroków 1–6 z Shrimp Install. -1: brak podpowiedzi (zostaje domyślna). */
-export function prefill(t: Transfer, langs: Lang[], regs: Region[], kbs: Keyboard[]): Prefill {
-  const raw = t.locale?.language || t.locale?.format || "";
+/** Język z Windows (pl-PL, sr-Latn-RS, de…) → indeks na liście języków GNOME albo -1. */
+export function langIndex(raw: string | undefined, langs: Lang[]): number {
+  if (!raw) return -1;
   const lc = raw.replace("-", "_");
-  let lang = lc ? langs.findIndex((l) => l.locale.startsWith(lc + ".")) : -1;
-  if (lang < 0 && raw) {
+  let lang = langs.findIndex((l) => l.locale.startsWith(lc + "."));
+  if (lang < 0) {
     // Inny zapis (sr-Latn-RS, zh-Hant-TW) albo język bez tego kraju: najlepsze dopasowanie z listy języków GNOME.
     const tag = resolveTag(raw), country = /[-_]([A-Za-z]{2})\b/.exec(raw)?.[1]?.toUpperCase();
     if (tag) {
@@ -108,6 +109,21 @@ export function prefill(t: Transfer, langs: Lang[], regs: Region[], kbs: Keyboar
       if (lang < 0) lang = langs.findIndex((l) => l.tag === tag);
     }
   }
+  return lang;
+}
+
+/** Domyślny język instalacji: z Windows (shrimp.json), potem język menu GRUB zapisany przez Shrimp Install
+ *  (też z Windows), na końcu angielski. Nigdy język sesji live, bo obraz ISO ma na sztywno pl_PL. */
+export function installLang(t: Transfer | null, langs: Lang[]): number {
+  for (const raw of [t?.locale?.language, t?.locale?.format, t?.grubLang, "en-US", "en"]) {
+    const i = langIndex(raw, langs);
+    if (i >= 0) return i;
+  }
+  return 0;
+}
+
+export function prefill(t: Transfer, langs: Lang[], regs: Region[], kbs: Keyboard[]): Prefill {
+  const lang = langIndex(t.locale?.language || t.locale?.format || "", langs);
   const tz = t.locale?.timezone ? TZ_ALIAS[t.locale.timezone] || t.locale.timezone : lang >= 0 ? defaultTz(langs[lang].locale) : undefined;
   const region = tz ? regs.findIndex((r) => r.tz === tz) : -1;
   const keys = kbs.map((k) => k.keymap);
