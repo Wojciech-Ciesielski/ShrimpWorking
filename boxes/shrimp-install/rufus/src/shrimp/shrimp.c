@@ -127,6 +127,7 @@ void ShrimpLogEvent(const char* json)
 /* ---------- argumenty ---------- */
 void ShrimpInit(void)
 {
+	const wchar_t* shrink_test[2] = { NULL, NULL };
 	int argc = 0;
 	wchar_t** argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 	for (int i = 1; argv != NULL && i < argc; i++) {
@@ -146,8 +147,11 @@ void ShrimpInit(void)
 			WideCharToMultiByte(CP_UTF8, 0, argv[++i], -1, opt_screen, sizeof(opt_screen), NULL, NULL);
 		else if (v != NULL && wcscmp(a, L"--lang") == 0)
 			WideCharToMultiByte(CP_UTF8, 0, argv[++i], -1, opt_lang, sizeof(opt_lang), NULL, NULL);
-		else if (i + 2 < argc && wcscmp(a, L"--shrink-test") == 0)
-			ExitProcess(ShrimpShrinkTest(argv[i + 1], argv[i + 2]));
+		else if (i + 2 < argc && wcscmp(a, L"--shrink-test") == 0) {
+			/* Po otwarciu dziennika (przebieg zmniejszania ma być w nim widoczny). */
+			shrink_test[0] = argv[++i];
+			shrink_test[1] = argv[++i];
+		}
 		else if (i + 3 < argc && wcscmp(a, L"--backup-test") == 0)
 			ExitProcess(ShrimpUsbBackupTest(argv[i + 1], argv[i + 2], argv[i + 3]));
 		else if (v != NULL && wcscmp(a, L"--theme") == 0)
@@ -155,11 +159,13 @@ void ShrimpInit(void)
 		else if (v != NULL && wcscmp(a, L"--auto-disk") == 0)
 			opt_auto_disk = _wtoi(argv[++i]);
 	}
-	LocalFree(argv);
 	if (shrimp_mode && !opt_collect[0]) {
 		log_open();
 		uprintf("Shrimp Install %s", SHRIMP_VERSION);
 	}
+	if (shrink_test[0] != NULL)
+		ExitProcess(ShrimpShrinkTest(shrink_test[0], shrink_test[1]));
+	LocalFree(argv);
 }
 
 /* ---------- odpowiedzi i zdarzenia ---------- */

@@ -60,7 +60,10 @@ static BOOL read_small(const char* path, char* out, size_t n)
 /* Uruchamia skrypt PowerShell; wynik (stdout skryptu zapisany przez Set-Content) w out, błąd w err. Kod wyjścia. */
 static DWORD run_ps(const char* script_fmt, char letter, uint64_t arg, char* out, size_t nout, char* err, size_t nerr)
 {
-	char tmp[MAX_PATH], res[MAX_PATH], res_err[MAX_PATH], q[2 * MAX_PATH], qe[2 * MAX_PATH], script[2048], cmd[4096];
+	char sys[MAX_PATH], tmp[MAX_PATH], res[MAX_PATH], res_err[MAX_PATH], q[2 * MAX_PATH], qe[2 * MAX_PATH], script[2048], cmd[4096];
+	/* Własna ścieżka systemu: --shrink-test działa, zanim Rufus ustawi system_dir. */
+	if (GetSystemDirectoryU(sys, sizeof(sys)) == 0)
+		static_strcpy(sys, "C:\\Windows\\System32");
 	GetTempPathU(sizeof(tmp), tmp);
 	static_sprintf(res, "%sshrimp-space-%lu.txt", tmp, GetCurrentProcessId());
 	static_sprintf(res_err, "%s.err", res);
@@ -72,8 +75,10 @@ static DWORD run_ps(const char* script_fmt, char letter, uint64_t arg, char* out
 	static_sprintf(script, script_fmt, letter, (unsigned long long)arg, q);
 	static_sprintf(cmd, "%s\\WindowsPowerShell\\v1.0\\powershell.exe -NoProfile -NonInteractive -WindowStyle Hidden -Command "
 		"\"$ErrorActionPreference = 'Stop'; try { %s } catch { $_.Exception.Message | Set-Content -Encoding utf8 -LiteralPath '%s'; exit 5 }\"",
-		system_dir, script, qe);
+		sys, script, qe);
 	DWORD r = RunCommand(cmd, NULL, FALSE);
+	if (r != 0)
+		uprintf("Shrimp: PowerShell zakończył się kodem %lu", r);
 	if (out != NULL)
 		read_small(res, out, nout);
 	if (err != NULL && !read_small(res_err, err, nerr))
