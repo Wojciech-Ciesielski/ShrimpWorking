@@ -1,7 +1,7 @@
 #!/bin/bash
 # Instaluje „jeden wygląd aplikacji” (shrimp-app-style i jego usługi) do DESTDIR (obraz KIWI, pakiet, test).
 #   boxes/app-style/install.sh DESTDIR
-# Włączenie usług w obrazie: Linu(x) (boxes/linu-x, build/30-app-style.sh).
+# Usługi włącza shrimp-box ([image] enable w box.toml), nadpisania globalne configure.sh.
 set -euo pipefail
 D=${1:?użycie: install.sh DESTDIR}
 HERE=$(cd "$(dirname "$0")" && pwd)

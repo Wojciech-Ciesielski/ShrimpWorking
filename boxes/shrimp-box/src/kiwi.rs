@@ -56,7 +56,7 @@ pub fn config_sh(repo: &Repo, container: &str, members: &[Member], repo_url: &st
          test -f /.kconfig && . /.kconfig\n\
          test -f /.profile && . /.profile\n\n\
          die() {{ echo \"config.sh: $*\" >&2; exit 1; }}\n\
-         SHRIMP_CONTAINER={}\n\
+         export SHRIMP_CONTAINER={}\n\
          SHRIMP_REPO={}\n",
         sh_quote(container),
         sh_quote(repo_url.trim_end_matches('/'))
@@ -75,6 +75,16 @@ pub fn config_sh(repo: &Repo, container: &str, members: &[Member], repo_url: &st
         ));
         s.push_str(text.trim_end_matches('\n'));
         s.push('\n');
+    }
+    // usługi z `[image] enable` / `user_enable`: na końcu, gdy wszystkie pliki są już w obrazie
+    for m in members {
+        let img = &repo.get(&m.id)?.file.image;
+        if !img.enable.is_empty() {
+            s.push_str(&format!("systemctl enable {}  # box {}\n", img.enable.join(" "), m.id));
+        }
+        if !img.user_enable.is_empty() {
+            s.push_str(&format!("systemctl --global enable {}  # box {}\n", img.user_enable.join(" "), m.id));
+        }
     }
     s.push_str("\nexit 0\n");
     Ok(s)
@@ -137,7 +147,7 @@ pub fn describe(repo: &Repo, container: &str, out: &Path, repo_url: &str) -> Res
             }
         }
     }
-    write_manifests(repo, container, &out.join("root"))?;
+    write_manifests(repo, container, &out.join("root"), &Installed::new())?;
     Ok(owner.len())
 }
 
@@ -156,11 +166,15 @@ fn container_tree(repo: &Repo, id: &str, out: &mut Vec<String>) -> Result<(), St
     Ok(())
 }
 
+/// Pliki położone przez `install.sh` każdego boxa (ścieżki bezwzględne w obrazie), z `make::build`.
+pub type Installed = BTreeMap<String, Vec<String>>;
+
 /// Dla kontenera obrazu i każdego dołączonego (np. desktop w iso-live) zapisuje w obrazie
-/// `<id>.packages` (pakiety RPM `[packages] image` jego boxów) i `<id>.files` (pliki nakładek root/,
-/// ścieżki bezwzględne). Instalator (post-install Setup) dokłada z nich do zainstalowanego systemu
-/// to, czego Agama nie instaluje z repozytorium, żeby pulpit po instalacji był taki jak na nośniku.
-pub fn write_manifests(repo: &Repo, container: &str, root: &Path) -> Result<(), String> {
+/// `<id>.packages` (pakiety RPM `[packages] image` jego boxów), `<id>.files` (pliki nakładek root/
+/// i pliki z `install.sh`, ścieżki bezwzględne) i `<id>.units` (`system|user <usługa>` z `[image] enable`).
+/// Instalator (post-install Setup) dokłada z nich do zainstalowanego systemu to, czego Agama nie
+/// instaluje z repozytorium, żeby pulpit po instalacji był taki jak na nośniku.
+pub fn write_manifests(repo: &Repo, container: &str, root: &Path, installed: &Installed) -> Result<(), String> {
     let mut ids = Vec::new();
     container_tree(repo, container, &mut ids)?;
     let dir = root.join(MANIFEST_DIR);
@@ -168,9 +182,13 @@ pub fn write_manifests(repo: &Repo, container: &str, root: &Path) -> Result<(), 
     for id in ids {
         let mut pkgs = std::collections::BTreeSet::new();
         let mut files = std::collections::BTreeSet::new();
+        let mut units = Vec::new();
         for m in graph::members(repo, &id)? {
             let b = repo.get(&m.id)?;
             pkgs.extend(b.file.packages.image.iter().cloned());
+            files.extend(installed.get(&m.id).into_iter().flatten().cloned());
+            units.extend(b.file.image.enable.iter().map(|u| format!("system {u}\n")));
+            units.extend(b.file.image.user_enable.iter().map(|u| format!("user {u}\n")));
             if let Some(overlay) = b.root_overlay(&repo.root) {
                 for rel in fsx::files(&repo.root.join(&overlay))? {
                     files.insert(format!("/{}", rel.to_string_lossy()));
@@ -180,6 +198,7 @@ pub fn write_manifests(repo: &Repo, container: &str, root: &Path) -> Result<(), 
         let join = |set: std::collections::BTreeSet<String>| set.into_iter().map(|l| l + "\n").collect::<String>();
         fs::write(dir.join(format!("{id}.packages")), join(pkgs)).map_err(|e| e.to_string())?;
         fs::write(dir.join(format!("{id}.files")), join(files)).map_err(|e| e.to_string())?;
+        fs::write(dir.join(format!("{id}.units")), units.concat()).map_err(|e| e.to_string())?;
     }
     Ok(())
 }
@@ -200,4 +219,52 @@ pub fn overlay_conflicts(repo: &Repo, container: &str) -> Result<Vec<String>, St
         }
     }
     Ok(out)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::make;
+    use std::os::unix::fs::PermissionsExt;
+
+    fn write(p: &Path, text: &str) {
+        fs::create_dir_all(p.parent().unwrap()).unwrap();
+        fs::write(p, text).unwrap();
+    }
+
+    /// Mały repo: box `app` instaluje plik i ma usługi, box `theme` ma nakładkę root/.
+    #[test]
+    fn manifests_list_overlay_and_installed_files_and_units() {
+        let t = std::env::temp_dir().join(format!("shrimp-box-test-{}", std::process::id()));
+        let _ = fs::remove_dir_all(&t);
+        write(&t.join("containers/desktop.toml"), "[container]\nid = \"desktop\"\nboxes = [\"theme\", \"app\"]\n");
+        write(&t.join("boxes/theme/box.toml"), "[box]\nid = \"theme\"\nversion = \"0.1.0\"\nkind = \"theme\"\n");
+        write(&t.join("boxes/theme/root/usr/share/theme.txt"), "x");
+        write(
+            &t.join("boxes/app/box.toml"),
+            "[box]\nid = \"app\"\nversion = \"0.1.0\"\nkind = \"app\"\n[build]\ninstall = \"install.sh\"\n\
+             [image]\nenable = [\"app.timer\"]\nuser_enable = [\"app-user.service\"]\n",
+        );
+        let inst = t.join("boxes/app/install.sh");
+        write(&inst, "#!/bin/sh\nmkdir -p \"$1/usr/bin\" && echo app > \"$1/usr/bin/app\"\n");
+        fs::set_permissions(&inst, fs::Permissions::from_mode(0o755)).unwrap();
+
+        let repo = Repo::load(&t);
+        assert!(repo.load_errors.is_empty(), "{:?}", repo.load_errors);
+        let root = t.join("root");
+        fs::create_dir_all(&root).unwrap();
+        let opts = make::Opts { repo_url: None, buildroot: t.join("br"), dry_run: false };
+        let installed = make::build(&repo, "desktop", &root, &opts).unwrap();
+        assert_eq!(installed["app"], ["/usr/bin/app"]);
+        write_manifests(&repo, "desktop", &root, &installed).unwrap();
+        let m = root.join(MANIFEST_DIR);
+        assert_eq!(fs::read_to_string(m.join("desktop.files")).unwrap(), "/usr/bin/app\n/usr/share/theme.txt\n");
+        assert_eq!(fs::read_to_string(m.join("desktop.units")).unwrap(), "system app.timer\nuser app-user.service\n");
+
+        let members = graph::order(&repo, "desktop").unwrap();
+        let sh = config_sh(&repo, "desktop", &members, "").unwrap();
+        assert!(sh.contains("systemctl enable app.timer"), "{sh}");
+        assert!(sh.contains("systemctl --global enable app-user.service"), "{sh}");
+        let _ = fs::remove_dir_all(&t);
+    }
 }

@@ -26,3 +26,6 @@ build = [
 chroot = "cargo build --release --locked"
 outputs = ["target/release/panko"]
 install = "install.sh"
+
+[image]
+enable = ["panko-cleanup.timer"]

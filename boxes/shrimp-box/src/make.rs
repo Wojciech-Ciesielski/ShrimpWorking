@@ -3,6 +3,7 @@
 
 use crate::fsx;
 use crate::graph::{self, Member};
+use crate::kiwi::Installed;
 use crate::model::Repo;
 use std::collections::BTreeSet;
 use std::fs;
@@ -70,7 +71,8 @@ pub fn chroot_packages(repo: &Repo, members: &[Member]) -> Result<Vec<String>, S
     Ok(set.into_iter().collect())
 }
 
-pub fn build(repo: &Repo, container: &str, dest: &Path, opts: &Opts) -> Result<(), String> {
+/// Buduje kontener do `dest`. Zwraca pliki, które położył `install.sh` każdego boxa (nowe ścieżki w `dest`).
+pub fn build(repo: &Repo, container: &str, dest: &Path, opts: &Opts) -> Result<Installed, String> {
     let members = graph::order(repo, container)?;
     let run = Runner { dry: opts.dry_run };
     let chrooted: Vec<&Member> = members.iter().filter(|m| repo.boxes[&m.id].file.build.chroot.is_some()).collect();
@@ -147,9 +149,11 @@ pub fn build(repo: &Repo, container: &str, dest: &Path, opts: &Opts) -> Result<(
         }
     }
 
+    let mut installed = Installed::new();
     for m in &members {
         let b = repo.get(&m.id)?;
         let Some(script) = &b.file.build.install else { continue };
+        let before: BTreeSet<PathBuf> = if opts.dry_run { BTreeSet::new() } else { fsx::files(dest)?.into_iter().collect() };
         println!("== box {}: {script} {}", m.id, m.args.join(" "));
         let mut cmd = Command::new(repo.root.join(&b.dir).join(script));
         cmd.arg(dest).args(&m.args).current_dir(&repo.root);
@@ -157,6 +161,10 @@ pub fn build(repo: &Repo, container: &str, dest: &Path, opts: &Opts) -> Result<(
             cmd.env("SHRIMP_PREBUILT", "1");
         }
         run.run(&mut cmd)?;
+        if !opts.dry_run {
+            let new = fsx::files(dest)?.into_iter().filter(|p| !before.contains(p));
+            installed.insert(m.id.clone(), new.map(|p| format!("/{}", p.to_string_lossy())).collect());
+        }
     }
-    Ok(())
+    Ok(installed)
 }

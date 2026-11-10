@@ -1,5 +1,5 @@
 # Wspólne dla skryptów build/*.sh (uruchamiane w chroot obrazu przez boxes/linu-x/configure.sh).
-. /usr/share/shrimp/linux/linux.conf
+. /usr/share/shrimp/linux/drivers.conf
 warn() { echo "WARNING: Linu(x): $*" >&2; }
 note() { echo "Linu(x): $*" >&2; }
 ZYP=(zypper --non-interactive --gpg-auto-import-keys)

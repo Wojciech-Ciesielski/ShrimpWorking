@@ -15,7 +15,7 @@ done
 STATE=${SHRIMP_STATE:-/var/lib/shrimp-setup}
 [ -f "$STATE/first-boot" ] || { echo "pierwsza konfiguracja już zakończona" >&2; exit 1; }
 # shellcheck source=/dev/null
-. "${SHRIMP_DRIVERS_CONF:-/usr/share/shrimp-setup/drivers.conf}"
+. "${SHRIMP_DRIVERS_CONF:-/usr/share/shrimp/linux/drivers.conf}"
 
 # Pierwsza karta NVIDIA: identyfikator urządzenia PCI (np. 0x2504) albo pusto.
 nvidia_device() {
@@ -28,7 +28,16 @@ nvidia_device() {
 secure_boot() { mokutil --sb-state 2>/dev/null | grep -qi "SecureBoot enabled"; }
 
 PKGS=()
-[ "$CODECS" = yes ] && read -ra PKGS <<<"$CODEC_PACKAGES"
+if [ "$CODECS" = yes ]; then
+  read -ra PKGS <<<"$CODEC_PACKAGES $OPENH264_PACKAGES"
+  # openh264 od Cisco: repozytorium dokłada zwykle openSUSE-repos-Leap; gdy go nie ma, dodajemy je wprost.
+  read -r H264 _ <<<"$OPENH264_PACKAGES"
+  if ! zypper --non-interactive --quiet search --match-exact "$H264" >/dev/null 2>&1; then
+    zypper --non-interactive addrepo --refresh "$OPENH264_REPO_URL" "$OPENH264_REPO_ALIAS" >&2 \
+      && zypper --non-interactive --gpg-auto-import-keys refresh "$OPENH264_REPO_ALIAS" >&2 \
+      || echo "shrimp-setup-apply: repozytorium openh264 niedostępne" >&2
+  fi
+fi
 
 # Polecenia wykonywane w nowej migawce (transactional-update run), wszystko naraz.
 NV_SCRIPT=""
@@ -49,17 +58,19 @@ zypper --non-interactive install --no-recommends $NVIDIA_REPO_PACKAGE \\
   || zypper --non-interactive addrepo --refresh "$NVIDIA_REPO_URL" $NVIDIA_REPO_ALIAS || true
 zypper --non-interactive --gpg-auto-import-keys refresh
 pick() { for p in "\$@"; do zypper --non-interactive --quiet search --match-exact "\$p" >/dev/null 2>&1 && echo "\$p"; done; }
+# usługi uśpienia sterownika (bez nich GDM nie włącza Waylanda na NVIDIA); opcje: 61-shrimp-nvidia.conf
+services() { for u in $NVIDIA_SERVICES; do systemctl enable "\$u" 2>/dev/null || true; done; }
 if [ $NV_KIND = open ]; then
   for S in $NVIDIA_OPEN_SERIES; do
     P=\$(echo "$NVIDIA_OPEN_PACKAGES" | sed "s/@S@/\$S/g")
     set -- \$P
     if zypper --non-interactive --quiet search --match-exact "\$1" >/dev/null 2>&1; then
-      zypper --non-interactive install --auto-agree-with-licenses \$(pick \$P); exit 0
+      zypper --non-interactive install --auto-agree-with-licenses \$(pick \$P); services; exit 0
     fi
   done
   echo "brak pakietów otwartego sterownika NVIDIA" >&2; exit 1
 else
-  zypper --non-interactive install --auto-agree-with-licenses \$(pick $NVIDIA_LEGACY_PACKAGES)
+  zypper --non-interactive install --auto-agree-with-licenses \$(pick $NVIDIA_LEGACY_PACKAGES); services
 fi
 SCRIPT
 )

@@ -4,7 +4,7 @@ id = "setup"
 version = "0.1.0"
 kind = "app"
 summary = "Shrimp Setup: instalator (Agama) i pierwsza konfiguracja, okno GTK4 + WebKitGTK"
-depends = ["app-style"]
+depends = ["linu-x"]   # drivers.conf: pakiety kroku „Obraz i dźwięk”
 build_depends = ["i18n-core", "install-schema"]
 ci = "setup"
 

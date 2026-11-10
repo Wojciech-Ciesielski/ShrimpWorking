@@ -1,6 +1,6 @@
 #!/bin/bash
 # Shrimp w /etc/os-release (GNOME Ustawienia › O systemie, hostnamectl, zgłoszenia błędów).
-# Uruchamiane przez kiwi/config.sh dla obrazu i przez post-install Setup dla zainstalowanego systemu.
+# Uruchamiane przez configure.sh boxa branding dla obrazu i przez post-install Setup dla zainstalowanego systemu.
 #   shrimp-os-release [ROOT]     (domyślnie /)
 # ID, ID_LIKE, VERSION_ID i CPE_NAME zostają z openSUSE: od nich zależy zgodność pakietów i skryptów.
 # Adresy openSUSE (HOME_URL, BUG_REPORT_URL, DOCUMENTATION_URL, SUPPORT_URL) są usuwane, bo prowadziły

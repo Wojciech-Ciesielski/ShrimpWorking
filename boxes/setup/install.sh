@@ -19,7 +19,6 @@ install -d "$D/usr/share/shrimp-setup/ui"
 cp -a "$HERE/web/dist/." "$D/usr/share/shrimp-setup/ui/"
 install -Dm755 "$HERE/system/share/post-install.sh" "$D/usr/share/shrimp-setup/post-install.sh"
 install -Dm644 "$HERE/system/share/remove-packages.txt" "$D/usr/share/shrimp-setup/remove-packages.txt"
-install -Dm644 "$HERE/system/share/drivers.conf" "$D/usr/share/shrimp-setup/drivers.conf"
 install -Dm755 "$HERE/system/libexec/shrimp-setup-apply" "$D/usr/libexec/shrimp-setup-apply"
 install -Dm755 "$HERE/system/libexec/shrimp-usb-backup" "$D/usr/libexec/shrimp-usb-backup"
 install -Dm644 "$HERE/system/polkit/org.shrimp.setup.policy" "$D/usr/share/polkit-1/actions/org.shrimp.setup.policy"
@@ -31,8 +30,7 @@ install -Dm644 "$HERE/system/agama/shrimp.yaml" "$D/usr/share/agama/products.d/s
 install -d "$D/usr/share/gnome-shell/extensions"
 cp -a "$HERE/system/gnome-shell/shrimp-setup-guard@shrimp" "$D/usr/share/gnome-shell/extensions/"
 chmod -R a+rX "$D/usr/share/gnome-shell/extensions/shrimp-setup-guard@shrimp"
-# Jeden wygląd aplikacji (shrimp-app-style) to osobny box: boxes/app-style.
-
+# Pakiety kodeków i NVIDIA (drivers.conf) daje box linu-x, wygląd aplikacji box app-style.
 
 if [ "$LIVE" = --live ]; then
   install -Dm644 "$HERE/system/autostart/shrimp-setup-install.desktop" "$D/etc/xdg/autostart/shrimp-setup-install.desktop"
