@@ -158,8 +158,11 @@ DWORD WINAPI ShrimpDiskThread(LPVOID param)
 	jb b;
 	char sys[MAX_PATH] = "C:";
 	(void)param;
+	shrimp_disk d;
 	GetEnvironmentVariableA("SystemDrive", sys, sizeof(sys));
-	ShrimpDiskQuery(sys[0], &ShrimpDisk);
+	/* Najpierw do zmiennej lokalnej: „info” w tym czasie nie widzi wypełnionego w połowie ShrimpDisk. */
+	ShrimpDiskQuery(sys[0], &d);
+	ShrimpDisk = d;
 	jb_init(&b);
 	jb_obj(&b, NULL);
 	jb_str(&b, "event", "disk");

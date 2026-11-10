@@ -90,13 +90,16 @@ export function disksFromSystem(sys: ASystem): Disk[] {
       .sort(bySize)[0] || locked;
     const disk: Disk = { device: d.name, name, sizeGB };
     if (win && win.block) {
-      const free = (d.partitionTable?.unusedSlots || []).reduce((s, u) => s + u.size, 0);
+      const slots = d.partitionTable?.unusedSlots || [];
+      const free = slots.reduce((s, u) => s + u.size, 0);
+      const largest = slots.reduce((m, u) => Math.max(m, u.size), 0);
       const shrink = win.block.shrinking;
       const used = shrink?.supported && shrink.minSize ? shrink.minSize : win.block.size;
       disk.windows = {
         partition: win.name,
         minGB: Math.ceil(used / GB) + WINDOWS_SPARE_GB,
         poolGB: Math.floor((win.block.size + free) / GB),
+        freeGB: Math.floor(largest / GB),
         ...(win === locked ? { bitlocker: true } : {}),
       };
     }
@@ -109,9 +112,10 @@ export function disksFromSystem(sys: ASystem): Disk[] {
 export function configFromPlan(plan: InstallPlan, extra: { files?: unknown[]; scripts?: unknown } = {}) {
   const encryption = plan.diskPassword ? { luks2: { password: plan.diskPassword } } : undefined;
   const generate = { generate: { partitions: "default", ...(encryption ? { encryption } : {}) } };
+  // „Obok Windows” bez windowsGB: Shrimp w wolnym miejscu (zrobionym np. przez Shrimp Install), Windows bez zmian.
   const partitions: unknown[] =
     plan.place === "beside" && plan.disk.windows
-      ? [{ search: plan.disk.windows.partition, size: `${plan.windowsGB} GB` }, generate]
+      ? plan.windowsGB === undefined ? [generate] : [{ search: plan.disk.windows.partition, size: `${plan.windowsGB} GB` }, generate]
       : [{ search: "*", delete: true }, generate];
   return {
     product: PRODUCT,

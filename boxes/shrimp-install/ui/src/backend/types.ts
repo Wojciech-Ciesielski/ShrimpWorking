@@ -27,6 +27,21 @@ export interface Picked {
   size: number;
 }
 
+/** Dysk z Windows (partycja systemowa, zwykle C:), z PowerShella: Get-Partition, Get-PartitionSupportedSize, Get-Disk. */
+export interface WinDisk {
+  /** false: Windows nie podał rozmiarów (wtedy tylko „Zamiast Windows”). */
+  ok: boolean;
+  letter: string;
+  /** Rozmiar partycji. */
+  size: number;
+  /** Najmniejszy rozmiar, do jakiego Windows ją zmniejszy. */
+  min: number;
+  /** Cały dysk. */
+  disk: number;
+  /** Największy nieprzydzielony obszar na dysku. */
+  free: number;
+}
+
 export interface Info {
   /** Dysk z Windows zaszyfrowany BitLockerem. */
   bitlocker: boolean;
@@ -35,11 +50,14 @@ export interface Info {
   /** Minimalny rozmiar nośnika. */
   minSize: number;
   folders: Folder[];
+  /** Dysk z Windows, gdy program już go sprawdził (inaczej przychodzi zdarzeniem, onDisk). */
+  disk?: WinDisk;
   /** Adres strony pomocy z manifestu wydania (https://…); bez niego działa wpis z boxes/help-links/help.json. */
   helpUrl?: string;
 }
 
-export type Phase = 1 | 2 | 3;
+/** 1 pobieranie, 2 zapis nośnika, 3 kopia plików, 4 miejsce dla Shrimp na dysku z Windows (tylko „Obok Windows”). */
+export type Phase = 1 | 2 | 3 | 4;
 
 export interface Progress {
   phase: Phase;
@@ -52,7 +70,7 @@ export interface Progress {
   step?: "verify" | "prepare" | "backup";
 }
 
-export type FailKind = "offline" | "verify" | "write" | "copy" | "space" | "device" | "busy" | "question" | "other";
+export type FailKind = "offline" | "verify" | "write" | "copy" | "space" | "device" | "busy" | "question" | "shrink" | "other";
 export interface Failure { phase: Phase; kind: FailKind; message?: string }
 
 export interface Plan {
@@ -79,6 +97,12 @@ export interface Backend {
   onFolders(cb: (f: Folder[]) => void): void;
   /** Wynik sprawdzenia BitLockera przychodzi chwilę po starcie. */
   onBitLocker(cb: (on: boolean) => void): void;
+  /** Rozmiary dysku z Windows (sprawdzanie trwa do kilkudziesięciu sekund). */
+  onDisk(cb: (d: WinDisk) => void): void;
+  /** Ile bajtów wolnego miejsca zrobić dla Shrimp na dysku z Windows (faza 4); 0: „Zamiast Windows”. Przed start. */
+  setSpace(bytes: number): Promise<void>;
+  /** Ponawia samą fazę 4 po błędzie (nośnik jest gotowy); wynik przez zdarzenia z start. */
+  retryShrink(): void;
   /** Alt+F4 albo zamknięcie z paska zadań w trakcie przygotowania. */
   onCloseRequest(cb: () => void): void;
   pick(kind: "folder" | "file"): Promise<Picked[]>;

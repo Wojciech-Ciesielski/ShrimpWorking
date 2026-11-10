@@ -7,11 +7,13 @@ To fork Rufusa 4.16 (GPLv3). Kod Rufusa leży w `rufus/` bez zmian (pierwszy com
 ## Jak to działa
 
 ```
-Start → Nośnik → Pliki → Przygotuj nośnik
-          │        │            │
-          │        │            ├─ 1. Pobieranie Shrimp   manifest → ISO → SHA-256 (+ podpis manifestu)
-          │        │            ├─ 2. Zapis na nośniku    Rufus: GPT, UEFI, FAT32, tryb ISO (pliki)
-          │        │            └─ 3. Kopiowanie plików   shrimp-transfer/files/…, shrimp.json
+Start → Nośnik → Pliki → Miejsce → Przygotuj nośnik
+          │        │        │            │
+          │        │        │            ├─ 1. Pobieranie Shrimp   manifest → ISO → SHA-256 (+ podpis manifestu)
+          │        │        │            ├─ 2. Zapis na nośniku    Rufus: GPT, UEFI, FAT32, tryb ISO (pliki)
+          │        │        │            ├─ 3. Kopiowanie plików   shrimp-transfer/files/…, shrimp.json
+          │        │        │            └─ 4. Miejsce dla Shrimp  tylko „Obok Windows”: Windows zmniejsza C: (space.c)
+          │        │        └─ „Obok Windows” (suwak podziału dysku) albo „Zamiast Windows”
           │        └─ foldery profilu albo wybrane pliki i foldery
           └─ pendrive'y, karty SD, dyski zewnętrzne USB (≥ 16 GB); dysków wewnętrznych Rufus nie pokazuje
 Gotowe → Uruchom ponownie: wpis UEFI „Shrimp Install” + BootNext (jednorazowo), wyłączone szybkie uruchamianie, restart
@@ -37,6 +39,7 @@ Interfejs to strona w WebView2 (`ui/`, TypeScript), zbudowana do jednego pliku H
 | Przebieg, punkty zaczepienia w Rufusie | `rufus/src/shrimp/shrimp.c` |
 | Pobieranie i weryfikacja ISO | `rufus/src/shrimp/fetch.c` |
 | Kopia plików, `shrimp.json` | `rufus/src/shrimp/transfer.c`, `rufus/src/shrimp/collect.c` |
+| Miejsce obok Windows (zmniejszenie C:) | `rufus/src/shrimp/space.c` |
 | BootNext, szybkie uruchamianie, restart | `rufus/src/shrimp/boot.c` |
 
 Zmiany w kodzie Rufusa (wszystkie oznaczone `SHRIMP`):
@@ -53,16 +56,26 @@ Interfejs wysyła tekst `id⇥wywołanie⇥argumenty…` (ścieżki Windows nie 
 
 | Wywołanie | Argumenty | Wynik |
 |---|---|---|
-| `info` | | `{ bitlocker, shrimpSize, minSize, folders: [{ key, path, size }], helpUrl? }` |
+| `info` | | `{ bitlocker, shrimpSize, minSize, folders: [{ key, path, size }], disk?, helpUrl? }` |
 | `devices` | | `[{ id, name, kind, size }]` |
 | `pick` | `folder` \| `file` | `[{ path, name, kind, size }]` (okno wyboru Windows) |
+| `space` | bajty miejsca dla Shrimp na dysku z Windows (0: „Zamiast Windows”) | `null`; przed `start` albo przed `shrink` |
 | `start` | nośnik, klucze folderów po przecinku, ścieżki… | od razu `null`, dalej zdarzenia |
+| `shrink` | | ponawia samą fazę 4 po jej błędzie (nośnik gotowy): `null`, dalej zdarzenia; inaczej błąd `busy` |
 | `cancel` | | `null` po zatrzymaniu |
 | `reboot` | | `null` albo błąd z opisem dla użytkownika |
 | `open` | adres `https://…` | bez odpowiedzi; program otwiera stronę w przeglądarce (odrzuca wszystko poza https i zwykłymi znakami adresu) |
 | `later`, `close`, `minimize`, `drag` | | bez odpowiedzi |
 
-Zdarzenia: `devices`, `folders` (rozmiary liczone w tle), `bitlocker`, `progress { phase 1–3, done, total, speed, step? }` (`step`: `verify` — suma obrazu pobranego wcześniej, `prepare` — analiza obrazu i formatowanie, `backup` — kopia zawartości nośnika; bez `step` główna praca fazy), `image { size, version }` (prawdziwy rozmiar obrazu po przeczytaniu manifestu), `fail { phase, kind, message? }` (`offline`, `verify`, `space`, `write`, `device`, `busy`, `question`, `copy`, `other`), `done`, `closeRequested`.
+Zdarzenia: `devices`, `folders` (rozmiary liczone w tle), `bitlocker`, `disk { ok, letter, size, min, disk, free }` (partycja systemowa z PowerShella: rozmiar, najmniejszy rozmiar po zmniejszeniu, cały dysk, największy wolny obszar; liczone w tle do kilkudziesięciu sekund), `progress { phase 1–4, done, total, speed, step? }` (`step`: `verify` — suma obrazu pobranego wcześniej, `prepare` — analiza obrazu i formatowanie, `backup` — kopia zawartości nośnika; bez `step` główna praca fazy), `image { size, version }` (prawdziwy rozmiar obrazu po przeczytaniu manifestu), `fail { phase, kind, message? }` (`offline`, `verify`, `space`, `write`, `device`, `busy`, `question`, `copy`, `shrink`, `other`), `done`, `closeRequested`.
+
+### Miejsce obok Windows (faza 4)
+
+Ekran „Gdzie zainstalować Shrimp?” pokazuje dysk z Windows jako pasek z suwakiem. Shrimp dostaje co najmniej 40 GiB plus kopiowane pliki (wracają na dysk przy instalacji), a Windows zostaje co najmniej najmniejszy rozmiar z `Get-PartitionSupportedSize` plus 20 GiB zapasu (te same liczby co w Setup). Domyślnie połowa partycji albo wolne miejsce, jeśli już wystarcza. Bez rozmiarów (np. Windows bez modułu Storage) zostaje tylko „Zamiast Windows”.
+
+Po kopii plików program zmniejsza partycję systemową `Resize-Partition` (PowerShell, bez restartu), także zaszyfrowaną BitLockerem: szyfrowanie zostaje, a Setup instaluje Shrimp w powstałym wolnym miejscu, nie dotykając Windows. To ostatni krok, więc anulowanie wcześniej nie zmienia Windows; samego zmniejszania nie da się przerwać (trwa zwykle kilka minut). Cofnięcie: Zarządzanie dyskami → „Rozszerz wolumin”. Błędy dla interfejsu: `shrinkQuery` (brak rozmiarów), `shrinkMin` (Windows nie zmniejszy partycji tak bardzo), `shrinkFail:<komunikat Windows>`. Po błędzie nośnik jest gotowy: „Spróbuj ponownie” wraca do ekranu miejsca (mniej miejsca albo „Zamiast Windows”).
+
+Test w CI: `shrimp-install.exe --shrink-test LITERA BAJTY` na wirtualnym dysku z NTFS (kod 0: wolne miejsce jest, 2: brak rozmiarów, 3: zmniejszenie się nie udało, 4: za mało miejsca po zmniejszeniu). Podgląd bez Windows: `?screen=miejsce`, `?screen=miejsce-brak`, `?screen=miejsce-pelny`, a błąd fazy 4 z `&shrinkfail`.
 
 Podgląd ekranów błędów bez Windows: `cd ui && npm run dev`, potem `?screen=brak-internetu`, `?screen=nosnik-zajety`, `?screen=pytanie-rufusa`.
 
@@ -94,6 +107,8 @@ Na nośniku w `shrimp-transfer/shrimp.json` (na żywym systemie `/run/initramfs/
   },
   "apps": [{ "name": "Mozilla Firefox (x64 pl)", "publisher": "Mozilla", "version": "132.0" }],
   "storeApps": ["SpotifyAB.SpotifyMusic"],          // pakiety Microsoft Store (bez składników systemu)
+  "place": "beside",                                 // wybór z ekranu „Gdzie zainstalować Shrimp?”
+  "shrimpSpace": 214748364800,                       // bajty miejsca obok Windows (przy beside)
   "files": [{ "key": "documents", "path": "files/documents", "source": "C:\\Users\\jan\\Documents", "bytes": 3435973836 }],
   "split": ["files/videos/wakacje.mkv"],             // pliki > 4 GB: <plik>.shrimp-part000, 001… (po 2 GiB)
   "skipped": [{ "source": "C:\\Users\\jan\\OneDrive\\x.docx", "reason": "cloud" }]  // cloud, locked, read, missing
@@ -102,7 +117,9 @@ Na nośniku w `shrimp-transfer/shrimp.json` (na żywym systemie `/run/initramfs/
 
 Klucze folderów: `documents`, `pictures`, `desktop`, `music`, `videos`, `downloads` (Moje foldery) i `other` (Wybiorę sam, `files/other/<nazwa>`). Dowiązania i pliki tylko w chmurze (OneDrive „na żądanie”) są pomijane, żeby nie pobierać ich przy kopiowaniu.
 
-Uwaga: dysk z BitLockerem (`windows.bitlocker`, zdarzenie i alert na ekranie Start) uniemożliwia instalację obok Windows, bo Setup nie zmniejszy zaszyfrowanej partycji. „Zamiast Windows” działa.
+`place` (`beside` | `replace`) i `shrimpSpace` (bajty) to wybór z ekranu „Gdzie zainstalować Shrimp?”: Setup proponuje ten sam sposób instalacji.
+
+BitLocker (`windows.bitlocker`): Setup nie zmniejszy zaszyfrowanej partycji, ale „Obok Windows” działa, gdy miejsce zrobił Shrimp Install (faza 4); Setup instaluje wtedy w wolnym obszarze i nie zmienia Windows. Bez wolnego miejsca zostaje „Zamiast Windows”.
 
 ## Manifest pobierania
 
