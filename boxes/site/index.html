@@ -32,7 +32,6 @@
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
   <defs>
-    <clipPath id="wave-b" clipPathUnits="objectBoundingBox"><path d="M0,0.08 C0.16,0.2 0.3,0.22 0.46,0.12 C0.62,0.02 0.78,0 0.9,0.1 C0.95,0.14 0.98,0.15 1,0.14 L1,1 L0,1 Z"/></clipPath>
     <symbol id="i-ready" viewBox="0 0 16 16"><path d="m 13.753906 4.660156 c 0.175782 -0.199218 0.261719 -0.460937 0.246094 -0.726562 c -0.019531 -0.265625 -0.140625 -0.511719 -0.339844 -0.6875 c -0.199218 -0.175782 -0.460937 -0.261719 -0.726562 -0.246094 c -0.265625 0.019531 -0.511719 0.140625 -0.6875 0.339844 l -6.296875 7.195312 l -2.242188 -2.242187 c -0.390625 -0.390625 -1.023437 -0.390625 -1.414062 0 c -0.1875 0.1875 -0.292969 0.441406 -0.292969 0.707031 s 0.105469 0.519531 0.292969 0.707031 l 3 3 c 0.195312 0.195313 0.464843 0.304688 0.738281 0.292969 c 0.277344 -0.007812 0.539062 -0.132812 0.722656 -0.339844 z m 0 0"/></symbol>
     <symbol id="i-folder" viewBox="0 0 16 16"><path d="m 1 4 v 1 h 8 v -1 z m 0 0"/><path d="m 3 1 c -1.644531 0 -3 1.355469 -3 3 v 8 c 0 1.644531 1.355469 3 3 3 h 10 c 1.644531 0 3 -1.355469 3 -3 v -6 c 0 -1.644531 -1.355469 -3 -3 -3 h -3.585938 l -1.707031 -1.707031 c -0.1875 -0.1875 -0.441406 -0.292969 -0.707031 -0.292969 z m 0 2 h 3.585938 l 1.707031 1.707031 c 0.1875 0.1875 0.441406 0.292969 0.707031 0.292969 h 4 c 0.5625 0 1 0.4375 1 1 v 6 c 0 0.566406 -0.4375 1 -1 1 h -10 c -0.5625 0 -1 -0.433594 -1 -1 v -8 c 0 -0.5625 0.4375 -1 1 -1 z m 0 0"/></symbol>
     <symbol id="i-play" viewBox="0 0 16 16"><path d="m 2 2.5 v 11 c 0 1.5 1.269531 1.492188 1.269531 1.492188 h 0.128907 c 0.246093 0.003906 0.488281 -0.050782 0.699218 -0.171876 l 9.796875 -5.597656 c 0.433594 -0.242187 0.65625 -0.734375 0.65625 -1.226562 c 0 -0.492188 -0.222656 -0.984375 -0.65625 -1.222656 l -9.796875 -5.597657 c -0.210937 -0.121093 -0.453125 -0.175781 -0.699218 -0.175781 h -0.128907 s -1.269531 0 -1.269531 1.5 z m 0 0"/></symbol>
@@ -46,7 +45,7 @@
 </svg>
 
 <header class="top" id="top">
-  <a class="dlmain" href="#pobierz" data-t="dl.short">Pobierz</a>
+  <a class="dlmain" href="/download/" data-t="dl.short">Pobierz</a>
   <button class="burger" type="button" id="burger" aria-expanded="false" aria-controls="menu" data-t-aria="menu.aria" aria-label="Menu"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-menu"/></svg></button>
 </header>
 
@@ -76,8 +75,6 @@
     </div>
   </section>
 
-  <div class="fade wb" aria-hidden="true"></div>
-
   <section class="words" data-head="dark" aria-labelledby="h-w">
     <h2 class="h2 reveal" id="h-w" data-t="w.t">Włączasz. Działa.</h2>
     <p class="sub reveal" style="--i:1" data-t="w.s">I nic więcej.</p>
@@ -90,8 +87,6 @@
       <li class="perk reveal" style="--i:2"><span class="ic"><svg viewBox="0 0 16 16" aria-hidden="true"><use href="#i-look"/></svg></span><h3 data-t="p6.t">Spójny, spokojny wygląd</h3><p data-t="p6.d">Każdy ekran wygląda, jakby zrobiła go jedna ręka.</p></li>
     </ul>
   </section>
-
-  <div class="fade bw" aria-hidden="true"></div>
 
   <section class="why light" data-head="light" aria-labelledby="h-why">
     <div class="why-in">
@@ -109,13 +104,10 @@
       </svg>
       <div class="why-text">
         <h2 class="h2 reveal" id="h-why" data-t="why.t">Dlaczego Shrimp</h2>
-        <p class="reveal" style="--i:1" data-t="why.p1">Shrimp powstał po to, żeby komputer był gotowy od razu po instalacji. Sterowniki, kodeki i aplikacje są na miejscu, więc niczego nie musisz doinstalowywać ani ustawiać.</p>
-        <p class="reveal" style="--i:2" data-t="why.p2">Instalujesz, włączasz i robisz swoje.</p>
+        <p class="reveal" style="--i:1" data-t="why.p1">Shrimp to system operacyjny stworzony przez młodego pasjonata i wielbiciela technologii. Został zaprojektowany tak, aby przesiadka ze znanych ludziom systemów była tak prosta, jak to tylko możliwe. Oferuje wiele usprawnień, zachowując największe zalety Linuksa.</p>
       </div>
     </div>
   </section>
-
-  <div class="fade wb2" aria-hidden="true"></div>
 
   <section class="lap-wrap" id="lap" data-head="dark" aria-label="Shrimp">
     <div class="stage">
@@ -136,25 +128,10 @@
     </div>
   </section>
 
-  <section class="final" id="pobierz" data-head="dark" aria-labelledby="h-end">
-    <div class="wavepic" aria-hidden="true"></div>
-    <h2 class="h2 reveal" id="h-end" data-t="end.title">Zacznij swoją przygodę tutaj</h2>
-    <div class="dlmenu reveal" style="--i:1">
-      <div class="dlsplit">
-        <a class="btn" href="/download/install" data-dl><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-save"/></svg><span class="label"><span class="now" data-t="dl.label">Instalator</span><span class="then" aria-hidden="true" data-t="dl.going">Pobieranie…</span></span></a>
-        <button class="dlmore" type="button" id="dlmore" aria-expanded="false" aria-controls="dlpop" data-t-aria="dl.more" aria-label="Inne opcje pobierania"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-down"/></svg></button>
-      </div>
-      <div class="dlpop" id="dlpop">
-        <a href="/download/install" data-t="dl.label">Instalator</a>
-        <a href="/iso" data-t="menu.iso">Obraz ISO</a>
-      </div>
-    </div>
-    <p class="meta" data-t="dl.os">Windows 10 i 11</p>
-    <footer>
-      <div class="l"><svg class="logo" viewBox="-1.1 3.6 184.6 178.5" aria-hidden="true"><use href="/assets/logo.svg#s"/></svg><span>© <span data-year>2026</span> Shrimp</span></div>
-      <nav><a class="link" href="/help/" data-t="nav.help">Pomoc</a><a class="link" href="#top" data-t="nav.up">Do góry</a></nav>
-    </footer>
-  </section>
+  <footer class="homefoot" data-head="dark">
+    <div class="l"><svg class="logo" viewBox="-1.1 3.6 184.6 178.5" aria-hidden="true"><use href="/assets/logo.svg#s"/></svg><span>© <span data-year>2026</span> Shrimp</span></div>
+    <nav><a class="link" href="/help/" data-t="nav.help">Pomoc</a><a class="link" href="#top" data-t="nav.up">Do góry</a></nav>
+  </footer>
 </main>
 
 </body>
