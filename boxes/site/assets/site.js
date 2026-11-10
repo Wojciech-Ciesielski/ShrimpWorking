@@ -19,8 +19,10 @@
       "p4.t": "Everything can be undone", "p4.d": "Something went wrong? Go back to when it worked.",
       "p5.t": "Updates that don't interrupt", "p5.d": "They install when you restart, not in the middle of your work.",
       "p6.t": "One calm look", "p6.d": "Every screen looks like it was made by one hand.",
-      "lap.k": "See how it looks", "lap.alt": "An open laptop showing the Shrimp desktop, installer and apps",
-      "tab.0": "Desktop", "tab.1": "Installer", "tab.2": "Apps", "tabs.aria": "Screens",
+      "lap.alt": "A laptop that opens and shows Shrimp: the installer, setup, desktop and apps",
+      "tab.0": "Start", "tab.1": "Setup", "tab.2": "Desktop", "tab.3": "Apps", "tab.4": "Panko", "tab.5": "Cocktail", "tab.6": "In use", "tabs.aria": "Scenes",
+      "menu.apps": "Apps", "menu.about": "About us", "menu.project": "Project", "menu.docs": "Documents", "menu.links": "Links", "menu.support": "Support",
+      "soon.lead": "This page is coming soon.",
       "iso.aria": "Download the ISO image", "menu.aria": "Menu", "menu.iso": "ISO image", "alt.mb": "Mont Blanc",
       "dl.short": "Download", "dl.more": "More download options",
       "iso.title": "The ISO image is coming soon.",
@@ -115,7 +117,32 @@
     menu.addEventListener("click", (e) => { if (e.target.closest("a")) set(false); });
   }
 
-  // przycisk „Pobierz” w rogu: strzałka wysuwa inne opcje, główna część przewija do przycisku na dole
+  // nazwa w hero pisana jak na klawiaturze: „Shrimp”, potem kolejne słowa, w kółko
+  const typeEl = document.getElementById("type");
+  if (typeEl && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const WORDS = {
+      pl: ["Shrimp", "Łatwy", "Szybki", "Gotowy", "Prosty", "Spokojny", "Bezpieczny", "Piękny", "Twój", "Wolny"],
+      en: ["Shrimp", "Easy", "Fast", "Ready", "Simple", "Calm", "Safe", "Beautiful", "Yours", "Free"],
+    };
+    const h1 = typeEl.parentElement;
+    let i = 0, timer = 0;
+    const words = () => WORDS[document.documentElement.lang === "en" ? "en" : "pl"];
+    const later = (fn, ms) => { timer = setTimeout(fn, ms); };
+    const erase = () => {
+      const s = typeEl.textContent;
+      h1.classList.add("typing");
+      if (s.length) { typeEl.textContent = s.slice(0, -1); later(erase, 48); } else { i = (i + 1) % words().length; later(write, 320); }
+    };
+    const write = () => {
+      const w = words()[i], s = typeEl.textContent;
+      if (s.length < w.length) { typeEl.textContent = w.slice(0, s.length + 1); later(write, 85 + Math.random() * 70); }
+      else { h1.classList.remove("typing"); later(erase, i === 0 ? 2600 : 1700); }
+    };
+    later(erase, 2800);
+    document.addEventListener("langchange", () => { clearTimeout(timer); i = 0; typeEl.textContent = "Shrimp"; h1.classList.remove("typing"); later(erase, 2800); });
+  }
+
+  // strzałka przy przycisku pobierania na dole strony wysuwa pozostałe opcje
   const dlmore = document.getElementById("dlmore");
   const dlpop = document.getElementById("dlpop");
   if (dlmore && dlpop) {
@@ -125,47 +152,74 @@
     addEventListener("keydown", (e) => { if (e.key === "Escape") set(false); });
   }
 
-  // laptop: model 3D (assets/laptop.js, ładowany dopiero przed pokazaniem), klapa otwiera się razem z przewijaniem,
-  // potem na ekranie zmieniają się: pulpit, instalator, aplikacje
+  // laptop: model 3D (assets/laptop.js, ładowany dopiero przed pokazaniem). Klapa otwiera się razem z przewijaniem,
+  // potem kolejne scenki; każda ma krótki opis pod laptopem. Kolejność jak zakładki w index.html.
+  const CAPS = {
+    pl: [
+      ["Zaczynasz w Windows", "Wkładasz pendrive i uruchamiasz Shrimp Install. Resztę robi sam."],
+      ["Kilka pytań na start", "Setup prowadzi krok po kroku. Twoje pliki z Windows czekają po drugiej stronie."],
+      ["Pulpit", "Czysty, spokojny i znajomy od pierwszej chwili."],
+      ["Shrimp Apps", "Tysiące aplikacji w jednym miejscu. Instalujesz jednym kliknięciem."],
+      ["Panko", "Migawki systemu. Coś poszło nie tak? Wracasz do chwili, gdy działało."],
+      ["Cocktail", "Aktualizacje, urządzenia i pakiety w jednym oknie."],
+      ["W działaniu", "Sieć, dźwięk i wygląd masz zawsze pod ręką."],
+    ],
+    en: [
+      ["You start in Windows", "Plug in a USB drive and run Shrimp Install. It does the rest."],
+      ["A few questions to begin", "Setup guides you step by step. Your Windows files are waiting on the other side."],
+      ["Desktop", "Clean, calm and familiar from the first moment."],
+      ["Shrimp Apps", "Thousands of apps in one place. One click to install."],
+      ["Panko", "System snapshots. Something went wrong? Go back to when it worked."],
+      ["Cocktail", "Updates, devices and packages in one window."],
+      ["In use", "Network, sound and appearance are always at hand."],
+    ],
+  };
   const wrap = document.getElementById("lap");
   const canvas = document.getElementById("gl");
   if (wrap && canvas) {
     const stage = wrap.querySelector(".stage");
     const tabs = [...wrap.querySelectorAll(".tabs button")];
+    const cap = wrap.querySelector(".cap"), capT = document.getElementById("cap-t"), capD = document.getElementById("cap-d");
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const OPEN = 0.42; // część przewijania, w której klapa się otwiera
-    let manual = 0, gl = null, tried = false, shown = -1;
+    const N = tabs.length;
+    const OPEN = 0.17; // część przewijania, w której klapa się otwiera
+    let manual = 0, gl = null, tried = false, shown = -1, capTimer = 0;
+    const caption = (i, instant) => {
+      const [a, b] = CAPS[document.documentElement.lang === "en" ? "en" : "pl"][i];
+      clearTimeout(capTimer);
+      const put = () => { capT.textContent = a; capD.textContent = b; cap.classList.remove("out"); };
+      if (instant) put(); else { cap.classList.add("out"); capTimer = setTimeout(put, 260); }
+    };
     const show = (i, o) => {
-      if (i !== shown) { shown = i; tabs.forEach((b, k) => b.setAttribute("aria-pressed", String(k === i))); }
+      if (i !== shown) { caption(i, shown < 0); shown = i; tabs.forEach((b, k) => b.setAttribute("aria-pressed", String(k === i))); }
       gl?.set(o, i);
     };
     const update = () => {
-      if (reduce) { stage.style.setProperty("--o", "1"); show(manual, 1); return; }
+      if (reduce) { show(manual, 1); return; }
       const r = wrap.getBoundingClientRect();
       const p = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - innerHeight)));
-      const t = Math.min(1, p / OPEN);
-      const o = t * t * (3 - 2 * t);
-      stage.style.setProperty("--o", o.toFixed(3));
-      show(p < OPEN + 0.04 ? 0 : Math.min(2, Math.floor(((p - OPEN - 0.04) / (1 - OPEN - 0.04)) * 3)), o);
+      stage.style.opacity = String(Math.min(1, Math.max(0, 1 - (innerHeight - r.bottom) / (innerHeight * 0.45)))); // znika, zanim wjedzie dół strony
+      show(p < OPEN ? 0 : Math.min(N - 1, Math.floor(((p - OPEN) / (1 - OPEN)) * N)), Math.min(1, p / OPEN));
     };
     const load = () => {
       if (tried) return;
       tried = true;
       import("/assets/laptop.js")
-        .then((m) => m.createLaptop(canvas))
-        .then((api) => { gl = api; shown = -1; update(); })
+        .then((m) => m.createLaptop(canvas, { reduce }))
+        .then((api) => { gl = api; const i = Math.max(0, shown); shown = -1; update(); if (shown < 0) show(i, reduce ? 1 : 0); wrap.classList.add("ready"); })
         .catch(() => wrap.classList.add("no-gl"));
     };
     if ("IntersectionObserver" in window) {
-      const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { load(); io.disconnect(); } }, { rootMargin: "120% 0px" });
+      const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) { load(); io.disconnect(); } }, { rootMargin: "150% 0px" });
       io.observe(wrap);
     } else load();
     tabs.forEach((b, i) => b.addEventListener("click", () => {
       if (reduce) { manual = i; update(); return; }
       const span = wrap.offsetHeight - innerHeight;
-      const p = i === 0 ? OPEN : OPEN + 0.04 + ((i + 0.5) / 3) * (1 - OPEN - 0.04);
+      const p = OPEN + ((i + 0.5) / N) * (1 - OPEN);
       scrollTo({ top: wrap.getBoundingClientRect().top + scrollY + span * p, behavior: "smooth" });
     }));
+    document.addEventListener("langchange", () => { if (shown >= 0) caption(shown, true); });
     addEventListener("scroll", update, { passive: true });
     addEventListener("resize", update);
     update();
