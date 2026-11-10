@@ -9,8 +9,7 @@
 <link rel="alternate" hreflang="pl" href="https://shrimp-organization.dev/?lang=pl">
 <link rel="alternate" hreflang="en" href="https://shrimp-organization.dev/?lang=en">
 <link rel="alternate" hreflang="x-default" href="https://shrimp-organization.dev/">
-<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#000000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Shrimp">
 <meta property="og:locale" content="pl_PL">
@@ -24,98 +23,120 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/logo-256.png">
 <link rel="preload" href="/assets/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/mont-blanc.jpg" as="image">
 <link rel="stylesheet" href="/assets/site.css">
 <script>document.documentElement.classList.add("js")</script>
 <script src="/assets/site.js" defer></script>
 </head>
-<body>
+<body class="home">
 <a class="skip" href="#main" data-t="skip">Przejdź do treści</a>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <clipPath id="wave-a" clipPathUnits="objectBoundingBox"><path d="M0,0.14 C0.12,0.02 0.26,0.02 0.4,0.1 C0.56,0.2 0.7,0.26 0.84,0.14 C0.92,0.07 0.97,0.05 1,0.06 L1,1 L0,1 Z"/></clipPath>
+    <clipPath id="wave-b" clipPathUnits="objectBoundingBox"><path d="M0,0.08 C0.16,0.2 0.3,0.22 0.46,0.12 C0.62,0.02 0.78,0 0.9,0.1 C0.95,0.14 0.98,0.15 1,0.14 L1,1 L0,1 Z"/></clipPath>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2.5 4.5 14H11l-1 7.5L19.5 10H13z"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 8.5v7l6-3.5z"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.5-4M4 4v4h4M4 13a8 8 0 0 0 14.5 4M20 20v-4h-4"/></symbol>
+    <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></symbol>
+  </defs>
+</svg>
+
 <header class="top" id="top">
-  <a class="home" href="/" aria-label="Shrimp"><svg class="logo" viewBox="-1.1 3.6 184.6 178.5" aria-hidden="true"><use href="/assets/logo.svg#s"/></svg></a>
-  <nav>
-    <a class="link help" href="/help/" data-t="nav.help">Pomoc</a>
-    <div class="langs" role="group" aria-label="Język / Language">
-      <button type="button" data-lang="pl" aria-pressed="true">PL</button>
-      <button type="button" data-lang="en" aria-pressed="false">EN</button>
-    </div>
-  </nav>
+  <a class="iconbtn" href="/iso" data-t-aria="iso.aria" aria-label="Pobierz obraz ISO" title="ISO"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11m0 0-4.5-4.5M12 14.5l4.5-4.5"/><path d="M4.5 16.5v1.75A2.25 2.25 0 0 0 6.75 20.5h10.5a2.25 2.25 0 0 0 2.25-2.25V16.5"/></svg><span>ISO</span></a>
+  <button class="iconbtn burger" type="button" id="burger" aria-expanded="false" aria-controls="menu" data-t-aria="menu.aria" aria-label="Menu"><i></i><i></i><i></i></button>
 </header>
 
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-labelledby="burger">
+  <ul>
+    <li><a href="/download" style="--i:0"><span data-t="dl.label">Pobierz Shrimp Install</span><small data-t="dl.os">Windows 10 i 11</small></a></li>
+    <li><a href="/iso" style="--i:1"><span data-t="menu.iso">Obraz ISO</span><small>.iso</small></a></li>
+    <li><a href="/help/" style="--i:2"><span data-t="nav.help">Pomoc</span></a></li>
+  </ul>
+  <div class="langs" role="group" aria-label="Język / Language">
+    <button type="button" data-lang="pl" aria-pressed="true">PL</button>
+    <button type="button" data-lang="en" aria-pressed="false">EN</button>
+  </div>
+</div>
+
 <main id="main">
-  <section class="hero" aria-labelledby="h">
-    <div class="hero-in">
+  <section class="home-hero" aria-labelledby="h">
+    <div class="in">
       <svg class="logo rise" style="--i:0" viewBox="-1.1 3.6 184.6 178.5" aria-hidden="true"><use href="/assets/logo.svg#s"/></svg>
       <h1 class="h1 rise" style="--i:1" id="h">Shrimp</h1>
       <p class="lead rise" style="--i:2" data-t="hero.lead">Linux, który działa od pierwszego uruchomienia.</p>
+    </div>
+    <div class="wavepic" role="img" aria-label="Mont Blanc" data-t-aria="alt.mb"></div>
+    <svg class="waveline" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true"><path vector-effect="non-scaling-stroke" d="M0,0.14 C0.12,0.02 0.26,0.02 0.4,0.1 C0.56,0.2 0.7,0.26 0.84,0.14 C0.92,0.07 0.97,0.05 1,0.06"/></svg>
+  </section>
 
-      <div class="get rise" style="--i:3">
-        <a class="dl" href="/download" data-dl>
-          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path class="arrow" d="M12 3.5v11m0 0-4.5-4.5M12 14.5l4.5-4.5"/><path d="M4.5 16.5v1.75A2.25 2.25 0 0 0 6.75 20.5h10.5a2.25 2.25 0 0 0 2.25-2.25V16.5"/></svg>
-          <span class="label"><span class="now" data-t="dl.label">Pobierz Shrimp Install</span><span class="then" aria-hidden="true" data-t="dl.going">Pobieranie…</span></span>
-        </a>
-        <p class="meta"><span data-t="dl.os">Windows 10 i 11</span><span class="sep">·</span>.exe<span class="sep">·</span><span data-t="dl.ver">Shrimp Beta 3.1</span></p>
+  <section class="words" aria-labelledby="h-w">
+    <h2 class="h2 reveal" id="h-w" data-t="w.t">Włączasz. Działa.</h2>
+    <p class="sub reveal" style="--i:1" data-t="w.s">Spokojny system, który dba o siebie sam.</p>
+    <ul class="perks">
+      <li class="perk reveal" style="--i:0"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-bolt"/></svg></span><h3 data-t="p1.t">Gotowy od razu</h3><p data-t="p1.d">Bez konfigurowania i szukania instrukcji.</p></li>
+      <li class="perk reveal" style="--i:1"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-folder"/></svg></span><h3 data-t="p2.t">Twoje rzeczy jadą z tobą</h3><p data-t="p2.d">Pliki i ustawienia z Windows przenoszą się same.</p></li>
+      <li class="perk reveal" style="--i:2"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-play"/></svg></span><h3 data-t="p3.t">Obraz i dźwięk bez kłopotu</h3><p data-t="p3.d">Filmy, muzyka i gry działają od pierwszego dnia.</p></li>
+      <li class="perk reveal" style="--i:0"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-undo"/></svg></span><h3 data-t="p4.t">Wszystko da się cofnąć</h3><p data-t="p4.d">Coś poszło nie tak? Wracasz do chwili, gdy działało.</p></li>
+      <li class="perk reveal" style="--i:1"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-refresh"/></svg></span><h3 data-t="p5.t">Aktualizacje bez przerywania</h3><p data-t="p5.d">Instalują się przy ponownym uruchomieniu, nie w środku pracy.</p></li>
+      <li class="perk reveal" style="--i:2"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-sparkle"/></svg></span><h3 data-t="p6.t">Spójny, spokojny wygląd</h3><p data-t="p6.d">Każdy ekran wygląda, jakby zrobiła go jedna ręka.</p></li>
+    </ul>
+  </section>
+
+  <section class="lap-wrap" id="lap" aria-label="Shrimp">
+    <div class="stage">
+      <p class="kicker" data-t="lap.k">Zobacz, jak to wygląda</p>
+      <div class="scene">
+        <div class="laptop" data-s="0">
+          <div class="lid"><div class="lid-in">
+            <div class="face front"><div class="display">
+              <div class="scr scr-0">
+                <div class="d-bar"><svg class="logo" viewBox="-1.1 3.6 184.6 178.5" aria-hidden="true"><use href="/assets/logo.svg#s"/></svg><span>12:40</span></div>
+                <div class="d-win"><div class="side"><i></i><i></i><i></i><i></i></div><div class="main"><span class="t" data-t="md.files">Pliki</span><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+                <div class="d-dock"><i></i><i></i><i></i><i></i><i></i></div>
+              </div>
+              <div class="scr scr-1">
+                <span class="i-step" data-t="mi.step">Krok 2 z 3</span>
+                <span class="i-title" data-t="mi.t">Wybierz nośnik</span>
+                <div class="i-list">
+                  <div class="i-row sel"><b data-t="mi.a">Pendrive</b><span>32 GB</span></div>
+                  <div class="i-row"><b data-t="mi.b">Karta SD</b><span>64 GB</span></div>
+                  <div class="i-row"><b data-t="mi.c">Dysk zewnętrzny</b><span>500 GB</span></div>
+                </div>
+                <span class="i-next" data-t="mi.next">Dalej</span>
+              </div>
+              <div class="scr scr-2">
+                <div class="a-head"><div class="a-tabs"><b data-t="ma.t">Odkrywaj</b><span data-t="ma.i">Zainstalowane</span></div><div class="a-q" data-t="ma.q">Szukaj aplikacji</div></div>
+                <div class="a-grid"><div class="a-card" style="--h:210"><div class="a-ic"></div><div class="a-ln"></div><div class="a-ln s"></div><div class="a-get" data-t="ma.get">Pobierz</div></div><div class="a-card" style="--h:28"><div class="a-ic"></div><div class="a-ln"></div><div class="a-ln s"></div><div class="a-get" data-t="ma.get">Pobierz</div></div><div class="a-card" style="--h:140"><div class="a-ic"></div><div class="a-ln"></div><div class="a-ln s"></div><div class="a-get" data-t="ma.get">Pobierz</div></div><div class="a-card" style="--h:275"><div class="a-ic"></div><div class="a-ln"></div><div class="a-ln s"></div><div class="a-get" data-t="ma.get">Pobierz</div></div><div class="a-card" style="--h:350"><div class="a-ic"></div><div class="a-ln"></div><div class="a-ln s"></div><div class="a-get" data-t="ma.get">Pobierz</div></div><div class="a-card" style="--h:48"><div class="a-ic"></div><div class="a-ln"></div><div class="a-ln s"></div><div class="a-get" data-t="ma.get">Pobierz</div></div><div class="a-card" style="--h:185"><div class="a-ic"></div><div class="a-ln"></div><div class="a-ln s"></div><div class="a-get" data-t="ma.get">Pobierz</div></div><div class="a-card" style="--h:100"><div class="a-ic"></div><div class="a-ln"></div><div class="a-ln s"></div><div class="a-get" data-t="ma.get">Pobierz</div></div></div>
+              </div>
+            </div></div>
+            <div class="face back"><svg class="logo" viewBox="-1.1 3.6 184.6 178.5" aria-hidden="true"><use href="/assets/logo.svg#s"/></svg></div>
+          </div></div>
+          <div class="base"><div class="keys"></div><div class="pad"></div><div class="lip"></div></div>
+        </div>
       </div>
-
-      <a class="more rise" style="--i:5" href="#jak" data-t="hero.more">Jak to działa<i aria-hidden="true"></i></a>
-    </div>
-  </section>
-
-  <section id="jak" aria-labelledby="h-jak">
-    <div class="wrap">
-      <p class="kicker reveal" data-t="how.kicker">Trzy kroki</p>
-      <h2 class="h2 reveal" style="--i:1" id="h-jak" data-t="how.title">Od Windows do Shrimp bez szukania instrukcji.</h2>
-      <ol class="steps">
-        <li class="reveal" style="--i:0"><span class="num">01</span><h3 data-t="s1.t">Pobierz Shrimp Install</h3><p data-t="s1.p">Mały program dla Windows. Sam pobierze i sprawdzi Shrimp.</p></li>
-        <li class="reveal" style="--i:1"><span class="num">02</span><h3 data-t="s2.t">Włóż nośnik</h3><p data-t="s2.p">Co najmniej 16 GB. Twoje pliki i ustawienia z Windows pojadą razem z Shrimp.</p></li>
-        <li class="reveal" style="--i:2"><span class="num">03</span><h3 data-t="s3.t">Uruchom ponownie</h3><p data-t="s3.p">Komputer sam wystartuje z nośnika. Resztę poprowadzi Setup.</p></li>
-      </ol>
-    </div>
-  </section>
-
-  <section class="linux" aria-labelledby="h-linux">
-    <div class="wrap">
-      <p class="mark reveal" id="h-linux">LinU<span class="x">(x)</span></p>
-      <p class="mark-sub reveal" style="--i:1" lang="en">Linux is now usable.</p>
-      <ul class="facts">
-        <li class="reveal" style="--i:0" data-t="f1"><b>Sterowniki NVIDIA</b> od razu po instalacji.</li>
-        <li class="reveal" style="--i:1" data-t="f2"><b>Filmy i muzyka</b> bez szukania kodeków.</li>
-        <li class="reveal" style="--i:2" data-t="f3"><b>Jeden wygląd</b> wszystkich aplikacji.</li>
-        <li class="reveal" style="--i:3" data-t="f4"><b>Twoje programy</b> dobrane do tych z Windows.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section aria-labelledby="h-apps">
-    <div class="wrap">
-      <p class="kicker reveal" data-t="apps.kicker">W zestawie</p>
-      <h2 class="h2 reveal" style="--i:1" id="h-apps" data-t="apps.title">Spokojny system, który dba o siebie sam.</h2>
-      <dl class="apps-list">
-        <div class="app reveal"><dt>Shrimp Apps</dt><dd data-t="a1">Programy z jednego miejsca, instalowane jednym kliknięciem.</dd></div>
-        <div class="app reveal"><dt>Panko</dt><dd data-t="a2">Przywracanie systemu do chwili, gdy wszystko działało.</dd></div>
-        <div class="app reveal"><dt>Cocktail</dt><dd data-t="a3">Aktualizacje, które nie przerywają pracy.</dd></div>
-      </dl>
-    </div>
-  </section>
-
-  <section class="end" aria-labelledby="h-end">
-    <div class="wrap">
-      <h2 class="h2 reveal" id="h-end" data-t="end.title">Wszystko zaczyna się od jednego pliku.</h2>
-      <div class="get reveal" style="--i:1">
-        <a class="dl" href="/download" data-dl>
-          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path class="arrow" d="M12 3.5v11m0 0-4.5-4.5M12 14.5l4.5-4.5"/><path d="M4.5 16.5v1.75A2.25 2.25 0 0 0 6.75 20.5h10.5a2.25 2.25 0 0 0 2.25-2.25V16.5"/></svg>
-          <span class="label"><span class="now" data-t="dl.label">Pobierz Shrimp Install</span><span class="then" aria-hidden="true" data-t="dl.going">Pobieranie…</span></span>
-        </a>
-        <p class="meta"><span data-t="dl.os">Windows 10 i 11</span><span class="sep">·</span>.exe<span class="sep">·</span><span data-t="dl.ver">Shrimp Beta 3.1</span></p>
+      <div class="tabs" role="group" aria-label="Ekrany" data-t-aria="tabs.aria">
+        <button type="button" data-s="0" aria-pressed="true" data-t="tab.0">Pulpit</button>
+        <button type="button" data-s="1" aria-pressed="false" data-t="tab.1">Instalator</button>
+        <button type="button" data-s="2" aria-pressed="false" data-t="tab.2">Aplikacje</button>
       </div>
     </div>
+  </section>
+
+  <section class="final" aria-labelledby="h-end">
+    <div class="wavepic" aria-hidden="true"></div>
+    <svg class="waveline" viewBox="0 0 1 1" preserveAspectRatio="none" aria-hidden="true"><path vector-effect="non-scaling-stroke" d="M0,0.08 C0.16,0.2 0.3,0.22 0.46,0.12 C0.62,0.02 0.78,0 0.9,0.1 C0.95,0.14 0.98,0.15 1,0.14"/></svg>
+    <h2 class="h2 reveal" id="h-end" data-t="end.title">Wszystko zaczyna się od jednego pliku.</h2>
+    <a class="glass reveal" style="--i:1" href="/download" data-dl><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5v11m0 0-4.5-4.5M12 14.5l4.5-4.5"/><path d="M4.5 16.5v1.75A2.25 2.25 0 0 0 6.75 20.5h10.5a2.25 2.25 0 0 0 2.25-2.25V16.5"/></svg><span class="label"><span class="now" data-t="dl.label">Pobierz Shrimp Install</span><span class="then" aria-hidden="true" data-t="dl.going">Pobieranie…</span></span></a>
+    <p class="meta"><span data-t="dl.os">Windows 10 i 11</span><span class="sep">·</span>.exe<span class="sep">·</span><span data-t="dl.ver">Shrimp Beta 3.1</span></p>
+    <footer>
+      <div class="l"><svg class="logo" viewBox="-1.1 3.6 184.6 178.5" aria-hidden="true"><use href="/assets/logo.svg#s"/></svg><span>© <span data-year>2026</span> Shrimp</span></div>
+      <nav><a class="link" href="/help/" data-t="nav.help">Pomoc</a><a class="link" href="#top" data-t="nav.up">Do góry</a></nav>
+    </footer>
   </section>
 </main>
-
-<footer>
-  <div class="l"><svg class="logo" viewBox="-1.1 3.6 184.6 178.5" aria-hidden="true"><use href="/assets/logo.svg#s"/></svg><span>© <span data-year>2026</span> Shrimp</span></div>
-  <nav><a class="link" href="/help/" data-t="nav.help">Pomoc</a><a class="link" href="#top" data-t="nav.up">Do góry</a></nav>
-</footer>
 
 </body>
 </html>
