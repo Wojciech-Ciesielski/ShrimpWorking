@@ -1,20 +1,23 @@
-// Laptop 3D na stronie głównej: własny model (aluminiowa obudowa, klapa na zawiasie, klawiatura z osobnych klawiszy,
-// gładzik), narysowany w three.js. Ekran to tekstura rysowana na canvasie: pulpit, instalator i sklep z aplikacjami
-// (makiety, nie zrzuty ekranu). Ładowany dopiero, gdy użytkownik zbliża się do sekcji (assets/site.js).
-// API: const api = await createLaptop(canvas); api.set(o, ekran) — o: 0 = zamknięty … 1 = otwarty, ekran: 0 | 1 | 2.
+// Laptop 3D na stronie głównej: własny model narysowany w three.js (aluminiowa obudowa, cienka klapa ze szklanym
+// frontem, klawiatura z osobnych klawiszy z opisami, gładzik, pendrive wsuwany z boku).
+// Na ekranie są obrazy z assets/screens/ (jedyne miejsce strony, gdzie właściciel dopuszcza zrzuty ekranu).
+// Ładowany dopiero, gdy użytkownik zbliża się do sekcji (assets/site.js).
+// API: const api = await createLaptop(canvas, { reduce }); api.set(o, scena) — o: 0 = zamknięty … 1 = otwarty.
 import * as THREE from "./vendor/three.module.min.js";
 
-// wymiary modelu (jednostki umowne, 1 ≈ 10 cm)
-const W = 3.2, DEPTH = 2.2, BASE_H = 0.1, LID_T = 0.075, LID_H = 2.2;
-const SW = 3.04, SH = 1.9, SCREEN_Y = 1.07;
-const OPEN_EXTRA = 0.27; // klapa odchyla się o tyle radianów za pionem
+// kolejność scenek = kolejność zakładek w index.html
+export const SCREENS = ["windows", "setup", "pulpit", "apps", "panko", "cocktail", "dzialanie"];
 
-const STR = {
-  pl: { files: "Pliki", step: "Krok 2 z 3", title: "Wybierz nośnik", a: "Pendrive", b: "Karta SD", c: "Dysk zewnętrzny", next: "Dalej", discover: "Odkrywaj", installed: "Zainstalowane", search: "Szukaj aplikacji", get: "Pobierz" },
-  en: { files: "Files", step: "Step 2 of 3", title: "Choose a drive", a: "USB stick", b: "SD card", c: "External drive", next: "Next", discover: "Discover", installed: "Installed", search: "Search apps", get: "Get" },
-};
+// wymiary modelu (jednostki umowne, 1 ≈ 10 cm)
+const W = 3.2, D = 2.14, BASE_H = 0.085, R = 0.12;
+const LID_T = 0.042, LID_H = 2.11;
+const SW = 3.1, SH = SW / 1.6, SCREEN_Y = LID_H - 0.055 - SH / 2;
+const PIVOT_Y = BASE_H + 0.005 + LID_T / 2, PIVOT_Z = 0.03;
+const OPEN_EXTRA = 0.24; // klapa odchyla się o tyle radianów za pionem
+const STICK = 0.5; // ile pendrive wystaje z boku
 
 const smooth = (x) => x * x * (3 - 2 * x);
+const clamp01 = (x) => Math.min(1, Math.max(0, x));
 
 function rrShape(w, h, r) {
   const s = new THREE.Shape(), x = -w / 2, y = -h / 2;
@@ -26,29 +29,36 @@ function rrShape(w, h, r) {
   return s;
 }
 
-/** Zaokrąglona płyta w, h, z grubością d (z od 0 do d), ze ściętymi krawędziami. */
-function slab(w, h, d, r, bevel) {
+/** Zaokrąglona płyta w × h o grubości d (z od 0 do d), z łagodnie ściętymi krawędziami. */
+function slab(w, h, d, r, bevel, seg = 24) {
   const g = new THREE.ExtrudeGeometry(rrShape(w - 2 * bevel, h - 2 * bevel, Math.max(0.002, r - bevel)), {
-    depth: d - 2 * bevel, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 5, curveSegments: 24,
+    depth: d - 2 * bevel, bevelEnabled: true, bevelThickness: bevel, bevelSize: bevel, bevelSegments: 4, curveSegments: seg,
   });
   g.translate(0, 0, bevel);
   return g;
 }
 
+/** Płaski kształt leżący na blacie (płaszczyzna XZ), środek w (x, z). */
+function flat(shape, mat, x, y, z) {
+  const m = new THREE.Mesh(new THREE.ShapeGeometry(shape, 20), mat);
+  m.rotation.x = -Math.PI / 2; m.position.set(x, y, z);
+  return m;
+}
+
 function studioEnv(renderer) {
   const pm = new THREE.PMREMGenerator(renderer);
   const sc = new THREE.Scene();
-  sc.background = new THREE.Color(0x08080a);
-  const softbox = (w, h, k, pos) => {
+  sc.background = new THREE.Color(0x050506);
+  const box = (w, h, k, pos) => {
     const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: new THREE.Color(k, k, k), side: THREE.DoubleSide }));
     m.position.set(...pos); m.lookAt(0, 0, 0); sc.add(m);
   };
-  softbox(12, 7, 5, [0, 9, 2]);
-  softbox(3, 9, 3.2, [-9, 3, 3]);
-  softbox(3, 9, 3.2, [9, 3, 3]);
-  softbox(12, 3, 1.6, [0, 2, 11]);
-  softbox(9, 4, 1.8, [0, 4, -10]);
-  const tex = pm.fromScene(sc, 0.03).texture;
+  box(14, 8, 4.2, [0, 10, 1]);    // duży softbox nad sceną
+  box(2.5, 10, 3, [-10, 3, 2]);   // paski po bokach rysują krawędzie
+  box(2.5, 10, 3, [10, 3, 2]);
+  box(14, 2.5, 1.2, [0, 1.5, 12]); // słabe wypełnienie z przodu
+  box(10, 4, 2.2, [0, 5, -11]);   // kontra z tyłu
+  const tex = pm.fromScene(sc, 0.025).texture;
   pm.dispose();
   return tex;
 }
@@ -74,237 +84,255 @@ async function logoMask() {
     x.fillStyle = "#000"; x.fillRect(0, 0, c.width, c.height);
     x.drawImage(img, 0, 0, c.width, c.height);
     const t = new THREE.CanvasTexture(c);
-    t.anisotropy = 4;
+    t.anisotropy = 8;
     return { tex: t, aspect: vw / vh };
   } catch { return null; }
 }
 
-export async function createLaptop(canvas) {
+// ----- klawiatura: układ jak w laptopach 14", szerokości w jednostkach klawisza -----
+const U = 0.19, GAP = 0.022, KEY_H = 0.013, FN_D = 0.11, KB_W = 14.5 * U;
+const one = (s) => s.split(" ").map((l) => [l, 1]);
+const ROWS = [
+  [["esc", 14.5 / 14], ...Array.from({ length: 12 }, (_, i) => [`F${i + 1}`, 14.5 / 14]), ["", 14.5 / 14]],
+  [...one("` 1 2 3 4 5 6 7 8 9 0 - ="), ["delete", 1.5]],
+  [["tab", 1.5], ...one("Q W E R T Y U I O P [ ]"), ["\\", 1]],
+  [["caps", 1.75], ...one("A S D F G H J K L ; '"), ["enter", 1.75]],
+  [["shift", 2.25], ...one("Z X C V B N M , . /"), ["shift", 2.25]],
+  [["fn", 1], ["ctrl", 1], ["alt", 1], ["super", 1.25], ["", 5], ["super", 1.25], ["alt", 1]],
+];
+
+function keyLayout() {
+  const keys = [];
+  let z = 0;
+  ROWS.forEach((row, r) => {
+    const d = r === 0 ? FN_D : U;
+    let x = -KB_W / 2;
+    for (const [label, w] of row) { keys.push({ x: x + (w * U) / 2, z: z + d / 2, w: w * U - GAP, d: d - GAP, label, small: r === 0 || label.length > 1 }); x += w * U; }
+    if (r === 5) { // strzałki: lewo, góra/dół, prawo (połówki)
+      const h = U / 2;
+      [["←", 0, 1], ["↑", 1, 0], ["↓", 1, 1], ["→", 2, 1]].forEach(([label, col, low]) =>
+        keys.push({ x: x + col * U + U / 2, z: z + (low ? h * 1.5 : h * 0.5), w: U - GAP, d: h - GAP / 2, label, arrow: true }));
+    }
+    z += d;
+  });
+  return { keys, depth: z };
+}
+
+function legends(keys, wellW, wellD) {
+  const c = document.createElement("canvas");
+  c.width = 2048; c.height = Math.round((2048 * wellD) / wellW);
+  const x = c.getContext("2d"), k = c.width / wellW;
+  x.fillStyle = "rgba(255,255,255,.78)"; x.textAlign = "center"; x.textBaseline = "middle";
+  for (const key of keys) {
+    const px = (key.x + wellW / 2) * k, py = (key.z + (wellD - key.depthAll) / 2) * k;
+    if (key.arrow) {
+      const s = 0.02 * k, a = { "←": Math.PI, "→": 0, "↑": -Math.PI / 2, "↓": Math.PI / 2 }[key.label];
+      x.save(); x.translate(px, py); x.rotate(a); x.beginPath(); x.moveTo(s, 0); x.lineTo(-s * 0.7, -s); x.lineTo(-s * 0.7, s); x.closePath(); x.fill(); x.restore();
+      continue;
+    }
+    if (!key.label) continue;
+    x.font = `${key.small ? 500 : 500} ${(key.small ? 0.036 : 0.062) * k}px "Inter", system-ui, sans-serif`;
+    x.fillText(key.label, px, py + 0.003 * k);
+  }
+  const t = new THREE.CanvasTexture(c);
+  t.anisotropy = 16;
+  return t;
+}
+
+function floorTexture() {
+  const c = document.createElement("canvas");
+  c.width = c.height = 1024;
+  const x = c.getContext("2d");
+  const g = x.createRadialGradient(512, 512, 0, 512, 512, 512);
+  g.addColorStop(0, "rgba(255,255,255,.085)"); g.addColorStop(0.3, "rgba(255,255,255,.04)"); g.addColorStop(0.56, "rgba(255,255,255,0)");
+  x.save(); x.translate(0, 512 * 0.3); x.scale(1, 0.7); x.fillStyle = g; x.fillRect(0, 0, 1024, 1024); x.restore();
+  // miękki cień pod obudową (płaszczyzna ma 8 × 8 jednostek)
+  const k = 1024 / 8;
+  x.shadowColor = "rgba(0,0,0,1)"; x.shadowBlur = 0.22 * k;
+  x.fillStyle = "rgba(0,0,0,.92)";
+  for (let i = 0; i < 2; i++) { x.beginPath(); x.roundRect(512 - (W / 2 - 0.04) * k, 512 - (D / 2 - 0.04) * k, (W - 0.08) * k, (D - 0.08) * k, R * k); x.fill(); }
+  return new THREE.CanvasTexture(c);
+}
+
+export async function createLaptop(canvas, { reduce = false } = {}) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: "high-performance" });
   renderer.setClearColor(0x000000, 0);
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
+  renderer.toneMappingExposure = 1.0;
   const scene = new THREE.Scene();
   scene.environment = studioEnv(renderer);
-  const cam = new THREE.PerspectiveCamera(28, 1.6, 0.1, 60);
-  scene.add(new THREE.DirectionalLight(0xffffff, 0.6).translateX(2).translateY(6).translateZ(5));
+  const cam = new THREE.PerspectiveCamera(22, 1.6, 0.1, 80);
+  const sun = new THREE.DirectionalLight(0xffffff, 0.5);
+  sun.position.set(1.5, 6, 4); scene.add(sun);
 
   // ----- materiały -----
-  const alu = new THREE.MeshStandardMaterial({ color: 0xc9ccd1, metalness: 1, roughness: 0.34 });
-  const aluDark = new THREE.MeshStandardMaterial({ color: 0x1c1d21, metalness: 0.7, roughness: 0.45 });
-  const keyMat = new THREE.MeshStandardMaterial({ color: 0x0d0e11, metalness: 0.1, roughness: 0.55 });
-  const wellMat = new THREE.MeshStandardMaterial({ color: 0x050507, metalness: 0.2, roughness: 0.8 });
-  const padMat = new THREE.MeshStandardMaterial({ color: 0xd6d9de, metalness: 0.9, roughness: 0.22 });
-  const blackGlass = new THREE.MeshStandardMaterial({ color: 0x030304, metalness: 0.3, roughness: 0.25 });
+  const alu = new THREE.MeshStandardMaterial({ color: 0xcfd2d6, metalness: 1, roughness: 0.3 });
+  const dark = new THREE.MeshStandardMaterial({ color: 0x17181b, metalness: 0.6, roughness: 0.5 });
+  const keyMat = new THREE.MeshStandardMaterial({ color: 0x101114, metalness: 0, roughness: 0.62 });
+  const wellMat = new THREE.MeshStandardMaterial({ color: 0x040405, metalness: 0, roughness: 0.9 });
+  const padMat = new THREE.MeshStandardMaterial({ color: 0xcbced2, metalness: 1, roughness: 0.27 });
+  const glass = new THREE.MeshStandardMaterial({ color: 0x020203, metalness: 0, roughness: 0.18 });
 
   const laptop = new THREE.Group();
-  laptop.position.z = -DEPTH / 2; // środek podstawy w początku układu
+  laptop.position.z = -D / 2; // środek podstawy w początku układu
   scene.add(laptop);
 
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(8, 8), new THREE.MeshBasicMaterial({ map: floorTexture(), transparent: true, depthWrite: false, toneMapped: false }));
+  floor.rotation.x = -Math.PI / 2; floor.position.set(0, -0.004, D / 2);
+  laptop.add(floor);
+
   // ----- podstawa -----
-  const baseGeo = slab(W, DEPTH, BASE_H, 0.2, 0.026);
-  baseGeo.rotateX(-Math.PI / 2); // kształt w płaszczyźnie XZ, grubość w górę
+  const baseGeo = slab(W, D, BASE_H, R, 0.012, 32);
+  baseGeo.rotateX(-Math.PI / 2);
   const base = new THREE.Mesh(baseGeo, alu);
-  base.position.z = DEPTH / 2;
+  base.position.z = D / 2;
   laptop.add(base);
+  const deck = BASE_H;
 
-  const deck = BASE_H + 0.0008;
-  const well = new THREE.Mesh(new THREE.ShapeGeometry(rrShape(2.86, 1.18, 0.06)), wellMat);
-  well.rotation.x = -Math.PI / 2; well.position.set(0, deck, 0.72);
-  laptop.add(well);
-
-  // klawisze: rząd funkcyjny niższy, ostatni z długim spacją
-  const rows = [
-    { z: 0.22, d: 0.085, keys: Array(14).fill(1) },
-    { z: 0.385, d: 0.16, keys: Array(14).fill(1) },
-    { z: 0.57, d: 0.16, keys: [1.5, ...Array(12).fill(1), 1.5] },
-    { z: 0.755, d: 0.16, keys: [1.7, ...Array(11).fill(1), 1.7] },
-    { z: 0.94, d: 0.16, keys: [2.1, ...Array(10).fill(1), 2.1] },
-    { z: 1.125, d: 0.16, keys: [1.1, 1, 1.1, 7.6, 1.1, 1, 1.1] },
-  ];
-  const pitch = 2.74 / 14;
-  const keyList = [];
-  for (const r of rows) {
-    const total = r.keys.reduce((a, b) => a + b, 0);
-    let x = -(total * pitch) / 2;
-    for (const k of r.keys) { keyList.push({ x: x + (k * pitch) / 2, z: r.z, w: k * pitch - 0.022, d: r.d }); x += k * pitch; }
+  // klawiatura
+  const { keys, depth: kbD } = keyLayout();
+  const wellW = KB_W + 0.05, wellD = kbD + 0.05, kbZ = 0.2; // kbZ: tylna krawędź pierwszego rzędu
+  keys.forEach((k) => { k.depthAll = kbD; });
+  laptop.add(flat(rrShape(wellW, wellD, 0.035), wellMat, 0, deck + 0.0005, kbZ + kbD / 2));
+  const groups = new Map();
+  for (const k of keys) { const id = `${k.w.toFixed(4)}x${k.d.toFixed(4)}`; (groups.get(id) || groups.set(id, []).get(id)).push(k); }
+  const m4 = new THREE.Matrix4();
+  for (const list of groups.values()) {
+    const g = slab(list[0].w, list[0].d, KEY_H, 0.022, 0.004, 6);
+    g.rotateX(-Math.PI / 2);
+    const inst = new THREE.InstancedMesh(g, keyMat, list.length);
+    list.forEach((k, i) => inst.setMatrixAt(i, m4.makeTranslation(k.x, deck + 0.0006, kbZ + k.z)));
+    laptop.add(inst);
   }
-  const keys = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), keyMat, keyList.length);
-  const m4 = new THREE.Matrix4(), sc = new THREE.Vector3(), q = new THREE.Quaternion(), p = new THREE.Vector3();
-  keyList.forEach((k, i) => { p.set(k.x, deck + 0.011, k.z); sc.set(k.w, 0.022, k.d); m4.compose(p, q, sc); keys.setMatrixAt(i, m4); });
-  laptop.add(keys);
+  const legendMat = new THREE.MeshBasicMaterial({ map: legends(keys, wellW, wellD), transparent: true, depthWrite: false, toneMapped: false, opacity: 0.85 });
+  const legend = new THREE.Mesh(new THREE.PlaneGeometry(wellW, wellD), legendMat);
+  legend.rotation.x = -Math.PI / 2; legend.position.set(0, deck + KEY_H + 0.0012, kbZ + kbD / 2);
+  laptop.add(legend);
 
-  // gładzik: ciemniejsza szczelina i płyta
-  const gap = new THREE.Mesh(new THREE.ShapeGeometry(rrShape(1.26, 0.8, 0.06)), aluDark);
-  gap.rotation.x = -Math.PI / 2; gap.position.set(0, deck, 1.66);
-  laptop.add(gap);
-  const pad = new THREE.Mesh(new THREE.ShapeGeometry(rrShape(1.2, 0.74, 0.05)), padMat);
-  pad.rotation.x = -Math.PI / 2; pad.position.set(0, deck + 0.0006, 1.66);
-  laptop.add(pad);
+  // gładzik: cienka szczelina i szklana płyta w kolorze obudowy
+  const padTop = kbZ + kbD + 0.085, padD = D - 0.075 - padTop, padW = 1.36, padZ = padTop + padD / 2;
+  laptop.add(flat(rrShape(padW, padD, 0.05), dark, 0, deck + 0.0004, padZ));
+  laptop.add(flat(rrShape(padW - 0.012, padD - 0.012, 0.045), padMat, 0, deck + 0.0008, padZ));
 
   // zawias
-  const hingeY = BASE_H + 0.03;
-  const hingeBar = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.045, W * 0.86, 28).rotateZ(Math.PI / 2), aluDark);
-  hingeBar.position.set(0, hingeY, 0.02);
-  laptop.add(hingeBar);
+  const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, W * 0.78, 24).rotateZ(Math.PI / 2), dark);
+  bar.position.set(0, PIVOT_Y - 0.006, PIVOT_Z);
+  laptop.add(bar);
 
   // ----- klapa -----
-  const hinge = new THREE.Group(); // obrót wokół tylnej krawędzi podstawy
-  hinge.position.set(0, hingeY, 0);
+  const hinge = new THREE.Group();
+  hinge.position.set(0, PIVOT_Y, PIVOT_Z);
   laptop.add(hinge);
-  const lidGeo = slab(W, LID_H, LID_T, 0.17, 0.026);
-  lidGeo.translate(0, LID_H / 2, -LID_T); // ekran patrzy w +z, plecy w −z
+  const lidGeo = slab(W, LID_H, LID_T, R, 0.01, 32);
+  lidGeo.translate(0, LID_H / 2, -LID_T / 2); // ekran patrzy w +z, plecy w −z
   hinge.add(new THREE.Mesh(lidGeo, alu));
+  const face = LID_T / 2;
+  const front = new THREE.Mesh(new THREE.ShapeGeometry(rrShape(W - 0.028, LID_H - 0.028, R - 0.014), 24), glass);
+  front.position.set(0, LID_H / 2, face + 0.0006);
+  hinge.add(front);
 
-  const bezel = new THREE.Mesh(new THREE.ShapeGeometry(rrShape(SW + 0.035, SH + 0.035, 0.035)), blackGlass);
-  bezel.position.set(0, SCREEN_Y, 0.0015);
-  hinge.add(bezel);
-
-  const sCanvas = document.createElement("canvas");
-  sCanvas.width = 1920; sCanvas.height = 1200;
-  const sTex = new THREE.CanvasTexture(sCanvas);
-  sTex.colorSpace = THREE.SRGBColorSpace;
-  sTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
-  const screenMat = new THREE.MeshBasicMaterial({ map: sTex, toneMapped: false });
-  const screen = new THREE.Mesh(new THREE.PlaneGeometry(SW, SH), screenMat);
-  screen.position.set(0, SCREEN_Y, 0.003);
-  hinge.add(screen);
-
-  const cam3 = new THREE.Mesh(new THREE.CircleGeometry(0.022, 20), new THREE.MeshBasicMaterial({ color: 0x15161a }));
-  cam3.position.set(0, LID_H - 0.09, 0.0025);
-  hinge.add(cam3);
+  // ekran: dwie warstwy do płynnego przejścia między obrazami, zaokrąglone rogi
+  const scrGeo = new THREE.ShapeGeometry(rrShape(SW, SH, 0.04), 16);
+  { const p = scrGeo.attributes.position, uv = scrGeo.attributes.uv; for (let i = 0; i < p.count; i++) uv.setXY(i, p.getX(i) / SW + 0.5, p.getY(i) / SH + 0.5); }
+  const matA = new THREE.MeshBasicMaterial({ color: 0x000000, toneMapped: false });
+  const matB = new THREE.MeshBasicMaterial({ color: 0x000000, toneMapped: false, transparent: true, opacity: 0 });
+  const scrA = new THREE.Mesh(scrGeo, matA), scrB = new THREE.Mesh(scrGeo, matB);
+  scrA.position.set(0, SCREEN_Y, face + 0.0012); scrB.position.set(0, SCREEN_Y, face + 0.0016);
+  hinge.add(scrA, scrB);
+  // odbicie światła w szkle nad ekranem i ramką
+  const sheen = new THREE.Mesh(front.geometry, new THREE.MeshStandardMaterial({ color: 0x000000, metalness: 0, roughness: 0.12, envMapIntensity: 0.22, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+  sheen.position.set(0, LID_H / 2, face + 0.0022);
+  hinge.add(sheen);
+  const lens = new THREE.Mesh(new THREE.CircleGeometry(0.011, 20), new THREE.MeshBasicMaterial({ color: 0x0c0d10 }));
+  lens.position.set(0, LID_H - 0.028, face + 0.0026);
+  hinge.add(lens);
 
   const logo = await logoMask();
   if (logo) {
-    const mat = new THREE.MeshStandardMaterial({ color: 0xf2f3f5, metalness: 1, roughness: 0.12, alphaMap: logo.tex, transparent: true });
-    const h = 0.42;
+    const mat = new THREE.MeshStandardMaterial({ color: 0xf4f5f6, metalness: 1, roughness: 0.1, alphaMap: logo.tex, transparent: true });
+    const h = 0.4;
     const mark = new THREE.Mesh(new THREE.PlaneGeometry(h * logo.aspect, h), mat);
-    mark.position.set(0, LID_H / 2, -LID_T - 0.002);
+    mark.position.set(0, LID_H / 2, -face - 0.0015);
     mark.rotation.set(0, Math.PI, Math.PI); // czytelne z przodu przy zamkniętej klapie
     hinge.add(mark);
   }
 
-  // ----- ekrany (canvas) -----
-  const ctx = sCanvas.getContext("2d");
-  const photo = await loadImage("/assets/mont-blanc.jpg");
-  let lang = document.documentElement.lang === "en" ? "en" : "pl";
-  let cur = 0, prev = 0, fade = 1, fadeRaf = 0;
-  const FONT = '"Inter", "Noto Sans", system-ui, sans-serif';
-
-  const rr = (c, x, y, w, h, r) => { c.beginPath(); c.roundRect ? c.roundRect(x, y, w, h, r) : c.rect(x, y, w, h); };
-  const txt = (c, s, x, y, size, weight, color, align = "left") => {
-    c.font = `${weight} ${size}px ${FONT}`; c.fillStyle = color; c.textAlign = align; c.textBaseline = "middle"; c.fillText(s, x, y);
-  };
-  const cover = (c, img, w, h, px, py) => {
-    const k = Math.max(w / img.width, h / img.height);
-    const iw = img.width * k, ih = img.height * k;
-    c.drawImage(img, (w - iw) * px, (h - ih) * py, iw, ih);
-  };
-
-  function desktop(c, w, h) {
-    const u = w / 100, S = STR[lang];
-    if (photo) cover(c, photo, w, h, 0.42, 0.4); else { c.fillStyle = "#1f3a68"; c.fillRect(0, 0, w, h); }
-    c.fillStyle = "rgba(0,0,0,.4)"; c.fillRect(0, 0, w, 3.4 * u);
-    txt(c, "Shrimp", 1.8 * u, 1.7 * u, 1.25 * u, 600, "#fff");
-    txt(c, "12:40", w - 1.8 * u, 1.7 * u, 1.2 * u, 600, "#fff", "right");
-    // okno ze szkłem: rozmyty fragment tapety pod spodem
-    const x = 11 * u, y = 18 * u, ww = 46 * u, hh = 31 * u;
-    c.save(); rr(c, x, y, ww, hh, 1.2 * u); c.clip();
-    if (photo && "filter" in c) { c.filter = `blur(${1.4 * u}px)`; cover(c, photo, w, h, 0.42, 0.4); c.filter = "none"; }
-    c.fillStyle = "rgba(24,26,30,.74)"; c.fillRect(x, y, ww, hh);
-    c.fillStyle = "rgba(255,255,255,.05)"; c.fillRect(x, y, 13 * u, hh);
-    for (let i = 0; i < 4; i++) { c.fillStyle = i ? "rgba(255,255,255,.2)" : "rgba(255,255,255,.42)"; rr(c, x + 1.5 * u, y + (2 + i * 2.1) * u, 10 * u, 1 * u, 0.5 * u); c.fill(); }
-    txt(c, S.files, x + 15 * u, y + 2.4 * u, 1.25 * u, 600, "#fff");
-    for (let i = 0; i < 6; i++) { c.fillStyle = "rgba(255,255,255,.13)"; rr(c, x + (15 + (i % 3) * 10.2) * u, y + (5 + Math.floor(i / 3) * 8.4) * u, 9.4 * u, 7.4 * u, 0.9 * u); c.fill(); }
-    c.restore();
-    // dok
-    const dw = 5 * 5.6 * u + 2.8 * u, dx = (w - dw) / 2, dy = h - 7.2 * u;
-    c.save(); rr(c, dx, dy, dw, 5.8 * u, 2.2 * u); c.fillStyle = "rgba(0,0,0,.42)"; c.fill(); c.restore();
-    ["#f1f1f1", "#6aa7ff", "#ffb454", "#7ddc9a", "#c58bff"].forEach((col, i) => { c.fillStyle = col; rr(c, dx + 1.4 * u + i * 5.6 * u, dy + 0.8 * u, 4.2 * u, 4.2 * u, 1.1 * u); c.fill(); });
+  // ----- pendrive (wsuwa się w lewy bok podstawy) -----
+  const stick = new THREE.Group();
+  const stickMats = [
+    new THREE.MeshStandardMaterial({ color: 0xe9eaec, metalness: 1, roughness: 0.22, transparent: true }),
+    new THREE.MeshStandardMaterial({ color: 0x8d9096, metalness: 1, roughness: 0.35, transparent: true }),
+    new THREE.MeshBasicMaterial({ color: 0x3584e4, transparent: true, toneMapped: false }),
+  ];
+  {
+    const body = slab(STICK - 0.08, 0.2, 0.06, 0.03, 0.008, 8); body.rotateX(-Math.PI / 2);
+    const b = new THREE.Mesh(body, stickMats[0]); b.position.set(-(STICK - 0.08) / 2 - 0.08, -0.03, 0); stick.add(b);
+    const plug = new THREE.Mesh(new THREE.BoxGeometry(0.17, 0.034, 0.125), stickMats[1]); plug.position.set(-0.005, 0, 0); stick.add(plug);
+    const led = new THREE.Mesh(new THREE.CircleGeometry(0.012, 16), stickMats[2]); led.rotation.x = -Math.PI / 2; led.position.set(-STICK + 0.07, 0.0306, 0); stick.add(led);
   }
+  const stickZ = 0.62;
+  stick.visible = false;
+  laptop.add(stick);
 
-  function installer(c, w, h) {
-    const u = w / 100, S = STR[lang];
-    c.fillStyle = "#0d0e10"; c.fillRect(0, 0, w, h);
-    const cx = w / 2;
-    txt(c, S.step, cx, 24 * u, 1.3 * u, 400, "#9a9ea5", "center");
-    txt(c, S.title, cx, 29.5 * u, 3.9 * u, 600, "#fff", "center");
-    [["a", "32 GB", true], ["b", "64 GB", false], ["c", "500 GB", false]].forEach(([k, size, sel], i) => {
-      const rw = 44 * u, rx = cx - rw / 2, ry = (37 + i * 7.6) * u, rh = 6.4 * u;
-      rr(c, rx, ry, rw, rh, 1.5 * u);
-      if (sel) { c.fillStyle = "#fff"; c.fill(); } else { c.strokeStyle = "rgba(255,255,255,.16)"; c.lineWidth = Math.max(1, 0.12 * u); c.stroke(); }
-      txt(c, S[k], rx + 2 * u, ry + rh / 2, 1.7 * u, 600, sel ? "#000" : "#fff");
-      txt(c, size, rx + rw - 2 * u, ry + rh / 2, 1.3 * u, 400, sel ? "#555" : "#9a9ea5", "right");
-    });
-    const bw = 13 * u; rr(c, cx - bw / 2, 62 * u, bw, 5.4 * u, 2.7 * u); c.fillStyle = "#fff"; c.fill();
-    txt(c, S.next, cx, 64.7 * u, 1.7 * u, 600, "#000", "center");
-  }
+  // ----- obrazy na ekranie -----
+  const maxAniso = renderer.capabilities.getMaxAnisotropy();
+  const loader = new THREE.TextureLoader();
+  const tex = SCREENS.map(() => null);
+  const loadTex = (i) => new Promise((res) => loader.load(`/assets/screens/${SCREENS[i]}.jpg`, (t) => {
+    t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = maxAniso; tex[i] = t; res(t);
+  }, undefined, () => res(null)));
 
-  function apps(c, w, h) {
-    const u = w / 100, S = STR[lang];
-    c.fillStyle = "#101114"; c.fillRect(0, 0, w, h);
-    txt(c, S.discover, 3.4 * u, 5 * u, 1.6 * u, 600, "#fff");
-    txt(c, S.installed, 12 * u, 5 * u, 1.6 * u, 400, "#9a9ea5");
-    rr(c, w - 31.4 * u, 2.6 * u, 28 * u, 4.8 * u, 2.4 * u); c.fillStyle = "rgba(255,255,255,.1)"; c.fill();
-    txt(c, S.search, w - 29.4 * u, 5 * u, 1.35 * u, 400, "#9a9ea5");
-    const hues = [210, 28, 140, 275, 350, 48, 185, 100];
-    const cw = 21.6 * u, ch = 24 * u;
-    hues.forEach((hue, i) => {
-      const x = 3.2 * u + (i % 4) * (cw + 2 * u), y = 11 * u + Math.floor(i / 4) * (ch + 2 * u);
-      rr(c, x, y, cw, ch, 1.6 * u); c.fillStyle = "rgba(255,255,255,.06)"; c.fill();
-      rr(c, x + 1.8 * u, y + 1.8 * u, 6 * u, 6 * u, 1.5 * u); c.fillStyle = `hsl(${hue} 55% 58%)`; c.fill();
-      rr(c, x + 1.8 * u, y + 10.4 * u, 15 * u, 1.1 * u, 0.55 * u); c.fillStyle = "rgba(255,255,255,.32)"; c.fill();
-      rr(c, x + 1.8 * u, y + 12.6 * u, 9.5 * u, 1.1 * u, 0.55 * u); c.fillStyle = "rgba(255,255,255,.14)"; c.fill();
-      const bw = S.get.length * 0.95 * u + 3.6 * u;
-      rr(c, x + 1.8 * u, y + 17 * u, bw, 3.4 * u, 1.7 * u); c.fillStyle = "#fff"; c.fill();
-      txt(c, S.get, x + 1.8 * u + bw / 2, y + 18.75 * u, 1.2 * u, 600, "#000", "center");
-    });
-  }
-
-  const SCREENS = [desktop, installer, apps];
-  function paint() {
-    const w = sCanvas.width, h = sCanvas.height;
-    ctx.globalAlpha = 1;
-    SCREENS[fade < 1 ? prev : cur](ctx, w, h);
-    if (fade < 1) { ctx.globalAlpha = fade; SCREENS[cur](ctx, w, h); ctx.globalAlpha = 1; }
-    sTex.needsUpdate = true;
-  }
-  function setScreen(i) {
-    if (i === cur) return;
-    prev = cur; cur = i; fade = 0;
-    cancelAnimationFrame(fadeRaf);
-    const t0 = performance.now();
-    const step = (t) => {
-      fade = Math.min(1, (t - t0) / 550);
-      paint(); render();
-      if (fade < 1) fadeRaf = requestAnimationFrame(step);
-    };
-    fadeRaf = requestAnimationFrame(step);
-  }
-
-  // ----- kamera i animacja -----
-  let o = 0, aspect = 1.6, dirty = true, raf = 0;
+  // ----- stan i animacja -----
+  let o = 0, tO = 0, plug = 0, tPlug = 0, want = 0, shown = -1, next = -1, fade = 0;
+  let aspect = 1.6, raf = 0, last = 0;
   const FIT = 2 * Math.tan(THREE.MathUtils.degToRad(cam.fov / 2));
-  const dirClosed = new THREE.Vector3(0, 0.66, 0.75).normalize();
-  const dirOpen = new THREE.Vector3(0, 0.27, 0.96).normalize();
-  const tgtClosed = new THREE.Vector3(0.45, 0.05, 0), tgtOpen = new THREE.Vector3(0, 0.95, -0.2);
+  const dirClosed = new THREE.Vector3(0, 0.84, 0.54).normalize(), dirOpen = new THREE.Vector3(0, 0.3, 0.954).normalize();
+  const tgtClosed = new THREE.Vector3(0, 0.04, 0.02), tgtOpen = new THREE.Vector3(0, 0.86, -0.22);
   const dir = new THREE.Vector3(), tgt = new THREE.Vector3();
 
   function pose() {
-    const e = o;
+    const e = smooth(clamp01(o));
     hinge.rotation.x = Math.PI / 2 - e * (Math.PI / 2 + OPEN_EXTRA);
-    laptop.rotation.y = (1 - e) * 0.42;
-    screenMat.color.setScalar(0.12 + 0.88 * smooth(Math.min(1, e * 1.4)));
+    const lit = smooth(clamp01((o - 0.25) / 0.5));
+    matA.color.setScalar(shown < 0 ? 0 : lit); matB.color.setScalar(lit);
+    matB.opacity = fade;
+    floor.material.opacity = e;
+    const s = smooth(clamp01(plug));
+    stick.visible = s > 0.002;
+    stick.position.set(-W / 2 - (1 - s) * 1.1, BASE_H / 2 + (1 - s) * 0.12, stickZ);
+    stick.rotation.z = (1 - s) * -0.25;
+    for (const m of stickMats) m.opacity = clamp01(s * 2.5);
+    stickMats[2].color.setHex(s > 0.97 ? 0x62a0ea : 0x1a2a40);
     dir.lerpVectors(dirClosed, dirOpen, e).normalize();
     tgt.lerpVectors(tgtClosed, tgtOpen, e);
-    const fitW = (W * 1.2) / (FIT * aspect), fitH = (e < 0.5 ? 2.6 : 3.05) / FIT;
-    const dist = Math.max(fitW, fitH) * (1 + (1 - e) * 0.1);
-    cam.position.copy(tgt).addScaledVector(dir, dist);
+    const needW = W * (aspect < 1 ? 1.07 : 1.14) + s * (STICK * 2 - 0.1), needH = 2.25 + e * 0.75;
+    cam.position.copy(tgt).addScaledVector(dir, Math.max(needW / (FIT * aspect), needH / FIT));
     cam.lookAt(tgt);
   }
 
-  function render() { pose(); renderer.render(scene, cam); dirty = false; }
-  function schedule() { if (!raf) raf = requestAnimationFrame(() => { raf = 0; if (dirty) render(); }); }
+  function startFade() {
+    if (want === shown || !tex[want]) return;
+    if (next >= 0) { matA.map = tex[next]; matA.needsUpdate = true; shown = next; } // przerwane przejście: domknij
+    if (shown < 0) { matA.map = tex[want]; matA.needsUpdate = true; shown = want; next = -1; fade = 0; return; }
+    if (want === shown) { next = -1; fade = 0; return; }
+    next = want; matB.map = tex[next]; matB.needsUpdate = true; fade = 0;
+  }
+
+  function frame(t) {
+    raf = 0;
+    const dt = Math.min(0.12, (t - last) / 1000 || 0.016); last = t;
+    const k = reduce ? 1 : 1 - Math.exp(-dt * 9);
+    o += (tO - o) * k; if (Math.abs(tO - o) < 0.0005) o = tO;
+    plug += (tPlug - plug) * (reduce ? 1 : 1 - Math.exp(-dt * 4.5)); if (Math.abs(tPlug - plug) < 0.001) plug = tPlug;
+    if (next >= 0) {
+      fade = reduce ? 1 : Math.min(1, fade + dt / 0.45);
+      if (fade >= 1) { matA.map = tex[next]; matA.needsUpdate = true; shown = next; next = -1; fade = 0; startFade(); }
+    }
+    pose();
+    renderer.render(scene, cam);
+    if (o !== tO || plug !== tPlug || next >= 0) kick();
+  }
+  function kick() { if (!raf) raf = requestAnimationFrame(frame); }
 
   function resize() {
     const host = canvas.parentElement;
@@ -312,21 +340,26 @@ export async function createLaptop(canvas) {
     renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
     renderer.setSize(w, h, false);
     aspect = w / h; cam.aspect = aspect; cam.updateProjectionMatrix();
-    dirty = true; schedule();
+    kick();
   }
   new ResizeObserver(resize).observe(canvas.parentElement);
-  document.addEventListener("langchange", (e) => { lang = e.detail === "en" ? "en" : "pl"; paint(); dirty = true; schedule(); });
   canvas.addEventListener("webglcontextlost", (e) => e.preventDefault());
+  canvas.addEventListener("webglcontextrestored", kick);
 
-  paint();
-  try { await document.fonts.load('600 32px "Inter"'); paint(); } catch { /* bez fontu zostaje zapasowy */ }
+  try { await document.fonts.load('500 32px "Inter"'); legendMat.map = legends(keys, wellW, wellD); legendMat.needsUpdate = true; } catch { /* zostaje font zapasowy */ }
+  await loadTex(0);
+  startFade();
   resize();
+  // pozostałe obrazy doczytują się w tle, po kolei
+  (async () => { for (let i = 1; i < SCREENS.length; i++) { await loadTex(i); if (i === want) { startFade(); kick(); } } })();
 
   return {
-    set(nextO, screenIdx) {
-      if (Math.abs(nextO - o) > 1e-4) { o = nextO; dirty = true; }
-      setScreen(screenIdx);
-      if (dirty) schedule();
+    set(nextO, idx) {
+      tO = clamp01(nextO);
+      want = Math.min(SCREENS.length - 1, Math.max(0, idx | 0));
+      tPlug = tO > 0.9 && want <= 1 ? 1 : 0;
+      if (next < 0 || want !== next) startFade();
+      kick();
     },
   };
 }
