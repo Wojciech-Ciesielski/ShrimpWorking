@@ -6,7 +6,10 @@ if [ -f /etc/sysconfig/displaymanager ]; then
   sed -i -e 's/^DISPLAYMANAGER=.*/DISPLAYMANAGER="gdm"/' \
          -e 's/^DISPLAYMANAGER_AUTOLOGIN=.*/DISPLAYMANAGER_AUTOLOGIN="shrimp"/' /etc/sysconfig/displaymanager
 fi
-update-alternatives --set default-displaymanager /usr/lib/X11/displaymanagers/gdm || true
+# Leap 16 nie ma już update-alternatives w obrazie (display-manager.service wybiera DISPLAYMANAGER powyżej).
+if command -v update-alternatives >/dev/null 2>&1; then
+  update-alternatives --set default-displaymanager /usr/lib/X11/displaymanagers/gdm || true
+fi
 systemctl enable display-manager.service || systemctl enable gdm.service
 mkdir -p /etc/gdm
 cat > /etc/gdm/custom.conf <<'CONF'

@@ -16,6 +16,8 @@ STATE=${SHRIMP_STATE:-/var/lib/shrimp-setup}
 [ -f "$STATE/first-boot" ] || { echo "pierwsza konfiguracja już zakończona" >&2; exit 1; }
 # shellcheck source=/dev/null
 . "${SHRIMP_DRIVERS_CONF:-/usr/share/shrimp/linux/drivers.conf}"
+# Wybór wersji otwartego modułu NVIDIA (wspólny z budową nośnika); dołączany w migawce.
+NVIDIA_LIB=${SHRIMP_NVIDIA_LIB:-/usr/share/shrimp/linux/nvidia-open.sh}
 
 # Pierwsza karta NVIDIA: identyfikator urządzenia PCI (np. 0x2504) albo pusto.
 nvidia_device() {
@@ -61,11 +63,16 @@ pick() { for p in "\$@"; do zypper --non-interactive --quiet search --match-exac
 # usługi uśpienia sterownika (bez nich GDM nie włącza Waylanda na NVIDIA); opcje: 61-shrimp-nvidia.conf
 services() { for u in $NVIDIA_SERVICES; do systemctl enable "\$u" 2>/dev/null || true; done; }
 if [ $NV_KIND = open ]; then
+  # moduł w najnowszej wersji, do której SUSE ma podpisany moduł jądra (nvidia-open.sh), biblioteki w tej wersji
+  . "$NVIDIA_LIB"
   for S in $NVIDIA_OPEN_SERIES; do
-    P=\$(echo "$NVIDIA_OPEN_PACKAGES" | sed "s/@S@/\$S/g")
-    set -- \$P
-    if zypper --non-interactive --quiet search --match-exact "\$1" >/dev/null 2>&1; then
-      zypper --non-interactive install --auto-agree-with-licenses \$(pick \$P); services; exit 0
+    if ver=\$(nvidia_open_install "\$S"); then
+      for p in \$(echo "$NVIDIA_OPEN_PACKAGES" | sed "s/@S@/\$S/g"); do
+        case "\$p" in *kmp*) continue ;; esac
+        zypper --non-interactive install --no-recommends --auto-agree-with-licenses "\$p = \$ver" \\
+          || echo "brak pakietu \$p \$ver" >&2
+      done
+      services; exit 0
     fi
   done
   echo "brak pakietów otwartego sterownika NVIDIA" >&2; exit 1

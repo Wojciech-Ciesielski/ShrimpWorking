@@ -27,25 +27,19 @@ fi
 "${ZYP[@]}" refresh NVIDIA || { warn "nie można odświeżyć repozytorium NVIDIA"; exit 0; }
 note "repozytorium NVIDIA: $repo"
 
-avail() { "${ZYP[@]}" -q se -x -t package "$1" >/dev/null 2>&1; }
+. /usr/share/shrimp/linux/nvidia-open.sh
 
 installed=""
 for S in $NVIDIA_OPEN_SERIES; do
-  kmp=""
-  for k in "nvidia-open-driver-$S-signed-kmp-meta" "nvidia-open-driver-$S-signed-kmp-default"; do
-    avail "$k" && { kmp=$k; break; }
-  done
-  [ -n "$kmp" ] || { warn "seria $S: brak podpisanego modułu (nvidia-open-driver-$S-signed-kmp-*)"; continue; }
-  # Najpierw sam moduł: jego meta-pakiet wymaga nvidia-userspace-meta w DOKŁADNIE tej samej wersji,
-  # więc zypper dobiera biblioteki pasujące do modułu. Podanie bibliotek wprost wybierało najnowsze
-  # z repozytorium NVIDIA (np. 620.x przy module 595.x) i rozwiązanie się nie składało.
-  note "seria $S: instaluję $kmp"
-  if ! out=$("${ZYP[@]}" install --no-recommends --auto-agree-with-licenses "$kmp" 2>&1); then
-    echo "$out" | tail -25 | sed 's/^/Linu(x): zypper: /' >&2
+  # Najpierw sam moduł (meta-pakiet wymaga nvidia-userspace-meta w DOKŁADNIE tej samej wersji, więc
+  # zypper dobiera biblioteki pasujące do modułu), w najnowszej wersji, do której SUSE ma podpisany
+  # moduł: repozytorium NVIDIA bywa o wersję przed SUSE (nvidia-open.sh).
+  note "seria $S: instaluję otwarty moduł (wersje: $(nvidia_open_versions "$S" | head -n3 | tr '\n' ' '))"
+  if ! ver=$(nvidia_open_install "$S"); then
     warn "seria $S nie zainstalowała się, próbuję następnej"
     continue
   fi
-  ver=$(rpm -q --qf '%{VERSION}' "$kmp")
+  note "seria $S: moduł $ver"
   # brakujące biblioteki z listy, w wersji modułu
   for p in $(echo "$NVIDIA_OPEN_PACKAGES" | sed "s/@S@/$S/g"); do
     case "$p" in *kmp*) continue ;; esac

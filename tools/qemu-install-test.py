@@ -5,6 +5,9 @@ Usage: qemu-install-test.py <usb.img> <outdir>
   usb.img  FAT32 stick made like Shrimp Install does (ISO files, label SHRIMP_LIVE,
            shrimp-transfer/ with shrimp.json and files) plus shrimp-test/agama-install.sh.
 
+Phase 0 boots the stick with the Setup guard ON (no SHRIMP_TEST drive) and checks that a mouse
+click reaches the Setup window (Beta 3.2: the pointer moved, clicks did nothing). The journal is
+forwarded to the serial port (kernel parameters added to the stick's GRUB by the workflow).
 Phase 1 boots the stick (UEFI) with an empty 40 GB disk, waits for the Setup window, then
 runs shrimp-test/agama-install.sh, which drives Agama with Setup's own configuration and
 logs to the serial port. Phase 2 boots the installed disk and captures the first boot
@@ -37,7 +40,7 @@ def noguard_drive(outdir):
     return ["-drive", f"file={img},if=none,id=noguard,format=raw", "-device", "usb-storage,drive=noguard"]
 
 
-def start(phase, with_usb):
+def start(phase, with_usb, guard=False):
     if os.path.exists(QMP_SOCK):
         os.remove(QMP_SOCK)
     cmd = [
@@ -56,7 +59,8 @@ def start(phase, with_usb):
     if with_usb:
         cmd += ["-drive", f"file={USB},if=none,id=stick,format=raw",
                 "-device", "usb-storage,bus=xhci.0,drive=stick,removable=on,bootindex=1"]
-    cmd += noguard_drive(OUT)
+    if not guard:
+        cmd += noguard_drive(OUT)
     print("+", " ".join(cmd), flush=True)
     return subprocess.Popen(cmd)
 
@@ -218,7 +222,29 @@ def stop():
 
 
 result = "unknown"
+guard = "unknown"
 try:
+    # ---------------------------------------------------------- phase 0 ----
+    # Setup guard on, like on a real computer: a click in the middle of the Setup window must reach Setup.
+    qemu = start("guard", True, guard=True)
+    qmp = QMP(QMP_SOCK)
+    deadline = t() + 360
+    while t() < deadline and qemu.poll() is None and not serial_has("guard", "shrimp-setup-guard: input"):
+        time.sleep(5)
+    stage("guard-setup", keep_duplicates=True)
+    pause(20)  # Setup page loaded (Agama token, first screen)
+    for _ in range(3):
+        if serial_has("guard", "shrimp-setup: pierwsze klikni"):
+            break
+        click(W // 2, H // 2)
+        pause(8)
+    if serial_has("guard", "shrimp-setup: pierwsze klikni"):
+        guard = "click-ok"
+    elif serial_has("guard", "shrimp-setup-guard: input"):
+        guard = "click-blocked"
+    print(f"[{t():6.1f}s] Setup guard: {guard}", flush=True)
+    stop()
+
     # ---------------------------------------------------------- phase 1 ----
     qemu = start("live", True)
     qmp = QMP(QMP_SOCK)
@@ -282,13 +308,21 @@ finally:
     except Exception:
         pass
     with open(os.path.join(OUT, "result.json"), "w") as f:
-        json.dump({"agama": result}, f, indent=1)
+        json.dump({"agama": result, "guard": guard}, f, indent=1)
     for p in ("vars.fd", "qmp.sock", "disk.qcow2"):
         try:
             os.remove(os.path.join(OUT, p))
         except OSError:
             pass
     # The serial logs are only an artifact; print the parts worth reading into the job log too.
+    try:
+        with open(os.path.join(OUT, "serial-guard.log"), errors="replace") as f:
+            glines = [l for l in f.read().splitlines() if "shrimp-setup" in l or "JS ERROR" in l]
+        print("::group::serial-guard: Setup guard and Setup", flush=True)
+        print("\n".join(glines[-80:]))
+        print("::endgroup::", flush=True)
+    except OSError:
+        pass
     for phase, start_mark, end_mark in (("live", "=== post-install / target", "===AGAMA-DONE"),
                                         ("installed", "===DIAG", "===DIAG-END")):
         try:
@@ -304,4 +338,7 @@ finally:
         if a >= 0:
             print(text[a:b if b > a else a + 20000][:20000])
         print("::endgroup::", flush=True)
-    print(f"done, Agama {result}, logs in {OUT}", flush=True)
+    print(f"done, Agama {result}, Setup guard {guard}, logs in {OUT}", flush=True)
+if guard == "click-blocked":
+    print("::error::Setup guard on: a click did not reach the Setup window", flush=True)
+    sys.exit(1)
