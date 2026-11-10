@@ -98,38 +98,6 @@ jobs:
           if (-not (Test-Path "$dst\shrimp-backup\files\duzy.iso.shrimp-part002")) { throw 'plik > 4 GB nie został podzielony' }
           if (-not (Test-Path "$dst\shrimp-backup\files\Pusty folder")) { throw 'brak pustego folderu' }
           Get-Content "$dst\shrimp-backup\manifest.tsv"
-      - name: Miejsce obok Windows (--shrink-test, zmniejszenie partycji NTFS)
-        # Wirtualny dysk 60 GB z jedną partycją NTFS (jak C:), na niej 6 GB danych. Program zmniejsza ją
-        # narzędziami Windows (Resize-Partition) tak, żeby zostało 20 GiB wolnego miejsca, a prośba o więcej,
-        # niż Windows odda, kończy się czytelnym błędem bez zmian na dysku.
-        shell: pwsh
-        timeout-minutes: 15
-        run: |
-          $tmp = $env:RUNNER_TEMP
-          $vhd = "$tmp\windows.vhdx"
-          "create vdisk file=`"$vhd`" maximum=60000 type=expandable`nselect vdisk file=`"$vhd`"`nattach vdisk`nconvert gpt`ncreate partition primary`nformat fs=ntfs quick label=TESTWIN`nassign letter=W" | Set-Content "$tmp\dp-win.txt" -Encoding ascii
-          diskpart /s "$tmp\dp-win.txt" | Out-Host
-          $f = [IO.File]::Create("W:\dane.bin"); $f.SetLength(6GB); $f.Close()
-          $before = Get-Partition -DriveLetter W
-          "partycja przed: $($before.Size) B"
-          $log = "$env:LOCALAPPDATA\Shrimp Install\shrimp-install.log"
-          $want = 20GB
-          $p = Start-Process out\shrimp-install.exe -ArgumentList '--shrink-test', 'W', $want -PassThru -Wait
-          Get-Content $log -ErrorAction SilentlyContinue | Select-String 'Shrimp: (dysk|zmniejsz|na dysku|C: |W: )' | Select-Object -Last 20 | Out-Host
-          if ($p.ExitCode -ne 0) { throw "kod wyjścia $($p.ExitCode)" }
-          $after = Get-Partition -DriveLetter W
-          $free = (Get-Disk -Number $after.DiskNumber).LargestFreeExtent
-          "partycja po: $($after.Size) B, wolne: $free B"
-          if ($free -lt $want) { throw "za mało wolnego miejsca: $free B" }
-          if (-not (Test-Path W:\dane.bin)) { throw 'dane zniknęły po zmniejszeniu' }
-          # Za dużo: Windows nie zmniejszy partycji poniżej zajętego miejsca, program kończy kodem 3 i nic nie zmienia.
-          $p = Start-Process out\shrimp-install.exe -ArgumentList '--shrink-test', 'W', 58GB -PassThru -Wait
-          if ($p.ExitCode -ne 3) { throw "oczekiwany kod 3 (za dużo), jest $($p.ExitCode)" }
-          if ((Get-Partition -DriveLetter W).Size -ne $after.Size) { throw 'partycja zmieniła się mimo błędu' }
-          "za duża prośba odrzucona bez zmian"
-          Copy-Item $log out\shrink-test.log -ErrorAction SilentlyContinue
-          "select vdisk file=`"$vhd`"`ndetach vdisk" | Set-Content "$tmp\dp-win2.txt" -Encoding ascii
-          diskpart /s "$tmp\dp-win2.txt" | Out-Host
       - name: Pełny zapis na pusty wirtualny nośnik 32 GB (--auto-disk)
         # Jak u użytkownika: całkowicie pusty dysk (bez tablicy partycji), ISO z ostatniego wydania,
         # potem sprawdzenie, co jest na nośniku. Dziennik programu trafia do artefaktu.
@@ -168,7 +136,7 @@ jobs:
         shell: pwsh
         run: |
           foreach ($t in 'light', 'dark') {
-            foreach ($s in 'start', 'nosnik', 'pliki', 'miejsce', 'postep') {
+            foreach ($s in 'start', 'nosnik', 'pliki', 'postep') {
               $p = Start-Process out\shrimp-install.exe -ArgumentList '--demo', '--screen', $s, '--theme', $t -PassThru
               Start-Sleep -Seconds 8
               $p.Refresh()

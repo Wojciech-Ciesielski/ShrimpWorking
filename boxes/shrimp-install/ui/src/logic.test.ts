@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { GiB, SHRINK_EST, dur, fmtGB, fmtSize, hostMessage, minLabel, phaseFrac, phaseText, placeLimits, remaining, space, windowsAfter } from "./logic";
+import { GiB, dur, fmtGB, fmtSize, hostMessage, minLabel, phaseFrac, phaseText, remaining, space } from "./logic";
 import { load } from "./i18n";
 
 const en = load(["en-US"]);
@@ -91,41 +91,5 @@ describe("komunikaty programu", () => {
     expect(hostMessage(en, "connect")).toBe("Can't connect to the download server.");
     expect(hostMessage(pl, "http:404")).toBe("Serwer pobierania odpowiedział kodem 404.");
     expect(hostMessage(en, "Błąd 5: odmowa dostępu")).toBe("Błąd 5: odmowa dostępu");
-  });
-});
-
-describe("miejsce obok Windows", () => {
-  const disk = { ok: true, letter: "C", size: 475 * GiB, min: 118 * GiB, disk: 477 * GiB, free: 0 };
-  it("suwak: Shrimp 40 GiB + pliki, Windows minimum + 20 GiB, domyślnie połowa", () => {
-    const l = placeLimits(disk, 10.5 * GiB);
-    expect(l.ok).toBe(true);
-    expect(l.min).toBe(51 * GiB);
-    expect(l.max).toBe((475 - 118 - 20) * GiB);
-    expect(l.def).toBe(238 * GiB);
-  });
-  it("bez miejsca albo bez rozmiarów: tylko Zamiast Windows", () => {
-    expect(placeLimits({ ...disk, min: 430 * GiB }, 0).ok).toBe(false);
-    expect(placeLimits({ ...disk, ok: false }, 0).ok).toBe(false);
-  });
-  it("wolne miejsce, które już wystarcza, jest domyślne i nie zmienia Windows", () => {
-    const d = { ...disk, size: 300 * GiB, free: 170.4 * GiB };
-    const l = placeLimits(d, 0);
-    expect(l.def).toBe(170 * GiB);
-    expect(windowsAfter(d, l.def)).toBe(300 * GiB);
-    expect(windowsAfter(d, 200 * GiB)).toBe(100 * GiB);
-  });
-  it("faza 4: opis i czas", () => {
-    const sizes = { shrimp: 2 * GiB, files: 0, shrink: 200 * GiB };
-    expect(n(phaseText(pl, 4, { phase: 3, done: 0, total: 1, speed: 0 }, sizes, false))).toBe("200 GB obok Windows · kilka minut");
-    expect(n(phaseText(pl, 4, { phase: 4, done: 0, total: 0, speed: 0 }, sizes, false))).toBe("Windows zmniejsza partycję · 200 GB dla Shrimp");
-    expect(n(phaseText(pl, 4, null, sizes, true))).toBe("Miejsce gotowe: 200 GB");
-    expect(n(phaseText(pl, 3, null, sizes, true))).toBe(n(phaseText(pl, 3, null, { ...sizes, shrink: 0 }, true)));
-    expect(remaining({ phase: 4, done: 0, total: 0, speed: 0 }, sizes)).toBe(SHRINK_EST);
-    const r = remaining({ phase: 3, done: 0, total: 0, speed: 1 }, sizes);
-    expect(r).toBe(remaining({ phase: 3, done: 0, total: 0, speed: 1 }, { ...sizes, shrink: 0 }) + SHRINK_EST);
-  });
-  it("komunikaty Windows przy zmniejszaniu", () => {
-    expect(hostMessage(pl, "shrinkMin")).toMatch(/nie zmniejszy/);
-    expect(hostMessage(en, "shrinkFail:Size Not Supported")).toBe("Windows didn't shrink the partition. Size Not Supported");
   });
 });

@@ -25,6 +25,7 @@
         </div>
       </div>
       <div class="cmd">
+        <p class="alert" id="bitlocker" style="margin:0" hidden><svg class="i"><use href="#f-important-filled"/></svg><span data-i="start.bitlocker"></span></p>
         <button class="btn accent" data-go="nosnik" data-i="start.go"></button>
       </div>
     </section>
@@ -76,47 +77,20 @@
       <div class="cmd">
         <span class="hint" id="hint2" data-help="files" tabindex="0" data-i-aria="files.hint.aria" aria-describedby="tip2"><svg class="i"><use href="#f-info"/></svg><span class="tip" id="tip2" role="tooltip" data-i="files.tip"></span></span>
         <button class="btn" data-go="nosnik" data-i="back"></button>
-        <button class="btn accent" id="goBtn" data-go="miejsce" data-i="next"></button>
+        <button class="btn accent" id="goBtn" data-go="postep" data-i="files.go"></button>
       </div>
     </section>
 
-    <!-- 3. Miejsce -->
-    <section class="screen" data-screen="miejsce" hidden>
-      <div class="scr">
-        <p class="stepcap" data-step="3"></p>
-        <div class="head"><h1 data-i="place.title"></h1><p class="sub" data-i="place.sub"></p></div>
-
-        <div class="modes" role="radiogroup" data-i-aria="place.modes.aria">
-          <button class="mode" type="button" role="radio" aria-checked="true" data-place="beside"><span class="rd"></span><span><b><span data-i="place.beside"></span> <em data-i="recommended"></em></b><span data-i="place.beside.d"></span></span></button>
-          <button class="mode" type="button" role="radio" aria-checked="false" data-place="replace"><span class="rd"></span><span><b data-i="place.replace"></b><span data-i="place.replace.d"></span></span></button>
-        </div>
-
-        <div class="split" id="split" hidden>
-          <div class="sp-top"><span id="splitWin"></span><b id="splitShr"></b></div>
-          <div class="bar" aria-hidden="true"><i id="splitWinBar"></i><i id="splitShrBar"></i></div>
-          <input type="range" id="splitRange" min="0" max="1" step="1" data-i-aria="place.split.aria">
-        </div>
-        <div class="pbar ind" id="diskScan" hidden><i></i></div>
-        <p class="cbnote placenote" id="placeNote" aria-live="polite"></p>
-      </div>
-      <div class="cmd">
-        <p class="alert" id="placeBl" style="margin:0" hidden><svg class="i"><use href="#f-important-filled"/></svg><span data-i="place.bitlocker"></span></p>
-        <button class="btn" id="placeBack" data-go="pliki" data-i="back"></button>
-        <button class="btn accent" id="placeGo" data-i="files.go"></button>
-      </div>
-    </section>
-
-    <!-- 4. Postęp -->
+    <!-- 3. Postęp -->
     <section class="screen" data-screen="postep" data-variant="run" hidden>
       <div class="scr">
-        <p class="stepcap" data-step="4"></p>
+        <p class="stepcap" data-step="3"></p>
         <div class="head"><h1 id="pgTitle"></h1><p class="sub" id="pgSub"></p></div>
 
         <div class="group" aria-live="polite">
           <div class="row phase active" id="ph1"><span class="st"></span><div class="tx"><div class="tt" data-i="phase.1"></div><div class="num" id="n1"></div><div class="pb-wrap"><div class="pbar"><i id="b1"></i></div></div></div></div>
           <div class="row phase wait" id="ph2"><span class="st"></span><div class="tx"><div class="tt" data-i="phase.2"></div><div class="num" id="n2"></div><div class="pb-wrap"><div class="pbar"><i id="b2"></i></div></div></div></div>
           <div class="row phase wait" id="ph3"><span class="st"></span><div class="tx"><div class="tt" data-i="phase.3"></div><div class="num" id="n3"></div><div class="pb-wrap"><div class="pbar"><i id="b3"></i></div></div></div></div>
-          <div class="row phase wait" id="ph4" hidden><span class="st"></span><div class="tx"><div class="tt" data-i="phase.4"></div><div class="num" id="n4"></div><div class="pb-wrap"><div class="pbar"><i id="b4"></i></div></div></div></div>
         </div>
       </div>
       <div class="cmd">
@@ -128,7 +102,7 @@
       </div>
     </section>
 
-    <!-- 5. Gotowe -->
+    <!-- 4. Gotowe -->
     <section class="screen" data-screen="gotowe" hidden>
       <div class="scr start-scr">
         <div class="start-grid">

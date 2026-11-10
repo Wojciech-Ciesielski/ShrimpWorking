@@ -145,29 +145,3 @@
 144	fail.busy.r	Close programs that use it (for example File Explorer or a backup program) and try again.
 145	fail.question.t	Writing was stopped
 146	fail.question.b	Shrimp Install stopped before writing the drive because of an unexpected question:
-147	place.title	Where should Shrimp go?
-148	place.sub	Keep Windows and pick the system each time you start the computer, or replace Windows with Shrimp.
-149	place.modes.aria	Where to install Shrimp
-150	place.beside	Next to Windows
-151	place.beside.d	Windows makes room on its disk. Windows, programs and files stay.
-152	place.replace	Instead of Windows
-153	place.replace.d	Shrimp takes the whole disk. The files you chose wait on the drive.
-154	place.split.aria	Space for Shrimp
-155	place.win	Windows · {size}
-156	place.shr	Shrimp · {size}
-157	place.checking	Checking the Windows disk…
-158	place.nodisk	Couldn't check the Windows disk, so Shrimp can only replace Windows.
-159	place.nospace	There isn't enough room next to Windows: Shrimp needs {size}. Free up space in Windows or install Shrimp instead of it.
-160	place.free	The disk already has this much free space. Windows stays as it is.
-161	place.shrink	Windows will shrink its partition after the files are copied. You can undo it in Disk Management.
-162	place.bitlocker	Windows stays encrypted with BitLocker. Keep the recovery key at hand: Windows may ask for it on the next start.
-163	phase.4	Making room for Shrimp
-164	phase.shrinkplan	{size} next to Windows · a few minutes
-165	phase.shrink	Windows is shrinking its partition · {size} for Shrimp
-166	phase.shrunk	Room ready: {size}
-167	fail.shrink.t	Couldn't make room
-168	fail.shrink.b	Windows couldn't make room for Shrimp.
-169	fail.shrink.r	The drive is ready. Choose less space, or install Shrimp instead of Windows.
-170	host.shrinkQuery	Couldn't read the size of the Windows partition.
-171	host.shrinkMin	Windows can't shrink that much: some of its files can't be moved.
-172	host.shrinkFail	Windows didn't shrink the partition. {code}

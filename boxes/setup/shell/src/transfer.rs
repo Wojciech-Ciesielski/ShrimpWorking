@@ -52,8 +52,6 @@ pub fn hint(v: &Value) -> Value {
         "locale": v["locale"],
         "bitlocker": v["windows"]["bitlocker"].as_bool().unwrap_or(false),
         "bytes": bytes,
-        // Wybór z Shrimp Install („Gdzie zainstalować Shrimp?”); null w starszych plikach.
-        "place": v["place"],
     })
 }
 
@@ -418,7 +416,6 @@ mod tests {
         assert_eq!(h["locale"]["keyboards"][0], "00000415");
         assert_eq!(h["bitlocker"], false);
         assert_eq!(h["bytes"], 3435973836u64 + 1024);
-        assert_eq!(h["place"], "beside");
         assert!(hint_script(&v).starts_with("window.SHRIMP_TRANSFER = {"));
     }
 
