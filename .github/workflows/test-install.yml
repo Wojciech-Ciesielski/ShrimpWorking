@@ -63,11 +63,6 @@ jobs:
           sudo mount "${LOOP}p1" /mnt/usb
           sudo mount -o loop,ro iso/*.iso /mnt/iso
           sudo cp -r /mnt/iso/. /mnt/usb/
-          # Journal to the serial port (Setup guard test, phase 0): the shell and Setup log there.
-          for g in $(sudo find /mnt/usb -name grub.cfg); do
-            sudo sed -i -E '/^\s*linux(efi)?\s/ s/$/ console=tty0 console=ttyS0,115200 plymouth.ignore-serial-consoles systemd.journald.forward_to_console=1/' "$g"
-            echo "$g:"; sudo grep -nE '^\s*linux(efi)?\s' "$g" | head -n 4 || true
-          done
           # shrimp-transfer as written by Shrimp Install (schema: boxes/install-schema)
           sudo mkdir -p /mnt/usb/shrimp-transfer/files/documents /mnt/usb/shrimp-test
           echo "Plik z Windows" | sudo tee /mnt/usb/shrimp-transfer/files/documents/z-windows.txt >/dev/null
@@ -82,6 +77,17 @@ jobs:
           sudo cp tools/install-test/* /mnt/usb/shrimp-test/
           ls -la /mnt/usb /mnt/usb/shrimp-test
           sudo umount /mnt/usb /mnt/iso
+          sudo losetup -d "$LOOP"
+          # Copy for phase 0 (Setup guard test): journal to the serial port. The stick for the install
+          # (phase 1) stays exactly as Shrimp Install writes it.
+          cp --sparse=always usb.img usb-guard.img
+          LOOP=$(sudo losetup -Pf --show usb-guard.img)
+          sudo mount "${LOOP}p1" /mnt/usb
+          for g in $(sudo find /mnt/usb -name grub.cfg); do
+            sudo sed -i -E '/^\s*linux(efi)?\s/ s/$/ console=tty0 console=ttyS0,115200 plymouth.ignore-serial-consoles systemd.journald.forward_to_console=1/' "$g"
+            echo "$g:"; sudo grep -nE '^\s*linux(efi)?\s' "$g" | head -n 4 || true
+          done
+          sudo umount /mnt/usb
           sudo losetup -d "$LOOP"
 
       - name: Install and first boot

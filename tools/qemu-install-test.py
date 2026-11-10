@@ -22,6 +22,9 @@ import sys
 import time
 
 USB, OUT = sys.argv[1], sys.argv[2]
+USB_GUARD = os.path.join(os.path.dirname(USB) or '.', 'usb-guard.img')
+if not os.path.exists(USB_GUARD):
+    USB_GUARD = USB
 os.makedirs(OUT, exist_ok=True)
 QMP_SOCK = os.path.join(OUT, "qmp.sock")
 W, H = 1920, 1080
@@ -57,7 +60,7 @@ def start(phase, with_usb, guard=False):
         "-serial", f"file:{os.path.join(OUT, f'serial-{phase}.log')}",
     ]
     if with_usb:
-        cmd += ["-drive", f"file={USB},if=none,id=stick,format=raw",
+        cmd += ["-drive", f"file={USB_GUARD if guard else USB},if=none,id=stick,format=raw",
                 "-device", "usb-storage,bus=xhci.0,drive=stick,removable=on,bootindex=1"]
     if not guard:
         cmd += noguard_drive(OUT)

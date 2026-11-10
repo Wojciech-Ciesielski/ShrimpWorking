@@ -277,6 +277,10 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     // Bez pendrive'a do przywrócenia krok „pendrive” jest pomijany w obie strony.
     if (cur() === "pendrive" && !USB.pending && s === 0) step += n >= prev ? 1 : -1;
     if (cur() === "konto" && !keep) S.confirm = false;
+    // Dyski czytamy od nowa przy wejściu w krok: pierwszy odczyt (przy starcie) bywał niepełny.
+    if (cur() === "dysk" && be.mode === "install" && prev !== step) void be.install.disks().then((d) => {
+      if (cur() === "dysk" && JSON.stringify(d) !== JSON.stringify(DISKS) && d.length) { DISKS = d; S.disk = Math.min(S.disk, d.length - 1); render(true); }
+    }).catch(() => {});
     chrome(); applyLook(); render(true);
   }
 

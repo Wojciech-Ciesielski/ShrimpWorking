@@ -181,12 +181,21 @@ export class AgamaBackend implements InstallBackend {
     const ids = new Set(((await this.system()).l10n?.keymaps || []).map((k) => k.id));
     return ids.size ? KEYBOARDS.filter((k) => ids.has(k.keymap)) : KEYBOARDS;
   }
-  private disksRead = false;
   async disks(): Promise<Disk[]> {
-    // Drugi odczyt (przycisk „Spróbuj ponownie” w oknie „Nie widzę dysku”) pyta Agamę od nowa.
-    const sys = this.disksRead ? await get<ASystem>("/api/system") : await this.system();
-    this.disksRead = true;
-    const disks = disksFromSystem(sys);
+    // Agama sprawdza dyski dopiero po starcie (libstorage-ng, może to trwać dłużej na laptopach z NVMe/RST).
+    // Pierwszy odczyt bywa więc pusty albo niepełny (jeden dysk, bez układu partycji): czekamy, aż Agama
+    // skończy zadania, czytamy od nowa i ponawiamy, dopóki lista się nie ustabilizuje (najwyżej ok. 40 s).
+    let sys = await get<ASystem>("/api/system");
+    let disks = disksFromSystem(sys);
+    for (let i = 0; i < 20; i++) {
+      await this.settle(20);
+      const next = await get<ASystem>("/api/system");
+      const nd = disksFromSystem(next);
+      const same = JSON.stringify(nd) === JSON.stringify(disks);
+      sys = next; disks = nd;
+      if (disks.length && same) break;
+      await sleep(2000);
+    }
     // Do dziennika (journalctl --user): co widzi Agama, gdy na sprzęcie coś nie gra.
     console.log("shrimp-setup: dyski Agamy", JSON.stringify((sys.storage?.devices || []).map((d) => ({
       name: d.name, size: d.block?.size, live: isLiveMedium(d),
@@ -204,8 +213,8 @@ export class AgamaBackend implements InstallBackend {
 
   /** Czeka, aż Agama przeliczy propozycję po zmianie konfiguracji. Agama 24 zaraz po PUT /api/config
    *  ma puste „progresses”, ale zadania (storage_config, software_config…) dalej są w „tasks”. */
-  private async settle() {
-    for (let i = 0; i < 240; i++) {
+  private async settle(tries = 240) {
+    for (let i = 0; i < tries; i++) {
       const st = await get<AStatus>("/api/status");
       if (!st.progresses.length && !(st.tasks || []).length) return;
       await sleep(500);

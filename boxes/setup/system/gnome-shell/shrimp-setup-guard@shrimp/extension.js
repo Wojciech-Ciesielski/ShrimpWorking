@@ -1,9 +1,13 @@
 // Shrimp Setup Guard: while Shrimp is being installed (live session) or set up for the first time
 // (after the first restart), Setup is the only thing on screen. Before the Setup window shows up,
-// and whenever it is gone, a black cover with the Shrimp logo hides the desktop. The Overview
-// (Super key, hot corner, three-finger swipe), window switching and other shell shortcuts are
-// blocked, notification banners are held back. When the first-boot marker disappears (Setup
-// finished), the guard switches itself off and the desktop is a normal desktop again.
+// and whenever it is gone, a black cover with the Shrimp logo hides the desktop. Window switching and
+// other shell shortcuts are blocked, notification banners are held back. When the first-boot marker
+// disappears (Setup finished), the guard switches itself off and the desktop is a normal desktop again.
+//
+// The Overview itself (Super key, hot corner, three-finger swipe) is NOT blocked any more: Beta 3.2.1
+// on a Vivobook had a pointer that moved but clicked nothing, and a guard that took over the
+// Overview and the touchpad gestures was the main suspect. The guard never takes input away from
+// Setup: the cover does not react to the pointer, so clicks always reach the window below it.
 //
 // Active when:
 //   /etc/xdg/autostart/shrimp-setup-install.desktop exists  -> live medium (install)
@@ -29,7 +33,7 @@ const LIVE_AUTOSTART = '/etc/xdg/autostart/shrimp-setup-install.desktop';
 const FIRST_BOOT_MARKER = '/var/lib/shrimp-setup/first-boot';
 const NOGUARD = '/dev/disk/by-label/SHRIMP_TEST';
 // Keyboard layout switching stays available (the account and Wi-Fi password fields need it).
-const ALLOWED_KEYBINDINGS = new Set(['switch-input-source', 'switch-input-source-backward']);
+const ALLOWED_KEYBINDINGS = new Set(['switch-input-source', 'switch-input-source-backward', 'toggle-overview']);
 // Setup gone (crash): start it again this many times, then give the desktop back
 // so that nobody is locked out of the computer.
 const MAX_RESTARTS = 3;
@@ -78,7 +82,10 @@ function isSetup(win) {
     if (!win)
         return false;
     const ids = [win.get_gtk_application_id?.(), win.get_wm_class?.(), win.get_sandboxed_app_id?.()];
-    return ids.includes(SETUP_ID);
+    if (ids.includes(SETUP_ID))
+        return true;
+    // Fallback: the Setup window (WebKitGTK) may report no app id yet; its title is "Shrimp".
+    return win.get_title?.() === 'Shrimp' && /shrimp-setup/i.test(String(win.get_wm_class_instance?.() ?? win.get_wm_class?.() ?? ''));
 }
 
 export default class SetupGuardExtension extends Extension {
@@ -157,27 +164,6 @@ export default class SetupGuardExtension extends Extension {
     // --- what is blocked ---
 
     _lock() {
-        const ov = Main.overview;
-        this._overviewPatched = ['show', 'toggle', 'showApps'].filter(m => typeof ov[m] === 'function');
-        for (const m of this._overviewPatched)
-            ov[m] = () => {};
-        // hide() during the startup animation: postponed until the startup is complete.
-        this._overviewHide = Object.getPrototypeOf(ov).hide;
-        ov.hide = (...args) => {
-            if (Main.layoutManager._startingUp) {
-                log('Overview hide postponed until the shell startup is complete');
-                return undefined;
-            }
-            return this._overviewHide.apply(ov, args);
-        };
-        // Three/four-finger swipes: Overview and workspace switching.
-        this._trackers = [
-            ov._swipeTracker,
-            ov._overview?._controls?._workspacesDisplay?._swipeTracker,
-            Main.wm._workspaceAnimation?._swipeTracker,
-        ].filter(t => t && 'enabled' in t).map(t => [t, t.enabled]);
-        for (const [t] of this._trackers)
-            t.enabled = false;
         // Every shell and mutter shortcut (Alt+Tab, Super+A, Alt+F2, Super+number, …) except layout switching.
         // The shell's own filter runs first; returning true here stops the shortcut.
         this._connect(global.window_manager, 'filter-keybinding',
@@ -187,16 +173,6 @@ export default class SetupGuardExtension extends Extension {
     }
 
     _unlock() {
-        const ov = Main.overview;
-        for (const m of this._overviewPatched ?? [])
-            delete ov[m];
-        this._overviewPatched = [];
-        if (this._overviewHide)
-            delete ov.hide;
-        this._overviewHide = null;
-        for (const [t, was] of this._trackers ?? [])
-            t.enabled = was;
-        this._trackers = [];
         if (this._bannerBlocked !== undefined)
             Main.messageTray.bannerBlocked = this._bannerBlocked;
         this._bannerBlocked = undefined;
@@ -207,6 +183,7 @@ export default class SetupGuardExtension extends Extension {
     _onWindow(win, existing) {
         if (!win || !this._mode)
             return;
+        log(`window: class ${win.get_wm_class?.()}, app ${win.get_gtk_application_id?.()}, title ${win.get_title?.()}, setup ${isSetup(win)}`);
         if (isSetup(win)) {
             if (win.get_window_type() !== Meta.WindowType.NORMAL)
                 return;
@@ -270,7 +247,7 @@ export default class SetupGuardExtension extends Extension {
     _hideOverview() {
         if (Main.layoutManager._startingUp)
             return;
-        (this._overviewHide ?? Main.overview.hide).call(Main.overview);
+        Main.overview.hide();
     }
 
     // --- clicks reach Setup ---
@@ -332,7 +309,7 @@ export default class SetupGuardExtension extends Extension {
         if (this._cover)
             return;
         const cover = new St.Widget({
-            reactive: true,
+            reactive: false,
             style: 'background-color: #000000;',
             layout_manager: new Clutter.BinLayout(),
         });
