@@ -48,6 +48,8 @@ class Page(html.parser.HTMLParser):
                 self.refs.append((a[k], line))
         if a.get("data-t"):
             self.keys.add(a["data-t"])
+        if a.get("data-t-aria"):
+            self.keys.add(a["data-t-aria"])
         if a.get("data-l") in self.langs:
             self.langs[a["data-l"]] += 1
         if tag == "script" and "src" not in a:

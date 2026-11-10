@@ -11,20 +11,23 @@
       "hero.more": "How it works",
       "dl.label": "Download Shrimp Install", "dl.going": "Downloading…",
       "dl.os": "Windows 10 and 11", "dl.ver": "Shrimp Beta 3.1",
-      "how.kicker": "Three steps",
-      "how.title": "From Windows to Shrimp without hunting for instructions.",
-      "s1.t": "Download Shrimp Install", "s1.p": "A small Windows app. It downloads and verifies Shrimp for you.",
-      "s2.t": "Plug in a drive", "s2.p": "16 GB or more. Your files and Windows settings come along with Shrimp.",
-      "s3.t": "Restart", "s3.p": "The computer starts from the drive on its own. Setup guides you through the rest.",
-      "f1": "<b>NVIDIA drivers</b> right after installation.",
-      "f2": "<b>Movies and music</b> without hunting for codecs.",
-      "f3": "<b>One look</b> across every app.",
-      "f4": "<b>Your apps</b> matched to the ones you had on Windows.",
-      "apps.kicker": "Included",
-      "apps.title": "A calm system that looks after itself.",
-      "a1": "Apps from one place, installed in one click.",
-      "a2": "Restore the system to the moment everything worked.",
-      "a3": "Updates that don't interrupt your work.",
+      "w.t": "Turn it on. It works.",
+      "w.s": "A calm system that looks after itself.",
+      "p1.t": "Ready right away", "p1.d": "No setup marathon, no hunting for guides.",
+      "p2.t": "Your things come along", "p2.d": "Files and settings from Windows move over by themselves.",
+      "p3.t": "Picture and sound without trouble", "p3.d": "Movies, music and games work from day one.",
+      "p4.t": "Everything can be undone", "p4.d": "Something went wrong? Go back to when it worked.",
+      "p5.t": "Updates that don't interrupt", "p5.d": "They install when you restart, not in the middle of your work.",
+      "p6.t": "One calm look", "p6.d": "Every screen looks like it was made by one hand.",
+      "lap.k": "See how it looks",
+      "tab.0": "Desktop", "tab.1": "Installer", "tab.2": "Apps", "tabs.aria": "Screens",
+      "md.files": "Files",
+      "mi.step": "Step 2 of 3", "mi.t": "Choose a drive", "mi.a": "USB stick", "mi.b": "SD card", "mi.c": "External drive", "mi.next": "Next",
+      "ma.t": "Discover", "ma.i": "Installed", "ma.q": "Search apps", "ma.get": "Get",
+      "iso.aria": "Download the ISO image", "menu.aria": "Menu", "menu.iso": "ISO image", "alt.mb": "Mont Blanc",
+      "iso.title": "The ISO image is coming soon.",
+      "iso.lead": "For most people Shrimp Install is the easiest way: it downloads and verifies the system for you. The ISO image will appear here when public downloads open.",
+      "iso.cta": "Get Shrimp Install",
       "end.title": "It all starts with one file.",
       "back": "Back to the home page",
       "wait.title": "Shrimp Install is almost here.",
@@ -34,9 +37,11 @@
       "help.all": "All help topics", "help.before": "Before installing", "help.after": "After installing",
     },
   };
-  const HTML_KEYS = new Set(["f1", "f2", "f3", "f4"]);
+  const HTML_KEYS = new Set([]);
   const nodes = [...document.querySelectorAll("[data-t]")];
   const pl = new Map(nodes.map((n) => [n, n.innerHTML]));
+  // etykiety dla czytników ekranu (aria-label) z kluczem w data-t-aria
+  const aria = [...document.querySelectorAll("[data-t-aria]")].map((n) => ({ n, pl: n.getAttribute("aria-label") }));
   // tytuł, opis i inne pojedyncze teksty z wersją angielską w data-en (meta: atrybut content)
   const alt = [...document.querySelectorAll("[data-en]")].map((n) => {
     const attr = n.tagName === "META" ? "content" : null;
@@ -65,6 +70,10 @@
       if (v == null) continue;
       if (!d || HTML_KEYS.has(k)) n.innerHTML = v; else n.textContent = v;
     }
+    for (const { n, pl: v0 } of aria) {
+      const v = d ? d[n.dataset.tAria] : v0;
+      if (v != null) n.setAttribute("aria-label", v);
+    }
     for (const { n, attr, pl: v0 } of alt) {
       const v = d ? n.dataset.en : v0;
       if (attr) n.setAttribute(attr, v); else n.textContent = v;
@@ -91,6 +100,53 @@
   const onScroll = () => top.classList.toggle("scrolled", scrollY > 8);
   addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+  // menu: otwiera się z trzech kresek, zamyka Esc, kliknięciem linku albo ponownym kliknięciem kresek
+  const burger = document.getElementById("burger");
+  const menu = document.getElementById("menu");
+  if (burger && menu) {
+    const set = (open) => {
+      menu.classList.toggle("open", open);
+      burger.setAttribute("aria-expanded", String(open));
+      document.documentElement.style.overflow = open ? "hidden" : "";
+      if (open) menu.querySelector("a")?.focus({ preventScroll: true }); else if (menu.contains(document.activeElement)) burger.focus();
+    };
+    burger.addEventListener("click", () => set(!menu.classList.contains("open")));
+    addEventListener("keydown", (e) => { if (e.key === "Escape" && menu.classList.contains("open")) set(false); });
+    menu.addEventListener("click", (e) => { if (e.target.closest("a")) set(false); });
+  }
+
+  // laptop: klapa otwiera się razem z przewijaniem, potem na ekranie zmieniają się: pulpit, instalator, aplikacje
+  const wrap = document.getElementById("lap");
+  if (wrap) {
+    const stage = wrap.querySelector(".stage");
+    const laptop = wrap.querySelector(".laptop");
+    const tabs = [...wrap.querySelectorAll(".tabs button")];
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const OPEN = 0.42; // część przewijania, w której klapa się otwiera
+    let manual = 0;
+    const show = (i) => {
+      laptop.dataset.s = String(i);
+      tabs.forEach((b, k) => b.setAttribute("aria-pressed", String(k === i)));
+    };
+    const update = () => {
+      if (reduce) { stage.style.setProperty("--o", "1"); show(manual); return; }
+      const r = wrap.getBoundingClientRect();
+      const p = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - innerHeight)));
+      const t = Math.min(1, p / OPEN);
+      stage.style.setProperty("--o", (t * t * (3 - 2 * t)).toFixed(3));
+      show(p < OPEN + 0.04 ? 0 : Math.min(2, Math.floor(((p - OPEN - 0.04) / (1 - OPEN - 0.04)) * 3)));
+    };
+    tabs.forEach((b, i) => b.addEventListener("click", () => {
+      if (reduce) { manual = i; update(); return; }
+      const span = wrap.offsetHeight - innerHeight;
+      const p = i === 0 ? OPEN : OPEN + 0.04 + ((i + 0.5) / 3) * (1 - OPEN - 0.04);
+      scrollTo({ top: wrap.getBoundingClientRect().top + scrollY + span * p, behavior: "smooth" });
+    }));
+    addEventListener("scroll", update, { passive: true });
+    addEventListener("resize", update);
+    update();
+  }
 
   // przycisk pobierania: fala od miejsca kliknięcia i „Pobieranie…”; samo pobieranie idzie zwykłym linkiem
   for (const a of document.querySelectorAll("[data-dl]")) {
