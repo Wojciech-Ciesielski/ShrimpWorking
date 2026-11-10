@@ -23,7 +23,7 @@ pub const SECTIONS: &[Section] = &[
         title: "cat.multimedia",
         icon: "applications-multimedia-symbolic",
         items: &[
-            // Te same pakiety co w kroku Setup „Obraz i dźwięk” (setup/system/share/drivers.conf), bez Packmana.
+            // Te same pakiety co w kroku Setup „Obraz i dźwięk” (boxes/linu-x: /usr/share/shrimp/linux/drivers.conf), bez Packmana.
             i("pkg.video-codecs", &["gstreamer-plugins-good", "gstreamer-plugins-bad", "gstreamer-1.20-plugin-openh264", "mozilla-openh264"]),
             i("pkg.audio-codecs", &["gstreamer-plugins-base", "gstreamer-plugins-ugly"]),
             i("VLC", &["vlc"]),

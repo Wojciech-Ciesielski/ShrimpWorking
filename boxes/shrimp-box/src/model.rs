@@ -95,6 +95,12 @@ pub struct Image {
     /// Pliki kopiowane obok config.kiwi (np. hook editbootconfig).
     #[serde(default)]
     pub kiwi_files: Vec<String>,
+    /// Usługi systemd włączane w obrazie (`systemctl enable`) i w zainstalowanym systemie (post-install Setup).
+    #[serde(default)]
+    pub enable: Vec<String>,
+    /// Usługi użytkownika włączane dla wszystkich (`systemctl --global enable`).
+    #[serde(default)]
+    pub user_enable: Vec<String>,
 }
 
 /// Box wczytany z dysku.

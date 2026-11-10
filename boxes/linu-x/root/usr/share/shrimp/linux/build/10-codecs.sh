@@ -10,12 +10,12 @@ ensure_repos || exit 0
 install_each $CODEC_PACKAGES
 
 # openh264 (Cisco): osobne repozytorium, bo binaria muszą pochodzić od Cisco.
-if "${ZYP[@]}" addrepo --refresh "$OPENH264_REPO_URL" openh264 >/dev/null 2>&1 \
-   && "${ZYP[@]}" refresh openh264 >/dev/null 2>&1; then
+if "${ZYP[@]}" addrepo --refresh "$OPENH264_REPO_URL" "$OPENH264_REPO_ALIAS" >/dev/null 2>&1 \
+   && "${ZYP[@]}" refresh "$OPENH264_REPO_ALIAS" >/dev/null 2>&1; then
   # shellcheck disable=SC2086
   install_each $OPENH264_PACKAGES
 else
-  "${ZYP[@]}" removerepo openh264 >/dev/null 2>&1 || true
+  "${ZYP[@]}" removerepo "$OPENH264_REPO_ALIAS" >/dev/null 2>&1 || true
   warn "repozytorium openh264 ($OPENH264_REPO_URL) niedostępne"
 fi
 

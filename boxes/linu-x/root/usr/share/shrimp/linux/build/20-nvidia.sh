@@ -76,14 +76,12 @@ done
 cat > /etc/modprobe.d/60-shrimp-gpu.conf <<'CONF'
 # Shrimp Linu(x): karty NVIDIA od Turinga (GTX 16xx, RTX 20xx i nowsze) dostają oficjalny
 # sterownik, starsze nouveau. Wymuszenie nouveau: parametr jądra shrimp.nouveau=1.
+# Opcje sterownika: /usr/lib/modprobe.d/61-shrimp-nvidia.conf.
 install nouveau /usr/libexec/shrimp-gpu-gate
-# Wayland w GDM i GNOME, konsola przez sterownik NVIDIA, pamięć karty zachowana przy uśpieniu.
-options nvidia-drm modeset=1 fbdev=1
-options nvidia NVreg_PreserveVideoMemoryAllocations=1
 CONF
 # GDM włącza Wayland na NVIDIA tylko z usługami uśpienia sterownika.
-for u in nvidia-suspend.service nvidia-resume.service nvidia-hibernate.service nvidia-suspend-then-hibernate.service; do
-  systemctl enable "$u" 2>/dev/null || true
+for u in $NVIDIA_SERVICES; do
+  systemctl enable "$u" 2>/dev/null || warn "nie można włączyć $u"
 done
 echo "$installed" > /usr/share/shrimp/linux/nvidia-series
 exit 0

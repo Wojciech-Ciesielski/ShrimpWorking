@@ -28,51 +28,20 @@ trap restore_resolv EXIT
 USER_NAME=$(sed -n 's/.*"userName":"\([^"]*\)".*/\1/p' "$STATE/install.json")
 [ -n "$USER_NAME" ] || { log "brak userName w install.json"; exit 1; }
 
-# Dopóki pakietu shrimp-setup nie ma w repozytorium, kopiujemy Setup z nośnika do systemu.
+# Dopóki pakietu shrimp-setup nie ma w repozytorium, kopiujemy Setup z nośnika do systemu (box setup
+# jest tylko w kontenerze iso-live). Programy pulpitu (Shrimp Apps, Cocktail, Panko, wygląd aplikacji)
+# przychodzą niżej z manifestu kontenera desktop.
 if ! chroot "$T" rpm -q shrimp-setup >/dev/null 2>&1; then
   log "kopiuję Setup z nośnika"
   install -Dm755 /usr/bin/shrimp-setup "$T/usr/bin/shrimp-setup"
   install -Dm755 /usr/libexec/shrimp-setup-apply "$T/usr/libexec/shrimp-setup-apply"
   install -Dm755 /usr/libexec/shrimp-usb-backup "$T/usr/libexec/shrimp-usb-backup"
-  install -Dm755 /usr/bin/shrimp-app-style "$T/usr/bin/shrimp-app-style"
-  mkdir -p "$T$SRC" && cp -a "$SRC/ui" "$SRC/drivers.conf" "$T$SRC/"
+  mkdir -p "$T$SRC" && cp -a "$SRC/ui" "$T$SRC/"
   install -Dm644 /usr/share/polkit-1/actions/org.shrimp.setup.policy "$T/usr/share/polkit-1/actions/org.shrimp.setup.policy"
   install -Dm644 /usr/share/polkit-1/rules.d/50-shrimp-setup.rules "$T/usr/share/polkit-1/rules.d/50-shrimp-setup.rules"
   install -Dm644 /etc/xdg/autostart/shrimp-setup-first-boot.desktop "$T/etc/xdg/autostart/shrimp-setup-first-boot.desktop"
-  install -Dm644 /usr/lib/systemd/system/shrimp-app-style.service "$T/usr/lib/systemd/system/shrimp-app-style.service"
-  install -Dm644 /usr/lib/systemd/system/shrimp-app-style.path "$T/usr/lib/systemd/system/shrimp-app-style.path"
-  install -Dm644 /usr/lib/systemd/user/shrimp-app-style-user.service "$T/usr/lib/systemd/user/shrimp-app-style-user.service"
   install -Dm644 /usr/lib/systemd/system/shrimp-nvidia-flatpak.service "$T/usr/lib/systemd/system/shrimp-nvidia-flatpak.service"
-  chroot "$T" systemctl enable shrimp-app-style.path shrimp-nvidia-flatpak.service || true
-  chroot "$T" systemctl --global enable shrimp-app-style-user.service || true
-fi
-
-# Sklep Shrimp (Shrimp Apps) instaluje zestaw podstawowy i programy z onboardingu; jego pakietu też jeszcze nie ma.
-if ! chroot "$T" rpm -q shrimp-apps >/dev/null 2>&1 && [ -x /usr/bin/shrimp-apps ]; then
-  log "kopiuję Shrimp Apps z nośnika"
-  install -Dm755 /usr/bin/shrimp-apps "$T/usr/bin/shrimp-apps"
-  install -Dm644 /usr/share/applications/org.shrimp.Apps.desktop "$T/usr/share/applications/org.shrimp.Apps.desktop"
-  install -Dm644 /usr/share/metainfo/org.shrimp.Apps.metainfo.xml "$T/usr/share/metainfo/org.shrimp.Apps.metainfo.xml"
-  install -Dm644 /usr/share/shrimp/base-apps.json "$T/usr/share/shrimp/base-apps.json"
-fi
-
-# Cocktail (Aktualizacje) i Panko (migawki, przywracanie) z nośnika, dopóki nie ma ich pakietów.
-if ! chroot "$T" rpm -q cocktail >/dev/null 2>&1 && [ -x /usr/bin/cocktail ]; then
-  log "kopiuję Cocktail z nośnika"
-  install -Dm755 /usr/bin/cocktail "$T/usr/bin/cocktail"
-  install -Dm755 /usr/libexec/cocktail-helper "$T/usr/libexec/cocktail-helper"
-  install -Dm755 /usr/libexec/cocktail-query "$T/usr/libexec/cocktail-query"
-  install -Dm644 /usr/share/polkit-1/actions/org.shrimp.cocktail.policy "$T/usr/share/polkit-1/actions/org.shrimp.cocktail.policy"
-  install -Dm644 /usr/share/applications/org.shrimp.Cocktail.desktop "$T/usr/share/applications/org.shrimp.Cocktail.desktop"
-fi
-if ! chroot "$T" rpm -q panko >/dev/null 2>&1 && [ -x /usr/bin/panko ]; then
-  log "kopiuję Panko z nośnika"
-  install -Dm755 /usr/bin/panko "$T/usr/bin/panko"
-  install -Dm644 /usr/share/applications/org.shrimp.Panko.desktop "$T/usr/share/applications/org.shrimp.Panko.desktop"
-  install -Dm644 /usr/share/polkit-1/actions/org.shrimp.Panko.policy "$T/usr/share/polkit-1/actions/org.shrimp.Panko.policy"
-  install -Dm644 /usr/lib/systemd/system/panko-cleanup.service "$T/usr/lib/systemd/system/panko-cleanup.service"
-  install -Dm644 /usr/lib/systemd/system/panko-cleanup.timer "$T/usr/lib/systemd/system/panko-cleanup.timer"
-  chroot "$T" systemctl enable panko-cleanup.timer || true
+  chroot "$T" systemctl enable shrimp-nvidia-flatpak.service || true
 fi
 # Administratorzy (wheel) widzą migawki w Panko bez stanu „Brak dostępu”.
 SNAPCONF=$T/etc/snapper/configs/root
@@ -137,8 +106,9 @@ fi
 
 # Pulpit Shrimp jak na nośniku. Agama instaluje z repozytorium tylko wzorce i pakiety produktu, więc
 # brakowało pakietów, które boxy pulpitu dokładają do obrazu (np. typelib GnomeDesktop dla DING, gvfs,
-# wtyczki Plymouth), i plików z ich nakładek root/ (motyw Plymouth, czcionki, ustawienia GDM, Linu(x)).
-# Listy składa shrimp-box przy budowie obrazu: /usr/share/shrimp/containers/desktop.{packages,files}.
+# wtyczki Plymouth), plików z ich nakładek root/ (motyw Plymouth, czcionki, ustawienia GDM, Linu(x))
+# i z ich install.sh (Shrimp Apps, Cocktail, Panko). Listy składa shrimp-box przy budowie obrazu:
+# /usr/share/shrimp/containers/desktop.{packages,files,units}.
 MAN=/usr/share/shrimp/containers
 if [ -f "$MAN/desktop.packages" ]; then
   MISSING=""
@@ -162,6 +132,7 @@ if [ -x "$T/usr/libexec/localsearch-extractor-3" ] && ! chroot "$T" ldconfig -p 
     chroot "$T" zypper -n --gpg-auto-import-keys install --no-recommends "$p" >/dev/null 2>&1 && { log "doinstalowano $p (libz.so.1)"; break; }
   done
 fi
+# Pliki boxów pulpitu: nakładki root/ i wszystko, co położyły ich install.sh (programy, usługi, polkit).
 if [ -f "$MAN/desktop.files" ]; then
   n=0
   while IFS= read -r f; do
@@ -170,6 +141,14 @@ if [ -f "$MAN/desktop.files" ]; then
   done < "$MAN/desktop.files"
   mkdir -p "$T$MAN" && cp -a "$MAN"/. "$T$MAN"/
   log "pliki pulpitu z nośnika: $n"
+fi
+# Usługi boxów pulpitu ([image] enable / user_enable w box.toml), jak na nośniku.
+if [ -f "$MAN/desktop.units" ]; then
+  while read -r kind unit; do
+    [ -n "$unit" ] || continue
+    if [ "$kind" = user ]; then chroot "$T" systemctl --global enable "$unit" || log "nie można włączyć $unit"
+    else chroot "$T" systemctl enable "$unit" || log "nie można włączyć $unit"; fi
+  done < "$MAN/desktop.units"
 fi
 # Pliki, które boxy generują przy budowie obrazu (nie ma ich w nakładkach root/).
 for d in /usr/share/plymouth/themes/shrimp /usr/share/fonts/truetype/inter /usr/share/grub2/themes/shrimp; do

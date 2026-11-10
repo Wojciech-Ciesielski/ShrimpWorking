@@ -167,7 +167,8 @@ fn run() -> Result<ExitCode, String> {
         "build" | "image" => {
             let container = arg(1, "KONTENER")?;
             let out = abs(&arg(2, "KATALOG")?)?;
-            let dest = if a.pos[0] == "image" {
+            let image = a.pos[0] == "image";
+            let dest = if image {
                 let url = a.repo.as_deref().ok_or("image potrzebuje --repo URL")?;
                 let n = kiwi::describe(&repo, &container, &out, url)?;
                 println!("opis obrazu w {} ({n} plików root/)", out.display());
@@ -177,7 +178,11 @@ fn run() -> Result<ExitCode, String> {
             };
             std::fs::create_dir_all(&dest).map_err(|e| format!("{}: {e}", dest.display()))?;
             let opts = make::Opts { repo_url: a.repo.clone(), buildroot: abs(&buildroot)?, dry_run: flag("--dry-run") };
-            make::build(&repo, &container, &dest, &opts)?;
+            let installed = make::build(&repo, &container, &dest, &opts)?;
+            if image {
+                // manifesty z plikami install.sh (post-install Setup kopiuje je do zainstalowanego systemu)
+                kiwi::write_manifests(&repo, &container, &dest, &installed)?;
+            }
         }
         other => return Err(format!("nieznane polecenie „{other}”\n\n{USAGE}")),
     }

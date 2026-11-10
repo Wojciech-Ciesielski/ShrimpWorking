@@ -43,6 +43,8 @@ install = "install.sh"                      # install.sh DESTDIR [argumenty z ko
 configure = "configure.sh"   # domyślnie configure.sh, jeśli jest
 kiwi_template = "config.kiwi"   # tylko box image-base
 kiwi_files = ["edit_boot_config.sh"]   # pliki obok config.kiwi
+enable = ["panko-cleanup.timer"]       # usługi systemd włączane w obrazie i po instalacji
+user_enable = []                       # usługi użytkownika (systemctl --global enable)
 ```
 
 Rodzaje: `lib` i `data` niczego nie instalują, wchodzą do innych boxów przez `build_depends`
@@ -82,6 +84,8 @@ widzi je w `BOX_ARGS`.
 3. `root/` = nakładki `root/` boxów, pliki `kiwi_files` obok `config.kiwi`,
 4. chroot Leap z pakietami `[packages] build`, kroki `build.chroot`, kopie `build.outputs`,
 5. `install.sh` boxów do `out/desc/root` (z `SHRIMP_PREBUILT=1` po kroku chroot),
+6. manifesty w obrazie, `/usr/share/shrimp/containers/<kontener>.{packages,files,units}`: pakiety,
+   pliki z nakładek `root/` i z `install.sh`, usługi z `enable`/`user_enable`,
 
 a na końcu `kiwi-ng`. Podgląd bez budowania: `shrimp-box kiwi iso-live /tmp/desc` i
 `shrimp-box build iso-live /tmp/root --dry-run`.
@@ -106,8 +110,16 @@ cargo run -- graph | dot -Tsvg    # graf zależności
 3. Jeśli ma własne CI: `ci = "<workflow>"` i `cargo run -- ci --write`.
 4. `cargo run -- check`.
 
+## Po instalacji na dysk
+
+Agama instaluje z repozytorium tylko pakiety produktu. `post-install.sh` (box `setup`) dokłada resztę
+z manifestów kontenera `desktop`: brakujące pakiety (`desktop.packages`), pliki boxów (`desktop.files`,
+także programy Shrimp Apps, Cocktail i Panko z ich `install.sh`) i usługi (`desktop.units`). Box pulpitu
+nie potrzebuje więc osobnego wpisu w `post-install.sh`; wyjątek to pliki, które `configure.sh` generuje
+przy budowie (motywy, ikony MoreWaita, rozszerzenia), bo nie ma ich w manifestach.
+
 ## Co dalej
 
-- `post-install.sh` (Setup) wciąż ma ręczną listę plików do skopiowania z nośnika do zainstalowanego
-  systemu. Następny krok: lista z kontenera `desktop` (pliki zainstalowane przez jego boxy).
-- Jeden box = jeden pakiet RPM: `box.toml` ma już wersję, pakiety i instalację do DESTDIR.
+- Pliki generowane przez `configure.sh` (MoreWaita, rozszerzenia, motyw GRUB) też w manifeście, żeby
+  `post-install.sh` nie miał listy katalogów.
+- Jeden box = jeden pakiet RPM: `box.toml` ma już wersję, pakiety, usługi i instalację do DESTDIR.

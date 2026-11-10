@@ -2,9 +2,9 @@ name: Setup
 
 on:
   push:
-    paths: ["boxes/setup/**", "boxes/app-style/**", "boxes/i18n-core/**", "boxes/install-schema/**", ".github/workflows/setup.yml"]
+    paths: ["boxes/setup/**", "boxes/linu-x/**", "boxes/app-style/**", "boxes/flathub/**", "boxes/i18n-core/**", "boxes/install-schema/**", ".github/workflows/setup.yml"]
   pull_request:
-    paths: ["boxes/setup/**", "boxes/app-style/**", "boxes/i18n-core/**", "boxes/install-schema/**", ".github/workflows/setup.yml"]
+    paths: ["boxes/setup/**", "boxes/linu-x/**", "boxes/app-style/**", "boxes/flathub/**", "boxes/i18n-core/**", "boxes/install-schema/**", ".github/workflows/setup.yml"]
   workflow_dispatch:
 
 jobs:

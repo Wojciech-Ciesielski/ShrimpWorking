@@ -18,11 +18,11 @@ Zasada: żaden PR nie dodaje zrzutów ekranu ani `test-results/`. Pilnuje tego w
 
 ## Linu(x)
 
-Standard Shrimp ponad zwykłego Linuksa (pełna nazwa i hasło tylko na stronie projektu). Użytkownik nie widzi nazwy w systemie: nie ma jej w `os-release`, `issue` ani `motd`. Box `linu-x` (`boxes/linu-x/root/usr/share/shrimp/linux/`, uruchamia je `boxes/linu-x/configure.sh`):
+Standard Shrimp ponad zwykłego Linuksa (pełna nazwa i hasło tylko na stronie projektu). Użytkownik nie widzi nazwy w systemie: nie ma jej w `os-release`, `issue` ani `motd`. Pakiety są w jednym pliku, `boxes/linu-x/root/usr/share/shrimp/linux/drivers.conf`, wspólnym dla nośnika (skrypty `build/` uruchamiane przez `boxes/linu-x/configure.sh`) i zainstalowanego systemu (`shrimp-setup-apply`, krok „Obraz i dźwięk”).
 
-- **Oficjalny sterownik NVIDIA** (`build/20-nvidia.sh`): otwarte moduły podpisane przez SUSE (Turing i nowsze, działają z Secure Boot) + biblioteki z repozytorium NVIDIA, które zostaje w systemie. Starsze karty zostają przy nouveau: decyduje `/usr/libexec/shrimp-gpu-gate` (awaryjnie parametr jądra `shrimp.nouveau=1`).
+- **Oficjalny sterownik NVIDIA** (`build/20-nvidia.sh`): otwarte moduły podpisane przez SUSE (Turing i nowsze, działają z Secure Boot) + biblioteki z repozytorium NVIDIA, które zostaje w systemie. Starsze karty zostają na nośniku przy nouveau: decyduje `/usr/libexec/shrimp-gpu-gate` (awaryjnie parametr jądra `shrimp.nouveau=1`). Opcje sterownika (Wayland, uśpienie): `/usr/lib/modprobe.d/61-shrimp-nvidia.conf`.
 - **Kodeki przez PipeWire** (pakiety boxa `linu-x` + `build/10-codecs.sh`): PipeWire jako jedyny serwer dźwięku, GStreamer z wtyczką PipeWire i kodekami z Leap, H.264 przez openh264 od Cisco. Bez Packmana.
-- **Wygląd libadwaita dla Qt i Electron** (`build/30-app-style.sh` → box `app-style`, patrz niżej).
+- **Wygląd libadwaita dla Qt, Electron i GTK3**: box `app-style` (zależność `linu-x`), patrz niżej.
 
 Brak pakietu lub repozytorium nie przerywa budowy, tylko daje linię `WARNING: Linu(x): …` w logu (`tools/build-iso.sh` ją wypisuje).
 
@@ -31,7 +31,7 @@ Brak pakietu lub repozytorium nie przerywa budowy, tylko daje linię `WARNING: L
 Jeden interfejs z makiety `setup.html`, w dwóch częściach:
 
 - **Instalacja** (kroki 1–9, nośnik): `shrimp-setup --install` otwiera na pełnym ekranie interfejs serwowany przez `agama-web-server --web-ui-dir /usr/share/shrimp-setup/ui` i rozmawia z HTTP API Agamy (Leap 16.1, API v2). Produkt Agamy: `boxes/setup/system/agama/shrimp.yaml` (tryb niezmienny, jeden wolumin Btrfs).
-- **Pierwsza konfiguracja** (kroki 10–15, po restarcie): `post-install.sh` włącza jednorazowe logowanie automatyczne, a `shrimp-setup --first-boot` uruchamia lokalny serwer w Rust (sieć przez NetworkManager, wygląd przez GSettings, programy z Flathub). Kodeki i sterownik NVIDIA instaluje na końcu `shrimp-setup-apply` (pkexec → transactional-update, jedna migawka). Pakiety: `boxes/setup/system/share/drivers.conf`.
+- **Pierwsza konfiguracja** (kroki 10–15, po restarcie): `post-install.sh` włącza jednorazowe logowanie automatyczne, a `shrimp-setup --first-boot` uruchamia lokalny serwer w Rust (sieć przez NetworkManager, wygląd przez GSettings, programy z Flathub). Kodeki i sterownik NVIDIA instaluje na końcu `shrimp-setup-apply` (pkexec → transactional-update, jedna migawka). Pakiety: `drivers.conf` boxa `linu-x` (patrz Linu(x)).
 - **Pliki z Windows** (Shrimp Install) (`boxes/shrimp-install/`, program dla Windows): nośnik ma `shrimp-transfer/shrimp.json` i pliki użytkownika. `shrimp-setup --install` podaje stronie podpowiedzi (`window.SHRIMP_TRANSFER`: imię, język, strefa, klawiatura, BitLocker, rozmiar plików), a `post-install.sh` wywołuje `shrimp-setup --restore`: foldery Windows trafiają do folderów nowego konta w jego języku (Dokumenty, Obrazy…), pliki > 4 GB są sklejane, wpis UEFI „Shrimp Install” jest usuwany. Krok Programy dobiera odpowiedniki po wzorcach nazw (`WIN_MATCH` w `boxes/setup/web/src/data.ts`).
 
 Katalogi boxa `setup`: `web` (TypeScript, Vite), `shell` (Rust, GTK4 + WebKitGTK 6), `system` (Agama, polkit, autostart, skrypty), `i18n` (teksty).
