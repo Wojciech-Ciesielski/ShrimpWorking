@@ -63,6 +63,7 @@ BOOL json_get(const char* json, const char* key, char* out, size_t out_size);
 #define WM_SHRIMP_FETCHED  (WM_APP + 0x304)   /* wParam: TRUE gdy ISO gotowe */
 #define WM_SHRIMP_COPIED   (WM_APP + 0x305)   /* wParam: TRUE gdy kopia skończona */
 #define WM_SHRIMP_BACKED_UP (WM_APP + 0x306)  /* wParam: TRUE gdy zawartość nośnika jest bezpieczna w kopii */
+#define WM_SHRIMP_SHRUNK   (WM_APP + 0x307)   /* wParam: TRUE gdy jest miejsce na Shrimp; lParam: kod błędu (malloc) albo NULL */
 extern HWND hShrimpWnd;
 BOOL ShrimpWindowCreate(HINSTANCE hInstance, const char* opts_json);
 void ShrimpWindowCleanup(void);
@@ -124,6 +125,27 @@ void ShrimpUsbBackupMarkFormatted(void);
 /* Kopia do <nośnik>\shrimp-backup, odczyt i porównanie sum, potem usunięcie kopii w Windows. */
 BOOL ShrimpUsbWriteBack(const wchar_t* media_root, uint64_t* done, uint64_t total);
 int ShrimpUsbBackupTest(const wchar_t* src, const wchar_t* dst, const wchar_t* work);
+
+/* space.c: miejsce dla Shrimp na dysku z Windows (zmniejszenie C: narzędziami Windows, „Obok Windows”) */
+typedef struct {
+	BOOL ok;
+	char letter;
+	uint64_t size;             /* partycja systemowa */
+	uint64_t min, max;         /* Get-PartitionSupportedSize */
+	uint64_t disk;             /* cały dysk */
+	uint64_t free;             /* największy nieprzydzielony obszar na tym dysku */
+	char error[512];
+} shrimp_disk;
+extern shrimp_disk ShrimpDisk;
+extern uint64_t ShrimpShrinkBytes;         /* wolne miejsce dla Shrimp wybrane w interfejsie; 0: „Zamiast Windows” */
+BOOL ShrimpDiskQuery(char letter, shrimp_disk* d);
+uint64_t ShrimpShrinkTarget(const shrimp_disk* d, uint64_t want);
+/* NULL albo kod błędu dla interfejsu (shrinkQuery, shrinkMin, shrinkFail[:komunikat Windows]). */
+const char* ShrimpShrink(char letter, uint64_t want);
+void ShrimpDiskJson(jb* b, const char* key);
+DWORD WINAPI ShrimpDiskThread(LPVOID param);      /* zdarzenie „disk” */
+DWORD WINAPI ShrimpShrinkThread(LPVOID param);    /* faza 4, kończy WM_SHRIMP_SHRUNK */
+int ShrimpShrinkTest(const wchar_t* letter, const wchar_t* bytes);
 
 /* boot.c: jednorazowy start z nośnika */
 /* Zwraca NULL albo opis błędu (po polsku, dla użytkownika). */
