@@ -175,7 +175,7 @@ body.home .top { background: transparent; border-bottom: 0; transition: none; }
 .menu .langs { margin: clamp(16px, 3svh, 32px) 0 0; font-size: 15px; }
 
 /* hero: czerń, logo i nazwa pisana jak na klawiaturze */
-.home-hero { position: relative; min-height: max(100svh, 560px); display: flex; background: #000; }
+.home-hero { position: relative; min-height: 100svh; display: flex; background: #000; }
 .home-hero .in { margin: auto; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 96px 16px 72px; }
 .home-hero .logo { width: clamp(52px, 6vw, 76px); height: auto; aspect-ratio: 184.6 / 178.5; transform: translateX(-4%); margin-bottom: 18px; }
 .home-hero .h1 { font-size: clamp(56px, 11vw, 148px); line-height: 1.05; white-space: nowrap; min-height: 1.05em; }
@@ -186,7 +186,7 @@ body.home .top { background: transparent; border-bottom: 0; transition: none; }
 html:not(.js) .caret { display: none; }
 
 /* hasło i fakty: ikony Adwaita, bez obwódek */
-.words { min-height: max(100svh, 640px); display: flex; flex-direction: column; justify-content: center; padding: clamp(88px, 10vw, 120px) max(16px, 6vw) clamp(56px, 7vw, 96px); text-align: center; background: #000; }
+.words { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; padding: clamp(88px, 10vw, 120px) max(16px, 6vw) clamp(56px, 7vw, 96px); text-align: center; background: #000; }
 .words .h2 { max-width: none; font-size: clamp(44px, 9vw, 128px); line-height: 1; letter-spacing: -0.05em; }
 .words .sub { margin: 22px auto 0; max-width: 34ch; font-size: clamp(20px, 2.6vw, 30px); color: var(--dim); letter-spacing: -0.015em; text-wrap: balance; }
 .perks { list-style: none; max-width: 1080px; margin: clamp(56px, 8vw, 104px) auto 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(40px, 5vw, 68px) clamp(28px, 4vw, 56px); text-align: left; }
@@ -199,7 +199,7 @@ html:not(.js) .caret { display: none; }
 .lap-wrap, .home-hero { padding: 0; }
 .lap-wrap { position: relative; height: 620svh; }
 .lap-wrap.no-gl, html:not(.js) .lap-wrap { height: auto; display: none; }
-.stage { position: sticky; top: 0; height: 100svh; min-height: 520px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 64px 0 20px; overflow: clip; }
+.stage { position: sticky; top: 0; height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 64px 0 20px; overflow: clip; }
 .scene { position: relative; flex: 1 1 auto; min-height: 0; width: 100%; opacity: 0; transition: opacity 0.8s ease; }
 .lap-wrap.ready .scene { opacity: 1; }
 .scene canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
@@ -241,7 +241,14 @@ html:not(.js) .caret { display: none; }
 @keyframes wave { to { transform: translate(-50%, -50%) scale(60); opacity: 0; } }
 
 @media (max-width: 760px) {
-  .perks { grid-template-columns: 1fr; }
+  .words { padding: 72px 16px 32px; }
+  .words .h2 { font-size: clamp(36px, 11vw, 52px); }
+  .words .sub { margin-top: 12px; font-size: 18px; }
+  .perks { grid-template-columns: 1fr 1fr; gap: 24px 18px; margin-top: 32px; }
+  .perk .ic { margin-bottom: 8px; }
+  .perk .ic svg { width: 26px; height: 26px; }
+  .perk h3 { font-size: 16px; margin-bottom: 3px; }
+  .perk p { font-size: 13.5px; line-height: 1.4; }
   .stage { padding-top: 60px; }
   .cap { min-height: 118px; }
   .tabs { flex-wrap: nowrap; gap: 0; }
@@ -266,7 +273,7 @@ body[data-head="light"]:not(.menu-open) .burger, body[data-head="light"]:not(.me
 body[data-head="light"]:not(.menu-open) .dlmain:focus-visible, body[data-head="light"]:not(.menu-open) .burger:focus-visible { outline-color: #000; }
 
 /* dlaczego Shrimp: po lewej monitor i laptop, po prawej tekst */
-.why { min-height: max(100svh, 640px); display: flex; flex-direction: column; justify-content: center; background: #f5f5f7; padding: clamp(88px, 10vw, 120px) max(16px, 6vw); }
+.why { min-height: 100svh; display: flex; flex-direction: column; justify-content: center; background: #f5f5f7; padding: clamp(88px, 10vw, 120px) max(16px, 6vw); }
 .why-in { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
 .devs { width: 100%; height: auto; max-width: 560px; justify-self: center; }
 .why-text .h2 { max-width: none; }
@@ -283,7 +290,7 @@ body[data-head="light"]:not(.menu-open) .dlmain:focus-visible, body[data-head="l
 .dlsplit .dlmore:focus-visible { outline: 2px solid #000; outline-offset: -8px; border-radius: 999px; }
 
 /* zakładka Pobierz */
-.dl-hero { position: relative; min-height: max(100svh, 640px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 16px 26svh; overflow: clip; color: #fff; }
+.dl-hero { position: relative; min-height: 100svh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 16px 26svh; overflow: clip; color: #fff; }
 .dl-bg { position: absolute; inset: -24px; z-index: 0; background: url("/assets/mont-blanc.jpg") center 60% / cover no-repeat; filter: blur(5px); }
 .dl-hero::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(rgb(0 0 0 / 30%), rgb(0 0 0 / 30%) 45%, rgb(245 245 247 / 0%) 62%, #f5f5f7 97%); }
 .dl-hero > *:not(.dl-bg) { position: relative; z-index: 2; }
@@ -292,7 +299,7 @@ body[data-head="light"]:not(.menu-open) .dlmain:focus-visible, body[data-head="l
 .beta { display: inline-block; margin-left: 0.18em; padding: 0.3em 0.62em 0.34em; font-size: 0.15em; line-height: 1; font-weight: 600; letter-spacing: 0.02em; vertical-align: top; position: relative; top: 0.9em; border-radius: 999px; box-shadow: inset 0 0 0 0.11em currentColor; }
 .dl-hero .meta { margin: 16px 0 0; font-size: 15px; font-weight: 500; text-shadow: 0 1px 3px rgb(0 0 0 / 55%), 0 0 18px rgb(0 0 0 / 55%); }
 .beta-note { margin: 22px 0 0; max-width: 46ch; font-size: 16px; line-height: 1.5; color: rgb(255 255 255 / 92%); text-wrap: balance; text-shadow: 0 1px 3px rgb(0 0 0 / 60%), 0 0 22px rgb(0 0 0 / 60%); }
-.status { position: relative; background: #f5f5f7; padding: 0; overflow: clip; }
+.status { position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: center; background: #f5f5f7; padding: 0; overflow: clip; }
 .graph { display: block; width: max(100%, 860px); height: auto; }
 .graph .past { stroke: #000; } .graph .next { stroke: #b6b9bf; stroke-dasharray: 2 9; }
 .graph .dot { fill: #000; } .graph .now { fill: #000; stroke: #f5f5f7; stroke-width: 5; paint-order: stroke; }
