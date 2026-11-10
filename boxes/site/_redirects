@@ -1,12 +1,13 @@
 # Cloudflare Pages: przekierowania (https://developers.cloudflare.com/pages/configuration/redirects/)
 #
 # ADRES POBIERANIA SHRIMP INSTALL: jedyne miejsce, które trzeba zmienić.
-# Oba przyciski „Pobierz Shrimp Install” prowadzą do /download. Dopóki poniższa linia jest wyłączona (#),
-# /download pokazuje stronę „Shrimp Install jest prawie gotowy” (site/download/index.html).
+# Przyciski pobierania instalatora prowadzą do /download/install (/download/ to zakładka „Pobierz”).
+# Dopóki poniższa linia jest wyłączona (#), /download/install pokazuje stronę „Shrimp Install jest prawie gotowy”
+# (site/download/install/index.html).
 # Gdy plik .exe będzie publicznie dostępny, usuń # i wpisz jego adres, np. w R2:
-# /download  https://dl.shrimp-organization.dev/shrimp-install.exe  302
+# /download/install  https://dl.shrimp-organization.dev/shrimp-install.exe  302
 #
-# ADRES OBRAZU ISO (strzałka w lewym górnym rogu strony głównej i w menu): to samo co wyżej. Dopóki linia jest
+# ADRES OBRAZU ISO (opcja „Obraz ISO” pod strzałką przycisku pobierania): to samo co wyżej. Dopóki linia jest
 # wyłączona (#), /iso pokazuje stronę site/iso/index.html. Obraz jest dla zaawansowanych, zalecany jest Shrimp Install.
 # /iso  https://dl.shrimp-organization.dev/shrimp.iso  302
 #

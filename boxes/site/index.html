@@ -27,7 +27,7 @@
 <script>document.documentElement.classList.add("js")</script>
 <script src="/assets/site.js" defer></script>
 </head>
-<body class="home">
+<body class="home" data-head="light">
 <a class="skip" href="#main" data-t="skip">Przejdź do treści</a>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
@@ -52,7 +52,7 @@
 
 <div class="menu" id="menu" role="dialog" aria-modal="true" aria-labelledby="burger">
   <ul>
-    <li><a href="#pobierz" style="--i:0" data-t="dl.short">Pobierz</a></li>
+    <li><a href="/download/" style="--i:0" data-t="dl.short">Pobierz</a></li>
     <li><a href="/apps/" style="--i:1" data-t="menu.apps">Aplikacje</a></li>
     <li><a href="/about/" style="--i:2" data-t="menu.about">O nas</a></li>
     <li><a href="/project/" style="--i:3" data-t="menu.project">Projekt</a></li>
@@ -68,7 +68,7 @@
 </div>
 
 <main id="main">
-  <section class="home-hero" aria-labelledby="h">
+  <section class="home-hero light" data-head="light" aria-labelledby="h">
     <div class="in">
       <svg class="logo rise" style="--i:0" viewBox="-1.1 3.6 184.6 178.5" aria-hidden="true"><use href="/assets/logo.svg#s"/></svg>
       <h1 class="h1 rise" style="--i:1" id="h" aria-label="Shrimp"><span class="type" id="type" aria-hidden="true">Shrimp</span><span class="caret" aria-hidden="true"></span></h1>
@@ -76,7 +76,9 @@
     </div>
   </section>
 
-  <section class="words" aria-labelledby="h-w">
+  <div class="fade wb" aria-hidden="true"></div>
+
+  <section class="words" data-head="dark" aria-labelledby="h-w">
     <h2 class="h2 reveal" id="h-w" data-t="w.t">Włączasz. Działa.</h2>
     <p class="sub reveal" style="--i:1" data-t="w.s">I nic więcej.</p>
     <ul class="perks">
@@ -89,7 +91,33 @@
     </ul>
   </section>
 
-  <section class="lap-wrap" id="lap" aria-label="Shrimp">
+  <div class="fade bw" aria-hidden="true"></div>
+
+  <section class="why light" data-head="light" aria-labelledby="h-why">
+    <div class="why-in">
+      <svg class="devs reveal" viewBox="0 0 560 420" role="img" aria-label="Monitor i laptop z logo Shrimp" data-t-aria="why.alt">
+        <rect x="286" y="262" width="48" height="52" fill="#c4c7cc"/>
+        <rect x="236" y="310" width="148" height="10" rx="5" fill="#b4b7bd"/>
+        <rect x="110" y="10" width="400" height="254" rx="14" fill="#16171a"/>
+        <rect x="118" y="18" width="384" height="230" rx="7" fill="#000"/>
+        <use href="/assets/logo.svg#s" x="270" y="94" width="80" height="78" color="#fff"/>
+        <rect x="24" y="206" width="300" height="192" rx="12" fill="#16171a"/>
+        <rect x="31" y="213" width="286" height="176" rx="6" fill="#000"/>
+        <use href="/assets/logo.svg#s" x="146" y="273" width="56" height="54" color="#fff"/>
+        <rect x="0" y="396" width="348" height="13" rx="6.5" fill="#c4c7cc"/>
+        <rect x="146" y="396" width="56" height="5" rx="2.5" fill="#a9acb2"/>
+      </svg>
+      <div class="why-text">
+        <h2 class="h2 reveal" id="h-why" data-t="why.t">Dlaczego Shrimp</h2>
+        <p class="reveal" style="--i:1" data-t="why.p1">Shrimp powstał po to, żeby komputer był gotowy od razu po instalacji. Sterowniki, kodeki i aplikacje są na miejscu, więc niczego nie musisz doinstalowywać ani ustawiać.</p>
+        <p class="reveal" style="--i:2" data-t="why.p2">Instalujesz, włączasz i robisz swoje.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="fade wb2" aria-hidden="true"></div>
+
+  <section class="lap-wrap" id="lap" data-head="dark" aria-label="Shrimp">
     <div class="stage">
       <div class="scene"><canvas id="gl" role="img" aria-label="Laptop z ekranem Shrimp" data-t-aria="lap.alt"></canvas></div>
       <div class="cap" aria-live="polite">
@@ -108,16 +136,16 @@
     </div>
   </section>
 
-  <section class="final" id="pobierz" aria-labelledby="h-end">
+  <section class="final" id="pobierz" data-head="dark" aria-labelledby="h-end">
     <div class="wavepic" aria-hidden="true"></div>
     <h2 class="h2 reveal" id="h-end" data-t="end.title">Zacznij swoją przygodę tutaj</h2>
     <div class="dlmenu reveal" style="--i:1">
-      <div class="dlrow">
-        <a class="btn" href="/download" data-dl><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-save"/></svg><span class="label"><span class="now" data-t="dl.label">Instalator</span><span class="then" aria-hidden="true" data-t="dl.going">Pobieranie…</span></span></a>
+      <div class="dlsplit">
+        <a class="btn" href="/download/install" data-dl><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-save"/></svg><span class="label"><span class="now" data-t="dl.label">Instalator</span><span class="then" aria-hidden="true" data-t="dl.going">Pobieranie…</span></span></a>
         <button class="dlmore" type="button" id="dlmore" aria-expanded="false" aria-controls="dlpop" data-t-aria="dl.more" aria-label="Inne opcje pobierania"><svg class="ico" viewBox="0 0 16 16" aria-hidden="true"><use href="#i-down"/></svg></button>
       </div>
       <div class="dlpop" id="dlpop">
-        <a href="/download" data-t="dl.label">Instalator</a>
+        <a href="/download/install" data-t="dl.label">Instalator</a>
         <a href="/iso" data-t="menu.iso">Obraz ISO</a>
       </div>
     </div>

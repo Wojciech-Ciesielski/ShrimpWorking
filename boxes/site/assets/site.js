@@ -23,6 +23,15 @@
       "tab.0": "Start", "tab.1": "Setup", "tab.2": "Desktop", "tab.3": "Apps", "tab.4": "Panko", "tab.5": "Cocktail", "tab.6": "In use", "tabs.aria": "Scenes",
       "menu.apps": "Apps", "menu.about": "About us", "menu.project": "Project", "menu.docs": "Documents", "menu.links": "Links", "menu.support": "Support",
       "soon.lead": "This page is coming soon.",
+      "why.t": "Why Shrimp", "why.alt": "A monitor and a laptop showing the Shrimp logo",
+      "why.p1": "Shrimp was made to be ready out of the box. Drivers, codecs and apps are already in place, so there is nothing to install or set up afterwards.",
+      "why.p2": "Install it, turn it on and get on with your day.",
+      "dl.beta": "Shrimp Beta 3.1 is in closed testing. It is a trial version and may contain bugs, so don't install it on a computer you can't do without.",
+      "st.t": "System status", "st.now": "Now", "st.next": "Next step", "st.later": "Later",
+      "st.1": "Closed testing. This is the current version of the system.",
+      "st.2": "The installer for Windows 10 and 11, tested together with the beta.",
+      "st.3t": "Open beta", "st.3": "Public downloads of the installer and the ISO image open then.",
+      "st.4": "The first full release, after the open beta ends.",
       "iso.aria": "Download the ISO image", "menu.aria": "Menu", "menu.iso": "ISO image", "alt.mb": "Mont Blanc",
       "dl.short": "Download", "dl.more": "More download options",
       "iso.title": "The ISO image is coming soon.",
@@ -102,6 +111,21 @@
   addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
+  // kolor paska górnego według sekcji, która jest pod nim (data-head="light" | "dark" na sekcjach)
+  const heads = [...document.querySelectorAll("main [data-head]")];
+  if (heads.length) {
+    const paint = () => {
+      for (const s of heads) { const r = s.getBoundingClientRect(); if (r.top <= 32 && r.bottom > 32) {
+          // data-head-light-from: od tej części wysokości sekcja jest już jasna (zdjęcie przechodzące w biel)
+          const from = parseFloat(s.dataset.headLightFrom || "2");
+          document.body.dataset.head = (32 - r.top) / r.height > from ? "light" : s.dataset.head; break;
+        } }
+    };
+    addEventListener("scroll", paint, { passive: true });
+    addEventListener("resize", paint);
+    paint();
+  }
+
   // menu: otwiera się z trzech kresek, zamyka Esc, kliknięciem linku albo ponownym kliknięciem kresek
   const burger = document.getElementById("burger");
   const menu = document.getElementById("menu");
@@ -110,6 +134,7 @@
       menu.classList.toggle("open", open);
       burger.setAttribute("aria-expanded", String(open));
       document.documentElement.style.overflow = open ? "hidden" : "";
+      document.body.classList.toggle("menu-open", open);
       if (open) menu.querySelector("a")?.focus({ preventScroll: true }); else if (menu.contains(document.activeElement)) burger.focus();
     };
     burger.addEventListener("click", () => set(!menu.classList.contains("open")));
@@ -157,7 +182,7 @@
   const CAPS = {
     pl: [
       ["Zaczynasz w Windows", "Wkładasz pendrive i uruchamiasz Shrimp Install. Resztę robi sam."],
-      ["Kilka pytań na start", "Setup prowadzi krok po kroku. Twoje pliki z Windows czekają po drugiej stronie."],
+      ["Kilka pytań na start", "Setup prowadzi krok po kroku."],
       ["Pulpit", "Czysty, spokojny i znajomy od pierwszej chwili."],
       ["Shrimp Apps", "Tysiące aplikacji w jednym miejscu. Instalujesz jednym kliknięciem."],
       ["Panko", "Migawki systemu. Coś poszło nie tak? Wracasz do chwili, gdy działało."],
@@ -166,7 +191,7 @@
     ],
     en: [
       ["You start in Windows", "Plug in a USB drive and run Shrimp Install. It does the rest."],
-      ["A few questions to begin", "Setup guides you step by step. Your Windows files are waiting on the other side."],
+      ["A few questions to begin", "Setup guides you step by step."],
       ["Desktop", "Clean, calm and familiar from the first moment."],
       ["Shrimp Apps", "Thousands of apps in one place. One click to install."],
       ["Panko", "System snapshots. Something went wrong? Go back to when it worked."],

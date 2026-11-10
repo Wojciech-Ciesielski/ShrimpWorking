@@ -263,3 +263,72 @@ html:not(.js) .caret { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .caret { animation: none; }
 }
+
+/* ===== runda 4: jasne i ciemne sekcje, „Dlaczego Shrimp”, zakładka Pobierz ===== */
+.light { --bg: #fff; --fg: #000; --dim: #5b5f66; --faint: #8b8e94; --line: rgb(0 0 0 / 10%); background: var(--bg); color: var(--fg); }
+.fade { height: clamp(36px, 6svh, 72px); }
+.fade.wb { background: linear-gradient(#fff, #000); }
+.fade.bw { background: linear-gradient(#000, #f5f5f7); }
+.fade.wb2 { background: linear-gradient(#f5f5f7, #000); }
+.home-hero.light { background: #fff; }
+
+/* pasek górny dopasowuje kolor do sekcji pod nim (data-head ustawia site.js) */
+.top .dlmain, .burger, .top .home .logo { transition: background-color 0.3s ease, color 0.3s ease, transform 0.4s var(--ease); }
+body.home .top .home .logo { color: #fff; }
+body[data-head="light"]:not(.menu-open) .top .dlmain { background: #000; color: #fff; }
+body[data-head="light"]:not(.menu-open) .burger, body[data-head="light"]:not(.menu-open) .top .home .logo { color: #000; }
+body[data-head="light"]:not(.menu-open) .dlmain:focus-visible, body[data-head="light"]:not(.menu-open) .burger:focus-visible { outline-color: #000; }
+
+/* dlaczego Shrimp: po lewej monitor i laptop, po prawej tekst */
+.why { background: #f5f5f7; padding: clamp(72px, 10vw, 140px) max(16px, 6vw); }
+.why-in { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); align-items: center; }
+.devs { width: 100%; height: auto; max-width: 560px; justify-self: center; }
+.why-text .h2 { max-width: none; }
+.why-text p { margin: 20px 0 0; max-width: 34ch; font-size: clamp(18px, 1.7vw, 21px); line-height: 1.5; color: var(--dim); }
+.why-text p:last-child { color: var(--fg); font-weight: 500; }
+
+/* przycisk pobierania: jedna biała pigułka, strzałka ma własne pole kliknięcia */
+.dlsplit { display: inline-flex; align-items: stretch; height: 72px; border-radius: 999px; background: #fff; color: #000; overflow: hidden; isolation: isolate; transition: transform 0.5s var(--ease); }
+.dlsplit:hover { transform: scale(1.03); }
+.dlsplit .btn { height: auto; min-width: min(52vw, 230px); padding: 0 14px 0 40px; border-radius: 0; background: none; transition: none; }
+.dlsplit .btn:hover, .dlsplit .btn:active { transform: none; }
+.dlsplit .btn:focus-visible { outline-offset: -5px; outline-color: #000; border-radius: 999px; }
+.dlsplit .dlmore { width: 68px; height: auto; padding-right: 8px; border-radius: 0; background: none; transition: background-color 0.2s ease; }
+.dlsplit .dlmore:hover { transform: none; background: rgb(0 0 0 / 7%); }
+.dlsplit .dlmore:focus-visible { outline: 2px solid #000; outline-offset: -8px; border-radius: 999px; }
+
+/* zakładka Pobierz */
+.dl-hero { position: relative; min-height: max(100svh, 640px); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 16px 26svh; overflow: clip; color: #fff; }
+.dl-bg { position: absolute; inset: -24px; z-index: 0; background: url("/assets/mont-blanc.jpg") center 60% / cover no-repeat; filter: blur(5px); }
+.dl-hero::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(rgb(0 0 0 / 30%), rgb(0 0 0 / 30%) 45%, rgb(245 245 247 / 0%) 62%, #f5f5f7 97%); }
+.dl-hero > *:not(.dl-bg) { position: relative; z-index: 2; }
+.dl-hero .dlmenu { z-index: 5; }
+.dl-hero .h1 { font-size: clamp(64px, 12vw, 150px); line-height: 1; text-shadow: 0 2px 30px rgb(0 0 0 / 25%); }
+.beta { display: inline-block; margin-left: 0.18em; padding: 0.3em 0.62em 0.34em; font-size: 0.15em; line-height: 1; font-weight: 600; letter-spacing: 0.02em; vertical-align: top; position: relative; top: 0.9em; border-radius: 999px; box-shadow: inset 0 0 0 0.11em currentColor; }
+.dl-hero .meta { margin: 16px 0 0; font-size: 15px; font-weight: 500; text-shadow: 0 1px 3px rgb(0 0 0 / 55%), 0 0 18px rgb(0 0 0 / 55%); }
+.beta-note { margin: 22px 0 0; max-width: 46ch; font-size: 16px; line-height: 1.5; color: rgb(255 255 255 / 92%); text-wrap: balance; text-shadow: 0 1px 3px rgb(0 0 0 / 60%), 0 0 22px rgb(0 0 0 / 60%); }
+.status { position: relative; background: #f5f5f7; padding: 0; overflow: clip; }
+.graph { display: block; width: max(100%, 860px); height: auto; }
+.graph .past { stroke: #000; } .graph .next { stroke: #b6b9bf; stroke-dasharray: 2 9; }
+.graph .dot { fill: #000; } .graph .now { fill: #000; stroke: #f5f5f7; stroke-width: 5; paint-order: stroke; }
+.graph .open { fill: #f5f5f7; stroke: #b6b9bf; stroke-width: 3; }
+.status-in { max-width: 1120px; margin: 0 auto; padding: clamp(28px, 4vw, 56px) max(16px, 6vw) clamp(72px, 9vw, 120px); }
+.states { list-style: none; margin: clamp(32px, 5vw, 56px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 36px clamp(24px, 3vw, 44px); }
+.states .tag { display: block; margin-bottom: 10px; font-size: 13px; font-weight: 600; color: var(--faint); }
+.states .tag.now { color: #000; }
+.states .tag.now::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: #000; }
+.states h3 { margin: 0 0 6px; font-size: 21px; line-height: 1.25; font-weight: 600; letter-spacing: -0.02em; }
+.states p { margin: 0; color: var(--dim); }
+.status footer { border-top: 0; }
+
+@media (max-width: 900px) {
+  .states { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 760px) {
+  .why-in { grid-template-columns: 1fr; }
+  .devs { max-width: 420px; }
+  .dlsplit { height: 64px; }
+  .dlsplit .btn { height: auto; flex: 0 1 auto; padding: 0 10px 0 30px; }
+  .dlsplit .dlmore { width: 60px; height: auto; }
+  .states { grid-template-columns: 1fr; }
+}
