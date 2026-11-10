@@ -9,6 +9,13 @@
 //   /etc/xdg/autostart/shrimp-setup-install.desktop exists  -> live medium (install)
 //   /var/lib/shrimp-setup/first-boot exists                  -> first configuration
 // Off when a drive labelled SHRIMP_TEST is connected (QEMU tests in CI, support).
+//
+// Clicks must always reach Setup (Beta 3.2 on a Vivobook: the pointer moved, but no click, tap or
+// mouse button did anything). The guard therefore never hides the Overview while GNOME is still
+// running its startup animation (GNOME keeps an invisible, reactive layer over the whole screen
+// until that animation ends), and a watchdog checks what is under the pointer in the middle of the
+// Setup window: an invisible layer left there by the shell or by the guard is made click-through,
+// and the result is logged (journalctl --user -b | grep shrimp-setup-guard).
 import GLib from 'gi://GLib';
 import St from 'gi://St';
 import Clutter from 'gi://Clutter';
@@ -30,6 +37,28 @@ const MAX_RESTARTS = 3;
 const FIRST_WAIT_S = 45;
 const RESTART_DELAY_S = 3;
 const RETRY_WAIT_S = 30;
+// Input watchdog: first check soon after Setup shows up, then every few seconds; GNOME's startup
+// layer is forced click-through when the startup animation has not ended this long after enable.
+const WATCH_EVERY_S = 3;
+const STARTUP_STUCK_S = 15;
+
+function log(msg) {
+    console.log(`shrimp-setup-guard: ${msg}`);
+}
+
+function describe(actor) {
+    if (!actor)
+        return 'nothing';
+    const name = actor.get_name?.() || '';
+    return `${actor.constructor?.name ?? 'actor'}${name ? `#${name}` : ''}`;
+}
+
+function isInside(actor, ancestor) {
+    for (let a = actor; a; a = a.get_parent())
+        if (a === ancestor)
+            return true;
+    return false;
+}
 
 function exists(path) {
     return GLib.file_test(path, GLib.FileTest.EXISTS);
@@ -61,6 +90,9 @@ export default class SetupGuardExtension extends Extension {
         this._sources = new Set();
         this._restarts = 0;
         this._setup = null;
+        this._enabledAt = GLib.get_monotonic_time();
+        this._inputOk = null;
+        log(`active (${this._mode}), shell starting up: ${Boolean(Main.layoutManager._startingUp)}`);
         this._lock();
         this._connect(global.display, 'window-created', (_d, win) => this._onWindow(win, false));
         for (const actor of global.get_window_actors())
@@ -76,10 +108,18 @@ export default class SetupGuardExtension extends Extension {
                     this._deactivate();
             });
         }
-        // GNOME opens the Overview right after login (startup animation).
-        if (Main.layoutManager._startingUp)
-            this._connect(Main.layoutManager, 'startup-complete', () => Main.overview.hide());
-        Main.overview.hide();
+        // GNOME opens the Overview right after login (startup animation). Hiding it while that
+        // animation runs can leave GNOME's invisible startup layer over the screen (no clicks), so
+        // every hide (ours and Setup's, over D-Bus) waits for the end of the startup.
+        if (Main.layoutManager._startingUp) {
+            this._connect(Main.layoutManager, 'startup-complete', () => {
+                log('shell startup complete');
+                this._hideOverview();
+            });
+        } else {
+            this._hideOverview();
+        }
+        this._watchInput();
     }
 
     disable() {
@@ -121,6 +161,15 @@ export default class SetupGuardExtension extends Extension {
         this._overviewPatched = ['show', 'toggle', 'showApps'].filter(m => typeof ov[m] === 'function');
         for (const m of this._overviewPatched)
             ov[m] = () => {};
+        // hide() during the startup animation: postponed until the startup is complete.
+        this._overviewHide = Object.getPrototypeOf(ov).hide;
+        ov.hide = (...args) => {
+            if (Main.layoutManager._startingUp) {
+                log('Overview hide postponed until the shell startup is complete');
+                return undefined;
+            }
+            return this._overviewHide.apply(ov, args);
+        };
         // Three/four-finger swipes: Overview and workspace switching.
         this._trackers = [
             ov._swipeTracker,
@@ -142,6 +191,9 @@ export default class SetupGuardExtension extends Extension {
         for (const m of this._overviewPatched ?? [])
             delete ov[m];
         this._overviewPatched = [];
+        if (this._overviewHide)
+            delete ov.hide;
+        this._overviewHide = null;
         for (const [t, was] of this._trackers ?? [])
             t.enabled = was;
         this._trackers = [];
@@ -215,6 +267,65 @@ export default class SetupGuardExtension extends Extension {
         });
     }
 
+    _hideOverview() {
+        if (Main.layoutManager._startingUp)
+            return;
+        (this._overviewHide ?? Main.overview.hide).call(Main.overview);
+    }
+
+    // --- clicks reach Setup ---
+
+    _watchInput() {
+        this._timeout(WATCH_EVERY_S, () => {
+            if (!this._mode)
+                return;
+            this._checkInput();
+            this._watchInput();
+        });
+    }
+
+    // What would get a click in the middle of the Setup window. Anything but the window itself is an
+    // invisible layer swallowing clicks: GNOME's startup layer, our own cover, a leftover modal grab.
+    _checkInput() {
+        const lm = Main.layoutManager;
+        const sinceS = (GLib.get_monotonic_time() - this._enabledAt) / 1e6;
+        if (lm._startingUp && lm._coverPane?.reactive && sinceS > STARTUP_STUCK_S) {
+            log(`shell startup still not complete after ${Math.round(sinceS)} s: its input layer made click-through`);
+            lm._coverPane.reactive = false;
+            lm._coverPane.hide();
+            this._hideOverview();
+        }
+        const win = this._setup;
+        const actor = win?.get_compositor_private();
+        if (!win || !actor?.visible) {
+            this._inputOk = null;
+            return;
+        }
+        if (this._cover) {
+            log('cover still on screen with Setup shown: removed');
+            this._hideCover(false);
+        }
+        if (Main.overview.visible && !Main.overview.animationInProgress) {
+            log('Overview open over Setup: hiding it');
+            this._hideOverview();
+        }
+        const r = win.get_frame_rect();
+        const [x, y] = [r.x + Math.floor(r.width / 2), r.y + Math.floor(r.height / 2)];
+        const hit = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, x, y);
+        const ok = isInside(hit, actor);
+        const grab = global.stage.get_grab_actor?.() ?? null;
+        if (ok !== this._inputOk || !ok) {
+            log(`input ${ok ? 'OK' : 'BLOCKED'}: at ${x},${y} ${describe(hit)}, grab ${describe(grab)}, ` +
+                `modal ${Main.modalCount}, overview ${Main.overview.visible}, starting up ${Boolean(lm._startingUp)}`);
+        }
+        this._inputOk = ok;
+        if (!ok && hit && !isInside(hit, global.window_group) && hit.opacity === 0 && hit.reactive) {
+            // An invisible reactive layer of the shell over Setup: let clicks through.
+            log(`${describe(hit)} is invisible but catches clicks: made click-through`);
+            hit.reactive = false;
+        }
+    }
+
     // --- cover ---
 
     _showCover() {
@@ -244,6 +355,8 @@ export default class SetupGuardExtension extends Extension {
         if (!cover)
             return;
         this._cover = null;
+        // Click-through from the first moment: the fade must never swallow clicks meant for Setup.
+        cover.reactive = false;
         const done = () => {
             Main.layoutManager.removeChrome(cover);
             cover.destroy();

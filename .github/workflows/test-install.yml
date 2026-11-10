@@ -4,6 +4,7 @@ name: Test install
 # label SHRIMP_LIVE, shrimp-transfer/shrimp.json with files), Setup on the live session,
 # installation with Agama onto an empty disk (Setup's own configuration from
 # boxes/setup/web/scripts/agama-test-config.ts), then the first boot of the installed system.
+# Before that, phase 0 boots the stick with the Setup guard on and checks that a click reaches Setup.
 # Serial logs and the Agama result are kept as an artifact (14 days). No screenshots, nothing is committed.
 
 on:
@@ -62,6 +63,11 @@ jobs:
           sudo mount "${LOOP}p1" /mnt/usb
           sudo mount -o loop,ro iso/*.iso /mnt/iso
           sudo cp -r /mnt/iso/. /mnt/usb/
+          # Journal to the serial port (Setup guard test, phase 0): the shell and Setup log there.
+          for g in $(sudo find /mnt/usb -name grub.cfg); do
+            sudo sed -i -E '/^\s*linux(efi)?\s/ s/$/ console=tty0 console=ttyS0,115200 plymouth.ignore-serial-consoles systemd.journald.forward_to_console=1/' "$g"
+            echo "$g:"; sudo grep -nE '^\s*linux(efi)?\s' "$g" | head -n 4 || true
+          done
           # shrimp-transfer as written by Shrimp Install (schema: boxes/install-schema)
           sudo mkdir -p /mnt/usb/shrimp-transfer/files/documents /mnt/usb/shrimp-test
           echo "Plik z Windows" | sudo tee /mnt/usb/shrimp-transfer/files/documents/z-windows.txt >/dev/null

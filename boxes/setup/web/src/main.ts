@@ -18,3 +18,8 @@ const be: Backends =
   : { mode: "demo", install: demoInstall, firstboot: demoFirstBoot };
 
 load(requestedLanguages(new URLSearchParams(location.search))).then((L) => start(document.getElementById("app")!, be, L));
+
+// Pierwsze kliknięcie, dotknięcie albo stuknięcie touchpada w dzienniku (journalctl --user -b | grep shrimp-setup):
+// po nim widać, że wejście dochodzi do okna Setup (Beta 3.2: kursor się ruszał, kliknięcia nie działały).
+// Ten sam wpis sprawdza test QEMU ze strażnikiem Setup.
+addEventListener("pointerdown", (e) => console.log(`shrimp-setup: pierwsze kliknięcie (${e.pointerType}) w ${mode}`), { once: true, capture: true });
