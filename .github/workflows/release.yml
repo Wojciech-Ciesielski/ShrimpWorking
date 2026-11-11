@@ -12,11 +12,11 @@ on:
       tag:
         description: "Tag wydania (musi być nowy)"
         required: true
-        default: "beta-3.5"
+        default: "beta-3.6"
       version:
         description: "Wersja pokazywana w programie i w nazwie pobranego ISO"
         required: true
-        default: "Beta 3.5"
+        default: "Beta 3.6"
       reuse:
         description: "Użyj gotowych przebiegów Build ISO i Shrimp Install z tego samego commita (bez budowania)"
         type: boolean
