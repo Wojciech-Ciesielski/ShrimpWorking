@@ -357,7 +357,12 @@ finally:
     print(f"done, Agama {result}, Setup guard {guard}, logs in {OUT}", flush=True)
 offline = "yes" if serial_has("live", "===OFFLINE-ISSUE yes") else "no"
 reprobe = "ok" if serial_has("live", "=== REPROBE probe") else "FAILED"
+nm_auth = "ok" if serial_has("live", "===NM-AUTH ok") else "FAILED"
+print(f"live user can add a network connection without a password: {nm_auth}", flush=True)
 print(f"offline repositories issue seen: {offline}; after network + probe: {reprobe}", flush=True)
+if nm_auth != "ok":
+    print("::error::On the live medium, connecting to a network asks for a password (polkit, NetworkManager)", flush=True)
+    sys.exit(1)
 if reprobe != "ok":
     print("::error::After the network came up, Agama still does not see the repositories (action probe)", flush=True)
     sys.exit(1)

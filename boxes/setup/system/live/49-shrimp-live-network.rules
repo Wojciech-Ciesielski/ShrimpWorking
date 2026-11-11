@@ -1,0 +1,10 @@
+// Tylko nośnik Shrimp (instalowane przez install.sh --live, nie trafia do zainstalowanego systemu).
+// Krok „Połącz z internetem” w Setup łączy z Wi-Fi przez nmcli jako użytkownik live „shrimp”.
+// Na tym etapie nie ma jeszcze konta ani hasła, więc NetworkManager nie może pytać o hasło administratora.
+polkit.addRule(function (action, subject) {
+  if (action.id.indexOf("org.freedesktop.NetworkManager.") == 0 &&
+      subject.user == "shrimp" && subject.local && subject.active) {
+    return polkit.Result.YES;
+  }
+  return polkit.Result.NOT_HANDLED;
+});
