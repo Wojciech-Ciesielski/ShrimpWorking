@@ -41,5 +41,7 @@ if [ "$LIVE" = --live ]; then
   # Nazwa 99_shrimp_live sortuje się po 99_shrimp, więc ten plik wygrywa z ustawieniami zainstalowanego systemu.
   install -Dm644 "$HERE/system/live/shrimp-live-background.svg" "$D/usr/share/shrimp-setup/live/shrimp-live-background.svg"
   install -Dm644 "$HERE/system/live/99_shrimp_live.gschema.override" "$D/usr/share/glib-2.0/schemas/99_shrimp_live.gschema.override"
+  # Wi-Fi w kroku „Połącz z internetem” bez pytania o hasło: na nośniku nie ma jeszcze konta.
+  install -Dm644 "$HERE/system/live/49-shrimp-live-network.rules" "$D/usr/share/polkit-1/rules.d/49-shrimp-live-network.rules"
 fi
 echo "Setup Shrimp zainstalowany w $D"

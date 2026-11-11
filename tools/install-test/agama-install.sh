@@ -36,6 +36,15 @@ echo "=== offline: PUT /api/config"; api -X PUT --data @"$HERE/config.json" "$U/
 for i in $(seq 240); do s=$(api "$U/api/status"); echo "$s" | grep -q '"tasks":\[\],"progresses":\[\]' && break; sleep 0.5; done
 echo "=== offline issues"; off=$(api "$U/api/issues"); echo "$off"
 echo "$off" | grep -q '"scope":"software"' && echo "===OFFLINE-ISSUE yes" || echo "===OFFLINE-ISSUE no"
+# 1b. Setup's Wi-Fi step runs nmcli as the live user, before any account or password exists.
+# Adding a connection is the step that asked for the administrator password on the Vivobook (Beta 3.5),
+# so do the same here without sudo and without an authentication agent answering.
+echo "=== live user $(id -un): nmcli connection add"
+if timeout 30 nmcli --wait 10 connection add type dummy ifname shrimpauth0 con-name shrimp-auth-test autoconnect no; then
+  echo "===NM-AUTH ok"; timeout 30 nmcli connection delete shrimp-auth-test || true
+else
+  echo "===NM-AUTH no"
+fi
 # 2. The cable goes in (Setup's "Connect to a network" step does this on a real laptop).
 echo ===NET-UP-PLEASE
 for i in $(seq 90); do [ "$(nmcli networking connectivity check 2>/dev/null)" = full ] && break; sleep 2; done
