@@ -14,6 +14,35 @@ U=http://127.0.0.1
 echo ===AGAMA-START
 ls -l "$HERE" /run/initramfs/live /run/initramfs/live/shrimp-transfer 2>&1 | head -40
 lsblk -o NAME,SIZE,TYPE,FSTYPE,LABEL,MOUNTPOINTS
+# Like the Vivobook (Wi-Fi only, nothing configured in the live session): the VM starts with the
+# network cable unplugged, so Agama reads the repositories without internet. Then the cable is
+# plugged in (qemu-install-test.py watches for ===NET-UP-PLEASE) and Setup's way of re-reading
+# the repositories must make the product visible again.
+echo "=== offline: connectivity $(nmcli networking connectivity check 2>&1)"
+for p in /api/status /api/issues; do echo "=== offline GET $p"; api "$U$p" | head -c 4000; echo; done
+echo "=== API discovery"
+for p in /api-docs/openapi.json /api/docs/openapi.json /api/openapi.json /api/v2/openapi.json; do
+  echo "--- $p"; api "$U$p" | head -c 200; echo
+done
+for f in /usr/bin/agama-web-server /usr/bin/agama /usr/libexec/agama*; do
+  [ -f "$f" ] && { echo "--- strings $f"; strings "$f" | grep -oE '\b(probe|reprobe|reload|refresh|activate|configure|install|finish)[A-Z][A-Za-z]*\b' | sort -u | head -60; }
+done
+for d in /usr/share/agama/web_ui /usr/share/agama/web-ui /usr/share/agama-web-ui; do
+  [ -d "$d" ] && { echo "--- web ui $d"; zcat -f "$d"/*.js* 2>/dev/null | grep -oE '"(probe|reprobe|reload|refresh|activate|configure)[A-Z][A-Za-z]*"' | sort -u | head -60; }
+done
+rpm -q agama agama-web-ui agama-cli 2>&1
+echo ===NET-UP-PLEASE
+for i in $(seq 90); do [ "$(nmcli networking connectivity check 2>/dev/null)" = full ] && break; sleep 2; done
+echo "=== online after $((i*2)) s: $(nmcli networking connectivity check 2>&1)"
+echo "=== issues right after the network came up"; api "$U/api/issues"
+reprobed=no
+for a in probeSoftware probeSystem probe reprobe reloadSoftware refreshSoftware; do
+  echo "=== try action $a"; api -X POST --data "{\"$a\":null}" "$U/api/action"
+  for i in $(seq 120); do s=$(api "$U/api/status"); echo "$s" | grep -q '"tasks":\[\],"progresses":\[\]' && break; sleep 1; done
+  iss=$(api "$U/api/issues"); echo "$iss" | head -c 1500; echo
+  echo "$iss" | grep -q '"scope":"software"' || { reprobed=$a; break; }
+done
+echo "=== REPROBE $reprobed"
 for p in /api/status /api/issues /api/config /api/system; do
   echo "=== GET $p"; api "$U$p" | head -c 12000; echo
 done

@@ -43,7 +43,7 @@ def noguard_drive(outdir):
     return ["-drive", f"file={img},if=none,id=noguard,format=raw", "-device", "usb-storage,drive=noguard"]
 
 
-def start(phase, with_usb, guard=False):
+def start(phase, with_usb, guard=False, offline=False):
     if os.path.exists(QMP_SOCK):
         os.remove(QMP_SOCK)
     cmd = [
@@ -53,7 +53,7 @@ def start(phase, with_usb, guard=False):
         "-drive", f"if=pflash,format=raw,unit=1,file={VARS}",
         "-device", f"virtio-vga,edid=on,xres={W},yres={H}",
         "-device", "qemu-xhci,id=xhci", "-device", "usb-tablet", "-device", "usb-kbd",
-        "-nic", "user,model=virtio-net-pci",
+        "-netdev", "user,id=net0", "-device", "virtio-net-pci,netdev=net0,id=nic0",
         "-drive", f"file={DISK},if=none,id=hd,format=qcow2", "-device", "virtio-blk-pci,drive=hd,bootindex=2",
         "-display", "none",
         "-qmp", f"unix:{QMP_SOCK},server=on,wait=off",
@@ -66,6 +66,12 @@ def start(phase, with_usb, guard=False):
         cmd += noguard_drive(OUT)
     print("+", " ".join(cmd), flush=True)
     return subprocess.Popen(cmd)
+
+
+def set_net(up):
+    """Network cable in or out (like a laptop with Wi-Fi only before anything is configured)."""
+    print(f"[{t():6.1f}s] network {'up' if up else 'down'}", flush=True)
+    qmp.cmd("set_link", name="nic0", up=up)
 
 
 T0 = time.time()
@@ -251,6 +257,7 @@ try:
     # ---------------------------------------------------------- phase 1 ----
     qemu = start("live", True)
     qmp = QMP(QMP_SOCK)
+    set_net(False)  # Vivobook: no cable, Wi-Fi not set up yet
     wait_stages(240, 15, "live")
     stage("setup", keep_duplicates=True)
     # Setup window up: drive Agama from a terminal (same token and config as Setup).
@@ -267,12 +274,16 @@ try:
     stage("terminal", keep_duplicates=True)
     deadline = t() + 100 * 60
     started = t()
+    net_up = False
     while t() < deadline and qemu.poll() is None and not serial_has("live", "===AGAMA-DONE"):
+        if not net_up and serial_has("live", "===NET-UP-PLEASE"):
+            set_net(True)
+            net_up = True
         if t() - started > 240 and not serial_has("live", "===AGAMA-START"):
             print(f"[{t():6.1f}s] test script did not start", flush=True)
             stage("no-script", keep_duplicates=True)
             break
-        wait_stages(t() + 60, 60, "install")
+        wait_stages(t() + 10, 10, "install")
     for r in ("finished", "failed"):
         if serial_has("live", "===AGAMA-DONE " + r):
             result = r
@@ -326,7 +337,9 @@ finally:
         print("::endgroup::", flush=True)
     except OSError:
         pass
-    for phase, start_mark, end_mark in (("live", "=== post-install / target", "===AGAMA-DONE"),
+    for phase, start_mark, end_mark in (("live", "=== offline: connectivity", "=== REPROBE"),
+                                        ("live", "=== issues after config", "=== POST install"),
+                                        ("live", "=== post-install / target", "===AGAMA-DONE"),
                                         ("installed", "===DIAG", "===DIAG-END")):
         try:
             with open(os.path.join(OUT, f"serial-{phase}.log"), errors="replace") as f:
@@ -334,7 +347,7 @@ finally:
         except OSError:
             continue
         lines = [l for l in text.splitlines() if "shrimp-post-install" in l] if phase == "live" else []
-        a = text.rfind(start_mark + "\n")
+        a = text.rfind(start_mark)
         b = text.find(end_mark, a) if a >= 0 else -1
         print(f"::group::serial-{phase}: {start_mark}", flush=True)
         print("\n".join(lines[-60:]))
