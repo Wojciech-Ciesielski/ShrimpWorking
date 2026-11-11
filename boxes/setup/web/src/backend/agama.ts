@@ -80,7 +80,9 @@ export function disksFromSystem(sys: ASystem): Disk[] {
   const cand = new Set(sys.storage?.candidateDrives || devs.map((d) => d.sid));
   const disks = devs.filter((d) => cand.has(d.sid) && d.block && !isLiveMedium(d)).map((d) => {
     const sizeGB = Math.floor(d.block!.size / GB);
-    const name = [d.drive?.vendor, d.drive?.model].filter(Boolean).join(" ").trim() || d.description || d.name;
+    // „Multipath” (opis urządzenia bez producenta i modelu) nie mówi nic: wtedy nazwa urządzenia.
+    const named = [d.drive?.vendor, d.drive?.model].filter(Boolean).join(" ").trim();
+    const name = named || (d.description && !/multipath/i.test(d.description) ? d.description : d.name);
     const parts = d.partitions || [];
     const bySize = (a: ADevice, b: ADevice) => (b.block?.size || 0) - (a.block?.size || 0);
     // BitLocker: Agama nie zajrzy do środka, więc rozpoznajemy go po typie (isBitlocker).

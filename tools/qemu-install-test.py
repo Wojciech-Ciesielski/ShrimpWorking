@@ -232,7 +232,7 @@ try:
     qemu = start("guard", True, guard=True)
     qmp = QMP(QMP_SOCK)
     deadline = t() + 360
-    while t() < deadline and qemu.poll() is None and not serial_has("guard", "shrimp-setup-guard: input"):
+    while t() < deadline and qemu.poll() is None and not serial_has("guard", "shrimp-setup-guard: window:"):
         time.sleep(5)
     stage("guard-setup", keep_duplicates=True)
     pause(20)  # Setup page loaded (Agama token, first screen)
@@ -243,7 +243,7 @@ try:
         pause(8)
     if serial_has("guard", "shrimp-setup: pierwsze klikni"):
         guard = "click-ok"
-    elif serial_has("guard", "shrimp-setup-guard: input"):
+    elif serial_has("guard", "shrimp-setup-guard: window:"):
         guard = "click-blocked"
     print(f"[{t():6.1f}s] Setup guard: {guard}", flush=True)
     stop()

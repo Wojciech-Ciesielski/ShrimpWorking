@@ -239,8 +239,9 @@ fn build(app: &gtk::Application, url: Option<&str>, install: bool, windowed: boo
     win.present();
     if !windowed {
         // GNOME po zalogowaniu otwiera widok przeglądu i okno Setup jest wtedy tylko miniaturą.
-        // Zamykamy przegląd przez D-Bus (właściwość OverviewActive), także po animacji startowej.
-        for delay in [0, 2, 5] {
+        // Zamykamy przegląd przez D-Bus (właściwość OverviewActive), dopiero po animacji startowej:
+        // zamknięty w jej trakcie zostawiał niewidzialną warstwę GNOME, która połykała kliknięcia.
+        for delay in [6, 12] {
             glib::timeout_add_seconds_local_once(delay, hide_overview);
         }
     }
