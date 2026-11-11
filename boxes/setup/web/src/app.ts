@@ -305,7 +305,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       await (watchOnly ? be.install.watch(show) : be.install.install(plan(), show));
       if (step === my) showActs();
     } catch (e) {
-      if (step === my) openErr(e instanceof InstallError ? e.key : "install");
+      if (step === my) openErr(e instanceof InstallError ? e.key : "install", String((e as Error)?.message || e));
     }
   }
   async function runApps() {
@@ -509,7 +509,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     if (id === "podsumowanie") {
       return guarded(async () => {
         try { await be.install.check(plan()); go(step + 1); }
-        catch (e) { openErr(e instanceof InstallError ? e.key : "install"); }
+        catch (e) { openErr(e instanceof InstallError ? e.key : "install", String((e as Error)?.message || e)); }
       });
     }
     if (id === "siec" && sub === 0) {
@@ -559,10 +559,12 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   $("#infoBtn")!.addEventListener("click", () => $("#infoPop")!.classList.toggle("show"));
 
   // --- okna błędów ---
-  function openErr(k: ErrKey) {
+  function openErr(k: ErrKey, detail = "") {
     const e = ERR[k]; S.err = k;
     $("#dT")!.textContent = tr(e.t);
     $("#dD")!.textContent = k === "wifi" && sub === 0 && NETS[S.net] ? tr("err.wifi.ssid", { ssid: NETS[S.net].ssid }) : tr(e.d);
+    // Przyczyna zgłoszona przez Agamę (krótko): bez niej nie wiadomo, co poszło nie tak.
+    if (detail && detail !== k) $("#dD")!.textContent += ` (${detail.slice(0, 220)})`;
     $("#dP")!.textContent = tr(e.p); $("#dS")!.textContent = e.s ? tr(e.s) : ""; $("#dS")!.hidden = !e.s;
     modal.hidden = false; $("#dP")!.focus();
   }
