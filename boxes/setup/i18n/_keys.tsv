@@ -218,3 +218,6 @@
 217	err.offline.repo	The internet works, but the installer couldn't read the openSUSE repositories. Try again in a moment.
 218	disk.checking	Checking the disks…
 219	err.repo.t	Couldn't read the repositories
+220	inet.scanning	Looking for Wi-Fi networks…
+221	inet.nodev	The computer doesn't see a Wi-Fi card (its driver or firmware did not load). Connect a network cable or use a phone over USB (tethering).
+222	inet.off	Wi-Fi is switched off or blocked. Turn it on with the key on the keyboard (airplane mode) and search again.

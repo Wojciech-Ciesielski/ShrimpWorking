@@ -75,6 +75,7 @@ fn router(state: App, ui_dir: PathBuf) -> Router {
         .route("/info", get(info))
         .route("/online", get(online))
         .route("/networks", get(networks))
+        .route("/network/diag", get(wifi_diag))
         .route("/network/connect", post(connect))
         .route("/network/advanced", post(advanced))
         .route("/appearance", post(appearance))
@@ -121,6 +122,7 @@ fn err(kind: &str, msg: impl ToString) -> Response {
 
 async fn info() -> Json<system::Info> { Json(system::info().await) }
 async fn networks() -> Json<Vec<system::Network>> { Json(system::networks().await) }
+async fn wifi_diag() -> Json<system::WifiDiag> { Json(system::wifi_diag().await) }
 async fn online() -> Json<serde_json::Value> { Json(json!({ "online": system::online().await })) }
 
 async fn connect(Json(c): Json<system::Connect>) -> Response {

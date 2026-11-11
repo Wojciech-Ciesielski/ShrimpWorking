@@ -159,11 +159,84 @@ async fn wired_online() -> bool {
 }
 
 /// Sieci Wi-Fi bez powtórzeń (najsilniejszy punkt dla każdej nazwy), od najsilniejszej.
+/// Lista z NetworkManagera to wynik OSTATNIEGO skanowania: tuż po starcie i zaraz po „rescan” bywa pusta,
+/// bo skan trwa kilka sekund (karty Intel kilkanaście). Wcześniej Setup pytał raz i pokazywał „Nie widzę sieci
+/// Wi-Fi”; kolejne kliknięcie „Wyszukaj ponownie” dawało dopiero wynik poprzedniego skanu. Teraz: włącza radio
+/// Wi-Fi, prosi o skan i czeka na wynik (do ok. 12 s), gdy lista jest pusta.
 pub async fn networks() -> Vec<Network> {
-    let out = run("nmcli", &["-t", "-f", "SSID,SIGNAL,SECURITY", "device", "wifi", "list", "--rescan", "auto"])
-        .await
-        .unwrap_or_default();
-    parse_networks(&out)
+    let list = || async {
+        parse_networks(&run("nmcli", &["-t", "-f", "SSID,SIGNAL,SECURITY", "device", "wifi", "list", "--rescan", "no"]).await.unwrap_or_default())
+    };
+    let first = list().await;
+    if !first.is_empty() {
+        // Skan w tle na następny odczyt (lista ma być świeża, gdy ktoś wróci do kroku).
+        let _ = run("nmcli", &["device", "wifi", "rescan"]).await;
+        return first;
+    }
+    let _ = run("nmcli", &["radio", "wifi", "on"]).await;
+    let _ = run("rfkill", &["unblock", "wifi"]).await;
+    for i in 0..4 {
+        let _ = run("nmcli", &["device", "wifi", "rescan"]).await;
+        tokio::time::sleep(std::time::Duration::from_secs(3)).await;
+        let n = list().await;
+        if !n.is_empty() {
+            eprintln!("shrimp-setup: Wi-Fi: sieci widać po {} s", (i + 1) * 3);
+            return n;
+        }
+    }
+    eprintln!("shrimp-setup: Wi-Fi: brak sieci po skanowaniu, {}", wifi_diag().await.summary());
+    Vec::new()
+}
+
+/// Stan karty Wi-Fi: czy system ją widzi (sterownik i firmware), czy radio jest włączone, czy nie ma blokady.
+#[derive(Serialize, Default, Debug)]
+pub struct WifiDiag {
+    /// Urządzenia Wi-Fi widziane przez NetworkManager: „nazwa:stan” (np. „wlan0:disconnected”).
+    pub devices: Vec<String>,
+    /// „enabled” / „disabled” / pusty, gdy nmcli nie odpowiada.
+    pub radio: String,
+    /// Blokada rfkill: „soft”, „hard”, „soft+hard” albo pusty.
+    pub blocked: String,
+    /// Karty sieciowe PCI/USB z „lspci -k” (sterownik) skrócone do jednej linii, gdy nie ma urządzenia Wi-Fi.
+    pub hardware: String,
+}
+
+impl WifiDiag {
+    pub fn summary(&self) -> String {
+        format!("urządzenia: {:?}, radio: {}, rfkill: {}, sprzęt: {}", self.devices, self.radio, self.blocked, self.hardware)
+    }
+}
+
+pub async fn wifi_diag() -> WifiDiag {
+    let devs = run("nmcli", &["-t", "-f", "DEVICE,TYPE,STATE", "device"]).await.unwrap_or_default();
+    let devices: Vec<String> = devs.lines().filter_map(|l| {
+        let f: Vec<&str> = l.split(':').collect();
+        (f.len() >= 3 && f[1] == "wifi").then(|| format!("{}:{}", f[0], f[2]))
+    }).collect();
+    let radio = run("nmcli", &["radio", "wifi"]).await.map(|s| s.trim().to_string()).unwrap_or_default();
+    let blocked = match run("rfkill", &["-n", "-o", "TYPE,SOFT,HARD", "list", "wifi"]).await {
+        Ok(o) => {
+            let (mut soft, mut hard) = (false, false);
+            for l in o.lines() { let f: Vec<&str> = l.split_whitespace().collect(); if f.len() >= 3 { soft |= f[1] == "blocked"; hard |= f[2] == "blocked"; } }
+            match (soft, hard) { (true, true) => "soft+hard", (true, false) => "soft", (false, true) => "hard", _ => "" }.to_string()
+        }
+        Err(_) => String::new(),
+    };
+    // Bez urządzenia Wi-Fi: co system widzi na PCI (karta bez sterownika albo bez firmware).
+    let hardware = if devices.is_empty() {
+        run("lspci", &["-nnk"]).await.map(|o| {
+            let mut out = Vec::new();
+            let lines: Vec<&str> = o.lines().collect();
+            for (i, l) in lines.iter().enumerate() {
+                if l.contains("Network controller") || l.contains("Wireless") || l.contains("802.11") {
+                    let drv = lines.iter().skip(i + 1).take(3).find(|x| x.contains("Kernel driver in use")).map(|x| x.trim().to_string()).unwrap_or_else(|| "brak sterownika".into());
+                    out.push(format!("{} [{}]", l.trim(), drv));
+                }
+            }
+            out.join("; ")
+        }).unwrap_or_default()
+    } else { String::new() };
+    WifiDiag { devices, radio, blocked, hardware }
 }
 
 /// Pola nmcli -t są rozdzielone „:”; dwukropek w nazwie jest poprzedzony „\”.

@@ -179,7 +179,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       case "witaj": return logo("calc(13 * var(--u))") + `<h1 class="h1" id="hello">${esc(HELLO[0])}</h1><p class="sub">${esc(tr("welcome.sub"))}</p>` + acts(esc(tr("start")));
       case "internet": {
         if (sub === 1) return netHidden();
-        return logo("calc(6 * var(--u))") + head(esc(tr("net.title")), esc(tr("inet.sub"))) + body(NETS.length ? netList() : `<p class="desc" id="desc" style="margin-top:0">${esc(tr("inet.none"))}</p>`) +
+        return logo("calc(6 * var(--u))") + head(esc(tr("net.title")), esc(tr("inet.sub"))) + body(NETS.length ? netList() : `<p class="desc" id="desc" style="margin-top:0">${esc(tr("inet.none"))}</p><p class="nstat" id="ndiag" role="status">${esc(tr("inet.scanning"))}</p>`) +
           acts(NETS.length ? esc(NEXT) : "", esc(tr("inet.rescan")), { skipAct: "rescan" }) + `<div class="mini"><button class="mlink" data-act="hid" type="button">${esc(tr("net.hiddenlink"))}</button></div>`;
       }
       case "jezyk": return logo("calc(6 * var(--u))") + head(esc(tr("lang.title"))) + body(lst("lang", LANGS.map((l) => esc(l.name)), S.lang, { scroll: true })) + acts(esc(NEXT));
@@ -264,7 +264,25 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   }
 
   const bigStep = () => { const id = cur(); return id === "witaj" || id === "restart" || id === "czesc" || (id === "gotowe" && sub === 0); };
-  function clearTimers() { clearInterval(T.hello); clearTimeout(T.boot); }
+  function clearTimers() { clearInterval(T.hello); clearTimeout(T.boot); scanSeq++; }
+  /** Krok „Połącz z internetem” bez żadnej sieci na liście: Setup sam szuka dalej (serwer czeka na skan do 12 s)
+   *  i mówi, czego brakuje: karty Wi-Fi (sterownik, firmware), włączonego radia albo po prostu zasięgu. */
+  let scanSeq = 0;
+  async function scanLoop() {
+    const my = ++scanSeq, alive = () => my === scanSeq && cur() === "internet" && sub === 0;
+    void be.firstboot.wifiDiag().then((d) => {
+      console.log("shrimp-setup: Wi-Fi, brak sieci:", JSON.stringify(d));
+      const e = $("#ndiag", pane); if (!e || !alive() || NETS.length) return;
+      e.textContent = !d.devices.length ? tr("inet.nodev") + (d.hardware ? " (" + d.hardware.slice(0, 120) + ")" : "")
+        : d.blocked || d.radio === "disabled" ? tr("inet.off") : tr("inet.scanning");
+    }).catch(() => {});
+    while (alive() && !NETS.length) {
+      const n = await be.firstboot.networks().catch(() => [] as Network[]);
+      if (!alive()) return;
+      if (n.length) { NETS = n; S.net = 0; render(false); return; }
+      await new Promise((r) => setTimeout(r, 1500));
+    }
+  }
   function rise() { $$("#pane > *").forEach((el, i) => { el.style.setProperty("--i", String(i)); el.classList.add("rise"); }); }
   function render(anim: boolean) {
     pane.className = "pane" + (bigStep() ? " big" : "");
@@ -281,6 +299,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     if (id === "region") T.hello = window.setInterval(() => { const d = $("#desc"); if (d) d.textContent = descFor(); }, 15000);
     if (id === "instalacja") runInstall();
     if (id === "konto") syncAccount();
+    if (id === "internet" && sub === 0 && !NETS.length) void scanLoop();
     if (id === "dysk" && sub === 0) updSplit();
     if (id === "dysk" && sub === 1) syncDisk();
     if (id === "programy" && sub === 3) runApps();
