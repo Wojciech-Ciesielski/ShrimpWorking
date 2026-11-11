@@ -68,6 +68,7 @@ export const demoFirstBoot: FirstBootBackend = {
   async connectHidden() { await sleep(300); demoOnline = true; },
   async setNetworkAdvanced() {},
   async setAppearance() {},
+  async setInputSource() {},
   async setDrivers() {},
   async installApps(_ids, onProgress) {
     try {

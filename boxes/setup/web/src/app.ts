@@ -14,7 +14,7 @@ import { InstallError, OfflineError, type Backends, type Disk, type FirstBootInf
 const $ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector(s) as T | null;
 const $$ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => Array.from(r.querySelectorAll(s)) as T[];
 
-const STEPS = ["witaj", "internet", "jezyk", "region", "klawiatura", "dysk", "konto", "podsumowanie", "instalacja", "restart",
+const STEPS = ["witaj", "jezyk", "region", "klawiatura", "dysk", "konto", "internet", "podsumowanie", "instalacja", "restart",
   "czesc", "siec", "wyglad", "sterowniki", "programy", "pendrive", "gotowe"] as const;
 type StepId = (typeof STEPS)[number];
 const idx = (id: StepId) => STEPS.indexOf(id);
@@ -153,7 +153,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   // --- sieć (krok „Połącz z internetem” na nośniku i krok „Sieć” po restarcie) ---
   function netList() {
     const n = NETS[S.net];
-    return lst("net", NETS.map((x) => ({ t: esc(x.ssid) + (x.secure ? " " + icon("network-wireless-encrypted-symbolic", "lk", esc(tr("net.secured"))) : ""), m: x.secure ? "" : esc(tr("net.open")) })), S.net) +
+    return lst("net", NETS.map((x) => ({ t: esc(x.ssid) + (x.secure ? " " + icon("network-wireless-encrypted-symbolic", "lk", esc(tr("net.secured"))) : ""), m: x.secure ? "" : esc(tr("net.open")) })), S.net, { scroll: true }) +
       (!n ? "" : n.secure ? `<div class="fields" style="margin-top:1.8cqw">${field("inNet", esc(tr("net.pass", { ssid: n.ssid })), S.netPass, "password")}</div>`
         : `<p class="desc" id="desc" style="margin-top:1.8cqw">${esc(tr("net.open.note"))}</p>`);
   }
@@ -283,7 +283,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   function chrome() {
     const id = cur();
     const first = be.mode === "firstboot" ? FIRST_BOOT : 0;
-    $("#back")!.hidden = step <= first || (cur() === "internet" && sub === 0) || ["witaj", "instalacja", "restart", "czesc"].includes(id) || (id === "programy" && sub === 3) || (id === "pendrive" && sub > 0);
+    $("#back")!.hidden = step <= first || ["witaj", "instalacja", "restart", "czesc"].includes(id) || (id === "programy" && sub === 3) || (id === "pendrive" && sub > 0);
     const nv = id === "sterowniki" && sub === 1;
     $("#infoBtn")!.hidden = !nv; $("#infoPop")!.hidden = !nv; $("#infoPop")!.classList.remove("show");
   }
@@ -296,6 +296,13 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     if (cur() === "siec" && INFO.wired && be.mode !== "install") step += n >= prev ? 1 : -1;
     // Nośnik z internetem (kabel albo Wi-Fi już połączone): krok „Połącz z internetem” jest pomijany.
     if (cur() === "internet" && (ONLINE || be.mode === "firstboot") && s === 0) step += n >= prev ? 1 : -1;
+    // Lista sieci z chwili startu bywa nieaktualna, gdy użytkownik dochodzi do tego kroku po kilku minutach.
+    if (cur() === "internet" && s === 0 && be.mode === "install") void be.firstboot.networks().then((n) => {
+      const changed = n.map((x) => x.ssid).join("\n") !== NETS.map((x) => x.ssid).join("\n");
+      if (!n.length || !changed) return;
+      const was = NETS[S.net]?.ssid; NETS = n; S.net = Math.max(0, n.findIndex((x) => x.ssid === was));
+      if (cur() === "internet" && sub === 0) render(false);
+    }).catch(() => {});
     // Bez pendrive'a do przywrócenia krok „pendrive” jest pomijany w obie strony.
     if (cur() === "pendrive" && !USB.pending && s === 0) step += n >= prev ? 1 : -1;
     if (cur() === "konto" && !keep) S.confirm = false;
@@ -416,7 +423,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     if (l === "theme") { S.theme = i === 1 ? "dark" : "light"; applyLook(); } else (S as unknown as Record<string, number>)[l] = i;
     if (l === "disk") defaultSplit();
     if (l === "lang") langSwitch(i);
-    if (l === "kb") { clearTimeout(kbTimer); kbTimer = window.setTimeout(() => be.install.setKeymap(KBS[i].keymap).catch(() => {}), 250); }
+    if (l === "kb") { clearTimeout(kbTimer); kbTimer = window.setTimeout(() => { be.install.setKeymap(KBS[i].keymap).catch(() => {}); be.firstboot.setInputSource(KBS[i].keymap).catch(() => {}); }, 250); }
     if (RELAYOUT[l]) { render(false); return; }
     const box = $<HTMLElement>(`.list[data-l="${l}"]`, pane)!;
     $$(".opt", box).forEach((o, k) => { o.classList.toggle("sel", k === i); o.setAttribute("aria-checked", String(k === i)); });
@@ -508,7 +515,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     if (a === "hconnect") {
       return guarded(async () => {
         try { await be.firstboot.connectHidden(S.ssid.trim(), (["none", "wpa2", "wpa3"] as const)[S.hsec], S.hsec ? S.hpass : undefined); S.online = true; }
-        catch { return openErr("wifi"); }
+        catch (e) { console.log("shrimp-setup: Wi-Fi (ukryta sieć) nie połączone:", String((e as Error)?.message || e)); return openErr("wifi", String((e as Error)?.message || "")); }
         if (id === "internet") { if (!(await afterConnect())) openErr("offline"); return; }
         go(step + 1);
       });
@@ -523,6 +530,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       const tz = same && PRE!.region >= 0 ? PRE!.region : REGS.findIndex((r) => r.tz === defaultTz(lc)); if (tz >= 0) S.region = tz;
       const kb = same && PRE!.kb >= 0 ? PRE!.kb : KBS.findIndex((k) => k.keymap === defaultKeymap(lc)); if (kb >= 0) S.kb = kb;
     }
+    if (id === "klawiatura" && KBS[S.kb]) be.firstboot.setInputSource(KBS[S.kb].keymap).catch(() => {});
     if (id === "konto") {
       if (!S.confirm) { S.confirm = true; const f2 = $("#f2")!; f2.hidden = false; f2.classList.add("rise"); $<HTMLInputElement>("#inPass2")!.focus(); syncAccount(); return; }
       if (S.pass !== S.pass2) return openErr("pass");
@@ -541,7 +549,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       const n = NETS[S.net]; if (!n) return id === "internet" ? undefined : go(step + 1);
       return guarded(async () => {
         try { await be.firstboot.connect(n.ssid, n.secure ? S.netPass : undefined); S.online = true; }
-        catch { return openErr("wifi"); }
+        catch (e) { console.log("shrimp-setup: Wi-Fi nie połączone:", String((e as Error)?.message || e)); return openErr("wifi", String((e as Error)?.message || "")); }
         if (id === "internet") { if (!(await afterConnect())) openErr("offline"); return; }
         go(step + 1);
       });
@@ -600,7 +608,8 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     $("#dD")!.textContent = k === "wifi" && sub === 0 && NETS[S.net] ? tr("err.wifi.ssid", { ssid: NETS[S.net].ssid }) : tr(e.d);
     // Przyczyna zgłoszona przez Agamę (krótko): bez niej nie wiadomo, co poszło nie tak.
     if (detail && detail !== k) $("#dD")!.textContent += ` (${detail.slice(0, 220)})`;
-    $("#dP")!.textContent = tr(e.p); $("#dS")!.textContent = e.s ? tr(e.s) : ""; $("#dS")!.hidden = !e.s;
+    $("#dP")!.textContent = tr(e.p); const skip = e.s && !(k === "wifi" && cur() === "internet") ? e.s : "";
+    $("#dS")!.textContent = skip ? tr(skip) : ""; $("#dS")!.hidden = !skip;
     modal.hidden = false; $("#dP")!.focus();
   }
   function closeErr() { modal.hidden = true; S.err = null; }
@@ -675,7 +684,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
         PRE = prefill(TR, LANGS, REGS, KBS);
         if (PRE.lang >= 0 && PRE.lang !== S.lang) { S.lang = PRE.lang; L = await load([LANGS[S.lang].locale]); chromeText(); }
         if (PRE.region >= 0) S.region = PRE.region;
-        if (PRE.kb >= 0) { S.kb = PRE.kb; be.install.setKeymap(KBS[S.kb].keymap).catch(() => {}); }
+        if (PRE.kb >= 0) { S.kb = PRE.kb; be.install.setKeymap(KBS[S.kb].keymap).catch(() => {}); be.firstboot.setInputSource(KBS[S.kb].keymap).catch(() => {}); }
         if (PRE.full) S.full = PRE.full;
         if (PRE.user) { S.user = PRE.user; S.userEdited = true; }
       }

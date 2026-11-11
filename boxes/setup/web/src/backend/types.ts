@@ -130,6 +130,8 @@ export interface FirstBootBackend {
   connectHidden(ssid: string, security: "none" | "wpa2" | "wpa3", password?: string): Promise<void>;
   setNetworkAdvanced(a: NetworkAdvanced): Promise<void>;
   setAppearance(scheme: "default" | "prefer-dark", accent: string | null): Promise<void>;
+  /** Układ klawiatury w bieżącej sesji GNOME (Agama ustawia go tylko dla instalowanego systemu i konsoli). */
+  setInputSource(keymap: string): Promise<void>;
   setDrivers(c: DriverChoice): Promise<void>;
   installApps(ids: string[], onProgress: (p: Progress) => void): Promise<void>;
   usb(): Promise<UsbState>;
