@@ -217,3 +217,6 @@
 217	Internet działa, ale instalator nie mógł odczytać repozytoriów openSUSE. Spróbuj ponownie za chwilę.
 218	Sprawdzam dyski…
 219	Nie udało się odczytać repozytoriów
+220	Szukam sieci Wi-Fi…
+221	Komputer nie widzi karty Wi-Fi (nie załadował się jej sterownik albo firmware). Podłącz kabel sieciowy albo telefon przez USB (modem USB).
+222	Wi-Fi jest wyłączone lub zablokowane. Włącz je klawiszem na klawiaturze (tryb samolotowy) i wyszukaj ponownie.

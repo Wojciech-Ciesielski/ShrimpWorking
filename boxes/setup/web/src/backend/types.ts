@@ -85,6 +85,8 @@ export interface InstallBackend {
 }
 
 export interface Network { ssid: string; secure: boolean; strength: number }
+/** Stan karty Wi-Fi (shrimp-setup /network/diag): dlaczego lista sieci jest pusta. */
+export interface WifiDiag { devices: string[]; radio: string; blocked: string; hardware: string }
 export interface NetworkAdvanced { ip: "auto" | "manual"; dns: "auto" | "cloudflare" | "google"; proxy: "none" | "auto" }
 
 /** Zawartość pendrive'a z Shrimp Install, czekająca na przywrócenie. */
@@ -126,6 +128,7 @@ export interface FirstBootBackend {
   /** Jest internet (na nośniku: czy Agama może pobrać system). */
   online(): Promise<boolean>;
   networks(): Promise<Network[]>;
+  wifiDiag(): Promise<WifiDiag>;
   connect(ssid: string, password?: string): Promise<void>;
   connectHidden(ssid: string, security: "none" | "wpa2" | "wpa3", password?: string): Promise<void>;
   setNetworkAdvanced(a: NetworkAdvanced): Promise<void>;

@@ -64,7 +64,8 @@ export const demoFirstBoot: FirstBootBackend = {
       windowsApps: mapWindowsApps(WIN_NAMES),
     };
   },
-  async networks() { return NETS; },
+  async networks() { if (q.get("nowifi")) return []; return NETS; },
+  async wifiDiag() { return q.get("nowifi") === "dev" ? { devices: [], radio: "enabled", blocked: "", hardware: "Intel Wi-Fi 6 AX201 [brak sterownika]" } : q.get("nowifi") === "off" ? { devices: ["wlan0:unavailable"], radio: "disabled", blocked: "soft", hardware: "" } : { devices: ["wlan0:disconnected"], radio: "enabled", blocked: "", hardware: "" }; },
   async connect(_ssid, password) { await sleep(300); if (q.get("fail") === "wifi" || (password !== undefined && password.length < 8)) throw new WifiError(); demoOnline = true; },
   async connectHidden() { await sleep(300); demoOnline = true; },
   async setNetworkAdvanced() {},

@@ -1,7 +1,7 @@
 // Część 2 Setup: pierwsza konfiguracja. Mówi z lokalnym serwerem shrimp-setup (Rust)
 // pod tym samym originem: /shrimp/api/*. Token sesji przychodzi w adresie strony (?k=…).
 import { mapWindowsApps } from "../logic";
-import { OfflineError, WifiError, type UsbResult, type UsbState, type DriverChoice, type FirstBootBackend, type FirstBootInfo, type Network, type NetworkAdvanced, type Progress } from "./types";
+import { OfflineError, WifiError, type UsbResult, type UsbState, type DriverChoice, type FirstBootBackend, type FirstBootInfo, type Network, type NetworkAdvanced, type WifiDiag, type Progress } from "./types";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -42,6 +42,7 @@ export class ShrimpFirstBoot implements FirstBootBackend {
     return { ...rest, windowsApps: apps && apps.length ? apps : null };
   }
   networks() { return this.call<Network[]>("GET", "/networks"); }
+  wifiDiag() { return this.call<WifiDiag>("GET", "/network/diag"); }
   async connect(ssid: string, password?: string) { await this.call("POST", "/network/connect", { ssid, password }); }
   async connectHidden(ssid: string, security: "none" | "wpa2" | "wpa3", password?: string) {
     await this.call("POST", "/network/connect", { ssid, password, security, hidden: true });
