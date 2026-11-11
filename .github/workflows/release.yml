@@ -12,11 +12,11 @@ on:
       tag:
         description: "Tag wydania (musi być nowy)"
         required: true
-        default: "beta-3.5"
+        default: "beta-4"
       version:
         description: "Wersja pokazywana w programie i w nazwie pobranego ISO"
         required: true
-        default: "Beta 3.5"
+        default: "Beta 4"
       source_sha:
         description: "Tylko z reuse: commit, z którego pochodzą gotowe przebiegi i który dostaje tag (puste = commit, z którego uruchomiono wydanie)"
         required: false
