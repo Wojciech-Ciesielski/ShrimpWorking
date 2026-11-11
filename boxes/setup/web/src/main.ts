@@ -13,7 +13,8 @@ import type { Backends } from "./backend/types";
 // Bez parametru: podgląd na danych z makiety.
 const mode = (new URLSearchParams(location.search).get("mode") || "demo") as Backends["mode"];
 const be: Backends =
-  mode === "install" ? { mode, install: new AgamaBackend(), firstboot: demoFirstBoot }
+  // Na nośniku z „części 2” działa tylko sieć (lokalny serwer shrimp-setup, krok „Połącz z internetem”).
+  mode === "install" ? { mode, install: new AgamaBackend(), firstboot: window.SHRIMP_LOCAL ? new ShrimpFirstBoot(window.SHRIMP_LOCAL.url, window.SHRIMP_LOCAL.key) : demoFirstBoot }
   : mode === "firstboot" ? { mode, install: demoInstall, firstboot: new ShrimpFirstBoot() }
   : { mode: "demo", install: demoInstall, firstboot: demoFirstBoot };
 

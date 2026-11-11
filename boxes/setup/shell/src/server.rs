@@ -73,6 +73,7 @@ pub fn spawn(ui_dir: PathBuf) -> std::io::Result<(u16, String)> {
 fn router(state: App, ui_dir: PathBuf) -> Router {
     let api = Router::new()
         .route("/info", get(info))
+        .route("/online", get(online))
         .route("/networks", get(networks))
         .route("/network/connect", post(connect))
         .route("/network/advanced", post(advanced))
@@ -82,6 +83,7 @@ fn router(state: App, ui_dir: PathBuf) -> Router {
         .route("/usb", get(usb_get).post(usb_start))
         .route("/finish", post(finish))
         .route_layer(middleware::from_fn_with_state(state.clone(), auth))
+        .layer(middleware::from_fn(cors))
         .with_state(state);
     Router::new().nest("/shrimp/api", api).fallback_service(ServeDir::new(ui_dir))
 }
@@ -91,12 +93,34 @@ async fn auth(State(s): State<App>, req: Request, next: Next) -> Response {
     if ok { next.run(req).await } else { StatusCode::FORBIDDEN.into_response() }
 }
 
+/// Na nośniku stronę Setup serwuje Agama (http://127.0.0.1), a sieć Wi-Fi ustawia ten serwer
+/// (inny port), więc strona Agamy może go wołać: tylko z tego jednego adresu, dalej z kluczem sesji.
+const AGAMA_ORIGIN: &str = "http://127.0.0.1";
+
+async fn cors(req: Request, next: Next) -> Response {
+    use axum::http::{header, HeaderValue, Method};
+    let from_agama = req.headers().get(header::ORIGIN).and_then(|v| v.to_str().ok()) == Some(AGAMA_ORIGIN);
+    let mut res = if req.method() == Method::OPTIONS && from_agama {
+        StatusCode::NO_CONTENT.into_response()
+    } else {
+        next.run(req).await
+    };
+    if from_agama {
+        let h = res.headers_mut();
+        h.insert(header::ACCESS_CONTROL_ALLOW_ORIGIN, HeaderValue::from_static(AGAMA_ORIGIN));
+        h.insert(header::ACCESS_CONTROL_ALLOW_HEADERS, HeaderValue::from_static("x-shrimp-key, content-type"));
+        h.insert(header::ACCESS_CONTROL_ALLOW_METHODS, HeaderValue::from_static("GET, POST"));
+    }
+    res
+}
+
 fn err(kind: &str, msg: impl ToString) -> Response {
     (StatusCode::BAD_REQUEST, Json(json!({ "error": kind, "message": msg.to_string() }))).into_response()
 }
 
 async fn info() -> Json<system::Info> { Json(system::info().await) }
 async fn networks() -> Json<Vec<system::Network>> { Json(system::networks().await) }
+async fn online() -> Json<serde_json::Value> { Json(json!({ "online": system::online().await })) }
 
 async fn connect(Json(c): Json<system::Connect>) -> Response {
     match system::connect(&c).await {

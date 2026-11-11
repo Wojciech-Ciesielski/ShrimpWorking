@@ -143,8 +143,14 @@ pub struct Network {
     pub strength: u8,
 }
 
+/// Internet jest, gdy NetworkManager tak mówi. Bez sprawdzania łączności w NetworkManagerze
+/// („unknown”) wystarcza stan „connected” (jest trasa domyślna).
 pub async fn online() -> bool {
-    matches!(run("nmcli", &["networking", "connectivity", "check"]).await, Ok(s) if s.trim() == "full")
+    match run("nmcli", &["networking", "connectivity", "check"]).await.map(|s| s.trim().to_string()) {
+        Ok(s) if s == "full" => true,
+        Ok(s) if s == "unknown" => matches!(run("nmcli", &["-t", "-f", "STATE", "general"]).await, Ok(g) if g.trim() == "connected"),
+        _ => false,
+    }
 }
 
 async fn wired_online() -> bool {

@@ -14,7 +14,7 @@ import { InstallError, OfflineError, type Backends, type Disk, type FirstBootInf
 const $ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector(s) as T | null;
 const $$ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => Array.from(r.querySelectorAll(s)) as T[];
 
-const STEPS = ["witaj", "jezyk", "region", "klawiatura", "dysk", "konto", "podsumowanie", "instalacja", "restart",
+const STEPS = ["witaj", "internet", "jezyk", "region", "klawiatura", "dysk", "konto", "podsumowanie", "instalacja", "restart",
   "czesc", "siec", "wyglad", "sterowniki", "programy", "pendrive", "gotowe"] as const;
 type StepId = (typeof STEPS)[number];
 const idx = (id: StepId) => STEPS.indexOf(id);
@@ -35,7 +35,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   const logo = (w: string) => `<div class="logo" style="width:${w}">${LOGO.replace("<svg", `<svg class="sh" role="img" aria-label="${esc(tr("logo.aria"))}"`)}</div>`;
   document.body.insertAdjacentHTML("afterbegin", `<div hidden>${iconSprite}</div>`);
   root.innerHTML = `
-    <div class="screen" id="screen" data-look="light">
+    <div class="screen" id="screen" data-look="boot">
       <div class="wall" aria-hidden="true"></div><div class="veil" aria-hidden="true"></div>
       <button class="back" id="back" type="button" hidden>${icon("go-previous-symbolic")}</button>
       <button class="infobtn" id="infoBtn" type="button" hidden>${icon("help-about-symbolic")}</button>
@@ -50,6 +50,10 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       </div>
     </div>`;
   const screen = $("#screen")!, pane = $("#pane")!, modal = $("#modal")!;
+  // Zanim przyjdą dane z instalatora: czarny ekran z logo, tak jak ekran startu, tło sesji live
+  // i osłona strażnika Setup. Potem spokojne przejście (0,7 s) do pierwszego ekranu.
+  pane.className = "pane splash";
+  pane.innerHTML = `<div class="logo splash-logo">${LOGO.replace("<svg", '<svg class="sh" aria-hidden="true"')}</div>`;
   /** Teksty poza widokami kroków (zależą od języka). */
   function chromeText() {
     document.documentElement.lang = L.lang;
@@ -76,7 +80,9 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     theme: "light" as "light" | "dark", accent: null as number | null, drv: 0, nv: 0,
     use: [true, false, false, false, true], sel: {} as Record<string, boolean>, err: null as ErrKey | null,
   };
-  let step = 0, sub = 0, boot = false, busy = false;
+  let step = 0, sub = 0, boot = true, busy = false;
+  /** Nośnik: jest internet (Agama pobiera system z repozytoriów openSUSE). Bez niego krok „Połącz z internetem”. */
+  let ONLINE = true;
   const T: Record<string, number> = {};
   const cur = () => STEPS[step];
   const disk = () => DISKS[S.disk];
@@ -144,11 +150,30 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     return "";
   }
 
+  // --- sieć (krok „Połącz z internetem” na nośniku i krok „Sieć” po restarcie) ---
+  function netList() {
+    const n = NETS[S.net];
+    return lst("net", NETS.map((x) => ({ t: esc(x.ssid) + (x.secure ? " " + icon("network-wireless-encrypted-symbolic", "lk", esc(tr("net.secured"))) : ""), m: x.secure ? "" : esc(tr("net.open")) })), S.net) +
+      (!n ? "" : n.secure ? `<div class="fields" style="margin-top:1.8cqw">${field("inNet", esc(tr("net.pass", { ssid: n.ssid })), S.netPass, "password")}</div>`
+        : `<p class="desc" id="desc" style="margin-top:1.8cqw">${esc(tr("net.open.note"))}</p>`);
+  }
+  function netHidden() {
+    return logo("6cqw") + head(esc(tr("net.hiddenlink")), esc(tr("net.hidden.sub"))) + body(`<div class="fields">` + field("inSsid", esc(tr("net.ssid")), S.ssid) +
+      `<div class="f"><label>${esc(tr("net.security"))}</label>${lst("hsec", plain(HSEC), S.hsec, { row: true })}</div>` + (S.hsec ? field("inHPass", esc(tr("account.pass")), S.hpass, "password") : "") + "</div>") +
+      acts(esc(tr("net.connect")), esc(tr("cancel")), { act: "hconnect", skipAct: "cancel" });
+  }
+  const isNet = () => cur() === "siec" || cur() === "internet";
+
   // --- widoki kroków ---
   function view(): string {
     const NEXT = tr("next"), SKIP = tr("skip");
     switch (cur()) {
       case "witaj": return logo("13cqw") + `<h1 class="h1" id="hello">${esc(HELLO[0])}</h1><p class="sub">${esc(tr("welcome.sub"))}</p>` + acts(esc(tr("start")));
+      case "internet": {
+        if (sub === 1) return netHidden();
+        return logo("6cqw") + head(esc(tr("net.title")), esc(tr("inet.sub"))) + body(NETS.length ? netList() : `<p class="desc" id="desc" style="margin-top:0">${esc(tr("inet.none"))}</p>`) +
+          acts(NETS.length ? esc(NEXT) : "", esc(tr("inet.rescan")), { skipAct: "rescan" }) + `<div class="mini"><button class="mlink" data-act="hid" type="button">${esc(tr("net.hiddenlink"))}</button></div>`;
+      }
       case "jezyk": return logo("6cqw") + head(esc(tr("lang.title"))) + body(lst("lang", LANGS.map((l) => esc(l.name)), S.lang, { scroll: true })) + acts(esc(NEXT));
       case "region": return logo("6cqw") + head(esc(tr("region.title")), esc(tr("region.sub"))) +
         body(lst("region", REGS.map((r) => esc(regLabel(r))), S.region, { scroll: true }) + `<p class="desc" id="desc">${esc(descFor())}</p>`) + acts(esc(NEXT));
@@ -181,14 +206,9 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       case "restart": return logo("13cqw") + head(esc(tr("restart.title")), esc(tr("restart.sub"))) + acts(esc(tr("restart.go")));
       case "czesc": return logo("13cqw") + head(esc(tr("hi.title", { name: firstName(be.mode === "install" ? S.full : INFO.fullName || S.full, tr("hi.fallback")) })), esc(tr("hi.sub"))) + acts(esc(NEXT));
       case "siec": {
-        if (sub === 1) return logo("6cqw") + head(esc(tr("net.hiddenlink")), esc(tr("net.hidden.sub"))) + body(`<div class="fields">` + field("inSsid", esc(tr("net.ssid")), S.ssid) +
-          `<div class="f"><label>${esc(tr("net.security"))}</label>${lst("hsec", plain(HSEC), S.hsec, { row: true })}</div>` + (S.hsec ? field("inHPass", esc(tr("account.pass")), S.hpass, "password") : "") + "</div>") +
-          acts(esc(tr("net.connect")), esc(tr("cancel")), { act: "hconnect", skipAct: "cancel" });
+        if (sub === 1) return netHidden();
         if (sub === 2) return logo("6cqw") + head(esc(tr("advanced"))) + body(`<div class="cols">${col(esc(tr("net.ip")), "ip", IPS.map((s, j) => (j === 0 ? rec(s) : esc(tx(s)))), S.ip)}${col(esc(tr("net.dns")), "dns", DNSS.map((s, j) => (j === 0 ? rec(s) : esc(tx(s)))), S.dns)}${col(esc(tr("net.proxy")), "proxy", plain(PROXY), S.proxy)}</div>`) + acts(esc(tr("done")), "", { act: "done" });
-        const n = NETS[S.net];
-        return logo("6cqw") + head(esc(tr("net.title"))) + body(lst("net", NETS.map((x) => ({ t: esc(x.ssid) + (x.secure ? " " + icon("network-wireless-encrypted-symbolic", "lk", esc(tr("net.secured"))) : ""), m: x.secure ? "" : esc(tr("net.open")) })), S.net) +
-          (!n ? "" : n.secure ? `<div class="fields" style="margin-top:1.8cqw">${field("inNet", esc(tr("net.pass", { ssid: n.ssid })), S.netPass, "password")}</div>`
-            : `<p class="desc" id="desc" style="margin-top:1.8cqw">${esc(tr("net.open.note"))}</p>`)) +
+        return logo("6cqw") + head(esc(tr("net.title"))) + body(netList()) +
           acts(esc(NEXT), esc(SKIP)) + `<div class="mini"><button class="mlink" data-act="hid" type="button">${esc(tr("net.hiddenlink"))}</button><button class="mlink" data-act="nadv" type="button">${esc(tr("advanced"))}</button></div>`;
       }
       case "wyglad":
@@ -255,7 +275,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     if (id === "dysk" && sub === 0) updSplit();
     if (id === "dysk" && sub === 1) syncDisk();
     if (id === "programy" && sub === 3) runApps();
-    if (id === "siec") syncNet();
+    if (id === "siec" || id === "internet") syncNet();
     $$<HTMLElement>(".list.scroll", pane).forEach(centerSel);
   }
   function centerSel(box: HTMLElement) { const o = $<HTMLElement>(".opt.sel", box); if (o) box.scrollTop = o.offsetTop - box.clientHeight / 2 + o.offsetHeight / 2; }
@@ -263,7 +283,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   function chrome() {
     const id = cur();
     const first = be.mode === "firstboot" ? FIRST_BOOT : 0;
-    $("#back")!.hidden = step <= first || ["witaj", "instalacja", "restart", "czesc"].includes(id) || (id === "programy" && sub === 3) || (id === "pendrive" && sub > 0);
+    $("#back")!.hidden = step <= first || (cur() === "internet" && sub === 0) || ["witaj", "instalacja", "restart", "czesc"].includes(id) || (id === "programy" && sub === 3) || (id === "pendrive" && sub > 0);
     const nv = id === "sterowniki" && sub === 1;
     $("#infoBtn")!.hidden = !nv; $("#infoPop")!.hidden = !nv; $("#infoPop")!.classList.remove("show");
   }
@@ -274,12 +294,14 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     step = Math.max(lo, Math.min(hi, n)); sub = s;
     // Internet po kablu: krok Sieć jest pomijany w obie strony.
     if (cur() === "siec" && INFO.wired && be.mode !== "install") step += n >= prev ? 1 : -1;
+    // Nośnik z internetem (kabel albo Wi-Fi już połączone): krok „Połącz z internetem” jest pomijany.
+    if (cur() === "internet" && (ONLINE || be.mode === "firstboot") && s === 0) step += n >= prev ? 1 : -1;
     // Bez pendrive'a do przywrócenia krok „pendrive” jest pomijany w obie strony.
     if (cur() === "pendrive" && !USB.pending && s === 0) step += n >= prev ? 1 : -1;
     if (cur() === "konto" && !keep) S.confirm = false;
     // Dyski czytamy od nowa przy wejściu w krok: pierwszy odczyt (przy starcie) bywał niepełny.
     if (cur() === "dysk" && be.mode === "install" && prev !== step) void be.install.disks().then((d) => {
-      if (cur() === "dysk" && JSON.stringify(d) !== JSON.stringify(DISKS) && d.length) { DISKS = d; S.disk = Math.min(S.disk, d.length - 1); render(true); }
+      if (cur() === "dysk" && JSON.stringify(d) !== JSON.stringify(DISKS) && d.length) { const first = !DISKS.length; DISKS = d; S.disk = Math.min(S.disk, d.length - 1); if (first) defaultSplit(); render(true); }
     }).catch(() => {});
     chrome(); applyLook(); render(true);
   }
@@ -482,10 +504,13 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       if (id === "programy" && sub === 0) return go(step + 1);
       return go(step + 1);
     }
+    if (a === "rescan") return guarded(async () => { if (!(await afterConnect(1))) { NETS = await be.firstboot.networks().catch(() => []); S.net = 0; render(false); } });
     if (a === "hconnect") {
       return guarded(async () => {
-        try { await be.firstboot.connectHidden(S.ssid.trim(), (["none", "wpa2", "wpa3"] as const)[S.hsec], S.hsec ? S.hpass : undefined); S.online = true; go(step + 1); }
-        catch { openErr("wifi"); }
+        try { await be.firstboot.connectHidden(S.ssid.trim(), (["none", "wpa2", "wpa3"] as const)[S.hsec], S.hsec ? S.hpass : undefined); S.online = true; }
+        catch { return openErr("wifi"); }
+        if (id === "internet") { if (!(await afterConnect())) openErr("offline"); return; }
+        go(step + 1);
       });
     }
     // „next”
@@ -512,11 +537,13 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
         catch (e) { openErr(e instanceof InstallError ? e.key : "install", String((e as Error)?.message || e)); }
       });
     }
-    if (id === "siec" && sub === 0) {
-      const n = NETS[S.net]; if (!n) return go(step + 1);
+    if (isNet() && sub === 0) {
+      const n = NETS[S.net]; if (!n) return id === "internet" ? undefined : go(step + 1);
       return guarded(async () => {
-        try { await be.firstboot.connect(n.ssid, n.secure ? S.netPass : undefined); S.online = true; go(step + 1); }
-        catch { openErr("wifi"); }
+        try { await be.firstboot.connect(n.ssid, n.secure ? S.netPass : undefined); S.online = true; }
+        catch { return openErr("wifi"); }
+        if (id === "internet") { if (!(await afterConnect())) openErr("offline"); return; }
+        go(step + 1);
       });
     }
     if (id === "wyglad") {
@@ -542,6 +569,14 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       return go(step, sub + 1);
     }
     go(step + 1);
+  }
+  /** Nośnik po połączeniu z siecią: czeka na internet (do 30 s), Agama czyta repozytoria od nowa, dalej. */
+  async function afterConnect(tries = 15): Promise<boolean> {
+    for (let i = 0; i < tries && !(ONLINE = await be.firstboot.online().catch(() => false)); i++) await new Promise((r) => setTimeout(r, 2000));
+    if (!ONLINE) return false;
+    if (!(await be.install.reprobe().catch(() => false))) return false;
+    go(idx("internet") + 1);
+    return true;
   }
   function finish() {
     if (be.mode === "demo") { S.theme = "light"; S.accent = null; S.confirm = false; applyAccent(); go(0); return; }
@@ -581,6 +616,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       void be.install.disks().then((d) => { DISKS = d; S.disk = 0; defaultSplit(); go(idx("dysk")); }).catch(() => openErr("nodisk"));
     }
     else if (k === "install") go(step);
+    else if (k === "offline") { ONLINE = false; if (cur() === "internet") render(false); else go(idx("internet")); }
     else if (k === "stall" || k === "agama") runInstall(true);
     else if (k === "user") { S.userEdited = true; render(false); const u = $<HTMLInputElement>("#inUser"); if (u) { u.focus(); u.select(); } }
     else if (k === "wifi") { if (sub === 0) S.netPass = ""; else S.hpass = ""; render(false); $<HTMLInputElement>(sub === 0 ? "#inNet" : "#inHPass")?.focus(); }
@@ -590,7 +626,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     const k = S.err; closeErr();
     if (k === "install" || k === "stall" || k === "agama") go(0);
     else if (k === "space") go(idx("dysk"));
-    else if (k === "wifi") { S.online = false; go(step + 1); }
+    else if (k === "wifi") { if (cur() === "internet") return; S.online = false; go(step + 1); }
     else if (k === "net") go(step + 1);
   });
   document.addEventListener("keydown", (e) => {
@@ -614,10 +650,21 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   (async () => {
     const q = new URLSearchParams(location.search);
     if (be.mode !== "firstboot") {
-      [LANGS, REGS, KBS, DISKS, TR] = await Promise.all([be.install.languages(), be.install.regions(), be.install.keyboards(), be.install.disks(), be.install.transfer().catch(() => null)]);
-      // disksFromSystem() stawia na początku dysk z Windows, potem największy (bez pendrive'a z Shrimp).
-      S.disk = 0;
-      defaultSplit();
+      // Dyski czytamy w tle: Agama sonduje je nawet kilkadziesiąt sekund, a pierwszy ekran nie musi na to czekać
+      // (wcześniej przez ten czas był jasny pusty ekran). Krok „dysk” i tak czyta je od nowa przy wejściu.
+      const disksLoad = be.install.disks().catch(() => [] as Disk[]);
+      [LANGS, REGS, KBS, TR] = await Promise.all([be.install.languages(), be.install.regions(), be.install.keyboards(), be.install.transfer().catch(() => null)]);
+      void disksLoad.then((d) => {
+        if (!d.length || DISKS.length) return;
+        // disksFromSystem() stawia na początku dysk z Windows, potem największy (bez pendrive'a z Shrimp).
+        DISKS = d; S.disk = 0; defaultSplit();
+        if (cur() === "dysk") render(false);
+      });
+      {
+        ONLINE = await be.firstboot.online().catch(() => true);
+        if (!ONLINE) NETS = await be.firstboot.networks().catch(() => []);
+        console.log(`shrimp-setup: internet na nośniku: ${ONLINE ? "jest" : "brak"}, sieci Wi-Fi: ${NETS.length}`);
+      }
       // Instalacja: język z Windows (Shrimp Install), a bez niego angielski, nie polski z obrazu sesji live.
       // Podgląd (demo): język przeglądarki. Dla wybranego języka domyślna strefa i klawiatura.
       const own = be.mode === "install" ? installLang(TR, LANGS) : Math.max(0, LANGS.findIndex((l) => l.tag === L.tag)); S.lang = own;

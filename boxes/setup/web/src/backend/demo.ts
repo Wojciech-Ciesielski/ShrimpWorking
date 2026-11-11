@@ -1,5 +1,5 @@
 // Dane z makiety: podgląd w przeglądarce (npm run dev) i zrzuty ekranów bez Agamy.
-// ?fail=install|net|wifi wymusza błąd, ?nvidia=0 ukrywa kartę NVIDIA, ?wired=1 pomija Sieć,
+// ?fail=install|net|wifi|offline wymusza błąd (offline: nośnik bez internetu, krok „Połącz z internetem”), ?nvidia=0 ukrywa kartę NVIDIA, ?wired=1 pomija Sieć,
 // ?bitlocker=1 udaje dysk z BitLockerem (dane z Shrimp Install).
 import { LANGS, REGIONS, KEYBOARDS } from "../data";
 import { mapWindowsApps } from "../logic";
@@ -36,6 +36,7 @@ export const demoInstall: InstallBackend = {
   async disks() { return DISKS; },
   async setLanguage() {},
   async setKeymap() {},
+  async reprobe() { return true; },
   async check(plan: InstallPlan) {
     if (plan.place === "beside" && plan.disk.windows && plan.disk.windows.poolGB - (plan.windowsGB || 0) < 40) throw new InstallError("space");
   },
@@ -50,7 +51,9 @@ export const demoInstall: InstallBackend = {
   async reboot() {},
 };
 
+let demoOnline = q.get("fail") !== "offline";
 export const demoFirstBoot: FirstBootBackend = {
+  async online() { return demoOnline; },
   async info() {
     return {
       fullName: "Anna Kowalska",
@@ -61,8 +64,8 @@ export const demoFirstBoot: FirstBootBackend = {
     };
   },
   async networks() { return NETS; },
-  async connect(_ssid, password) { await sleep(300); if (q.get("fail") === "wifi" || (password !== undefined && password.length < 8)) throw new WifiError(); },
-  async connectHidden() { await sleep(300); },
+  async connect(_ssid, password) { await sleep(300); if (q.get("fail") === "wifi" || (password !== undefined && password.length < 8)) throw new WifiError(); demoOnline = true; },
+  async connectHidden() { await sleep(300); demoOnline = true; },
   async setNetworkAdvanced() {},
   async setAppearance() {},
   async setDrivers() {},

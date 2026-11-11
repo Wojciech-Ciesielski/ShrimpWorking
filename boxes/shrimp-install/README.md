@@ -81,7 +81,7 @@ Na nośniku w `shrimp-transfer/shrimp.json` (na żywym systemie `/run/initramfs/
   "version": 1,
   "created": "2026-11-05T19:00:00Z",
   "installer": "Shrimp Install 0.1.0",
-  "image": { "version": "Beta 1", "sha256": "…" },
+  "image": { "version": "Beta 3.5", "sha256": "…" },
   "windows": { "version": "10.0.26100", "firmware": "uefi", "secureBoot": true, "bitlocker": false },
   "user": { "name": "jan", "fullName": "Jan Kowalski" },
   "locale": {
@@ -109,7 +109,7 @@ Uwaga: dysk z BitLockerem (`windows.bitlocker`, zdarzenie i alert na ekranie Sta
 `https://…/manifest.json` (adres w `SHRIMP_MANIFEST_URL` przy kompilacji albo `--manifest`):
 
 ```json
-{ "version": "Beta 2", "url": "https://…/Shrimp.x86_64-0.1.0.iso", "size": 2087512064, "sha256": "…" }
+{ "version": "Beta 3.5", "url": "https://…/Shrimp.x86_64-0.1.0.iso", "size": 2087512064, "sha256": "…" }
 ```
 
 Adres manifestu zależy od repozytorium, z którego budujemy (`tools/prepare.sh` zapisuje `shrimp_config.h` z `SHRIMP_REPO` i `SHRIMP_PRIVATE`; workflow ustawia je sam):

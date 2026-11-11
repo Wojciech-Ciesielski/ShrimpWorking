@@ -205,3 +205,7 @@
 204	err.user.d	Choose a different user name, for example with a number at the end.
 205	err.nodisk.t	No drive for Shrimp
 206	err.nodisk.d	Setup can't see this computer's internal drive. On some laptops it is hidden by Intel RST (VMD) in the firmware settings. Check the drive and try again.
+207	inet.sub	Shrimp downloads the system from the internet while it installs. Choose your Wi-Fi network.
+208	inet.none	No Wi-Fi networks found. Connect a network cable or move closer to the router, then search again.
+209	inet.rescan	Search again
+210	err.offline.d	Shrimp needs the internet to install. Connect to a network and try again.

@@ -31,17 +31,22 @@ for d in /usr/share/agama/web_ui /usr/share/agama/web-ui /usr/share/agama-web-ui
   [ -d "$d" ] && { echo "--- web ui $d"; zcat -f "$d"/*.js* 2>/dev/null | grep -oE '"(probe|reprobe|reload|refresh|activate|configure)[A-Z][A-Za-z]*"' | sort -u | head -60; }
 done
 rpm -q agama agama-web-ui agama-cli 2>&1
+# 1. Offline, exactly what Setup's "check" does: select the product. Agama cannot read the repositories.
+echo "=== offline: PUT /api/config"; api -X PUT --data @"$HERE/config.json" "$U/api/config"
+for i in $(seq 240); do s=$(api "$U/api/status"); echo "$s" | grep -q '"tasks":\[\],"progresses":\[\]' && break; sleep 0.5; done
+echo "=== offline issues"; off=$(api "$U/api/issues"); echo "$off"
+echo "$off" | grep -q '"scope":"software"' && echo "===OFFLINE-ISSUE yes" || echo "===OFFLINE-ISSUE no"
+# 2. The cable goes in (Setup's "Connect to a network" step does this on a real laptop).
 echo ===NET-UP-PLEASE
 for i in $(seq 90); do [ "$(nmcli networking connectivity check 2>/dev/null)" = full ] && break; sleep 2; done
 echo "=== online after $((i*2)) s: $(nmcli networking connectivity check 2>&1)"
-echo "=== issues right after the network came up"; api "$U/api/issues"
-reprobed=no
-for a in probeSoftware probeSystem probe reprobe reloadSoftware refreshSoftware; do
-  echo "=== try action $a"; api -X POST --data "{\"$a\":null}" "$U/api/action"
-  for i in $(seq 120); do s=$(api "$U/api/status"); echo "$s" | grep -q '"tasks":\[\],"progresses":\[\]' && break; sleep 1; done
-  iss=$(api "$U/api/issues"); echo "$iss" | head -c 1500; echo
-  echo "$iss" | grep -q '"scope":"software"' || { reprobed=$a; break; }
-done
+# 3. Setup's reprobe(): probe, select the product again, wait, read the issues.
+echo "=== POST probe"; api -X POST --data '{"probe":null}' "$U/api/action"
+for i in $(seq 240); do s=$(api "$U/api/status"); echo "$s" | grep -q '"tasks":\[\],"progresses":\[\]' && break; sleep 0.5; done
+echo "=== PUT /api/config again"; api -X PUT --data @"$HERE/config.json" "$U/api/config"
+for i in $(seq 240); do s=$(api "$U/api/status"); echo "$s" | grep -q '"tasks":\[\],"progresses":\[\]' && break; sleep 0.5; done
+iss=$(api "$U/api/issues"); echo "=== issues after probe"; echo "$iss"
+if echo "$iss" | grep -q '"scope":"software"'; then reprobed=no; else reprobed=probe; fi
 echo "=== REPROBE $reprobed"
 for p in /api/status /api/issues /api/config /api/system; do
   echo "=== GET $p"; api "$U$p" | head -c 12000; echo

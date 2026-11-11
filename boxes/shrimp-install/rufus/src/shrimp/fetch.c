@@ -2,7 +2,7 @@
  * Shrimp Install: pobieranie obrazu Shrimp.
  *
  * Manifest (JSON, mały) mówi, skąd pobrać ISO, ile ma bajtów i jaka jest jego suma SHA-256:
- *   { "version": "Beta 1", "url": "https://…/shrimp-beta1.iso", "size": 3650722816, "sha256": "…" }
+ *   { "version": "Beta 3.5", "url": "https://…/Shrimp.x86_64-0.1.0.iso", "size": 3650722816, "sha256": "…" }
  * Obok leży podpis manifestu (manifest.json.sig, RSA-2048 + SHA-256, `openssl dgst -sha256 -sign`).
  * Klucz publiczny jest wkompilowany (shrimp_key.h). Bez klucza (kompilacja deweloperska)
  * zaufanie do manifestu opiera się tylko na HTTPS, a suma SHA-256 ISO jest sprawdzana zawsze.
@@ -286,14 +286,15 @@ static uint64_t file_size_u(const char* path)
 	return attrs_u(path, &d) ? (((uint64_t)d.nFileSizeHigh << 32) | d.nFileSizeLow) : 0;
 }
 
-/* Części innych wydań (shrimp-*.part) zajmują miejsce, a nie da się ich już dokończyć. */
-static void remove_stale_parts(const char* dir, const char* keep)
+/* Usuwa pliki shrimp-*<ext> z katalogu pobierania poza `keep`: części starych pobrań i obrazy
+ * starszych wydań (np. shrimp-Beta-2.iso, 2 GB, zostawał obok nowego obrazu). */
+static void remove_stale(const char* dir, const char* ext, const char* keep)
 {
 	char pattern[MAX_PATH], path[MAX_PATH];
 	WIN32_FIND_DATAW fd;
 	HANDLE h;
 	wchar_t* w;
-	static_sprintf(pattern, "%s\\shrimp-*.part", dir);
+	static_sprintf(pattern, "%s\\shrimp-*%s", dir, ext);
 	w = utf8_to_wchar(pattern);
 	if (w == NULL)
 		return;
@@ -305,8 +306,10 @@ static void remove_stale_parts(const char* dir, const char* keep)
 		char* name = wchar_to_utf8(fd.cFileName);
 		if (name != NULL) {
 			static_sprintf(path, "%s\\%s", dir, name);
-			if (_stricmp(path, keep) != 0 && DeleteFileU(path))
-				uprintf("Shrimp: usunięto starą część pobierania %s", name);
+			size_t nl = strlen(name), el = strlen(ext);
+			/* FindFirstFile dopasowuje też krótkie nazwy 8.3: tylko dokładne rozszerzenie. */
+			if (nl > el && _stricmp(name + nl - el, ext) == 0 && _stricmp(path, keep) != 0 && DeleteFileU(path))
+				uprintf("Shrimp: usunięto stary plik pobierania %s", name);
 			free(name);
 		}
 	} while (FindNextFileW(h, &fd));
@@ -410,7 +413,8 @@ DWORD WINAPI ShrimpFetchThread(LPVOID param)
 	static_sprintf(ShrimpIsoPath, "%s\\%s.iso", dir, name);
 	/* Część pobrana wcześniej należy do konkretnego obrazu (suma w nazwie), więc nowe wydanie nie dokleja się do starego. */
 	static_sprintf(part, "%s.%.16s.part", ShrimpIsoPath, ShrimpManifest.sha256);
-	remove_stale_parts(dir, part);
+	remove_stale(dir, ".part", part);
+	remove_stale(dir, ".iso", ShrimpIsoPath);
 
 	/* Już pobrane? Wystarczy sprawdzić sumę. */
 	{

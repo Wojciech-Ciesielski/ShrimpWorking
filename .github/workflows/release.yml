@@ -12,11 +12,11 @@ on:
       tag:
         description: "Tag wydania (musi być nowy)"
         required: true
-        default: "beta-3.2"
+        default: "beta-3.5"
       version:
         description: "Wersja pokazywana w programie i w nazwie pobranego ISO"
         required: true
-        default: "Beta 3.2"
+        default: "Beta 3.5"
       reuse:
         description: "Użyj gotowych przebiegów Build ISO i Shrimp Install z tego samego commita (bez budowania)"
         type: boolean
@@ -48,8 +48,13 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Sprawdź tag
+      - name: Sprawdź tag i wersję
         run: |
+          # Jedno źródło wersji: boxes/branding/root/usr/share/shrimp/version (os-release obrazu i systemu).
+          want=$(head -n1 boxes/branding/root/usr/share/shrimp/version)
+          if [ "$VERSION" != "$want" ]; then
+            echo "::error::Wersja wydania „$VERSION” różni się od wersji w obrazie „$want” (boxes/branding/root/usr/share/shrimp/version)"; exit 1
+          fi
           if gh api "repos/$REPO/git/ref/tags/$TAG" >/dev/null 2>&1; then
             echo "::error::Tag $TAG już istnieje"; exit 1
           fi

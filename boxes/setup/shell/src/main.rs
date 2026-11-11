@@ -77,6 +77,19 @@ fn main() -> glib::ExitCode {
 
     // Instalacja: okno pokazuje się od razu (czarne, jak ekran startu), a token Agamy czytamy w tle.
     // Wcześniej okno czekało na token do 3 minut i przez ten czas widać było pulpit sesji live.
+    // Na nośniku lokalny serwer daje tylko sieć (krok „Połącz z internetem”): Agama pobiera system
+    // z internetu, a laptop bez kabla nie ma go, dopóki nie wybierze się sieci Wi-Fi.
+    let local = if matches!(mode, Mode::Install) {
+        match server::spawn(ui_dir.clone()) {
+            Ok((port, key)) => Some(format!("window.SHRIMP_LOCAL = {{ url: \"http://127.0.0.1:{port}/shrimp/api\", key: \"{key}\" }};")),
+            Err(e) => {
+                eprintln!("shrimp-setup: serwer sieci: {e}");
+                None
+            }
+        }
+    } else {
+        None
+    };
     let url = match mode {
         Mode::Install => None,
         Mode::FirstBoot => {
@@ -105,7 +118,7 @@ fn main() -> glib::ExitCode {
             if data.is_some() { "wczytany" } else { "brak" },
             grub
         );
-        Some(transfer::page_hint(data.as_ref(), grub))
+        Some(transfer::page_hint(data.as_ref(), grub) + local.as_deref().unwrap_or(""))
     } else {
         None
     };
@@ -151,8 +164,15 @@ fn read_token() -> Option<String> {
         .filter(|t| !t.is_empty())
 }
 
-/// Czarna strona na czas czekania na Agamę (ten sam kolor co ekran startu i osłona strażnika Setup).
-const SPLASH: &str = "<!doctype html><html><body style=\"margin:0;background:#000;cursor:default\"></body></html>";
+/// Czarna strona z logo na czas czekania na Agamę: tak samo wygląda tło sesji live, osłona strażnika
+/// Setup i pierwszy widok strony Setup, więc od startu do ekranu „Witaj” nic nie miga.
+fn splash() -> String {
+    let logo = include_str!("../../web/src/assets/logo.svg").replace("fill=\"#000\"", "fill=\"rgba(255,255,255,0.92)\"");
+    format!(
+        "<!doctype html><html><body style=\"margin:0;height:100vh;background:#000;cursor:default;display:flex;align-items:center;justify-content:center\">\
+         <div style=\"width:96px;height:96px\">{logo}</div></body></html>"
+    )
+}
 
 fn build(app: &gtk::Application, url: Option<&str>, install: bool, windowed: bool, hint: Option<&str>) {
     let view = webkit6::WebView::new();
@@ -218,7 +238,7 @@ fn build(app: &gtk::Application, url: Option<&str>, install: bool, windowed: boo
     match url {
         Some(u) => view.load_uri(u),
         None => {
-            view.load_html(SPLASH, None);
+            view.load_html(&splash(), None);
             let v = view.clone();
             let mut waited = 0u32;
             glib::timeout_add_local(std::time::Duration::from_millis(500), move || match read_token() {

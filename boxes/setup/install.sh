@@ -37,5 +37,10 @@ if [ "$LIVE" = --live ]; then
   install -Dm644 "$HERE/system/autostart/shrimp-setup-launcher.desktop" "$D/usr/share/applications/org.shrimp.Setup.desktop"
   install -Dm644 "$HERE/system/systemd/agama-web-server.service.d/50-shrimp.conf" "$D/usr/lib/systemd/system/agama-web-server.service.d/50-shrimp.conf"
   install -Dm644 "$HERE/system/systemd/shrimp-setup-token.service" "$D/usr/lib/systemd/system/shrimp-setup-token.service"
+  # Spokojny start nośnika: sesja GNOME „shrimp-setup” (bez paska i przeglądu) na czarnym tle z logo.
+  install -Dm644 "$HERE/system/live/shrimp-live-background.svg" "$D/usr/share/shrimp-setup/live/shrimp-live-background.svg"
+  install -Dm644 "$HERE/system/live/100_shrimp-live.gschema.override" "$D/usr/share/glib-2.0/schemas/100_shrimp-live.gschema.override"
+  install -Dm644 "$HERE/system/live/shrimp-setup-mode.json" "$D/usr/share/gnome-shell/modes/shrimp-setup.json"
+  install -Dm644 "$HERE/system/live/shrimp-setup.desktop" "$D/usr/share/wayland-sessions/shrimp-setup.desktop"
 fi
 echo "Setup Shrimp zainstalowany w $D"
