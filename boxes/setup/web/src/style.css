@@ -162,3 +162,6 @@ html[data-rtl] .f { text-align: right; }
 html[data-rtl] .f label { margin: 0 0.3cqw 0.5cqw 0; }
 html[data-rtl] .sum { direction: rtl; text-align: right; }
 html[data-rtl] .sum span { text-align: left; }
+/* Ekran do czasu danych z instalatora: logo 96 px na czarnym tle, jak osłona strażnika Setup i tło sesji live. */
+.pane.splash .splash-logo { width: 96px; color: rgb(255 255 255 / 92%); }
+.pane.splash .sh { transform: none; color: inherit; }

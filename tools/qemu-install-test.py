@@ -355,6 +355,15 @@ finally:
             print(text[a:b if b > a else a + 20000][:20000])
         print("::endgroup::", flush=True)
     print(f"done, Agama {result}, Setup guard {guard}, logs in {OUT}", flush=True)
+offline = "yes" if serial_has("live", "===OFFLINE-ISSUE yes") else "no"
+reprobe = "ok" if serial_has("live", "=== REPROBE probe") else "FAILED"
+print(f"offline repositories issue seen: {offline}; after network + probe: {reprobe}", flush=True)
+if reprobe != "ok":
+    print("::error::After the network came up, Agama still does not see the repositories (action probe)", flush=True)
+    sys.exit(1)
+if result != "finished":
+    print(f"::error::Agama did not finish the installation ({result})", flush=True)
+    sys.exit(1)
 if guard == "click-blocked":
     print("::error::Setup guard on: a click did not reach the Setup window", flush=True)
     sys.exit(1)

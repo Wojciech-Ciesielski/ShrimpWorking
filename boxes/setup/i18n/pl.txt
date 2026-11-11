@@ -204,3 +204,7 @@
 204	Wybierz inną nazwę użytkownika, np. z cyfrą na końcu.
 205	Nie widzę dysku dla Shrimp
 206	Setup nie widzi wewnętrznego dysku tego komputera. W niektórych laptopach ukrywa go tryb Intel RST (VMD) w ustawieniach firmware. Sprawdź dysk i spróbuj ponownie.
+207	Shrimp pobiera system z internetu podczas instalacji. Wybierz swoją sieć Wi-Fi.
+208	Nie widzę sieci Wi-Fi. Podłącz kabel sieciowy albo podejdź bliżej routera i wyszukaj ponownie.
+209	Wyszukaj ponownie
+210	Shrimp potrzebuje internetu do instalacji. Połącz się z siecią i spróbuj ponownie.

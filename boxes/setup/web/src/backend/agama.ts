@@ -223,6 +223,19 @@ export class AgamaBackend implements InstallBackend {
     }
   }
 
+  /** Po podłączeniu do internetu: Agama czyta repozytoria od nowa (akcja „probe”), potem wybiera produkt jeszcze raz.
+   *  Bez internetu przy wyborze produktu zgłasza „Could not read the repositories; Failed to find the product”. */
+  async reprobe() {
+    await call("POST", "/api/action", { probe: null });
+    await this.settle();
+    await call("PUT", "/api/config", { product: PRODUCT });
+    await this.settle();
+    const issues = await get<AIssue[]>("/api/issues");
+    const soft = issues.filter((i) => i.scope === "software");
+    console.log("shrimp-setup: po ponownym czytaniu repozytoriów problemy:", JSON.stringify(soft));
+    return blockingIssues(soft).length === 0;
+  }
+
   async check(plan: InstallPlan) {
     await call("PUT", "/api/config", configFromPlan(plan));
     await this.settle();

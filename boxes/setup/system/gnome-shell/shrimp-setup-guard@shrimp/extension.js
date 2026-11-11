@@ -53,7 +53,7 @@ export default class SetupGuardExtension extends Extension {
         this._signals = [];
         this._sources = new Set();
         this._window = null;
-        log(`active (${this._mode}), shell starting up: ${Boolean(Main.layoutManager._startingUp)}`);
+        log(`active (${this._mode}), session mode ${Main.sessionMode.currentMode}, shell starting up: ${Boolean(Main.layoutManager._startingUp)}`);
 
         // GNOME opens the Overview at login; Setup would then be a thumbnail. Do not start there.
         if (Main.layoutManager.startInOverview !== undefined)
@@ -125,6 +125,8 @@ export default class SetupGuardExtension extends Extension {
         log(`window: class ${win.get_wm_class?.()}, title ${win.get_title?.()}`);
         win.make_above();
         this._connect(win, 'unmanaged', () => {
+            if (this._window !== win)
+                return;
             // Setup is gone (finished or crashed): normal desktop and shortcuts again.
             log('Setup window closed: guard off');
             this._deactivate();
@@ -139,6 +141,16 @@ export default class SetupGuardExtension extends Extension {
     }
 
     _onDrawn() {
+        // Desktop icons (DING, first configuration) draw their own normal window: that one is not Setup.
+        const win = this._window;
+        const id = `${win?.get_wm_class?.() ?? ''} ${win?.get_gtk_application_id?.() ?? ''} ${win?.get_title?.() ?? ''}`;
+        if (/ding|desktop icons/i.test(id)) {
+            log(`not Setup: ${id}`);
+            win.unmake_above();
+            this._window = null;
+            return;
+        }
+        log(`Setup drawn: ${id}`);
         this._closeOverview();
         this._hideCover(true);
     }

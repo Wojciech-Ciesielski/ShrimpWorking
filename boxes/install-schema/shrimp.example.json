@@ -2,7 +2,7 @@
   "version": 1,
   "created": "2026-11-05T19:00:00Z",
   "installer": "Shrimp Install 0.1.0",
-  "image": { "version": "Beta 2", "sha256": "14727418a2463bfe2a19bd69e14cd8f290cd6d283cf94cfeba0a794c2b9a695e" },
+  "image": { "version": "Beta 3.5", "sha256": "14727418a2463bfe2a19bd69e14cd8f290cd6d283cf94cfeba0a794c2b9a695e" },
   "windows": { "version": "10.0.26100", "firmware": "uefi", "secureBoot": true, "bitlocker": false },
   "user": { "name": "Jan.Kowalski", "fullName": "Jan Kowalski" },
   "locale": {
