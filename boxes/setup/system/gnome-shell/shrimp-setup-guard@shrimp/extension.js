@@ -85,7 +85,7 @@ function isSetup(win) {
     if (ids.includes(SETUP_ID))
         return true;
     // Fallback: the Setup window (WebKitGTK) may report no app id yet; its title is "Shrimp".
-    return win.get_title?.() === 'Shrimp' && /shrimp-setup/i.test(String(win.get_wm_class_instance?.() ?? win.get_wm_class?.() ?? ''));
+    return win.get_title?.() === 'Shrimp' || /shrimp-setup/i.test(String(win.get_wm_class_instance?.() ?? win.get_wm_class?.() ?? ''));
 }
 
 export default class SetupGuardExtension extends Extension {
@@ -139,8 +139,13 @@ export default class SetupGuardExtension extends Extension {
         for (const id of this._sources)
             GLib.source_remove(id);
         this._sources.clear();
-        for (const [obj, id] of this._signals)
-            obj.disconnect(id);
+        for (const [obj, id] of this._signals) {
+            try {
+                obj.disconnect(id);
+            } catch (_e) {
+                // the object is already gone
+            }
+        }
         this._signals = [];
         this._unlock();
         this._hideCover(false);
@@ -184,19 +189,21 @@ export default class SetupGuardExtension extends Extension {
         if (!win || !this._mode)
             return;
         log(`window: class ${win.get_wm_class?.()}, app ${win.get_gtk_application_id?.()}, title ${win.get_title?.()}, setup ${isSetup(win)}`);
-        if (isSetup(win)) {
-            if (win.get_window_type() !== Meta.WindowType.NORMAL)
-                return;
-            this._setup = win;
-            win.make_above();
-            this._connect(win, 'unmanaged', () => this._onSetupGone(win));
-            const actor = win.get_compositor_private();
-            if (existing || !actor)
-                this._hideCover(false);
-            else
-                this._connect(actor, 'first-frame', () => this._hideCover(true));
+        if (this._adopt(win, existing))
             return;
-        }
+        // At window-created a window has no class, app id or title yet (seen in the QEMU log: all null).
+        // Look again when they arrive and when the window is first drawn.
+        const recheck = () => {
+            if (this._mode && !this._setup && this._adopt(win, false))
+                log(`Setup window recognised late: class ${win.get_wm_class?.()}, app ${win.get_gtk_application_id?.()}, title ${win.get_title?.()}`);
+        };
+        for (const sig of ['notify::title', 'notify::wm-class', 'notify::gtk-application-id'])
+            this._connect(win, sig, recheck);
+        const actor = win.get_compositor_private();
+        if (actor)
+            this._connect(actor, 'first-frame', recheck);
+        for (const s of [1, 3, 10])
+            this._timeout(s, recheck);
         // Anything else that opens while Setup is on screen goes behind it.
         if (this._setup && win.get_window_type() === Meta.WindowType.NORMAL && win.get_transient_for() !== this._setup) {
             const setup = this._setup;
@@ -205,6 +212,23 @@ export default class SetupGuardExtension extends Extension {
                     setup.activate(global.get_current_time());
             });
         }
+    }
+
+    // The Setup window: remember it, keep it on top, remove the cover once it is drawn.
+    _adopt(win, existing) {
+        if (this._setup === win)
+            return true;
+        if (!isSetup(win) || win.get_window_type() !== Meta.WindowType.NORMAL)
+            return false;
+        this._setup = win;
+        win.make_above();
+        this._connect(win, 'unmanaged', () => this._onSetupGone(win));
+        const actor = win.get_compositor_private();
+        if (existing || !actor)
+            this._hideCover(false);
+        else
+            this._connect(actor, 'first-frame', () => this._hideCover(true));
+        return true;
     }
 
     _onSetupGone(win) {
