@@ -227,11 +227,67 @@ pub async fn connect(c: &Connect) -> Result<(), CmdError> {
         }
         return Ok(());
     }
+    let pw = c.password.as_deref().filter(|p| !p.is_empty());
+    // Profil z poprzedniej, nieudanej próby (stare hasło) psuje kolejną: nmcli bierze go zamiast nowego hasła.
+    forget(&c.ssid).await;
     let mut args = vec!["--wait", "30", "device", "wifi", "connect", c.ssid.as_str()];
-    if let Some(pw) = c.password.as_deref().filter(|p| !p.is_empty()) {
+    if let Some(pw) = pw {
         args.extend(["password", pw]);
     }
-    run("nmcli", &args).await.map(|_| ())
+    let first = match run("nmcli", &args).await {
+        Ok(_) => return Ok(()),
+        Err(e) => e,
+    };
+    eprintln!("shrimp-setup: nmcli device wifi connect: {}", first.0);
+    // nmcli sam zgaduje zabezpieczenia sieci i przy części routerów (WPA2/WPA3) się myli
+    // („key-mgmt: property is missing”, „Secrets were required”). Kolejne podejścia z profilem wprost:
+    // WPA2 (wpa-psk), a potem WPA3 (sae) dla routerów w trybie tylko WPA3.
+    let Some(pw) = pw else { return Err(first) };
+    let name = c.ssid.as_str();
+    let mut errs = vec![first.0];
+    for mgmt in ["wpa-psk", "sae"] {
+        forget(name).await;
+        let r = async {
+            run("nmcli", &["connection", "add", "type", "wifi", "ifname", "*", "con-name", name, "ssid", name,
+                "wifi-sec.key-mgmt", mgmt, "wifi-sec.psk", pw]).await?;
+            run("nmcli", &["--wait", "30", "connection", "up", "id", name]).await
+        }.await;
+        match r {
+            Ok(_) => {
+                eprintln!("shrimp-setup: Wi-Fi {name}: połączono profilem {mgmt}");
+                return Ok(());
+            }
+            Err(e) => {
+                eprintln!("shrimp-setup: nmcli connection up ({mgmt}): {}", e.0);
+                errs.push(format!("{mgmt}: {}", e.0));
+            }
+        }
+    }
+    forget(name).await;
+    Err(CmdError(errs.join(" / ")))
+}
+
+/// Usuwa profile Wi-Fi o tej nazwie (nmcli nazywa profil nazwą sieci).
+async fn forget(ssid: &str) {
+    let list = run("nmcli", &["-t", "-f", "NAME,TYPE", "connection", "show"]).await.unwrap_or_default();
+    for line in list.lines() {
+        if let Some((n, t)) = line.rsplit_once(':') {
+            if t == "802-11-wireless" && n.replace("\\:", ":") == ssid {
+                let _ = run("nmcli", &["connection", "delete", "id", ssid]).await;
+                return;
+            }
+        }
+    }
+}
+
+/// Układ klawiatury w bieżącej sesji GNOME. Setup podaje układ jak Agama/XKB: „pl”, „pl(qwertz)”.
+pub async fn input_source(keymap: &str) -> Result<(), CmdError> {
+    let ok = !keymap.is_empty() && keymap.chars().all(|c| c.is_ascii_alphanumeric() || "()_-".contains(c));
+    if !ok {
+        return Err(CmdError(format!("zły układ klawiatury: {keymap}")));
+    }
+    let xkb = keymap.replace('(', "+").replace(')', "");
+    run("gsettings", &["set", "org.gnome.desktop.input-sources", "sources", &format!("[('xkb', '{xkb}')]")]).await.map(|_| ())
 }
 
 #[derive(Deserialize)]

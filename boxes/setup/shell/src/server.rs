@@ -78,6 +78,7 @@ fn router(state: App, ui_dir: PathBuf) -> Router {
         .route("/network/connect", post(connect))
         .route("/network/advanced", post(advanced))
         .route("/appearance", post(appearance))
+        .route("/keymap", post(keymap))
         .route("/drivers", post(drivers))
         .route("/apps", post(apps_start).get(apps_status))
         .route("/usb", get(usb_get).post(usb_start))
@@ -126,6 +127,16 @@ async fn connect(Json(c): Json<system::Connect>) -> Response {
     match system::connect(&c).await {
         Ok(()) => Json(json!({})).into_response(),
         Err(e) => err("wifi", e.0),
+    }
+}
+
+#[derive(Deserialize)]
+struct Keymap { keymap: String }
+
+async fn keymap(Json(k): Json<Keymap>) -> Response {
+    match system::input_source(&k.keymap).await {
+        Ok(()) => Json(json!({})).into_response(),
+        Err(e) => err("system", e.0),
     }
 }
 

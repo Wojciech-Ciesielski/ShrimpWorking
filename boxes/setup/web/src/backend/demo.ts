@@ -1,6 +1,7 @@
 // Dane z makiety: podgląd w przeglądarce (npm run dev) i zrzuty ekranów bez Agamy.
 // ?fail=install|net|wifi|offline wymusza błąd (offline: nośnik bez internetu, krok „Połącz z internetem”), ?nvidia=0 ukrywa kartę NVIDIA, ?wired=1 pomija Sieć,
-// ?bitlocker=1 udaje dysk z BitLockerem (dane z Shrimp Install).
+// ?bitlocker=1 udaje dysk z BitLockerem (dane z Shrimp Install), ?slowdisks=1 odczyt dysków trwa 2,5 s (Agama sonduje),
+// ?repo=1 (z ?fail=offline): po połączeniu z Wi-Fi Agama dalej nie czyta repozytoriów.
 import { LANGS, REGIONS, KEYBOARDS } from "../data";
 import { mapWindowsApps } from "../logic";
 import { InstallError, OfflineError, WifiError, type Disk, type FirstBootBackend, type InstallBackend, type InstallPlan, type Network, type Progress } from "./types";
@@ -33,10 +34,10 @@ export const demoInstall: InstallBackend = {
   async languages() { return LANGS; },
   async regions() { return REGIONS; },
   async keyboards() { return KEYBOARDS; },
-  async disks() { return DISKS; },
+  async disks() { if (q.has("slowdisks")) await sleep(2500); return DISKS; },
   async setLanguage() {},
   async setKeymap() {},
-  async reprobe() { return true; },
+  async reprobe() { return q.get("repo") === "1" ? "Could not read the repositories" : ""; },
   async check(plan: InstallPlan) {
     if (plan.place === "beside" && plan.disk.windows && plan.disk.windows.poolGB - (plan.windowsGB || 0) < 40) throw new InstallError("space");
   },
@@ -68,6 +69,7 @@ export const demoFirstBoot: FirstBootBackend = {
   async connectHidden() { await sleep(300); demoOnline = true; },
   async setNetworkAdvanced() {},
   async setAppearance() {},
+  async setInputSource() {},
   async setDrivers() {},
   async installApps(_ids, onProgress) {
     try {

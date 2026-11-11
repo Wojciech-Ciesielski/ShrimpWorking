@@ -144,7 +144,7 @@ export const LANGID_XKB: Record<string, string> = {
 /** Stare nazwy stref, które Windows (ICU) może jeszcze zwracać. */
 export const TZ_ALIAS: Record<string, string> = { "Europe/Kiev": "Europe/Kyiv", "Asia/Calcutta": "Asia/Kolkata", "America/Buenos_Aires": "America/Argentina/Buenos_Aires" };
 
-export type ErrKey = "pass" | "dpass" | "space" | "nodisk" | "install" | "stall" | "agama" | "user" | "wifi" | "net" | "offline";
+export type ErrKey = "pass" | "dpass" | "space" | "nodisk" | "install" | "stall" | "agama" | "user" | "wifi" | "net" | "offline" | "repo";
 /** Klucze tłumaczeń okna błędu: tytuł, opis, przycisk główny, przycisk dodatkowy (opcjonalny). */
 export const ERR: Record<ErrKey, { t: string; d: string; p: string; s?: string }> = {
   dpass: { t: "err.dpass.t", d: "err.dpass.d", p: "err.retry" },
@@ -158,6 +158,7 @@ export const ERR: Record<ErrKey, { t: string; d: string; p: string; s?: string }
   wifi: { t: "err.wifi.t", d: "err.wifi.d", p: "err.retry", s: "skip" },
   net: { t: "err.net.t", d: "err.net.d", p: "err.retry", s: "skip" },
   offline: { t: "err.net.t", d: "err.offline.d", p: "err.retry" },
+  repo: { t: "err.repo.t", d: "err.offline.repo", p: "err.retry" },
 };
 
 /** Slajdy końcowe: klucze tytułu i opisu; `win` tylko gdy Shrimp stoi obok Windows, `extra` dopisek, gdy obok Windows. */

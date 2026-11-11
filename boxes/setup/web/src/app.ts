@@ -14,7 +14,7 @@ import { InstallError, OfflineError, type Backends, type Disk, type FirstBootInf
 const $ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => r.querySelector(s) as T | null;
 const $$ = <T extends Element = HTMLElement>(s: string, r: ParentNode = document) => Array.from(r.querySelectorAll(s)) as T[];
 
-const STEPS = ["witaj", "internet", "jezyk", "region", "klawiatura", "dysk", "konto", "podsumowanie", "instalacja", "restart",
+const STEPS = ["witaj", "jezyk", "region", "klawiatura", "dysk", "konto", "internet", "podsumowanie", "instalacja", "restart",
   "czesc", "siec", "wyglad", "sterowniki", "programy", "pendrive", "gotowe"] as const;
 type StepId = (typeof STEPS)[number];
 const idx = (id: StepId) => STEPS.indexOf(id);
@@ -81,6 +81,8 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     use: [true, false, false, false, true], sel: {} as Record<string, boolean>, err: null as ErrKey | null,
   };
   let step = 0, sub = 0, boot = true, busy = false;
+  /** Krok „dysk”: trwa świeży odczyt dysków z Agamy (diskSeq odrzuca odpowiedzi z wcześniejszych wejść). */
+  let diskLoading = false, diskSeq = 0;
   /** Nośnik: jest internet (Agama pobiera system z repozytoriów openSUSE). Bez niego krok „Połącz z internetem”. */
   let ONLINE = true;
   const T: Record<string, number> = {};
@@ -128,8 +130,13 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     }).join("") + "</div>";
   }
   const col = (label: string, l: string, items: Item[], c: number) => `<div class="col"><div class="cl">${label}</div>${lst(l, items, c)}</div>`;
+  /** Pole tekstowe. Hasło ma przycisk z okiem: pokazuje wpisane znaki, żeby było widać, czy układ klawiatury
+   *  i hasło się zgadzają (hasło Wi-Fi wpisuje się, zanim jest jakikolwiek inny sposób sprawdzenia). */
   const field = (id: string, label: string, val: string, type = "text", extra = "") =>
-    `<div class="f" ${extra}><label for="${id}">${label}</label><input id="${id}" type="${type}" value="${esc(val)}" autocomplete="off" spellcheck="false"></div>`;
+    `<div class="f" ${extra}><label for="${id}">${label}</label>` + (type === "password"
+      ? `<div class="pw"><input id="${id}" type="password" value="${esc(val)}" autocomplete="off" spellcheck="false" autocapitalize="off">` +
+        `<button class="eye" type="button" data-eye="${id}" aria-pressed="false" aria-label="${esc(tr("pass.show"))}" title="${esc(tr("pass.show"))}">${icon("view-reveal-symbolic")}</button></div>`
+      : `<input id="${id}" type="${type}" value="${esc(val)}" autocomplete="off" spellcheck="false">`) + "</div>";
 
   /** Pozycja listy ze znacznikiem „(Zalecane)”. */
   const rec = (s: string) => `${esc(tx(s))} <em>${esc(tr("recommended"))}</em>`;
@@ -153,12 +160,13 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   // --- sieć (krok „Połącz z internetem” na nośniku i krok „Sieć” po restarcie) ---
   function netList() {
     const n = NETS[S.net];
-    return lst("net", NETS.map((x) => ({ t: esc(x.ssid) + (x.secure ? " " + icon("network-wireless-encrypted-symbolic", "lk", esc(tr("net.secured"))) : ""), m: x.secure ? "" : esc(tr("net.open")) })), S.net) +
-      (!n ? "" : n.secure ? `<div class="fields" style="margin-top:1.8cqw">${field("inNet", esc(tr("net.pass", { ssid: n.ssid })), S.netPass, "password")}</div>`
-        : `<p class="desc" id="desc" style="margin-top:1.8cqw">${esc(tr("net.open.note"))}</p>`);
+    return lst("net", NETS.map((x) => ({ t: esc(x.ssid) + (x.secure ? " " + icon("network-wireless-encrypted-symbolic", "lk", esc(tr("net.secured"))) : ""), m: x.secure ? "" : esc(tr("net.open")) })), S.net, { scroll: true }) +
+      (!n ? "" : n.secure ? `<div class="fields" style="margin-top:calc(1.8 * var(--u))">${field("inNet", esc(tr("net.pass", { ssid: n.ssid })), S.netPass, "password")}</div>`
+        : `<p class="desc" id="desc" style="margin-top:calc(1.8 * var(--u))">${esc(tr("net.open.note"))}</p>`) +
+      (cur() === "internet" ? `<p class="nstat" id="nstat" role="status" hidden></p>` : "");
   }
   function netHidden() {
-    return logo("6cqw") + head(esc(tr("net.hiddenlink")), esc(tr("net.hidden.sub"))) + body(`<div class="fields">` + field("inSsid", esc(tr("net.ssid")), S.ssid) +
+    return logo("calc(6 * var(--u))") + head(esc(tr("net.hiddenlink")), esc(tr("net.hidden.sub"))) + body(`<div class="fields">` + field("inSsid", esc(tr("net.ssid")), S.ssid) +
       `<div class="f"><label>${esc(tr("net.security"))}</label>${lst("hsec", plain(HSEC), S.hsec, { row: true })}</div>` + (S.hsec ? field("inHPass", esc(tr("account.pass")), S.hpass, "password") : "") + "</div>") +
       acts(esc(tr("net.connect")), esc(tr("cancel")), { act: "hconnect", skipAct: "cancel" });
   }
@@ -168,29 +176,30 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   function view(): string {
     const NEXT = tr("next"), SKIP = tr("skip");
     switch (cur()) {
-      case "witaj": return logo("13cqw") + `<h1 class="h1" id="hello">${esc(HELLO[0])}</h1><p class="sub">${esc(tr("welcome.sub"))}</p>` + acts(esc(tr("start")));
+      case "witaj": return logo("calc(13 * var(--u))") + `<h1 class="h1" id="hello">${esc(HELLO[0])}</h1><p class="sub">${esc(tr("welcome.sub"))}</p>` + acts(esc(tr("start")));
       case "internet": {
         if (sub === 1) return netHidden();
-        return logo("6cqw") + head(esc(tr("net.title")), esc(tr("inet.sub"))) + body(NETS.length ? netList() : `<p class="desc" id="desc" style="margin-top:0">${esc(tr("inet.none"))}</p>`) +
+        return logo("calc(6 * var(--u))") + head(esc(tr("net.title")), esc(tr("inet.sub"))) + body(NETS.length ? netList() : `<p class="desc" id="desc" style="margin-top:0">${esc(tr("inet.none"))}</p>`) +
           acts(NETS.length ? esc(NEXT) : "", esc(tr("inet.rescan")), { skipAct: "rescan" }) + `<div class="mini"><button class="mlink" data-act="hid" type="button">${esc(tr("net.hiddenlink"))}</button></div>`;
       }
-      case "jezyk": return logo("6cqw") + head(esc(tr("lang.title"))) + body(lst("lang", LANGS.map((l) => esc(l.name)), S.lang, { scroll: true })) + acts(esc(NEXT));
-      case "region": return logo("6cqw") + head(esc(tr("region.title")), esc(tr("region.sub"))) +
+      case "jezyk": return logo("calc(6 * var(--u))") + head(esc(tr("lang.title"))) + body(lst("lang", LANGS.map((l) => esc(l.name)), S.lang, { scroll: true })) + acts(esc(NEXT));
+      case "region": return logo("calc(6 * var(--u))") + head(esc(tr("region.title")), esc(tr("region.sub"))) +
         body(lst("region", REGS.map((r) => esc(regLabel(r))), S.region, { scroll: true }) + `<p class="desc" id="desc">${esc(descFor())}</p>`) + acts(esc(NEXT));
-      case "klawiatura": return logo("6cqw") + head(esc(tr("kb.title"))) +
-        body(lst("kb", KBS.map((k) => esc(kbLabel(k))), S.kb, { scroll: true }) + `<div class="fields" style="margin-top:2.2cqw">${field("kbT", esc(tr("kb.test")), "")}</div>`) + acts(esc(NEXT));
+      case "klawiatura": return logo("calc(6 * var(--u))") + head(esc(tr("kb.title"))) +
+        body(lst("kb", KBS.map((k) => esc(kbLabel(k))), S.kb, { scroll: true }) + `<div class="fields" style="margin-top:calc(2.2 * var(--u))">${field("kbT", esc(tr("kb.test")), "")}</div>`) + acts(esc(NEXT));
       case "dysk": {
-        if (sub === 1) return logo("6cqw") + head(esc(tr("advanced"))) + body(`<div class="cols">` +
+        if (diskLoading && sub === 0) return logo("calc(6 * var(--u))") + head(esc(tr("disk.where"))) + `<div class="pbar run slow" role="progressbar" aria-label="${esc(tr("disk.checking"))}"><i></i></div><div class="cap">${esc(tr("disk.checking"))}</div>`;
+        if (sub === 1) return logo("calc(6 * var(--u))") + head(esc(tr("advanced"))) + body(`<div class="cols">` +
           col(esc(tr("disk.drive")), "disk", DISKS.map((d) => ({ t: esc(d.name), m: `${esc(L.unit(d.sizeGB, "gigabyte"))} · ${esc(d.windows ? "Windows" : tr("disk.empty"))}` })), S.disk) + col(esc(tr("disk.encrypt")), "enc", plain(ENCS), S.enc) + "</div>" +
-          (S.enc === 1 ? `<div class="fields wide" style="margin-top:2.4cqw"><div class="frow">${field("inDp", esc(tr("disk.pass")), S.dp, "password")}${field("inDp2", esc(tr("disk.pass2")), S.dp2, "password")}</div></div>` : "") +
+          (S.enc === 1 ? `<div class="fields wide" style="margin-top:calc(2.4 * var(--u))"><div class="frow">${field("inDp", esc(tr("disk.pass")), S.dp, "password")}${field("inDp2", esc(tr("disk.pass2")), S.dp2, "password")}</div></div>` : "") +
           `<p class="desc" id="desc">${esc(descFor())}</p>`) + acts(esc(tr("done")), "", { act: "done" });
-        if (!hasWin()) return logo("6cqw") + head(esc(tr("disk.where"))) + body(`<p class="desc" id="desc" style="margin-top:0">${esc(descFor())}</p>`) + acts(esc(NEXT), esc(tr("advanced")), { skipAct: "adv" });
-        return logo("6cqw") + head(esc(tr("disk.where"))) + body(lst("place", PLACES.map((p, j) => ({ t: j === 0 ? rec(p.n) : esc(tr(p.n)), off: j === 0 && locked() })), S.place) +
+        if (!hasWin()) return logo("calc(6 * var(--u))") + head(esc(tr("disk.where"))) + body(`<p class="desc" id="desc" style="margin-top:0">${esc(descFor())}</p>`) + acts(esc(NEXT), esc(tr("advanced")), { skipAct: "adv" });
+        return logo("calc(6 * var(--u))") + head(esc(tr("disk.where"))) + body(lst("place", PLACES.map((p, j) => ({ t: j === 0 ? rec(p.n) : esc(tr(p.n)), off: j === 0 && locked() })), S.place) +
           (S.place === 0
             ? `<div class="split"><div class="sp">Windows<b id="wGB"></b></div><div class="sp r">Shrimp<b id="sGB"></b></div><input class="rng" id="rng" type="range" min="0" max="${pool()}" step="1" value="${S.win}" aria-label="${esc(tr("disk.split.aria"))}"></div>`
             : `<p class="desc" id="desc">${esc(descFor())}</p>`)) + acts(esc(NEXT), esc(tr("advanced")), { skipAct: "adv" });
       }
-      case "konto": return logo("6cqw") + head(esc(tr("account.title")), esc(tr("account.sub"))) + body(`<div class="fields wide"><div class="frow">` +
+      case "konto": return logo("calc(6 * var(--u))") + head(esc(tr("account.title")), esc(tr("account.sub"))) + body(`<div class="fields wide"><div class="frow">` +
         field("inFull", esc(tr("account.full")), S.full) + field("inUser", esc(tr("account.user")), S.user) + "</div>" + field("inPass", esc(tr("account.pass")), S.pass, "password") +
         field("inPass2", esc(tr("account.pass2")), S.pass2, "password", 'id="f2"' + (S.confirm ? "" : " hidden")) + "</div>") + acts(esc(NEXT));
       case "podsumowanie": {
@@ -199,57 +208,57 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
         if (beside()) rows.push([tr("sum.split"), esc(tr("sum.split.v", { win: L.unit(S.win, "gigabyte"), shrimp: L.unit(pool() - S.win, "gigabyte") }))]);
         rows.push([tr("sum.account"), `${esc(S.full)} (${esc(S.user)})`]);
         if (S.enc === 1) rows.push([tr("sum.enc"), esc(tr("enc.on"))]);
-        return logo("6cqw") + head(esc(tr("sum.title")), esc(tr("sum.sub"))) +
+        return logo("calc(6 * var(--u))") + head(esc(tr("sum.title")), esc(tr("sum.sub"))) +
           body(`<div class="sum">${rows.map((r) => `<span>${esc(r[0])}</span><b>${r[1]}</b>`).join("")}</div>`) + acts(esc(tr("sum.go")));
       }
-      case "instalacja": return logo("9cqw") + head(esc(tr("inst.title"))) + `<div class="pbar" role="progressbar" aria-label="${esc(tr("inst.aria"))}"><i id="ib"></i></div><div class="cap"><b id="ph">${esc(tr("inst.disk"))}</b><span id="eta">${esc(tr("eta.left", { min: L.num(11, 0) }))}</span></div>` + acts(esc(NEXT), "", { hid: true });
-      case "restart": return logo("13cqw") + head(esc(tr("restart.title")), esc(tr("restart.sub"))) + acts(esc(tr("restart.go")));
-      case "czesc": return logo("13cqw") + head(esc(tr("hi.title", { name: firstName(be.mode === "install" ? S.full : INFO.fullName || S.full, tr("hi.fallback")) })), esc(tr("hi.sub"))) + acts(esc(NEXT));
+      case "instalacja": return logo("calc(9 * var(--u))") + head(esc(tr("inst.title"))) + `<div class="pbar" role="progressbar" aria-label="${esc(tr("inst.aria"))}"><i id="ib"></i></div><div class="cap"><b id="ph">${esc(tr("inst.disk"))}</b><span id="eta">${esc(tr("eta.left", { min: L.num(11, 0) }))}</span></div>` + acts(esc(NEXT), "", { hid: true });
+      case "restart": return logo("calc(13 * var(--u))") + head(esc(tr("restart.title")), esc(tr("restart.sub"))) + acts(esc(tr("restart.go")));
+      case "czesc": return logo("calc(13 * var(--u))") + head(esc(tr("hi.title", { name: firstName(be.mode === "install" ? S.full : INFO.fullName || S.full, tr("hi.fallback")) })), esc(tr("hi.sub"))) + acts(esc(NEXT));
       case "siec": {
         if (sub === 1) return netHidden();
-        if (sub === 2) return logo("6cqw") + head(esc(tr("advanced"))) + body(`<div class="cols">${col(esc(tr("net.ip")), "ip", IPS.map((s, j) => (j === 0 ? rec(s) : esc(tx(s)))), S.ip)}${col(esc(tr("net.dns")), "dns", DNSS.map((s, j) => (j === 0 ? rec(s) : esc(tx(s)))), S.dns)}${col(esc(tr("net.proxy")), "proxy", plain(PROXY), S.proxy)}</div>`) + acts(esc(tr("done")), "", { act: "done" });
-        return logo("6cqw") + head(esc(tr("net.title"))) + body(netList()) +
+        if (sub === 2) return logo("calc(6 * var(--u))") + head(esc(tr("advanced"))) + body(`<div class="cols">${col(esc(tr("net.ip")), "ip", IPS.map((s, j) => (j === 0 ? rec(s) : esc(tx(s)))), S.ip)}${col(esc(tr("net.dns")), "dns", DNSS.map((s, j) => (j === 0 ? rec(s) : esc(tx(s)))), S.dns)}${col(esc(tr("net.proxy")), "proxy", plain(PROXY), S.proxy)}</div>`) + acts(esc(tr("done")), "", { act: "done" });
+        return logo("calc(6 * var(--u))") + head(esc(tr("net.title"))) + body(netList()) +
           acts(esc(NEXT), esc(SKIP)) + `<div class="mini"><button class="mlink" data-act="hid" type="button">${esc(tr("net.hiddenlink"))}</button><button class="mlink" data-act="nadv" type="button">${esc(tr("advanced"))}</button></div>`;
       }
       case "wyglad":
-        if (sub === 1) return logo("6cqw") + head(esc(tr("look.color"))) + body(`<div class="sws" role="radiogroup">` + ACCENTS.map((a, j) =>
+        if (sub === 1) return logo("calc(6 * var(--u))") + head(esc(tr("look.color"))) + body(`<div class="sws" role="radiogroup">` + ACCENTS.map((a, j) =>
           `<button class="sw" role="radio" aria-checked="${S.accent === j}" aria-label="${esc(tr(a[0]))}" data-c="${j}" style="--c:${a[2]}" type="button"></button>`).join("") +
           `</div><p class="accname" id="accn">${S.accent === null ? "" : esc(tr(ACCENTS[S.accent][0]))}</p>`) + acts(esc(NEXT));
-        return logo("6cqw") + head(esc(tr("look.title"))) + body(lst("theme", plain(THEMES), S.theme === "dark" ? 1 : 0) + `<p class="desc" id="desc">${esc(descFor())}</p>`) + acts(esc(NEXT));
+        return logo("calc(6 * var(--u))") + head(esc(tr("look.title"))) + body(lst("theme", plain(THEMES), S.theme === "dark" ? 1 : 0) + `<p class="desc" id="desc">${esc(descFor())}</p>`) + acts(esc(NEXT));
       case "sterowniki":
-        if (sub === 1) return logo("6cqw") + head(esc(tr("nv.title")), esc(tr("nv.sub", { name: INFO.nvidia || "NVIDIA" }))) + body(lst("nv", NV.map((s, j) => (j === 0 ? rec(s) : esc(tx(s)))), S.nv) + `<p class="desc" id="desc">${esc(descFor())}</p>`) + acts(esc(NEXT));
-        return logo("6cqw") + head(esc(tr("drv.title")), esc(tr("drv.sub"))) + body(lst("drv", DRV.map((s, j) => (j === 0 ? rec(s) : esc(tx(s)))), S.drv)) + acts(esc(NEXT));
+        if (sub === 1) return logo("calc(6 * var(--u))") + head(esc(tr("nv.title")), esc(tr("nv.sub", { name: INFO.nvidia || "NVIDIA" }))) + body(lst("nv", NV.map((s, j) => (j === 0 ? rec(s) : esc(tx(s)))), S.nv) + `<p class="desc" id="desc">${esc(descFor())}</p>`) + acts(esc(NEXT));
+        return logo("calc(6 * var(--u))") + head(esc(tr("drv.title")), esc(tr("drv.sub"))) + body(lst("drv", DRV.map((s, j) => (j === 0 ? rec(s) : esc(tx(s)))), S.drv)) + acts(esc(NEXT));
       case "programy": {
         if (sub === 1) {
           const W = winApps();
-          return logo("5cqw") + head(esc(tr("win.title")), esc(tr("win.sub"))) + body(tgl("win", W.map((p) => p.label), (j) => S.sel[W[j].key] !== false)) + acts(esc(NEXT), esc(SKIP));
+          return logo("calc(5 * var(--u))") + head(esc(tr("win.title")), esc(tr("win.sub"))) + body(tgl("win", W.map((p) => p.label), (j) => S.sel[W[j].key] !== false)) + acts(esc(NEXT), esc(SKIP));
         }
         if (sub === 2) {
           const P = props();
-          return logo("5cqw") + head(esc(tr("prop.title")), esc(tr("prop.sub"))) +
+          return logo("calc(5 * var(--u))") + head(esc(tr("prop.title")), esc(tr("prop.sub"))) +
             body(P.length ? tgl("sel", P.map((p) => p.label), (j) => S.sel[P[j].key] !== false) : `<p class="desc">${esc(tr("prop.none"))}</p>`) + acts(P.length ? esc(tr("drv.install")) : "", esc(SKIP));
         }
-        if (sub === 3) return logo("9cqw") + head(esc(tr("apps.run"))) + `<div class="pbar" role="progressbar"><i id="ab"></i></div><div class="cap"><b id="aph">${esc(tr("apps.phase"))}</b><span id="aeta">${esc(tr("eta.left", { min: L.num(2, 0) }))}</span></div>` + acts(esc(NEXT), "", { hid: true });
-        return logo("5cqw") + head(esc(tr("apps.title")), esc(tr("apps.sub"))) + body(tgl("use", USES.map((s) => esc(tr(s))), (j) => S.use[j])) + acts(esc(NEXT), esc(SKIP));
+        if (sub === 3) return logo("calc(9 * var(--u))") + head(esc(tr("apps.run"))) + `<div class="pbar" role="progressbar"><i id="ab"></i></div><div class="cap"><b id="aph">${esc(tr("apps.phase"))}</b><span id="aeta">${esc(tr("eta.left", { min: L.num(2, 0) }))}</span></div>` + acts(esc(NEXT), "", { hid: true });
+        return logo("calc(5 * var(--u))") + head(esc(tr("apps.title")), esc(tr("apps.sub"))) + body(tgl("use", USES.map((s) => esc(tr(s))), (j) => S.use[j])) + acts(esc(NEXT), esc(SKIP));
       }
       case "pendrive": {
-        if (sub === 1) return logo("9cqw") + head(esc(tr("usb.run"))) + `<div class="pbar run" role="progressbar"><i></i></div>`;
+        if (sub === 1) return logo("calc(9 * var(--u))") + head(esc(tr("usb.run"))) + `<div class="pbar run" role="progressbar"><i></i></div>`;
         if (sub === 2) {
           const k = USB_RES === "done" ? "usb.done" : USB_RES === "home" ? "usb.home" : "usb.fail";
-          return logo("6cqw") + head(esc(tr(k + ".t")), esc(tr(k + ".d"))) + acts(esc(USB_RES === "failed" ? tr("usb.retry") : NEXT), "", { act: USB_RES === "failed" ? "usbcheck" : "next" });
+          return logo("calc(6 * var(--u))") + head(esc(tr(k + ".t")), esc(tr(k + ".d"))) + acts(esc(USB_RES === "failed" ? tr("usb.retry") : NEXT), "", { act: USB_RES === "failed" ? "usbcheck" : "next" });
         }
         const what = tr("usb.sub", { files: L.num(USB.files, 0), size: L.unit(Math.round(USB.bytes / 1e8) / 10, "gigabyte") });
         return USB.present
-          ? logo("6cqw") + head(esc(tr("usb.title")), esc(what)) + acts(esc(tr("usb.go")), esc(tr("usb.keep")), { act: "usbgo", skipAct: "usbhome" })
-          : logo("6cqw") + head(esc(tr("usb.plug.title")), esc(tr("usb.plug.sub"))) + acts(esc(tr("usb.check")), esc(tr("usb.keep")), { act: "usbcheck", skipAct: "usbhome" });
+          ? logo("calc(6 * var(--u))") + head(esc(tr("usb.title")), esc(what)) + acts(esc(tr("usb.go")), esc(tr("usb.keep")), { act: "usbgo", skipAct: "usbhome" })
+          : logo("calc(6 * var(--u))") + head(esc(tr("usb.plug.title")), esc(tr("usb.plug.sub"))) + acts(esc(tr("usb.check")), esc(tr("usb.keep")), { act: "usbcheck", skipAct: "usbhome" });
       }
       case "gotowe": {
         const SL = slides(beside());
         if (sub >= 1) {
           const s = SL[sub - 1];
-          return logo("6cqw") + head(esc(tr(s.t)), esc(tr(s.d) + (beside() && s.extra ? " " + tr(s.extra) : ""))) + `<p class="count">${esc(tr("slide.count", { n: L.num(sub, 0), total: L.num(SL.length, 0) }))}</p>` + acts(esc(sub === SL.length ? tr("start") : NEXT));
+          return logo("calc(6 * var(--u))") + head(esc(tr(s.t)), esc(tr(s.d) + (beside() && s.extra ? " " + tr(s.extra) : ""))) + `<p class="count">${esc(tr("slide.count", { n: L.num(sub, 0), total: L.num(SL.length, 0) }))}</p>` + acts(esc(sub === SL.length ? tr("start") : NEXT));
         }
-        return logo("13cqw") + head(esc(tr("ready.title")), esc(tr("ready.sub"))) + acts(esc(tr("start")), esc(tr("ready.more")), { skipAct: "more" });
+        return logo("calc(13 * var(--u))") + head(esc(tr("ready.title")), esc(tr("ready.sub"))) + acts(esc(tr("start")), esc(tr("ready.more")), { skipAct: "more" });
       }
     }
   }
@@ -283,7 +292,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   function chrome() {
     const id = cur();
     const first = be.mode === "firstboot" ? FIRST_BOOT : 0;
-    $("#back")!.hidden = step <= first || (cur() === "internet" && sub === 0) || ["witaj", "instalacja", "restart", "czesc"].includes(id) || (id === "programy" && sub === 3) || (id === "pendrive" && sub > 0);
+    $("#back")!.hidden = step <= first || ["witaj", "instalacja", "restart", "czesc"].includes(id) || (id === "programy" && sub === 3) || (id === "pendrive" && sub > 0);
     const nv = id === "sterowniki" && sub === 1;
     $("#infoBtn")!.hidden = !nv; $("#infoPop")!.hidden = !nv; $("#infoPop")!.classList.remove("show");
   }
@@ -296,13 +305,32 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     if (cur() === "siec" && INFO.wired && be.mode !== "install") step += n >= prev ? 1 : -1;
     // Nośnik z internetem (kabel albo Wi-Fi już połączone): krok „Połącz z internetem” jest pomijany.
     if (cur() === "internet" && (ONLINE || be.mode === "firstboot") && s === 0) step += n >= prev ? 1 : -1;
+    // Lista sieci z chwili startu bywa nieaktualna, gdy użytkownik dochodzi do tego kroku po kilku minutach.
+    if (cur() === "internet" && s === 0 && be.mode === "install") void be.firstboot.networks().then((n) => {
+      const changed = n.map((x) => x.ssid).join("\n") !== NETS.map((x) => x.ssid).join("\n");
+      if (!n.length || !changed) return;
+      const was = NETS[S.net]?.ssid; NETS = n; S.net = Math.max(0, n.findIndex((x) => x.ssid === was));
+      if (cur() === "internet" && sub === 0) render(false);
+    }).catch(() => {});
     // Bez pendrive'a do przywrócenia krok „pendrive” jest pomijany w obie strony.
     if (cur() === "pendrive" && !USB.pending && s === 0) step += n >= prev ? 1 : -1;
     if (cur() === "konto" && !keep) S.confirm = false;
-    // Dyski czytamy od nowa przy wejściu w krok: pierwszy odczyt (przy starcie) bywał niepełny.
-    if (cur() === "dysk" && be.mode === "install" && prev !== step) void be.install.disks().then((d) => {
-      if (cur() === "dysk" && JSON.stringify(d) !== JSON.stringify(DISKS) && d.length) { const first = !DISKS.length; DISKS = d; S.disk = Math.min(S.disk, d.length - 1); if (first) defaultSplit(); render(true); }
-    }).catch(() => {});
+    // Dyski czytamy od nowa przy wejściu w krok: pierwszy odczyt (przy starcie) bywa niepełny, bo Agama
+    // jeszcze sonduje dyski (dysk bez partycji = bez Windows = bez wyboru „Obok Windows”). Do końca odczytu
+    // krok pokazuje „Sprawdzam dyski…”, a nie stary widok, który potem nagle się podmieniał (zgłoszenie z Vivobooka).
+    if (cur() === "dysk" && be.mode !== "firstboot" && prev !== step) {
+      const seq = ++diskSeq; diskLoading = true;
+      void be.install.disks().catch(() => [] as Disk[]).then((d) => {
+        if (seq !== diskSeq) return;
+        diskLoading = false;
+        if (d.length && JSON.stringify(d) !== JSON.stringify(DISKS)) {
+          const had = DISKS[S.disk]?.windows;
+          DISKS = d; S.disk = Math.min(S.disk, d.length - 1);
+          if (!had && disk()?.windows) { S.place = 0; defaultSplit(); }
+        }
+        if (cur() === "dysk") render(true);
+      });
+    }
     chrome(); applyLook(); render(true);
   }
 
@@ -353,7 +381,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   function restart() {
     clearTimers(); boot = true; applyLook(); $("#back")!.hidden = true; $("#infoBtn")!.hidden = true; $("#infoPop")!.hidden = true;
     pane.className = "pane";
-    pane.innerHTML = logo("14cqw") + '<div class="pbar run"><i></i></div>'; rise();
+    pane.innerHTML = logo("calc(14 * var(--u))") + '<div class="pbar run"><i></i></div>'; rise();
     if (be.mode === "install") { be.install.reboot().catch(() => openErr("install")); return; }
     // Podgląd: czarny ekran startu (Plymouth), potem część 2.
     T.boot = window.setTimeout(() => go(FIRST_BOOT), 3600);
@@ -416,7 +444,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     if (l === "theme") { S.theme = i === 1 ? "dark" : "light"; applyLook(); } else (S as unknown as Record<string, number>)[l] = i;
     if (l === "disk") defaultSplit();
     if (l === "lang") langSwitch(i);
-    if (l === "kb") { clearTimeout(kbTimer); kbTimer = window.setTimeout(() => be.install.setKeymap(KBS[i].keymap).catch(() => {}), 250); }
+    if (l === "kb") { clearTimeout(kbTimer); kbTimer = window.setTimeout(() => { be.install.setKeymap(KBS[i].keymap).catch(() => {}); be.firstboot.setInputSource(KBS[i].keymap).catch(() => {}); }, 250); }
     if (RELAYOUT[l]) { render(false); return; }
     const box = $<HTMLElement>(`.list[data-l="${l}"]`, pane)!;
     $$(".opt", box).forEach((o, k) => { o.classList.toggle("sel", k === i); o.setAttribute("aria-checked", String(k === i)); });
@@ -456,6 +484,16 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   }
   pane.addEventListener("click", (e) => {
     const t = e.target as HTMLElement;
+    const eye = t.closest<HTMLButtonElement>("[data-eye]");
+    if (eye) {
+      const inp = $<HTMLInputElement>("#" + eye.dataset.eye, pane); if (!inp) return;
+      const show = inp.type === "password"; inp.type = show ? "text" : "password";
+      const lbl = tr(show ? "pass.hide" : "pass.show");
+      eye.setAttribute("aria-pressed", String(show)); eye.setAttribute("aria-label", lbl); eye.title = lbl;
+      eye.innerHTML = icon(show ? "view-conceal-symbolic" : "view-reveal-symbolic");
+      inp.focus(); inp.setSelectionRange(inp.value.length, inp.value.length);
+      return;
+    }
     const o = t.closest(".opt");
     if (o && (o as HTMLButtonElement).disabled) return;
     if (o) { const l = o.closest(".list")!.getAttribute("data-l")!; if (o.hasAttribute("data-t")) toggle(l, +o.getAttribute("data-t")!); else pick(l, +o.getAttribute("data-i")!); return; }
@@ -504,12 +542,14 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       if (id === "programy" && sub === 0) return go(step + 1);
       return go(step + 1);
     }
-    if (a === "rescan") return guarded(async () => { if (!(await afterConnect(1))) { NETS = await be.firstboot.networks().catch(() => []); S.net = 0; render(false); } });
+    if (a === "rescan") return guarded(async () => {
+      if (await afterConnect(1)) { const was = NETS[S.net]?.ssid; NETS = await be.firstboot.networks().catch(() => []); S.net = Math.max(0, NETS.findIndex((x) => x.ssid === was)); render(false); }
+    });
     if (a === "hconnect") {
       return guarded(async () => {
         try { await be.firstboot.connectHidden(S.ssid.trim(), (["none", "wpa2", "wpa3"] as const)[S.hsec], S.hsec ? S.hpass : undefined); S.online = true; }
-        catch { return openErr("wifi"); }
-        if (id === "internet") { if (!(await afterConnect())) openErr("offline"); return; }
+        catch (e) { console.log("shrimp-setup: Wi-Fi (ukryta sieć) nie połączone:", String((e as Error)?.message || e)); return openErr("wifi", String((e as Error)?.message || "")); }
+        if (id === "internet") { const r = await afterConnect(30, S.ssid.trim()); if (r) openErr(r.k, r.why); return; }
         go(step + 1);
       });
     }
@@ -523,6 +563,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       const tz = same && PRE!.region >= 0 ? PRE!.region : REGS.findIndex((r) => r.tz === defaultTz(lc)); if (tz >= 0) S.region = tz;
       const kb = same && PRE!.kb >= 0 ? PRE!.kb : KBS.findIndex((k) => k.keymap === defaultKeymap(lc)); if (kb >= 0) S.kb = kb;
     }
+    if (id === "klawiatura" && KBS[S.kb]) be.firstboot.setInputSource(KBS[S.kb].keymap).catch(() => {});
     if (id === "konto") {
       if (!S.confirm) { S.confirm = true; const f2 = $("#f2")!; f2.hidden = false; f2.classList.add("rise"); $<HTMLInputElement>("#inPass2")!.focus(); syncAccount(); return; }
       if (S.pass !== S.pass2) return openErr("pass");
@@ -540,9 +581,10 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     if (isNet() && sub === 0) {
       const n = NETS[S.net]; if (!n) return id === "internet" ? undefined : go(step + 1);
       return guarded(async () => {
+        if (id === "internet") netStatus(tr("inet.connecting", { ssid: n.ssid }));
         try { await be.firstboot.connect(n.ssid, n.secure ? S.netPass : undefined); S.online = true; }
-        catch { return openErr("wifi"); }
-        if (id === "internet") { if (!(await afterConnect())) openErr("offline"); return; }
+        catch (e) { netStatus(""); console.log("shrimp-setup: Wi-Fi nie połączone:", String((e as Error)?.message || e)); return openErr("wifi", String((e as Error)?.message || "")); }
+        if (id === "internet") { const r = await afterConnect(30, n.ssid); if (r) openErr(r.k, r.why); return; }
         go(step + 1);
       });
     }
@@ -570,14 +612,24 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     }
     go(step + 1);
   }
-  /** Nośnik po połączeniu z siecią: czeka na internet (do 30 s), Agama czyta repozytoria od nowa, dalej. */
-  async function afterConnect(tries = 15): Promise<boolean> {
+  /** Nośnik po połączeniu z siecią: czeka na internet (do 60 s), Agama czyta repozytoria od nowa, dalej.
+   *  Zwraca "" (dalej) albo przyczynę do okna „Brak połączenia z internetem”: osobno brak internetu
+   *  po połączeniu z Wi-Fi i osobno repozytoria, których Agama nie czyta mimo internetu. */
+  async function afterConnect(tries = 30, ssid = ""): Promise<"" | { k: ErrKey; why: string }> {
+    netStatus(ssid ? tr("inet.check", { ssid }) : "");
     for (let i = 0; i < tries && !(ONLINE = await be.firstboot.online().catch(() => false)); i++) await new Promise((r) => setTimeout(r, 2000));
-    if (!ONLINE) return false;
-    if (!(await be.install.reprobe().catch(() => false))) return false;
+    console.log(`shrimp-setup: internet po połączeniu z Wi-Fi: ${ONLINE ? "jest" : "brak"}`);
+    if (!ONLINE) { netStatus(""); return { k: "offline", why: tr("err.offline.nonet") }; }
+    netStatus(tr("inet.repo"));
+    let issue: string;
+    try { issue = await be.install.reprobe(); } catch (e) { issue = String((e as Error)?.message || e); }
+    netStatus("");
+    if (issue) { console.log("shrimp-setup: repozytoria po połączeniu:", issue); return { k: "repo", why: issue.slice(0, 160) }; }
     go(idx("internet") + 1);
-    return true;
+    return "";
   }
+  /** Napis pod polem hasła w kroku „Połącz z internetem”: co Setup teraz robi (łączenie bywa długie). */
+  function netStatus(t: string) { const e = $("#nstat", pane); if (e) { e.textContent = t; e.hidden = !t; } }
   function finish() {
     if (be.mode === "demo") { S.theme = "light"; S.accent = null; S.confirm = false; applyAccent(); go(0); return; }
     guarded(() => be.firstboot.finish());
@@ -599,8 +651,11 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     $("#dT")!.textContent = tr(e.t);
     $("#dD")!.textContent = k === "wifi" && sub === 0 && NETS[S.net] ? tr("err.wifi.ssid", { ssid: NETS[S.net].ssid }) : tr(e.d);
     // Przyczyna zgłoszona przez Agamę (krótko): bez niej nie wiadomo, co poszło nie tak.
-    if (detail && detail !== k) $("#dD")!.textContent += ` (${detail.slice(0, 220)})`;
-    $("#dP")!.textContent = tr(e.p); $("#dS")!.textContent = e.s ? tr(e.s) : ""; $("#dS")!.hidden = !e.s;
+    // „Brak internetu” z kroku Wi-Fi: zamiast ogólnego zdania konkretna przyczyna (afterConnect).
+    if (detail && k === "offline") $("#dD")!.textContent = detail;
+    else if (detail && detail !== k) $("#dD")!.textContent += ` (${detail.slice(0, 220)})`;
+    $("#dP")!.textContent = tr(e.p); const skip = e.s && !(k === "wifi" && cur() === "internet") ? e.s : "";
+    $("#dS")!.textContent = skip ? tr(skip) : ""; $("#dS")!.hidden = !skip;
     modal.hidden = false; $("#dP")!.focus();
   }
   function closeErr() { modal.hidden = true; S.err = null; }
@@ -616,7 +671,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       void be.install.disks().then((d) => { DISKS = d; S.disk = 0; defaultSplit(); go(idx("dysk")); }).catch(() => openErr("nodisk"));
     }
     else if (k === "install") go(step);
-    else if (k === "offline") { ONLINE = false; if (cur() === "internet") render(false); else go(idx("internet")); }
+    else if (k === "offline" || k === "repo") { ONLINE = false; if (cur() === "internet") render(false); else go(idx("internet")); }
     else if (k === "stall" || k === "agama") runInstall(true);
     else if (k === "user") { S.userEdited = true; render(false); const u = $<HTMLInputElement>("#inUser"); if (u) { u.focus(); u.select(); } }
     else if (k === "wifi") { if (sub === 0) S.netPass = ""; else S.hpass = ""; render(false); $<HTMLInputElement>(sub === 0 ? "#inNet" : "#inHPass")?.focus(); }
@@ -658,7 +713,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
         if (!d.length || DISKS.length) return;
         // disksFromSystem() stawia na początku dysk z Windows, potem największy (bez pendrive'a z Shrimp).
         DISKS = d; S.disk = 0; defaultSplit();
-        if (cur() === "dysk") render(false);
+        if (cur() === "dysk" && !diskLoading) render(false);
       });
       {
         ONLINE = await be.firstboot.online().catch(() => true);
@@ -675,7 +730,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
         PRE = prefill(TR, LANGS, REGS, KBS);
         if (PRE.lang >= 0 && PRE.lang !== S.lang) { S.lang = PRE.lang; L = await load([LANGS[S.lang].locale]); chromeText(); }
         if (PRE.region >= 0) S.region = PRE.region;
-        if (PRE.kb >= 0) { S.kb = PRE.kb; be.install.setKeymap(KBS[S.kb].keymap).catch(() => {}); }
+        if (PRE.kb >= 0) { S.kb = PRE.kb; be.install.setKeymap(KBS[S.kb].keymap).catch(() => {}); be.firstboot.setInputSource(KBS[S.kb].keymap).catch(() => {}); }
         if (PRE.full) S.full = PRE.full;
         if (PRE.user) { S.user = PRE.user; S.userEdited = true; }
       }

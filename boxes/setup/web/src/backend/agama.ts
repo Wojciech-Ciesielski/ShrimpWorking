@@ -8,6 +8,8 @@ declare global { interface Window { SHRIMP_TRANSFER?: Transfer } }
 
 const GB = 1e9;
 const PRODUCT = { id: "Shrimp", mode: "immutable" };
+/** Akcja Agamy: ponowne czytanie repozytoriów (bez sondowania dysków). */
+export const PROBE_SOFTWARE = { probe: { only: ["software"] } };
 
 async function call<T>(method: string, path: string, body?: unknown): Promise<T> {
   const r = await fetch(path, {
@@ -223,17 +225,23 @@ export class AgamaBackend implements InstallBackend {
     }
   }
 
-  /** Po podłączeniu do internetu: Agama czyta repozytoria od nowa (akcja „probe”), potem wybiera produkt jeszcze raz.
-   *  Bez internetu przy wyborze produktu zgłasza „Could not read the repositories; Failed to find the product”. */
-  async reprobe() {
-    await call("POST", "/api/action", { probe: null });
+  /** Po podłączeniu do internetu: Agama czyta repozytoria od nowa, potem wybiera produkt jeszcze raz.
+   *  Bez internetu przy wyborze produktu zgłasza „Could not read the repositories; Failed to find the product”.
+   *  Akcja to `{"probe":{"only":["software"]}}`: Agama 24 ma `Probe { only: Option<Vec<Scope>> }`, więc
+   *  `{"probe":null}` (do Bety 4) kończyło się HTTP 422, wyjątek przerywał reprobe() i Setup pokazywał
+   *  „Brak połączenia z internetem” mimo działającego Wi-Fi. Bez „only” Agama sondowałaby też dyski.
+   *  Zwraca opis problemu (do okna błędu i dziennika) albo "" gdy repozytoria są czytelne. */
+  async reprobe(): Promise<string> {
+    // Nieudane sondowanie nie przerywa: ponowny wybór produktu (PUT) też czyta repozytoria od nowa
+    // (test QEMU: po 422 na probe sam PUT usunął problem z repozytoriami).
+    await call("POST", "/api/action", PROBE_SOFTWARE).catch((e) => console.log("shrimp-setup: probe:", String(e)));
     await this.settle();
     await call("PUT", "/api/config", { product: PRODUCT });
     await this.settle();
     const issues = await get<AIssue[]>("/api/issues");
-    const soft = issues.filter((i) => i.scope === "software");
+    const soft = blockingIssues(issues.filter((i) => i.scope === "software"));
     console.log("shrimp-setup: po ponownym czytaniu repozytoriów problemy:", JSON.stringify(soft));
-    return blockingIssues(soft).length === 0;
+    return soft.map((i) => i.description).join("; ");
   }
 
   async check(plan: InstallPlan) {

@@ -3,7 +3,7 @@ import { slug, firstName, proposals, windowsList, mapWindowsApps, klidToXkb, pre
 import example from "../../../install-schema/shrimp.example.json";
 import type { Transfer } from "./backend/types";
 import { LANGS, REGIONS, KEYBOARDS, WIN_CATALOG } from "./data";
-import { blockingIssues, configFromPlan, disksFromSystem, phaseOf, progressKey, type AStatus } from "./backend/agama";
+import { blockingIssues, configFromPlan, disksFromSystem, phaseOf, progressKey, PROBE_SOFTWARE, type AStatus } from "./backend/agama";
 import type { InstallPlan } from "./backend/types";
 import { createI18n } from "../../../i18n-core/core";
 import keys from "../../i18n/_keys.tsv?raw";
@@ -248,5 +248,15 @@ describe("śledzenie instalacji", () => {
     expect(progressKey(st(1))).toBe(progressKey(st(1)));
     expect(progressKey(st(1))).not.toBe(progressKey(st(2)));
     expect(progressKey(st(1, "a"))).not.toBe(progressKey(st(1, "b")));
+  });
+});
+
+describe("ponowne czytanie repozytoriów (Agama 24)", () => {
+  // Agama: enum Action { #[serde(rename = "probe")] Probe { only: Option<Vec<Scope>> }, … }.
+  // {"probe":null} dawało HTTP 422 („expected struct variant Action::Probe”) i Setup pokazywał
+  // „Brak połączenia z internetem” po udanym połączeniu z Wi-Fi.
+  it("akcja probe to wariant ze strukturą, tylko repozytoria", () => {
+    expect(PROBE_SOFTWARE).toEqual({ probe: { only: ["software"] } });
+    expect(JSON.stringify(PROBE_SOFTWARE)).not.toContain("null");
   });
 });

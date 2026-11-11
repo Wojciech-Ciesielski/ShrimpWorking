@@ -48,6 +48,7 @@ export class ShrimpFirstBoot implements FirstBootBackend {
   }
   async setNetworkAdvanced(a: NetworkAdvanced) { await this.call("POST", "/network/advanced", a); }
   async setAppearance(scheme: "default" | "prefer-dark", accent: string | null) { await this.call("POST", "/appearance", { scheme, accent }); }
+  async setInputSource(keymap: string) { await this.call("POST", "/keymap", { keymap }); }
   async setDrivers(c: DriverChoice) { await this.call("POST", "/drivers", c); }
   async installApps(ids: string[], onProgress: (p: Progress) => void) {
     await this.call("POST", "/apps", { ids });
