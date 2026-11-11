@@ -100,8 +100,8 @@ class QMP:
         self.f.readline()  # greeting
         self.cmd("qmp_capabilities")
 
-    def cmd(self, name, **args):
-        msg = {"execute": name}
+    def cmd(self, _name, **args):
+        msg = {"execute": _name}
         if args:
             msg["arguments"] = args
         try:
@@ -117,7 +117,7 @@ class QMP:
             if "return" in r:
                 return r["return"]
             if "error" in r:
-                print("QMP error:", name, r["error"], flush=True)
+                print("QMP error:", _name, r["error"], flush=True)
                 return None
 
 
