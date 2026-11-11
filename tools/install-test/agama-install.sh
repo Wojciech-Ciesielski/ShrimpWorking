@@ -50,12 +50,16 @@ echo ===NET-UP-PLEASE
 for i in $(seq 90); do [ "$(nmcli networking connectivity check 2>/dev/null)" = full ] && break; sleep 2; done
 echo "=== online after $((i*2)) s: $(nmcli networking connectivity check 2>&1)"
 # 3. Setup's reprobe(): probe, select the product again, wait, read the issues.
-echo "=== POST probe"; api -X POST --data '{"probe":null}' "$U/api/action"
+# Same body as PROBE_SOFTWARE in Setup (agama.ts). {"probe":null} was refused with HTTP 422 up to Beta 4,
+# and only the PUT below hid it here; on the Vivobook it made Setup say "no internet" after Wi-Fi connected.
+echo "=== POST probe"; pr=$(api -X POST --data '{"probe":{"only":["software"]}}' "$U/api/action"); echo "$pr"
+case "$pr" in *"HTTP 200"*) echo "===PROBE ok";; *) echo "===PROBE refused";; esac
 for i in $(seq 240); do s=$(api "$U/api/status"); echo "$s" | grep -q '"tasks":\[\],"progresses":\[\]' && break; sleep 0.5; done
 echo "=== PUT /api/config again"; api -X PUT --data @"$HERE/config.json" "$U/api/config"
 for i in $(seq 240); do s=$(api "$U/api/status"); echo "$s" | grep -q '"tasks":\[\],"progresses":\[\]' && break; sleep 0.5; done
 iss=$(api "$U/api/issues"); echo "=== issues after probe"; echo "$iss"
 if echo "$iss" | grep -q '"scope":"software"'; then reprobed=no; else reprobed=probe; fi
+case "$pr" in *"HTTP 200"*) ;; *) reprobed=no;; esac
 echo "=== REPROBE $reprobed"
 for p in /api/status /api/issues /api/config /api/system; do
   echo "=== GET $p"; api "$U$p" | head -c 12000; echo

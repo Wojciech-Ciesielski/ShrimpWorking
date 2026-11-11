@@ -74,8 +74,8 @@ export interface InstallBackend {
   setLanguage(locale: string): Promise<void>;
   /** Przełącza układ klawiatury działającego instalatora (pole „Sprawdź układ”). */
   setKeymap(keymap: string): Promise<void>;
-  /** Agama czyta repozytoria jeszcze raz (po podłączeniu do internetu). Zwraca false, gdy dalej ich nie widzi. */
-  reprobe(): Promise<boolean>;
+  /** Agama czyta repozytoria jeszcze raz (po podłączeniu do internetu). Zwraca "" albo opis problemu, gdy dalej ich nie widzi. */
+  reprobe(): Promise<string>;
   /** Sprawdza plan bez instalowania (np. czy starczy miejsca). */
   check(plan: InstallPlan): Promise<void>;
   install(plan: InstallPlan, onProgress: (p: Progress) => void): Promise<void>;

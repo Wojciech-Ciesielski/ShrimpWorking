@@ -240,19 +240,31 @@ pub async fn connect(c: &Connect) -> Result<(), CmdError> {
     };
     eprintln!("shrimp-setup: nmcli device wifi connect: {}", first.0);
     // nmcli sam zgaduje zabezpieczenia sieci i przy części routerów (WPA2/WPA3) się myli
-    // („key-mgmt: property is missing”, „Secrets were required”). Drugie podejście: profil WPA-PSK wprost.
+    // („key-mgmt: property is missing”, „Secrets were required”). Kolejne podejścia z profilem wprost:
+    // WPA2 (wpa-psk), a potem WPA3 (sae) dla routerów w trybie tylko WPA3.
     let Some(pw) = pw else { return Err(first) };
-    forget(&c.ssid).await;
     let name = c.ssid.as_str();
-    run("nmcli", &["connection", "add", "type", "wifi", "ifname", "*", "con-name", name, "ssid", name,
-        "wifi-sec.key-mgmt", "wpa-psk", "wifi-sec.psk", pw]).await
-        .map_err(|e| CmdError(format!("{} / {}", first.0, e.0)))?;
-    if let Err(e) = run("nmcli", &["--wait", "30", "connection", "up", "id", name]).await {
-        eprintln!("shrimp-setup: nmcli connection up: {}", e.0);
+    let mut errs = vec![first.0];
+    for mgmt in ["wpa-psk", "sae"] {
         forget(name).await;
-        return Err(CmdError(format!("{} / {}", first.0, e.0)));
+        let r = async {
+            run("nmcli", &["connection", "add", "type", "wifi", "ifname", "*", "con-name", name, "ssid", name,
+                "wifi-sec.key-mgmt", mgmt, "wifi-sec.psk", pw]).await?;
+            run("nmcli", &["--wait", "30", "connection", "up", "id", name]).await
+        }.await;
+        match r {
+            Ok(_) => {
+                eprintln!("shrimp-setup: Wi-Fi {name}: połączono profilem {mgmt}");
+                return Ok(());
+            }
+            Err(e) => {
+                eprintln!("shrimp-setup: nmcli connection up ({mgmt}): {}", e.0);
+                errs.push(format!("{mgmt}: {}", e.0));
+            }
+        }
     }
-    Ok(())
+    forget(name).await;
+    Err(CmdError(errs.join(" / ")))
 }
 
 /// Usuwa profile Wi-Fi o tej nazwie (nmcli nazywa profil nazwą sieci).
