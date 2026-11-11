@@ -6,12 +6,7 @@ if [[ " $BOX_ARGS " == *" --live "* ]]; then
   # /etc/xdg/autostart/shrimp-setup-install.desktop.
   [ -f /etc/xdg/autostart/shrimp-setup-install.desktop ] || die "Setup autostart missing"
   systemctl enable agama.service agama-web-server.service shrimp-setup-token.service
-  # Sesja shrimp-setup dla logowania automatycznego (live-session ustawia AutomaticLogin=shrimp).
-  [ -f /usr/share/wayland-sessions/shrimp-setup.desktop ] || die "shrimp-setup session missing"
-  install -d -m 0700 /var/lib/AccountsService/users
-  printf '[User]\nSession=shrimp-setup\nSystemAccount=false\n' > /var/lib/AccountsService/users/shrimp
-  if [ -f /etc/gdm/custom.conf ] && ! grep -q '^DefaultSession=' /etc/gdm/custom.conf; then
-    sed -i 's/^\[daemon\]$/[daemon]\nDefaultSession=shrimp-setup.desktop/' /etc/gdm/custom.conf
-  fi
+  # Ustawienia live (czarne tło z logo, tylko strażnik Setup): 99_shrimp_live.gschema.override.
+  [ -f /usr/share/glib-2.0/schemas/99_shrimp_live.gschema.override ] || die "live schema override missing"
   glib-compile-schemas /usr/share/glib-2.0/schemas
 fi
