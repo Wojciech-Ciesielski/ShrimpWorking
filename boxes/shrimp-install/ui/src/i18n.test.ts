@@ -18,8 +18,8 @@ describe("pliki tłumaczeń Shrimp Install", () => {
     for (const src of Object.values(sources)) for (const m of src.matchAll(/\b(?:t|L\.t|this\.t)\(\s*["'`]([\w.]+)["'`]/g)) used.add(m[1]);
     for (const m of screens.matchAll(/data-i(?:-aria)?="([\w.]+)"/g)) used.add(m[1]);
     for (const f of ["documents", "pictures", "desktop", "music", "videos", "downloads"]) used.add("folder." + f);
-    for (const f of ["offline", "verify", "space", "write", "device", "copy", "shrink", "other"]) { used.add(`fail.${f}.t`); used.add(`fail.${f}.b`); }
-    for (const p of [1, 2, 3, 4]) used.add("phase." + p);
+    for (const f of ["offline", "verify", "space", "write", "device", "copy", "other"]) { used.add(`fail.${f}.t`); used.add(`fail.${f}.b`); }
+    for (const p of [1, 2, 3]) used.add("phase." + p);
     for (const k of ["usb", "sd", "disk"]) used.add("kind." + k);
     expect([...used].filter((k) => !k.endsWith(".") && !keys.has(k))).toEqual([]);
   });

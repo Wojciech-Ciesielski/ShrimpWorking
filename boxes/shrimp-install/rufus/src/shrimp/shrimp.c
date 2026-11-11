@@ -3,15 +3,13 @@
  *
  *   start → pobranie ISO (fetch.c) → wybór nośnika i analiza ISO w Rufusie
  *         → kopia zawartości nośnika w Windows ze sprawdzeniem sum (usbbackup.c) → START w Rufusie
- *         → zawartość nośnika do shrimp-backup/, kopia plików i shrimp.json (transfer.c)
- *         → „Obok Windows”: zmniejszenie C: (space.c) → gotowe
+ *         → zawartość nośnika do shrimp-backup/, kopia plików i shrimp.json (transfer.c) → gotowe
  *         → BootNext i restart (boot.c)
  *
  * Argumenty: --demo (dane z makiety), --source PLIK.iso (bez pobierania), --manifest URL,
  * --collect PLIK.json (tylko zebranie danych z Windows, bez okna), --rufus (zwykły Rufus),
  * --screen NAZWA i --theme light|dark (podgląd ekranów z makiety),
  * --backup-test ŹRÓDŁO CEL KOPIA (test kopii zawartości nośnika na katalogach, bez okna),
- * --shrink-test LITERA BAJTY (test zmniejszenia partycji na dysku testowym, bez okna; space.c),
  * --auto-disk NUMER (test w CI: od razu cały przebieg na dysku o tym numerze, np. podłączonym VHD;
  *   bez folderów użytkownika, kod wyjścia 0 po „done”, 3 po „fail”).
  *
@@ -45,7 +43,7 @@ BOOL ShrimpBitLockerOn = FALSE;
 static BOOL opt_demo = FALSE;
 static char opt_collect[MAX_PATH], opt_screen[32], opt_theme[16], opt_lang[64];
 
-static enum { ST_IDLE, ST_FETCH, ST_SCAN, ST_BACKUP, ST_FORMAT, ST_COPY, ST_SHRINK, ST_DONE, ST_FAILED } state = ST_IDLE;
+static enum { ST_IDLE, ST_FETCH, ST_SCAN, ST_BACKUP, ST_FORMAT, ST_COPY, ST_DONE, ST_FAILED } state = ST_IDLE;
 static DWORD plan_device;
 static int cancel_id = 0;
 static volatile LONG fail_sent = 0;
@@ -127,7 +125,6 @@ void ShrimpLogEvent(const char* json)
 /* ---------- argumenty ---------- */
 void ShrimpInit(void)
 {
-	const wchar_t* shrink_test[2] = { NULL, NULL };
 	int argc = 0;
 	wchar_t** argv = CommandLineToArgvW(GetCommandLineW(), &argc);
 	for (int i = 1; argv != NULL && i < argc; i++) {
@@ -147,11 +144,6 @@ void ShrimpInit(void)
 			WideCharToMultiByte(CP_UTF8, 0, argv[++i], -1, opt_screen, sizeof(opt_screen), NULL, NULL);
 		else if (v != NULL && wcscmp(a, L"--lang") == 0)
 			WideCharToMultiByte(CP_UTF8, 0, argv[++i], -1, opt_lang, sizeof(opt_lang), NULL, NULL);
-		else if (i + 2 < argc && wcscmp(a, L"--shrink-test") == 0) {
-			/* Po otwarciu dziennika (przebieg zmniejszania ma być w nim widoczny). */
-			shrink_test[0] = argv[++i];
-			shrink_test[1] = argv[++i];
-		}
 		else if (i + 3 < argc && wcscmp(a, L"--backup-test") == 0)
 			ExitProcess(ShrimpUsbBackupTest(argv[i + 1], argv[i + 2], argv[i + 3]));
 		else if (v != NULL && wcscmp(a, L"--theme") == 0)
@@ -159,13 +151,11 @@ void ShrimpInit(void)
 		else if (v != NULL && wcscmp(a, L"--auto-disk") == 0)
 			opt_auto_disk = _wtoi(argv[++i]);
 	}
+	LocalFree(argv);
 	if (shrimp_mode && !opt_collect[0]) {
 		log_open();
 		uprintf("Shrimp Install %s", SHRIMP_VERSION);
 	}
-	if (shrink_test[0] != NULL)
-		ExitProcess(ShrimpShrinkTest(shrink_test[0], shrink_test[1]));
-	LocalFree(argv);
 }
 
 /* ---------- odpowiedzi i zdarzenia ---------- */
@@ -436,7 +426,7 @@ static void begin(int id, char** f, int nf)
 	shrimp_transfer* t = &ShrimpTransfer;
 	wchar_t path[MAX_PATH];
 
-	if (state == ST_FETCH || state == ST_SCAN || state == ST_FORMAT || state == ST_COPY || state == ST_SHRINK) {
+	if (state == ST_FETCH || state == ST_SCAN || state == ST_FORMAT || state == ST_COPY) {
 		reply_error(id, "busy");
 		return;
 	}
@@ -529,11 +519,6 @@ static void finish_cancel(void)
 
 static void cancel(int id)
 {
-	if (state == ST_SHRINK) {
-		/* Zmniejszania partycji nie przerywamy w połowie (robi to Windows, trwa zwykle kilka minut). */
-		reply_error(id, "busy");
-		return;
-	}
 	if (state != ST_FETCH && state != ST_SCAN && state != ST_BACKUP && state != ST_FORMAT && state != ST_COPY) {
 		state = ST_IDLE;
 		reply(id, "null");
@@ -565,19 +550,6 @@ static void open_help_url(const char* url)
 	free(w);
 }
 
-/* Faza 4: Windows robi miejsce na Shrimp (zmniejsza C:). Bez anulowania w trakcie. */
-static void start_shrink(void)
-{
-	uprintf("Shrimp: nośnik gotowy, zmniejszanie C: o %llu B", (unsigned long long)ShrimpShrinkBytes);
-	state = ST_SHRINK;
-	fail_sent = 0;
-	ShrimpProgress(4, 0, 0, 0);
-	if (CreateThread(NULL, 0, ShrimpShrinkThread, NULL, 0, NULL) == NULL) {
-		state = ST_FAILED;
-		ShrimpFail(4, "shrink", "shrinkFail");
-	}
-}
-
 LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg) {
@@ -607,8 +579,6 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 			jb_bool(&b, "bitlocker", ShrimpBitLockerOn);
 			jb_u64(&b, "shrimpSize", ShrimpManifest.size ? ShrimpManifest.size : SHRIMP_ISO_ESTIMATE);
 			jb_u64(&b, "minSize", SHRIMP_MIN_MEDIA_SIZE);
-			if (ShrimpDisk.letter)
-				ShrimpDiskJson(&b, "disk");
 			jb_raw(&b, "folders", fj);
 			jb_end_obj(&b);
 			reply(id, b.s);
@@ -626,19 +596,6 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 			jb_free(&b);
 		} else if (strcmp(call, "pick") == 0) {
 			pick(id, nf > 2 && strcmp(f[2], "folder") == 0);
-		} else if (strcmp(call, "space") == 0) {
-			/* „Gdzie zainstalować Shrimp?”: bajty wolnego miejsca do zrobienia na dysku z Windows (0: Zamiast Windows). */
-			ShrimpShrinkBytes = nf > 2 ? _strtoui64(f[2], NULL, 10) : 0;
-			uprintf("Shrimp: miejsce dla Shrimp na dysku z Windows: %llu B", (unsigned long long)ShrimpShrinkBytes);
-			reply(id, "null");
-		} else if (strcmp(call, "shrink") == 0) {
-			/* Ponowienie samej fazy 4 (nośnik jest już gotowy). */
-			if (state != ST_FAILED || ShrimpShrinkBytes == 0) {
-				reply_error(id, "busy");
-			} else {
-				reply(id, "null");
-				start_shrink();
-			}
 		} else if (strcmp(call, "start") == 0) {
 			begin(id, f, nf);
 		} else if (strcmp(call, "cancel") == 0) {
@@ -798,22 +755,6 @@ LRESULT ShrimpWndMessage(UINT msg, WPARAM wParam, LPARAM lParam)
 			ShrimpFail(3, "copy", NULL);
 			break;
 		}
-		if (ShrimpShrinkBytes > 0) {
-			start_shrink();
-			break;
-		}
-		state = ST_DONE;
-		ShrimpEmit(_strdup("{\"event\":\"done\"}"));
-		break;
-
-	case WM_SHRIMP_SHRUNK:
-		if (!wParam) {
-			char* e = (char*)lParam;
-			state = ST_FAILED;
-			ShrimpFail(4, "shrink", e != NULL ? e : "shrinkFail");
-			free(e);
-			break;
-		}
 		state = ST_DONE;
 		ShrimpEmit(_strdup("{\"event\":\"done\"}"));
 		break;
@@ -831,7 +772,7 @@ void ShrimpDispatch(const char* msg)
 
 BOOL ShrimpCanClose(void)
 {
-	return state != ST_FETCH && state != ST_SCAN && state != ST_BACKUP && state != ST_FORMAT && state != ST_COPY && state != ST_SHRINK;
+	return state != ST_FETCH && state != ST_SCAN && state != ST_BACKUP && state != ST_FORMAT && state != ST_COPY;
 }
 
 /* ---------- punkty zaczepienia w Rufusie ---------- */
@@ -1039,10 +980,8 @@ BOOL ShrimpStart(HINSTANCE hInstance, HWND hMainDlg)
 	jb_end_obj(&o);
 	BOOL ok = ShrimpWindowCreate(hInstance, o.s);
 	jb_free(&o);
-	if (ok && !opt_demo) {
+	if (ok && !opt_demo)
 		CreateThread(NULL, 0, BitLockerThread, NULL, 0, NULL);
-		CreateThread(NULL, 0, ShrimpDiskThread, NULL, 0, NULL);
-	}
 	/* Test w CI: przebieg od razu, jak po „Przygotuj nośnik” w interfejsie (bez folderów użytkownika). */
 	if (ok && opt_auto_disk >= 0) {
 		char* m = malloc(64);

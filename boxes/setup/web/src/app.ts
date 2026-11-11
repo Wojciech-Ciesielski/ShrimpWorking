@@ -81,12 +81,10 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   const cur = () => STEPS[step];
   const disk = () => DISKS[S.disk];
   const hasWin = () => !!disk()?.windows;
+  /** Windows zaszyfrowany BitLockerem: tylko „Zamiast Windows”. */
+  const locked = () => hasWin() && (!!disk()!.windows!.bitlocker || !!TR?.bitlocker);
   /** Minimum dla Shrimp: system + pliki przenoszone z Windows. */
   const shrimpMin = () => SHRIMP_MIN_GB + Math.ceil((TR?.bytes || 0) / 1e9);
-  /** Na dysku z Windows jest już dość wolnego miejsca (Shrimp Install zmniejszył C:): „Obok Windows” bez zmian w Windows. */
-  const freeOk = () => hasWin() && (disk()!.windows!.freeGB ?? 0) >= shrimpMin();
-  /** Windows zaszyfrowany BitLockerem i bez wolnego miejsca: tylko „Zamiast Windows” (Setup nie zmniejszy zaszyfrowanej partycji). */
-  const locked = () => hasWin() && !freeOk() && (!!disk()!.windows!.bitlocker || !!TR?.bitlocker);
   const beside = () => (be.mode === "install" ? hasWin() && S.place === 0 : INFO.beside);
   const pool = () => disk()?.windows?.poolGB ?? disk()?.sizeGB ?? 0;
   const winMin = () => disk()?.windows?.minGB ?? 0;
@@ -139,7 +137,6 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     if (id === "dysk") {
       if (sub === 1) return S.enc === 1 ? tr("disk.enc.warn") : "";
       if (locked()) return tr(PLACES[1].d) + " " + tr("place.locked");
-      if (S.place === 0 && freeOk()) return tr("place.free", { size: L.unit(disk()!.windows!.freeGB!, "gigabyte") });
       return hasWin() ? (PLACES[S.place].d ? tr(PLACES[S.place].d) : "") : tr("disk.whole", { name: disk()?.name || "" }) + (DISKS.some((d) => d.windows) ? " " + tr("disk.whole.keep") : "");
     }
     if (id === "wyglad") return tr("look.note");
@@ -164,7 +161,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
           `<p class="desc" id="desc">${esc(descFor())}</p>`) + acts(esc(tr("done")), "", { act: "done" });
         if (!hasWin()) return logo("6cqw") + head(esc(tr("disk.where"))) + body(`<p class="desc" id="desc" style="margin-top:0">${esc(descFor())}</p>`) + acts(esc(NEXT), esc(tr("advanced")), { skipAct: "adv" });
         return logo("6cqw") + head(esc(tr("disk.where"))) + body(lst("place", PLACES.map((p, j) => ({ t: j === 0 ? rec(p.n) : esc(tr(p.n)), off: j === 0 && locked() })), S.place) +
-          (S.place === 0 && !freeOk()
+          (S.place === 0
             ? `<div class="split"><div class="sp">Windows<b id="wGB"></b></div><div class="sp r">Shrimp<b id="sGB"></b></div><input class="rng" id="rng" type="range" min="0" max="${pool()}" step="1" value="${S.win}" aria-label="${esc(tr("disk.split.aria"))}"></div>`
             : `<p class="desc" id="desc">${esc(descFor())}</p>`)) + acts(esc(NEXT), esc(tr("advanced")), { skipAct: "adv" });
       }
@@ -174,9 +171,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       case "podsumowanie": {
         const rows: [string, string][] = [[tr("sum.lang"), esc(LANGS[S.lang]?.name)], [tr("sum.region"), esc(REGS[S.region] ? regLabel(REGS[S.region]) : "")], [tr("sum.kb"), esc(KBS[S.kb] ? kbLabel(KBS[S.kb]) : "")], [tr("sum.disk"), esc(disk()?.name || "")],
           [tr("sum.how"), esc(place() === "whole" ? tr("sum.whole") : tr(place() === "beside" ? "place.beside" : "place.replace"))]];
-        if (beside()) rows.push([tr("sum.split"), esc(tr("sum.split.v", freeOk()
-          ? { win: L.unit(pool() - disk()!.windows!.freeGB!, "gigabyte"), shrimp: L.unit(disk()!.windows!.freeGB!, "gigabyte") }
-          : { win: L.unit(S.win, "gigabyte"), shrimp: L.unit(pool() - S.win, "gigabyte") }))]);
+        if (beside()) rows.push([tr("sum.split"), esc(tr("sum.split.v", { win: L.unit(S.win, "gigabyte"), shrimp: L.unit(pool() - S.win, "gigabyte") }))]);
         rows.push([tr("sum.account"), `${esc(S.full)} (${esc(S.user)})`]);
         if (S.enc === 1) rows.push([tr("sum.enc"), esc(tr("enc.on"))]);
         return logo("6cqw") + head(esc(tr("sum.title")), esc(tr("sum.sub"))) +
@@ -282,6 +277,10 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
     // Bez pendrive'a do przywrócenia krok „pendrive” jest pomijany w obie strony.
     if (cur() === "pendrive" && !USB.pending && s === 0) step += n >= prev ? 1 : -1;
     if (cur() === "konto" && !keep) S.confirm = false;
+    // Dyski czytamy od nowa przy wejściu w krok: pierwszy odczyt (przy starcie) bywał niepełny.
+    if (cur() === "dysk" && be.mode === "install" && prev !== step) void be.install.disks().then((d) => {
+      if (cur() === "dysk" && JSON.stringify(d) !== JSON.stringify(DISKS) && d.length) { DISKS = d; S.disk = Math.min(S.disk, d.length - 1); render(true); }
+    }).catch(() => {});
     chrome(); applyLook(); render(true);
   }
 
@@ -289,7 +288,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
   function plan(): InstallPlan {
     return {
       locale: LANGS[S.lang].locale, timezone: REGS[S.region].tz, keymap: KBS[S.kb].keymap,
-      disk: disk(), place: place(), windowsGB: beside() && !freeOk() ? S.win : undefined,
+      disk: disk(), place: place(), windowsGB: beside() ? S.win : undefined,
       diskPassword: S.enc === 1 ? S.dp : undefined,
       fullName: S.full.trim(), userName: S.user, password: S.pass,
     };
@@ -506,7 +505,7 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       return go(step + 1);
     }
     if (id === "dysk" && sub === 0 && !disk()) return openErr("nodisk");
-    if (id === "dysk" && sub === 0 && (beside() ? (freeOk() ? disk()!.windows!.freeGB! : pool() - S.win) : disk()?.sizeGB ?? 0) < shrimpMin()) return openErr("space");
+    if (id === "dysk" && sub === 0 && (beside() ? pool() - S.win : disk()?.sizeGB ?? 0) < shrimpMin()) return openErr("space");
     if (id === "podsumowanie") {
       return guarded(async () => {
         try { await be.install.check(plan()); go(step + 1); }
@@ -617,8 +616,6 @@ export function start(root: HTMLElement, be: Backends, L0: I18n) {
       // disksFromSystem() stawia na początku dysk z Windows, potem największy (bez pendrive'a z Shrimp).
       S.disk = 0;
       defaultSplit();
-      // Jak w Shrimp Install: „Zamiast Windows” wybrane tam zostaje domyślne tu.
-      if (TR?.place === "replace") S.place = 1;
       // Instalacja: język z Windows (Shrimp Install), a bez niego angielski, nie polski z obrazu sesji live.
       // Podgląd (demo): język przeglądarki. Dla wybranego języka domyślna strefa i klawiatura.
       const own = be.mode === "install" ? installLang(TR, LANGS) : Math.max(0, LANGS.findIndex((l) => l.tag === L.tag)); S.lang = own;

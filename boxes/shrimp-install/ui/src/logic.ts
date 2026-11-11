@@ -1,21 +1,12 @@
 // Czyste funkcje interfejsu (bez DOM), testowane w logic.test.ts. Teksty i formaty zależą od języka (i18n).
 import type { I18n } from "../../../i18n-core/core";
-import type { Device, Phase, Progress, WinDisk } from "./backend/types";
+import type { Device, Phase, Progress } from "./backend/types";
 
 export const GiB = 1024 ** 3;
 const MiB = 1024 ** 2;
 
 /** Szacunkowe prędkości, zanim program zmierzy prawdziwe (B/s). */
 export const EST = { download: 14 * MiB, write: 38 * MiB, copy: 52 * MiB, verify: 300 * MiB };
-
-/** Zmniejszanie C: (faza 4) trwa zwykle kilka minut i nie podaje postępu. */
-export const SHRINK_EST = 180;
-
-/** Jak w Setup (boxes/setup/web/src/data.ts): najmniej miejsca dla Shrimp i zapas, który zostaje Windows ponad jego minimum. */
-export const SHRIMP_MIN = 40 * GiB;
-export const WINDOWS_SPARE = 20 * GiB;
-
-export interface Sizes { shrimp: number; files: number; /** Miejsce dla Shrimp na dysku z Windows (faza 4), 0: bez fazy 4. */ shrink?: number }
 
 /** Rozmiar w GB z jedną cyfrą po przecinku. */
 export const gb1 = (L: I18n, bytes: number) => L.unit(bytes / GiB, "gigabyte", { max: 1, min: 1 });
@@ -67,46 +58,19 @@ export function space(L: I18n, cap: number, shrimp: number, files: number): Spac
   };
 }
 
-export interface PlaceLimits {
-  /** Shrimp zmieści się obok Windows. */
-  ok: boolean;
-  /** Suwak (bajty, pełne GiB): najmniej i najwięcej miejsca dla Shrimp, wartość domyślna. */
-  min: number;
-  max: number;
-  def: number;
-}
-
-/** Granice suwaka „Obok Windows”. Shrimp: 40 GiB + kopiowane pliki (wracają na dysk przy instalacji).
- *  Windows: najmniejszy rozmiar partycji (Get-PartitionSupportedSize) + 20 GiB zapasu.
- *  Wolne miejsce w innym kawałku dysku się nie sumuje (Setup instaluje w jednym obszarze). */
-export function placeLimits(d: WinDisk, files: number): PlaceLimits {
-  const min = Math.ceil((SHRIMP_MIN + files) / GiB) * GiB;
-  if (!d.ok || !d.size) return { ok: false, min, max: 0, def: 0 };
-  const max = Math.floor(Math.max(d.free, d.size - d.min - WINDOWS_SPARE) / GiB) * GiB;
-  const ok = max >= min;
-  // Domyślnie: wolne miejsce, jeśli już wystarcza (Windows bez zmian), inaczej połowa partycji.
-  const want = d.free >= min ? Math.floor(d.free / GiB) * GiB : Math.round(d.size / 2 / GiB) * GiB;
-  return { ok, min, max, def: ok ? Math.min(max, Math.max(min, want)) : 0 };
-}
-
-/** Rozmiar partycji Windows po zrobieniu `shrimp` bajtów miejsca (bez zmian, gdy wolne miejsce już jest). */
-export const windowsAfter = (d: WinDisk, shrimp: number) => (d.free >= shrimp ? d.size : d.size - shrimp);
-
 /** Pozostały czas całości: bieżąca faza z pomiaru, kolejne z szacunku. */
-export function remaining(p: Progress, sizes: Sizes): number {
-  const shrink = sizes.shrink ? SHRINK_EST : 0;
-  if (p.phase === 4) return shrink;
+export function remaining(p: Progress, sizes: { shrimp: number; files: number }): number {
   const left = Math.max(0, p.total - p.done);
   const est = [0, EST.download, EST.write, EST.copy];
   let s = left / (p.speed || (p.step === "verify" ? EST.verify : est[p.phase]));
   if (p.phase < 2 || p.step === "backup" || p.step === "prepare") s += sizes.shrimp / EST.write;
   if (p.phase < 3) s += sizes.files / EST.copy;
-  return s + shrink;
+  return s;
 }
 
 /** Opis jednej fazy pod jej nazwą (jak w makiecie). */
-export function phaseText(L: I18n, n: Phase, cur: Progress | null, sizes: Sizes, finished: boolean): string {
-  const at = finished ? 5 : cur ? cur.phase : 1;
+export function phaseText(L: I18n, n: Phase, cur: Progress | null, sizes: { shrimp: number; files: number }, finished: boolean): string {
+  const at = finished ? 4 : cur ? cur.phase : 1;
   const left = (p: Progress) => dur(L, Math.max(0, p.total - p.done) / (p.speed || [0, EST.download, EST.write, EST.copy][p.phase]));
   const progress = (p: Progress, speed: number) =>
     L.t("phase.progress", { done: L.num(p.done / GiB), total: gb1(L, p.total), speed: mbps(L, p.speed || speed), left: left(p) });
@@ -123,12 +87,6 @@ export function phaseText(L: I18n, n: Phase, cur: Progress | null, sizes: Sizes,
     if (cur.step === "backup") return L.t("phase.backup", { pct: L.percent(cur.total ? cur.done / cur.total : 0), left: left(cur) });
     const pct = cur.total ? cur.done / cur.total : 0;
     return L.t("phase.percent", { pct: L.percent(pct), speed: mbps(L, cur.speed || EST.write), left: left(cur) });
-  }
-  if (n === 4) {
-    const size = fmtGB(L, sizes.shrink || 0);
-    if (at > 4) return L.t("phase.shrunk", { size });
-    if (at < 4 || !cur) return L.t("phase.shrinkplan", { size });
-    return L.t("phase.shrink", { size });
   }
   if (!sizes.files) return at > 3 ? L.t("phase.nofiles") : L.t("phase.nothing");
   if (at > 3) return L.t("phase.copied", { size: fmtSize(L, sizes.files) });

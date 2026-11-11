@@ -136,7 +136,7 @@ describe("agama", () => {
         }],
       },
     });
-    expect(d).toEqual([{ device: "/dev/sda", name: "WD Blue", sizeGB: 500, windows: { partition: "/dev/sda3", minGB: 141, poolGB: 490, freeGB: 10 } }]);
+    expect(d).toEqual([{ device: "/dev/sda", name: "WD Blue", sizeGB: 500, windows: { partition: "/dev/sda3", minGB: 141, poolGB: 490 } }]);
   });
   it("rozpoznaje Windows zaszyfrowany BitLockerem", () => {
     const d = disksFromSystem({
@@ -147,7 +147,7 @@ describe("agama", () => {
         }],
       },
     });
-    expect(d[0].windows).toEqual({ partition: "/dev/nvme0n1p3", minGB: 270, poolGB: 250, freeGB: 0, bitlocker: true });
+    expect(d[0].windows).toEqual({ partition: "/dev/nvme0n1p3", minGB: 270, poolGB: 250, bitlocker: true });
   });
   it("Vivobook: BitLocker jako szyfrowanie, pendrive z Shrimp pierwszy na liście Agamy", () => {
     // Układ z testu na ASUS Vivobook X513EA (2026-11-09): Agama wymienia najpierw pendrive 32 GB z Shrimp Install,
@@ -167,22 +167,7 @@ describe("agama", () => {
         ],
       },
     });
-    expect(d).toEqual([{ device: "/dev/nvme0n1", name: "INTEL SSDPEKNW512G8", sizeGB: 512, windows: { partition: "/dev/nvme0n1p3", minGB: 530, poolGB: 510, freeGB: 0, bitlocker: true } }]);
-  });
-  it("BitLocker z miejscem zrobionym przez Shrimp Install: wolne miejsce bez zmian w Windows", () => {
-    // Shrimp Install zmniejszył C: (Resize-Partition) o 200 GiB; Agama widzi wolny obszar za partycją Windows.
-    const d = disksFromSystem({
-      storage: {
-        devices: [{
-          sid: 1, name: "/dev/nvme0n1", block: { size: 512e9 },
-          partitionTable: { unusedSlots: [{ start: 0, size: 1e6 }, { start: 2e6, size: 214.7e9 }] },
-          partitions: [{ sid: 3, name: "/dev/nvme0n1p3", block: { size: 295e9, encrypted: true }, partition: { efi: false, id: "windows_basic_data" } }],
-        }],
-      },
-    });
-    expect(d[0].windows).toMatchObject({ freeGB: 214, bitlocker: true });
-    const c = configFromPlan({ ...base, disk: d[0], windowsGB: undefined }) as any;
-    expect(c.storage.drives[0].partitions).toEqual([{ generate: { partitions: "default" } }]);
+    expect(d).toEqual([{ device: "/dev/nvme0n1", name: "INTEL SSDPEKNW512G8", sizeGB: 512, windows: { partition: "/dev/nvme0n1p3", minGB: 530, poolGB: 510, bitlocker: true } }]);
   });
   it("bez Windows: największy dysk pierwszy, zaszyfrowany Linux to nie BitLocker", () => {
     const d = disksFromSystem({

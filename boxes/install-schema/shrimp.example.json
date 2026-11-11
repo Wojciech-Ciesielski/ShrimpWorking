@@ -23,8 +23,6 @@
     { "key": "documents", "path": "files/documents", "source": "C:\\Users\\jan\\Documents", "bytes": 3435973836 },
     { "key": "other", "path": "files/other/Projekty", "source": "D:\\Projekty", "bytes": 1024 }
   ],
-  "place": "beside",
-  "shrimpSpace": 214748364800,
   "split": ["files/videos/wakacje.mkv"],
   "skipped": [{ "source": "C:\\Users\\jan\\OneDrive\\x.docx", "reason": "cloud" }]
 }

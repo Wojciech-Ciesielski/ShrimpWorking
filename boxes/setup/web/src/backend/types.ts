@@ -15,11 +15,8 @@ export interface Disk {
     minGB: number;
     /** Miejsce, które dzielimy suwakiem: partycja Windows + wolne miejsce na dysku. */
     poolGB: number;
-    /** Partycja zaszyfrowana BitLockerem: Setup jej nie zmniejszy („Obok Windows” tylko w wolnym miejscu). */
+    /** Partycja zaszyfrowana BitLockerem: nie da się jej zmniejszyć, więc nie ma „Obok Windows”. */
     bitlocker?: boolean;
-    /** Największy nieprzydzielony obszar na dysku (np. miejsce zrobione przez Shrimp Install, który zmniejsza C:).
-     *  Gdy wystarcza, „Obok Windows” instaluje w nim Shrimp i nie zmienia partycji Windows (także z BitLockerem). */
-    freeGB?: number;
   };
 }
 
@@ -33,8 +30,6 @@ export interface Transfer {
   bitlocker?: boolean;
   /** Pliki do przeniesienia (bajty): tyle miejsca więcej potrzebuje Shrimp. */
   bytes?: number;
-  /** Wybór z ekranu „Gdzie zainstalować Shrimp?” w Shrimp Install (beside: zrobił miejsce obok Windows). */
-  place?: "beside" | "replace" | null;
   /** Język menu GRUB z nośnika (boot/grub2/shrimp-lang.cfg), też z Windows; jest nawet bez shrimp.json. */
   grubLang?: string;
 }
@@ -46,7 +41,7 @@ export interface InstallPlan {
   keymap: string;
   disk: Disk;
   place: Place;
-  /** Rozmiar Windows po zmniejszeniu (tylko „beside”); brak: Shrimp w wolnym miejscu, Windows bez zmian. */
+  /** Rozmiar Windows po zmniejszeniu (tylko „beside”). */
   windowsGB?: number;
   /** Hasło szyfrowania dysku (LUKS2) albo brak. */
   diskPassword?: string;

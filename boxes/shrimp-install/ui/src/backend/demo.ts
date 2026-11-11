@@ -1,6 +1,6 @@
 // Dane przykładowe z makiety: podgląd w przeglądarce, zrzuty ekranów i `shrimp-install.exe --demo`.
 import { GiB } from "../logic";
-import type { Backend, Device, Failure, Folder, Info, Picked, Plan, RunEvents, WinDisk } from "./types";
+import type { Backend, Device, Failure, Folder, Info, Picked, Plan, RunEvents } from "./types";
 
 const MB = 1024 ** 2;
 export const DEMO_DEVICES: Device[] = [
@@ -26,9 +26,6 @@ const POOL: Picked[] = [
   { name: "Podatki", kind: "folder", size: 0.2 * GiB },
 ].map((p) => ({ ...p, path: "C:\\Users\\Jan\\" + p.name } as Picked));
 
-/** Laptop 512 GB z C: zajętym w ~25%. */
-export const DEMO_DISK: WinDisk = { ok: true, letter: "C", size: 475.6 * GiB, min: 118.3 * GiB, disk: 476.9 * GiB, free: 0 };
-
 export interface DemoOptions {
   devices?: "ok" | "none" | "small";
   /** Postęp zaczyna od tylu procent całości (zrzuty). */
@@ -36,10 +33,6 @@ export interface DemoOptions {
   offline?: boolean;
   /** Błąd zapisu nośnika (faza 2) do podglądu ekranów błędów. */
   fail?: Failure;
-  /** Dysk z Windows: brak rozmiarów (fail) albo bez miejsca obok Windows (full). */
-  disk?: "ok" | "fail" | "full";
-  /** Błąd zmniejszania C: (faza 4). */
-  shrinkFail?: boolean;
   /** Bez upływu czasu (zrzuty). */
   frozen?: boolean;
 }
@@ -47,9 +40,6 @@ export interface DemoOptions {
 export class DemoBackend implements Backend {
   private timer = 0;
   private pool = POOL.slice(2);
-  private space = 0;
-  private shrinkTimer = 0;
-  private run: RunEvents | null = null;
   constructor(private o: DemoOptions = {}) {}
 
   /** Dwa pierwsze elementy wyboru ręcznego, jak w makiecie. */
@@ -63,22 +53,6 @@ export class DemoBackend implements Backend {
     cb(v === "ok" ? DEMO_DEVICES : v === "small" ? [DEMO_DEVICES[3]] : []);
   }
   onFolders(cb: (f: Folder[]) => void) { cb(FOLDERS); }
-  onDisk(cb: (d: WinDisk) => void) {
-    const d = this.o.disk === "fail" ? { ...DEMO_DISK, ok: false, size: 0, min: 0 } : this.o.disk === "full" ? { ...DEMO_DISK, min: 460 * GiB } : DEMO_DISK;
-    window.setTimeout(() => cb(d), this.o.frozen ? 0 : 900);
-  }
-  async setSpace(bytes: number) { this.space = bytes; }
-  retryShrink() { if (this.run) this.shrink(this.run); }
-  /** Faza 4: kilka sekund „Windows robi miejsce”. */
-  private shrink(ev: RunEvents) {
-    ev.progress({ phase: 4, done: 0, total: 0, speed: 0 });
-    if (this.o.frozen) return;
-    clearTimeout(this.shrinkTimer);
-    this.shrinkTimer = window.setTimeout(() => {
-      if (this.o.shrinkFail) { this.o.shrinkFail = false; ev.fail({ phase: 4, kind: "shrink", message: "shrinkMin" }); }
-      else ev.done();
-    }, 4000);
-  }
   onBitLocker(_cb: (on: boolean) => void) {}
   onCloseRequest(_cb: () => void) {}
   async pick(kind: "folder" | "file"): Promise<Picked[]> {
@@ -86,7 +60,6 @@ export class DemoBackend implements Backend {
     return i < 0 ? [] : this.pool.splice(i, 1);
   }
   start(plan: Plan, ev: RunEvents) {
-    this.run = ev;
     const files = plan.paths.length
       ? POOL.filter((p) => plan.paths.includes(p.path)).reduce((a, p) => a + p.size, 0)
       : FOLDERS.filter((f) => plan.folders.includes(f.key)).reduce((a, f) => a + (f.size || 0), 0);
@@ -98,7 +71,7 @@ export class DemoBackend implements Backend {
     const tick = () => {
       if (this.o.fail) { ev.progress({ phase: 2, done: 0.02 * shrimp, total: shrimp, speed: 0 }); ev.fail(this.o.fail); return false; }
       if (this.o.offline) { ev.progress({ phase: 1, done: 0.06 * 2 * shrimp, total: shrimp, speed: 0 }); ev.fail({ phase: 1, kind: "offline" }); return false; }
-      if (total >= 100) { if (this.space > 0) this.shrink(ev); else ev.done(); return false; }
+      if (total >= 100) { ev.done(); return false; }
       const ph = (total >= PH[2] ? 3 : total >= PH[1] ? 2 : 1) as 1 | 2 | 3;
       const f = (total - PH[ph - 1]) / (PH[ph] - PH[ph - 1]);
       const wob = 1 + Math.sin(total / 3) * 0.06;
@@ -109,7 +82,7 @@ export class DemoBackend implements Backend {
     if (!tick() || this.o.frozen) return;
     this.timer = window.setInterval(() => { total = Math.min(100, total + 0.9); if (!tick()) clearInterval(this.timer); }, 220);
   }
-  async cancel() { clearInterval(this.timer); clearTimeout(this.shrinkTimer); }
+  async cancel() { clearInterval(this.timer); }
   async reboot() {}
   openUrl(url: string) { if (/^https:\/\//.test(url)) window.open(url, "_blank", "noopener"); }
   later() {}

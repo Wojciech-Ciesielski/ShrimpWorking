@@ -144,29 +144,3 @@
 144	Zamknij programy, które go używają (np. Eksplorator plików albo program do kopii zapasowych), i spróbuj jeszcze raz.
 145	Zapis został zatrzymany
 146	Shrimp Install zatrzymał zapis nośnika z powodu nieoczekiwanego pytania:
-147	Gdzie zainstalować Shrimp?
-148	Zachowaj Windows i wybieraj system przy każdym uruchomieniu albo zastąp Windows systemem Shrimp.
-149	Miejsce instalacji Shrimp
-150	Obok Windows
-151	Windows zrobi miejsce na swoim dysku. Windows, programy i pliki zostają.
-152	Zamiast Windows
-153	Shrimp zajmie cały dysk. Wybrane pliki czekają na nośniku.
-154	Miejsce dla Shrimp
-155	Windows · {size}
-156	Shrimp · {size}
-157	Sprawdzanie dysku z Windows…
-158	Nie udało się sprawdzić dysku z Windows, więc Shrimp może tylko zastąpić Windows.
-159	Obok Windows brakuje miejsca: Shrimp potrzebuje {size}. Zwolnij miejsce w Windows albo zainstaluj Shrimp zamiast niego.
-160	Na dysku jest już tyle wolnego miejsca. Windows zostaje bez zmian.
-161	Windows zmniejszy swoją partycję po skopiowaniu plików. Cofniesz to w Zarządzaniu dyskami.
-162	Windows zostaje zaszyfrowany BitLockerem. Miej pod ręką klucz odzyskiwania: Windows może o niego poprosić przy następnym uruchomieniu.
-163	Miejsce dla Shrimp
-164	{size} obok Windows · kilka minut
-165	Windows zmniejsza partycję · {size} dla Shrimp
-166	Miejsce gotowe: {size}
-167	Nie udało się zrobić miejsca
-168	Windows nie zrobił miejsca dla Shrimp.
-169	Nośnik jest gotowy. Wybierz mniej miejsca albo zainstaluj Shrimp zamiast Windows.
-170	Nie udało się odczytać rozmiaru partycji Windows.
-171	Windows nie zmniejszy się aż tyle: części jego plików nie da się przenieść.
-172	Windows nie zmniejszył partycji. {code}
