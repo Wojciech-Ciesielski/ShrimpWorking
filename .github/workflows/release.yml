@@ -25,14 +25,6 @@ on:
         description: "Użyj gotowych przebiegów Build ISO i Shrimp Install z tego samego commita (bez budowania)"
         type: boolean
         default: false
-      iso_run:
-        description: "Tylko z reuse: id przebiegu Build ISO do użycia (puste = ostatni udany z source_sha)"
-        required: false
-        default: ""
-      exe_run:
-        description: "Tylko z reuse: id przebiegu Shrimp Install do użycia (puste = ostatni udany z source_sha; wpisz, gdy kod programu się nie zmienił, a przebiegu z tego commita nie ma)"
-        required: false
-        default: ""
 
 permissions:
   contents: write
@@ -57,8 +49,6 @@ jobs:
       TAG: ${{ inputs.tag }}
       VERSION: ${{ inputs.version }}
       SOURCE_SHA: ${{ inputs.reuse && inputs.source_sha || github.sha }}
-      ISO_RUN_IN: ${{ inputs.iso_run }}
-      EXE_RUN_IN: ${{ inputs.exe_run }}
       MANIFEST_KEY: ${{ secrets.SHRIMP_MANIFEST_KEY }}
     steps:
       - uses: actions/checkout@v7
@@ -67,8 +57,8 @@ jobs:
         run: |
           # Jedno źródło wersji: boxes/branding/root/usr/share/shrimp/version (os-release obrazu i systemu).
           want=$(head -n1 boxes/branding/root/usr/share/shrimp/version)
-          # Dopuszczalny dopisek liter (np. „Beta 3.5r”, „Beta 4cr”: to samo ISO wydane ponownie z poprawką, bez zmiany obrazu).
-          if [ "$VERSION" != "$want" ] && ! [[ "$VERSION" =~ ^"$want"[a-z]+$ ]]; then
+          # Dopuszczalny dopisek jednej litery (np. „Beta 3.5r”: to samo ISO wydane ponownie z poprawką, bez zmiany obrazu).
+          if [ "$VERSION" != "$want" ] && ! [[ "$VERSION" =~ ^"$want"[a-z]$ ]]; then
             echo "::error::Wersja wydania „$VERSION” różni się od wersji w obrazie „$want” (boxes/branding/root/usr/share/shrimp/version)"; exit 1
           fi
           if gh api "repos/$REPO/git/ref/tags/$TAG" >/dev/null 2>&1; then
@@ -89,7 +79,7 @@ jobs:
         if: ${{ inputs.reuse }}
         run: |
           pick() { gh run list -R "$REPO" -w "$1" -c "$SOURCE_SHA" -s success -L 1 --json databaseId -q '.[0].databaseId'; }
-          ISO_RUN=${ISO_RUN_IN:-$(pick build-iso.yml)}; EXE_RUN=${EXE_RUN_IN:-$(pick shrimp-install.yml)}
+          ISO_RUN=$(pick build-iso.yml); EXE_RUN=$(pick shrimp-install.yml)
           if [ -z "$ISO_RUN" ] || [ -z "$EXE_RUN" ]; then
             echo "::error::Brak udanego przebiegu Build ISO ($ISO_RUN) albo Shrimp Install ($EXE_RUN) dla commita $SOURCE_SHA. Uruchom wydanie bez „reuse”, żeby je zbudować."; exit 1
           fi
